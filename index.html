@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge: bake 3D into game-ready sprites for Unity</title>
+<meta name="description" content="Sun Forge bakes 3D models and their animations into directional sprite sheets, lighting pages and prefabs for Unity URP, and lights them in the scene like the models they came from.">
+<link rel="canonical" href="https://sunforgetools.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/">
+<meta property="og:title" content="Sun Forge: bake 3D into game-ready sprites for Unity">
+<meta property="og:description" content="Sun Forge bakes 3D models and their animations into directional sprite sheets, lighting pages and prefabs for Unity URP, and lights them in the scene like the models they came from.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sun Forge: bake 3D into game-ready sprites for Unity">
+<meta name="twitter:description" content="Sun Forge bakes 3D models and their animations into directional sprite sheets, lighting pages and prefabs for Unity URP, and lights them in the scene like the models they came from.">
+<meta name="twitter:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta name="twitter:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<!-- The tab takes the mark drawn for 16 pixels on a 1x screen and for 32 on a 2x one, with a dark
+     outline for a light tab bar and none for a dark one. -->
+<link rel="icon" type="image/png" sizes="16x16" href="assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/mark-180.png">
+<link rel="preload" href="assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="name.css">
+<link rel="stylesheet" href="landing.css">
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <a class="features" href="#features">Features</a>
+    <a href="https://demo.sunforgetools.com/">Demo</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="stage" aria-hidden="true">
+      <img class="layer plate" alt="">
+      <canvas class="layer embers under"></canvas>
+    </div>
+    <div class="shade" aria-hidden="true"><canvas></canvas></div>
+
+    <div class="copy">
+      <!-- The name's display spacing: each k- span sets the space after its letter (landing.css). -->
+      <h1 id="hero-title" aria-label="Sun Forge"><span class="word sun" aria-hidden="true">S<span class="k-u">U</span>N</span> <span class="word forge" aria-hidden="true"><span class="k-f">F</span><span class="k-o">O</span><span class="k-r">R</span>GE</span></h1>
+      <!-- build.py site writes brand.json's slogan here, one span per sentence. -->
+      <p class="slogan"><span>Bake 3D into 2D.</span> <span>Light 2D like 3D.</span></p>
+      <div class="actions">
+        <p class="soon"><span>Coming soon</span> <span>to the Unity Asset Store</span></p>
+        <a class="button" href="#features"><span>See what it bakes</span></a>
+      </div>
+      <p class="meta">An editor tool for Unity 6 and URP</p>
+    </div>
+
+    <canvas class="embers over" aria-hidden="true"></canvas>
+  </section>
+
+  <section class="next" id="features">
+    <p class="eyebrow">Bake</p>
+    <h2>Every direction from one source</h2>
+    <p>Assign a model or a prefab, pick the archetype it falls into, and bake. Sun Forge captures a ring of directions and publishes a sheet per direction and clip, a directional animator and a prefab that plays them.</p>
+  </section>
+</main>
+
+<script src="assets/scene.js"></script>
+<script src="embers.js"></script>
+<script src="landing.js"></script>
+</body>
+</html>

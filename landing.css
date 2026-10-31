@@ -1,0 +1,488 @@
+/* The faces, cut to Latin. The labels' face is League Spartan with its ascent and descent set so its
+   capitals center in the line box. The text face is Inter 4 with its optical-size axis. */
+@font-face { font-family: "League Spartan"; font-weight: 100 900; font-display: block; src: url(assets/fonts/league-spartan.woff2) format("woff2"); }
+@font-face { font-family: "League Spartan Caps"; font-weight: 100 900; font-display: block; ascent-override: 82%; descent-override: 16%; line-gap-override: 0%; src: url(assets/fonts/league-spartan.woff2) format("woff2"); }
+@font-face { font-family: "Inter Text"; font-weight: 100 900; font-display: block; src: url(assets/fonts/inter.woff2) format("woff2"); }
+
+/* The colors: FORGE brushed gold, lit evenly along the word, and the plate blued steel, lit by the
+   star from the upper left, so its end nearer the star is brighter. No gold lies at part opacity
+   over the scene: over a blue wall a see-through gold mixes to olive. The page's night comes from
+   the scene's floor, and this --night is its value before landing.js sets it. --wordmark, --accent and
+   --soon are written for #e8b43c, and build.py site carries them to brand.json's gold
+   (GOLD_TOKENS in tools/web.py). */
+:root {
+  --night: #07070b;
+  --ink: #f6ead8;
+  --ink-soft: #e6d8c2;
+  --ink-quiet: rgba(226, 214, 196, 0.66);
+  --link: rgba(246, 234, 216, 0.8);
+  --forge-fill: url(assets/face-gold.png) 0 0 / 100% 100% no-repeat;
+  --wordmark: #f4bf46;
+  --accent: #f4bf46;
+  --soon: #f9cb5e;
+  --plate-ink: #f6ead8;
+  --plate-ink-hover: #fffaf0;
+  --nav-solid: rgba(8, 10, 18, 0.78);
+  --nav-line: rgba(246, 234, 216, 0.08);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* --ui, which landing.js sets, is how much taller than 1080 pixels the screen is, or 1: the nav
+     grows with it. */
+  --ui: 1;
+  /* The band the nav and the hero share: --edge is how far it stands in from each side of the
+     screen, where a screen is wider than 16 by 9, and --margin the page's margin inside it. Both
+     are set by landing.js; these are their values before it runs. */
+  --edge: 0px;
+  --margin: clamp(20px, 3.4vw, 56px);
+  /* The nav's height: shorter on a short screen, so the copy has room under it, and on an even
+     number of pixels, so the mark in it lands on the pixel grid. The hero keeps a band as tall at
+     its foot. */
+  --nav-height: round(clamp(60px, 11svh, 84px * var(--ui)), 2px);
+  /* The name's size F, set by landing.js, and --k, F against its size on a 1920 by 1080 screen
+     beside the subject, which the plate and the status scale by. */
+  --title: 120px;
+  --k: 1;
+  /* 1 where the browser cannot trim a line to its capitals and baseline with text-box. */
+  --untrimmed: 0;
+  --label-face: "League Spartan Caps", "League Spartan", system-ui, sans-serif;
+  --text-face: "Inter Text", system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; background: var(--night); color: var(--ink); }
+
+body {
+  font-family: "League Spartan", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Every line of text in the nav and the hero is trimmed to its capitals and its baseline, so a box
+   holds its ink: centering a label centers its capitals, and a gap between two lines is the gap
+   between their ink. Where text-box is missing, each element trims itself with negative margins
+   from its face's metrics, in a line box it sets itself: League Spartan's capitals start
+   (L - 0.92) / 2 + 0.04 em below the line box's top and its baseline stands (L - 0.92) / 2 + 0.22 em
+   above its foot; Inter's stand (L - 1.21) / 2 + 0.242 em in at both ends. */
+.wordmark, .nav nav a, .button > span, h1, .slogan, .soon > span, .meta { text-box: trim-both cap alphabetic; }
+
+@supports not (text-box: trim-both cap alphabetic) {
+  :root { --untrimmed: 1; }
+}
+
+/* A one-line label in a line box 1 em tall. The labels' face centers its capitals in the line box,
+   so its trim is the same at both ends. */
+.wordmark, .nav nav a, .button > span, .soon > span:first-child {
+  line-height: 1;
+  margin-block: calc(var(--untrimmed) * -0.17em);
+}
+
+/* Nav: the brand at the band's left margin and the links at its right one. Every item centers on
+   the nav's middle line, so the mark's middle, the wordmark's capitals and the links' capitals
+   share one line. Over the hero the nav has no bar of its own, so nothing crosses the star; once
+   the page scrolls, it takes its bar. */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: calc(40px * var(--ui));
+  height: var(--nav-height);
+  padding: 0 calc(var(--edge) + var(--margin));
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.nav.is-solid {
+  background: var(--nav-solid);
+  box-shadow: 0 1px 0 var(--nav-line);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: calc(7px * var(--ui));
+  font-family: var(--label-face);
+  font-size: calc(16px * var(--ui));
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+.wordmark { color: var(--wordmark); transition: opacity 0.5s var(--ease-out); }
+.wordmark b { font-weight: 800; color: var(--ink); }
+
+/* Centered, the hero's name sits under the nav: the nav shows the mark alone until the name has
+   scrolled away (landing.js sets name-gone). */
+.is-stacked:not(.name-gone) .wordmark { opacity: 0; }
+
+/* The mark is drawn round its middle, so its box's middle is its visual center. Hinted at 16
+   pixels, the wordmark's capitals' middle lies on a row's middle; the mark rises half a pixel to
+   share it, and landing.js (snapMark) puts its middle on a device pixel's middle at any ratio. */
+.mark {
+  display: block;
+  flex: none;
+  width: round(32px * var(--ui), 2px);
+  height: round(32px * var(--ui), 2px);
+  translate: -0.5px -0.5px;
+  background: url(assets/mark-flat.svg) center / contain no-repeat;
+}
+
+.nav nav {
+  display: flex;
+  gap: calc(40px * var(--ui));
+  margin-left: auto;
+  font-family: var(--label-face);
+  font-size: calc(13px * var(--ui));
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.nav nav a { position: relative; padding: 12px 0; color: var(--link); transition: color 0.25s; }
+.nav nav a::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  background: var(--accent);
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.3s var(--ease-out);
+}
+.nav nav a:is(:hover, :focus-visible) { outline: none; color: var(--ink); }
+.nav nav a:is(:hover, :focus-visible)::before { transform: rotate(45deg) scale(1); }
+
+/* Where the brand and every link do not fit, the nav keeps Demo and Support; the hero links to the
+   features. */
+@media (max-width: 509px) {
+  .nav .features { display: none; }
+}
+@media (max-width: 419px) {
+  .nav, .nav nav { gap: 22px; }
+}
+@media (max-width: 339px) {
+  .nav, .nav nav { gap: 14px; }
+}
+
+/* The plate: tracked capitals on a blued steel plate cut at its corners, a sixth of its height.
+   The plate is its picture, its ends kept and its middle stretched, drawn under the link so the
+   focus frame that stands off it is not cut away with it. Beside the subject the plate and its
+   label scale with the name (--k), the tracking and padding tightening first and the label
+   stopping at 11.5 pixels. */
+@property --plate-h { syntax: "<length>"; inherits: true; initial-value: 54px; }
+@property --cut { syntax: "<length>"; inherits: true; initial-value: 9px; }
+.button {
+  --plate-h: max(40px, 54px * var(--k));
+  --cut: calc(var(--plate-h) / 6);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: var(--plate-h);
+  padding: 0 max(14px, 36px * var(--k) - 6px);
+  font-family: var(--label-face);
+  font-size: max(11.5px, 14px * var(--k));
+  font-weight: 700;
+  letter-spacing: clamp(0.1em, 0.15em - (1 - var(--k)) * 0.25em, 0.15em);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: none;
+  color: var(--plate-ink);
+  transition: color 0.25s;
+}
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-style: solid;
+  border-image: url(assets/plate-steel.png) 28 fill / calc(var(--plate-h) * 14 / 54) stretch;
+  transition: filter 0.3s;
+}
+.button:hover { color: var(--plate-ink-hover); }
+.button:hover::before { filter: brightness(1.35) saturate(1.1); }
+.button:active { translate: 0 1px; }
+/* Focus follows the plate's cut: landing.js draws a frame standing off it, its corners cut as the
+   plate's. */
+.button:focus-visible { outline: none; }
+.button .frame { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.frame path { fill: none; stroke: var(--accent); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity 0.3s; }
+.button:focus-visible .frame path { opacity: 1; }
+
+/* The product's status, where a buyer looks for the way to buy it: plain type, no plate, so it
+   reads as a line to note and not as a link. */
+.soon {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, 8px * var(--k));
+  margin: 0;
+}
+.soon > span:first-child {
+  font-family: var(--label-face);
+  font-size: max(12px, 15px * var(--k));
+  font-weight: 700;
+  letter-spacing: clamp(0.1em, 0.15em - (1 - var(--k)) * 0.25em, 0.15em);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--soon);
+}
+.soon > span:last-child {
+  margin-block: calc(var(--untrimmed) * -0.257em);
+  font-family: var(--text-face);
+  font-size: max(15px, 18px * var(--k));
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -0.006em;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+/* Hero */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--night);
+}
+
+/* The scene comes up from a third of its light, so the page never opens on black. */
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  filter: brightness(0.32);
+  transition: filter 1.4s var(--ease-out);
+}
+.is-ready .stage { filter: none; }
+
+.layer { position: absolute; inset: 0; }
+img.layer { display: block; width: 100%; height: 100%; }
+canvas.layer { width: 100%; height: 100%; pointer-events: none; }
+
+/* The nearest embers, in front of the copy's layer in the hero's own pixels: embers.js draws none
+   on the copy itself. */
+canvas.over { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+
+/* The shade, in the page's night: a band under the nav so its links read, the foot band fading
+   into the page below, a fade in from the night where the plate's top or sides stand inside the
+   screen (--plate-top, --plate-left, --plate-right), and beside the subject a darkening behind the
+   copy, shaped to its lines and as dark as the wall under each line needs (landing.js draws it on
+   the canvas and sets its blur), so the copy reads over any wall without a box round it.
+
+   Centered, the scene fades into the night from the stand's lit edge (landing.js sets
+   --fade-start), easing in to 75% by the name's capitals (--fade-mid), so the fade's start draws
+   no line, and then over a fifth of the screen to --trace, leaving a trace of the floor under the
+   copy, and is fully night where the plate ends (--plate-foot). The sides darken a little, so the
+   eye stays on the axis. */
+.shade {
+  --n: var(--night);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--n) var(--plate-left, -1px), transparent calc(var(--plate-left, -1px) + max(10svh, 14vw))),
+    linear-gradient(270deg, var(--n) var(--plate-right, -1px), transparent calc(var(--plate-right, -1px) + max(10svh, 14vw))),
+    linear-gradient(180deg, var(--n) var(--plate-top, -1px), transparent calc(var(--plate-top, -1px) + 10svh)),
+    linear-gradient(180deg, color-mix(in srgb, var(--n) 50%, transparent) 0%, transparent calc(var(--nav-height) * 1.6)),
+    linear-gradient(180deg, transparent calc(100% - var(--nav-height) * 1.6), var(--n) 100%);
+}
+.shade canvas { position: absolute; inset: 0; width: 100%; height: 100%; filter: blur(var(--shade-blur, 40px)); }
+.is-stacked .shade canvas { display: none; }
+
+.is-stacked .shade {
+  background:
+    linear-gradient(90deg, var(--n) var(--plate-left, -1px), transparent calc(var(--plate-left, -1px) + max(10svh, 14vw))),
+    linear-gradient(270deg, var(--n) var(--plate-right, -1px), transparent calc(var(--plate-right, -1px) + max(10svh, 14vw))),
+    linear-gradient(180deg, var(--n) var(--plate-top, -1px), transparent calc(var(--plate-top, -1px) + 10svh)),
+    linear-gradient(180deg, color-mix(in srgb, var(--n) 50%, transparent) 0%, transparent calc(var(--nav-height) * 1.6)),
+    linear-gradient(180deg, transparent var(--fade-start, 60%),
+      color-mix(in srgb, var(--n) 10%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.25),
+      color-mix(in srgb, var(--n) 33%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.5),
+      color-mix(in srgb, var(--n) 58%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.75),
+      color-mix(in srgb, var(--n) 75%, transparent) var(--fade-mid, 66%), color-mix(in srgb, var(--n) var(--trace, 88%), transparent) var(--fade-end, 80%), color-mix(in srgb, var(--n) var(--trace, 88%), transparent) calc(var(--plate-foot, 100%) - 6svh), var(--n) var(--plate-foot, 100%)),
+    radial-gradient(ellipse 80% 70% at 50% 35%, transparent 55%, color-mix(in srgb, var(--n) 40%, transparent) 100%);
+}
+
+/* The copy. landing.js places its ink box: --copy-x is the left edge every line's ink starts on
+   (the F's stem, the slogan's first stems, the status's capitals), --copy-y its top. Each line
+   hangs by its own first letter's side bearing, in em of its own face and weight, so its ink and
+   not its box meets the edge. The name hangs by its straight stems' 0.042em at 800: the face draws
+   a round S 0.032em further out, so an S first overhangs the edge as a round letter should. Every
+   size and gap follows --title, the name's size F. */
+.copy {
+  position: absolute;
+  z-index: 2;
+  left: var(--copy-x, 50%);
+  top: var(--copy-y, 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: max-content;
+  text-shadow: 0 2px 28px color-mix(in srgb, var(--night) 55%, transparent);
+}
+
+h1 {
+  margin: calc(var(--untrimmed) * -0.01em) 0 calc(var(--untrimmed) * -0.19em) -0.042em;
+  font-weight: 800;
+  font-size: var(--title);
+  line-height: 0.86;
+  letter-spacing: -0.016em;
+  white-space: nowrap;
+}
+
+/* The name rises into place out of a slot at its foot, at full strength: faded, FORGE's gold would
+   mix with the wall behind it. The clip's foot follows the word down, so the slot holds still on
+   the screen; at rest the clip stands clear of SUN's shadow. */
+.word {
+  display: inline-block;
+  position: relative;
+  transform: translateY(100%);
+  clip-path: inset(-20% -5% 120% -5%);
+  transition: transform 1.05s var(--ease-out), clip-path 1.05s var(--ease-out);
+}
+.sun { color: var(--ink); transition-delay: 0.05s; }
+/* FORGE's box is its word, so the picture of its gold face spans the letters. */
+.forge {
+  color: var(--wordmark);
+  background: var(--forge-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  transition-delay: 0.15s;
+}
+.is-ready .word { transform: none; clip-path: inset(-40% -10% -40% -10%); }
+
+/* The name on two lines beside the subject, and on one centered. On one line the face's word
+   space leaves 0.35em of air between the N and the F, over three times the air between two
+   letters; a display line closes it to 0.26em, so the two words read as one name. */
+.is-wide .word { display: block; width: max-content; }
+.is-stacked h1 { word-spacing: -0.09em; }
+
+/* The slogan in Inter at its regular weight, which holds its own under the heavy name. Inter's B
+   and L stand 0.06em into their boxes. */
+.slogan {
+  margin: calc(var(--title) * 0.3 - var(--untrimmed) * 0.257em) 0 calc(var(--untrimmed) * -0.257em) -0.06em;
+  font-family: var(--text-face);
+  font-weight: 400;
+  font-size: max(16px, calc(var(--title) * 0.19));
+  line-height: 1.24;
+  letter-spacing: -0.014em;
+  color: var(--ink-soft);
+}
+
+.slogan span { display: block; }
+
+/* The actions' row: beside the subject it ends where FORGE's E ends, and centered it runs as wide
+   as the name (landing.js sets --row). Beside the subject the plate grows to fill what the status
+   leaves, and centered the two stand together on the axis. Where they do not fit beside each
+   other, they stack, each as wide as the row. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: max(8px, 18px * var(--k) - 2px);
+  width: var(--row, auto);
+  margin-top: calc(var(--title) * 0.3);
+  text-shadow: none;
+}
+.actions .button { flex: 1 0 auto; }
+
+/* The note under the actions, in Inter, sentence case and muted, so it reads as a note. */
+.meta {
+  margin: calc(var(--title) * 0.17 - var(--untrimmed) * 0.137em) 0 calc(var(--untrimmed) * -0.137em);
+  font-family: var(--text-face);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink-quiet);
+}
+
+/* The nav and the actions are in place from the first frame, so the page works at once; the
+   slogan and the note rise in over 0.4 s. */
+.slogan, .meta { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out); }
+.is-ready .slogan, .is-ready .meta { opacity: 1; transform: none; }
+
+/* Centered, on narrow screens: the copy on the page's middle axis under the stand. A line's ink is
+   centered where its box would be: SUN's S and N stand 0.010em and 0.052em into its box (the N's
+   side bearing less the tracking), so SUN FORGE moves 0.021em right. */
+.is-stacked .copy {
+  transform: translateX(-50%);
+  align-items: center;
+  text-align: center;
+  max-width: calc(100% - 2 * var(--margin));
+}
+.is-stacked h1 { position: relative; left: 0.021em; margin-left: 0; }
+.is-stacked .slogan { margin: calc(max(20px, var(--title) * 0.3) - var(--untrimmed) * 0.257em) 0 calc(var(--untrimmed) * -0.257em); font-size: max(17px, calc(var(--title) * 0.2)); }
+.is-stacked .slogan span { display: inline; }
+.is-stacked .actions { justify-content: center; gap: 28px; margin-top: max(22px, calc(var(--title) * 0.42)); }
+.is-stacked .actions .button { --plate-h: 46px; flex: none; padding: 0 22px; font-size: 13px; letter-spacing: 0.13em; }
+.is-stacked .soon { align-items: center; }
+.is-stacked .soon > span:first-child { font-size: 14px; letter-spacing: 0.13em; }
+.is-stacked .soon > span:last-child { font-size: 16px; }
+.is-stacked .meta { margin-top: clamp(14px, 2.4svh, 22px); }
+/* Where the status and the plate wrap onto two rows, both take the row's width. */
+.actions.is-wrapped { display: grid; grid-template-columns: 1fr; justify-items: stretch; }
+.is-stacked .actions.is-wrapped { justify-items: center; }
+
+/* On a phone, where the plate's tracked capitals do not fit beside the status, the plate is its
+   label alone with a chevron after it, under the status. Under 360 pixels the slogan's two
+   sentences take two lines. */
+@media (max-width: 560px) {
+  .is-stacked .actions { flex-direction: column; align-items: center; gap: 0; }
+  .is-stacked .actions .button { --plate-h: 32px; flex: none; margin-top: 12px; gap: 10px; padding: 0; }
+  .is-stacked .actions .button::before, .is-stacked .actions .button .frame { display: none; }
+  .is-stacked .actions .button::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-top: -1px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+  }
+}
+@media (max-width: 359px) {
+  .is-stacked .slogan span { display: block; }
+}
+
+/* The features. */
+
+.next {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 22vh var(--margin) 40vh;
+}
+
+.eyebrow { margin: 0 0 14px; font-family: var(--label-face); font-size: 15px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+.next h2 { margin: 0; font-size: clamp(40px, 5vw, 76px); font-weight: 800; line-height: 1; letter-spacing: 0.005em; }
+.next p:last-child { margin: 26px 0 0; font-family: var(--text-face); font-size: clamp(18px, 1.5vw, 23px); line-height: 1.5; letter-spacing: -0.006em; color: var(--ink-soft); font-weight: 400; max-width: 680px; }
+
+/* Where the copy would not fit, landing.js sets is-short and the note goes. */
+.is-short .meta { display: none; }
+
+/* On a short screen the name is small, and the plate would push the copy off the screen: the hero
+   keeps the status, and scrolling does the plate's job. */
+@media (max-height: 520px) {
+  .actions .button { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage, .word, .slogan, .meta, .wordmark { transition-duration: 0.01s; transition-delay: 0s; }
+}
