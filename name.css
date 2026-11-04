@@ -1,0 +1,8 @@
+/* The name's display spacing, which the page and the brand kit's pictures share, measured as the
+   white between each pair over the capitals' rows: the U and the N, two stems, open; the F's arm
+   closes onto the O; the R's leg, which the face kerns almost onto the G, opens so the two do not
+   touch at the baseline. Each value is the space after its letter, the name's tracking included. */
+.k-u { letter-spacing: 0.004em; }
+.k-f { letter-spacing: -0.036em; }
+.k-o { letter-spacing: -0.006em; }
+.k-r { letter-spacing: -0.031em; }
