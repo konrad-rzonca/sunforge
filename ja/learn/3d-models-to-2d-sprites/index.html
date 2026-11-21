@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity で 3D モデルを 2D スプライトに変換する方法 | Sun Forge</title>
+<meta name="description" content="3D モデルを Blender、またはカメラとレンダーテクスチャで Unity 用の 2D スプライトにし、スライス、アニメーション、パックする手順とよくある落とし穴を解説します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/">
+<meta property="og:title" content="Unity で 3D モデルを 2D スプライトに変換する方法 | Sun Forge">
+<meta property="og:description" content="3D モデルを Blender、またはカメラとレンダーテクスチャで Unity 用の 2D スプライトにし、スライス、アニメーション、パックする手順とよくある落とし穴を解説します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-3d-models-to-2d-sprites.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="書き出すスプライトの横に騎士の 3D モデルのプレビューがある、Sun Forge の Bake Window">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity \u3067 3D \u30e2\u30c7\u30eb\u3092 2D \u30b9\u30d7\u30e9\u30a4\u30c8\u306b\u5909\u63db\u3059\u308b\u65b9\u6cd5", "description": "3D \u30e2\u30c7\u30eb\u3092 Blender\u3001\u307e\u305f\u306f\u30ab\u30e1\u30e9\u3068\u30ec\u30f3\u30c0\u30fc\u30c6\u30af\u30b9\u30c1\u30e3\u3067 Unity \u7528\u306e 2D \u30b9\u30d7\u30e9\u30a4\u30c8\u306b\u3057\u3001\u30b9\u30e9\u30a4\u30b9\u3001\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u3001\u30d1\u30c3\u30af\u3059\u308b\u624b\u9806\u3068\u3088\u304f\u3042\u308b\u843d\u3068\u3057\u7a74\u3092\u89e3\u8aac\u3057\u307e\u3059\u3002", "image": "https://sunforgetools.com/assets/share/learn-3d-models-to-2d-sprites.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/", "inLanguage": "ja"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "\u89e3\u8aac\u8a18\u4e8b", "item": "https://sunforgetools.com/ja/learn/"}, {"@type": "ListItem", "position": 3, "name": "3D \u30e2\u30c7\u30eb\u304b\u3089 2D \u30b9\u30d7\u30e9\u30a4\u30c8\u3078", "item": "https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/3d-models-to-2d-sprites/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">機能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ja/#features">すべての機能</a>
+        <a href="/ja/sprite-baker/">スプライトベイカー</a>
+        <a href="/ja/2d-lighting/">2D ライティング</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    <div class="languages" role="group" aria-label="言語"><a href="/learn/3d-models-to-2d-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/3d-models-to-2d-sprites/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/3d-models-to-2d-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/3d-models-to-2d-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/ja/learn/">解説記事</a></p>
+      <h1>Unity で 3D モデルを 2D スプライトに<wbr>変換する<wbr>方法</h1>
+      <p class="lead">3D モデルから作る 2D スプライトは、固定したカメラからモデルをレンダリングし、背景を透明にして保存したものです。アニメーションするキャラクターは、このようなレンダリングを数多く集めたもので、フレームごと、アニメーションごと、方向ごとに 1 枚ずつあります。フレームをレンダリングしてスプライトにスライスし、アニメーションクリップを作り、テクスチャをパックします。</p>
+    </header>
+    <h2 id="how-to-make-2d-sprites-from-3d-models-in-blender">Blender で 3D モデルから 2D スプライトを<wbr>作る<wbr>方法</h2>
+    <ol>
+      <li>カメラのタイプを Orthographic に設定し、どの距離でもモデルの大きさが変わらないようにします。画像の中でのモデルの大きさは Orthographic Scale で決まります。</li>
+      <li>レンダー設定の Film で Transparent をオンにします。</li>
+      <li>アルファチャンネルを残すため、出力のカラーを RGBA にし、PNG などの形式を選びます。</li>
+      <li>アニメーションを連番画像としてレンダリングします。別の方向は、モデルかカメラを回してもう一度レンダリングします。</li>
+    </ol>
+    <p>PNG ファイルは、1 ファイルを 1 枚のスプライトとしてそのままインポートするか、先に 1 枚のシートにまとめてください。</p>
+    <h2 id="rendering-a-3d-model-to-sprites-in-unity">Unity で 3D モデルを<wbr>スプライトに<wbr>レンダリングする<wbr>方法</h2>
+    <ol>
+      <li>カメラを追加し、<strong>Projection</strong> (投影方法) を <strong>Orthographic</strong> (平行投影) に設定します。<strong>Size</strong> は、ビューの高さの半分をワールド単位で表した値です。</li>
+      <li><strong>Background Type</strong> (背景タイプ) を <strong>Solid Color</strong> に設定し、<strong>Background</strong> (背景) の色のアルファを 0 にします。</li>
+      <li><strong>Assets &gt; Create &gt; Rendering &gt; Render Texture</strong> (アセット &gt; 作成 &gt; レンダリング &gt; レンダーテクスチャ) で、カラーフォーマットにアルファチャンネルがあるレンダーテクスチャを作成し、カメラの <strong>Output Texture</strong> (出力テクスチャ) に割り当てます。</li>
+      <li>URP では、カメラの <strong>Post Processing</strong> をオフにするか、URP アセットの <strong>Alpha Processing</strong> をオンにします。そうしないと、ポストプロセスでアルファが 1 に置き換えられます。</li>
+      <li>フレームごとに <code>clip.SampleAnimation(model, time)</code> でモデルにポーズを取らせ、エディタースクリプトから次のように画像を保存します。</li>
+    </ol>
+    <pre tabindex="0" translate="no"><code>static void SaveFrame(Camera camera, RenderTexture target, string path)
+{
+    camera.targetTexture = target;
+    camera.Render();
+
+    RenderTexture previous = RenderTexture.active;
+    RenderTexture.active = target;
+    var frame = new Texture2D(target.width, target.height, TextureFormat.RGBA32, false);
+    frame.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+    frame.Apply();
+    RenderTexture.active = previous;
+
+    System.IO.File.WriteAllBytes(path, ImageConversion.EncodeToPNG(frame));
+    Object.DestroyImmediate(frame);
+}</code></pre>
+    <p>レンダーテクスチャと <code>Texture2D</code> は同じフォーマットにしてください。リニア色空間のプロジェクトでは、名前が <code>_SRGB</code> で終わるレンダーテクスチャのフォーマットを選んでください。そうしないと、保存した色が暗くなります。</p>
+    <h2 id="slicing-a-sprite-sheet-in-the-sprite-editor">Sprite Editor で<wbr>スプライトシートを<wbr>スライスする<wbr>方法</h2>
+    <ol>
+      <li>2D Sprite パッケージがインストールされていることを確認します。</li>
+      <li>画像を選択し、<strong>Texture Type</strong> を <strong>Sprite (2D and UI)</strong> に、<strong>Sprite Mode</strong> を <strong>Multiple</strong> (複数) に設定して、<strong>Apply</strong> (適用する) をクリックします。</li>
+      <li>Sprite Editor ウィンドウを開き、<strong>Slice</strong> メニューを開きます。同じ大きさのフレームには <strong>Grid By Cell Size</strong> を、行と列の数がわかっている場合は <strong>Grid By Cell Count</strong> を選びます。</li>
+      <li><strong>Pivot</strong> を設定し、<strong>Slice</strong> をクリックしてから <strong>Apply</strong> をクリックします。</li>
+    </ol>
+    <h2 id="animation-clips-and-an-animator-controller-from-the-frames">フレームから<wbr>作る<wbr>アニメーションクリップと<wbr>アニメーターコントローラー</h2>
+    <ol>
+      <li>最初のスプライトをシーンにドラッグします。Sprite Renderer を持つゲームオブジェクトが作成されます。</li>
+      <li>そのゲームオブジェクトを選択した状態で、Animation ウィンドウの <strong>Create</strong> (作成) をクリックし、クリップを保存します。Unity は、そのクリップをデフォルトのステートとするアニメーターコントローラーを作成し、ゲームオブジェクトに Animator を追加します。</li>
+      <li>Sprite Renderer のスプライトに、1 フレームに 1 枚ずつキーを設定します。</li>
+      <li>2 つ目以降のアニメーションごとに、Animation ウィンドウのクリップメニューで <strong>Create New Clip</strong> (新しいクリップを作成) を選び、アニメーターコントローラーでクリップ間に遷移を追加します。</li>
+    </ol>
+    <p>クリップが多い場合は、この手順をスクリプトにしてください。Unity の <code>AnimationClip</code> のリファレンスには、Project ウィンドウで選択したスプライトからクリップを作る例があります。</p>
+    <h2 id="the-traps">落とし穴</h2>
+    <h3 id="pixels-per-unit">Pixels Per Unit</h3>
+    <p>Pixels Per Unit は、ワールド空間の 1 単位をスプライト画像の何ピクセルで覆うかを表します。インポートで使う値を決め、レンダーテクスチャの高さを 2 × Size × Pixels Per Unit ピクセルにしてください。Size が 1.5、Pixels Per Unit が 64 なら 192 ピクセルです。そうすると、2D シーンでのスプライトの高さがモデルと同じになります。すべてのスプライトに同じ値を使ってください。そうしないと、一部のスプライトがほかより鮮明に見えます。</p>
+    <h3 id="pivots-and-framing">ピボットと<wbr>フレーミング</h3>
+    <p>ピボットは、スプライトのローカル座標の原点となる画像上の点です。キャラクターの場合は足元に置き、すべてのフレームで同じピクセルにしてください。そのためには、すべてのアニメーションのすべてのフレームを、同じカメラ位置、同じ Size、同じ解像度でレンダリングし、フレームの幅はいちばん幅の広いポーズが収まるようにします。そのうえでグリッドでスライスし、すべてに同じピボットを設定します。<strong>Automatic</strong> (自動) のスライスは透明なピクセルを境に切り分けるため、フレームごとに矩形が異なり、Bottom などのピボットがフレームごとに体の違う位置に来て、キャラクターががたついて見えます。</p>
+    <h3 id="premultiplied-alpha-and-edge-halos">乗算済みアルファと<wbr>縁の<wbr>ハロー</h3>
+    <p>透明なジオメトリをレンダーテクスチャにブレンドすると、テクスチャには各色があらかじめアルファを掛けた値で保存されます。従来の透明度 (<code>Blend SrcAlpha OneMinusSrcAlpha</code>) を使うマテリアルはもう一度アルファを掛けるため、半透明のピクセルが暗くなります。PNG を保存する前に色をアルファで割るか、乗算済みの色をブレンドするシェーダー (<code>Blend One OneMinusSrcAlpha</code>) を使ってください。</p>
+    <p>テクスチャのフィルタリングは、縁の各ピクセルを隣の透明なピクセルと混ぜます。テクスチャのインポート設定で <strong>Alpha Is Transparency</strong> (アルファ値を透明度として使用) をオンにしてください。すると Unity がカラーチャンネルを外側に広げるため、縁にフィルタリングによるアーティファクトが出なくなります。</p>
+    <h3 id="texture-size-and-atlas-packing">テクスチャサイズと<wbr>アトラスへの<wbr>パック</h3>
+    <p>8 方向、各 16 フレームの 3 つのアニメーション、256 x 256 ピクセルなら 384 フレームになり、約 2,500 万ピクセル、非圧縮で 96 MiB です。Pixels Per Unit を半分にすると、その 4 分の 1 で済みます。</p>
+    <p>Unity はインポート時に、<strong>Max Size</strong> (最大サイズ) より大きいテクスチャをそのサイズまで縮小します。大きなシートでは Max Size を上げるか、アニメーションごとにシートを分けてください。そのうえで、<strong>Assets &gt; Create &gt; 2D &gt; Sprite Atlas</strong> (アセット &gt; 作成 &gt; 2D &gt; スプライトアトラス) で作るスプライトアトラスにスプライトをパックしてください。スプライトアトラスは複数のテクスチャを 1 枚にまとめるため、Unity はそのスプライトをすべて 1 回のドローコールで描画できます。</p>
+    <h3 id="lighting-baked-into-the-color-or-normal-maps">色に<wbr>ベイクした<wbr>ライティングか、<wbr>法線マップか</h3>
+    <p>レンダリングした光は、スプライトの色の一部になります。左から照らした騎士は、右側にたいまつがあっても左から照らされたままです。ゲーム中に変わる光を使うには、均一な光の下で色をレンダリングし、同じフレームの法線マップを同じカメラでレンダリングしてください。Sprite Editor ウィンドウで、法線マップを <code>_NormalMap</code> という名前の補助的テクスチャとして追加し、Sprite-Lit-Default などのマテリアルを使い、2D ライトの <strong>Normal Maps</strong> (法線マップ) で <strong>Quality</strong> (品質) を <strong>Fast</strong> (高速) または <strong>Accurate</strong> に設定してください。Unity は両方を同じ UV 座標でサンプリングするため、法線マップはスプライトのテクスチャと位置が揃っている必要があります。<a href="/ja/learn/2d-sprite-normal-maps/">Unity のスプライトの法線マップ</a>に、手順と落とし穴をまとめています。</p>
+    <figure class="bare">
+      <img src="/features/knight-page-normal.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="各色がその部分の表面の向いている方向を表す、Sun Forge でベイクした騎士スプライトの法線マップ">
+      <figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <h2 id="a-3d-to-2d-sprite-converter-inside-unity-sun-forge">Unity の<wbr>中で 3D モデルを 2D スプライトに<wbr>変換する<wbr>ツール: Sun Forge</h2>
+    <p>Sun Forge は、このサイトで紹介しているスプライトベイカーです。Unity エディターの中で、<a href="/guide/sunforge/en/bake-window/" hreflang="en">Bake Window</a> または<a href="/guide/sunforge/en/scripting/#baking-from-code" hreflang="en">エディタースクリプト</a>からベイクします。アニメーションクリップと Particle System を含むモデルまたはプレハブを、モデル自身のマテリアル (Shader Graph のマテリアルも含む) のままベイクできます。</p>
+    <figure class="bare">
+      <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 1100px) 100vw, 1040px" alt="書き出すスプライトの横に騎士の 3D モデルのプレビューがあり、右側にベイクの設定が並ぶ、Sun Forge の Bake Window">
+      <figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <p>ベイクで書き出されるのは 2D のスプライトプレハブです。方向ごとのスプライトシート、アニメーターコントローラー付きのアニメーション、ライティング用のテクスチャ、影、コライダー、ゲームプレイ用のコンポーネントが含まれます。</p>
+    <figure class="bare">
+      <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 1100px) 100vw, 1040px" alt="コライダー、ヒットボックス、HP バーが描画された、ベイクした騎士と、その Idle、Walk、Attack クリップのフレーム">
+      <figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>カメラ。</strong> ベイクカメラは、サイドビューから真上からの見下ろしまで、アイソメトリックを含む 0 から 90 度のどの角度からでもモデルを写せます。ベイクで書き出す方向数は 1 から 64 で、<a href="/ja/learn/8-directional-sprites/">ゲームに必要な方向の数</a>は別の記事で解説しています。</li>
+      <li><strong>解像度とメモリ。</strong> 新しいベイクの初期値は 96 Pixels Per Unit です。ベイクのたびに、その出力が使うテクスチャメモリが Bake タブに表示されます。</li>
+      <li><strong>ライティング。</strong> 各シートにはカラーテクスチャのほかに法線テクスチャ、マスクテクスチャ、ジオメトリテクスチャがあり、Sun Forge 2D Lighting がそれらを読み取るため、太陽やライトを変えるとその場で反映されます。ベイクで書き出すのはスイッチがオンのテクスチャだけで、プレハブに Unity のデフォルトのスプライトマテリアルを設定することもできます。</li>
+    </ul>
+    <p>Sun Forge には、Unity 6.3 LTS (6000.3.28f1 以降) または Unity 6.6 と、2D レンダラーまたはユニバーサルレンダラーを使う URP が必要です。ビルトインレンダーパイプラインまたは HDRP では、上記の手順を使ってください。<a href="/ja/sprite-baker/">スプライトベイカーのページ</a>で、ベイクの各部分を紹介しています。</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">次に<wbr>読む記事</h2>
+      <ul>
+        <li><a href="/ja/learn/8-directional-sprites/">Unity の 8 方向スプライト: 4 方向か 8 方向か 16 方向か?</a></li>
+        <li><a href="/ja/learn/2d-sprite-normal-maps/">Unity の法線マップで 2D スプライトを立体的に見せる方法</a></li>
+        <li><a href="/ja/sprite-baker/">Sun Forge のスプライトベイカー</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="フッター">
+    <span class="parts"><a href="/ja/#features">すべての機能</a><a href="/ja/sprite-baker/">スプライトベイカー</a><a href="/ja/2d-lighting/">2D ライティング</a></span>
+    <a href="/ja/learn/">解説記事</a>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/learn/3d-models-to-2d-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/3d-models-to-2d-sprites/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/3d-models-to-2d-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/3d-models-to-2d-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

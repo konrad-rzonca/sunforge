@@ -1,0 +1,237 @@
+<!doctype html>
+<html data-late="/late.fbb8316fa238.txt" lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge: Unity で 3D モデルを 2D スプライトシートに変換</title>
+<meta name="description" content="Unity で 3D モデルとアニメーションを、任意のカメラ角度で 1 から 64 方向の 2D スプライトシートにベイクします。法線マップ、影、再生用のプレハブも書き出します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/sprite-baker/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/sprite-baker/">
+<meta property="og:title" content="Sun Forge: Unity で 3D モデルを 2D スプライトシートに変換">
+<meta property="og:description" content="Unity で 3D モデルとアニメーションを、任意のカメラ角度で 1 から 64 方向の 2D スプライトシートにベイクします。法線マップ、影、再生用のプレハブも書き出します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/sprite-baker.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Idle、Walk、Attack クリップのフレームと並ぶ、コライダーとヒットボックスを表示したベイク済みの騎士">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/sprite-baker/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/sprite-baker/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/sprite-baker/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/sprite-baker/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/sprite-baker/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/pages.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">機能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ja/#features">すべての機能</a>
+        <a href="/ja/sprite-baker/" aria-current="page">スプライトベイカー</a>
+        <a href="/ja/2d-lighting/">2D ライティング</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    <div class="languages" role="group" aria-label="言語"><a href="/sprite-baker/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/sprite-baker/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/sprite-baker/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/sprite-baker/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="pages" id="features" data-pager="ページ">
+    <div class="nave" aria-hidden="true"><i class="left"></i><i class="right"></i></div>
+
+    <section class="page figure" id="baker" data-name="スプライトベイカー" data-light="left" aria-labelledby="baker-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ja/#features">すべての機能</a> スプライトベイカー</p>
+        <h1 id="baker-title"><em>Unity 向け</em>の 3D から 2D への<wbr>スプライトベイカー</h1>
+        <p class="lead">Sun Forge は、3D モデルとそのアニメーションを 2D スプライトシートにベイクし、ライティング用のテクスチャ、影、再生用のプレハブも書き出します。</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="アニメーション" data-switch="clip"><button type="button" data-pick="Idle" aria-pressed="true">Idle</button><button type="button" data-pick="Walk" aria-pressed="false">Walk</button><button type="button" data-pick="Attack" aria-pressed="false">Attack</button></div>
+          <div class="switch" role="group" aria-label="リングに表示する内容" data-switch="target"><button type="button" data-pick="in-game" aria-pressed="true">ゲーム内</button><button type="button" data-pick="diffuse" aria-pressed="false">ディフューズ</button><button type="button" data-pick="normal" aria-pressed="false">法線</button><button type="button" data-pick="mask" aria-pressed="false">マスク</button><button type="button" data-pick="geometry-texture" aria-pressed="false">ジオメトリ</button><button type="button" data-pick="emission" aria-pressed="false">エミッション</button></div>
+          <div class="switch" role="group" aria-label="方向" data-switch="directions"><span aria-hidden="true">方向</span><button type="button" data-pick="4" aria-pressed="false">4</button><button type="button" data-pick="8" aria-pressed="false">8</button><button type="button" data-pick="16" aria-pressed="true">16</button></div>
+        </div>
+        <p class="fine">モデルを回すには、スプライトにポインターを合わせるかタップするか、スライダーをドラッグしてください。モデルが向いている方向のスプライトが一緒に再生されます。</p>
+      </div>
+      <div class="ring" data-ring data-picks data-pending>
+        <canvas role="img" aria-label="中央の騎士の 3D モデルとそれを撮影するカメラを囲んで、ベイクした方向ごとに 1 枚ずつリング状に並ぶ、16 枚の騎士のスプライト"></canvas>
+        <label class="turn"><span>回転</span><input type="range" min="0" max="15" step="1" aria-label="モデルが向いている方向"></label>
+      </div>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page stack" id="directions" data-name="方向" data-light="left" aria-labelledby="directions-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/guide/sunforge/en/bake-window/" hreflang="en">方向とカメラの角度</a></p>
+          <h2 id="directions-title">8 方向の<wbr>スプライト、<em><wbr>または 1 から 64 の<wbr>任意の<wbr>方向数</em></h2>
+        </div>
+        <p class="lead">ベイクでは 4、8、16 方向など 1 から 64 方向を書き出し、不要な方向はオフにできます。カメラは 0 から 90 度の範囲で 0.25 度刻みの任意の角度から撮影します。サイドビューにも真上からの見下ろしにも、アイソメトリックを含むその間のどの角度にもできます。</p>
+      </div>
+      <div class="views" style="--tallest: 676; --across: 984">
+        <figure><img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="サイドビュー用にベイクした騎士"><figcaption>サイドビュー、0°</figcaption></figure>
+        <figure><img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="アイソメトリックビュー用にベイクした騎士"><figcaption>アイソメトリック、30°</figcaption></figure>
+        <figure><img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="見下ろし視点用にベイクした騎士"><figcaption>見下ろし、60°</figcaption></figure>
+      </div>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page stack" id="animations" data-name="アニメーション" data-light="right" aria-labelledby="animations-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow">アニメーション</p>
+          <h2 id="animations-title">3D アニメーションを <em>2D スプライトシートに<wbr>変換</em></h2>
+        </div>
+        <p class="lead">ベイクするアニメーションクリップを選んでください。ベイクでは、方向ごとのスプライトシート、アニメーションクリップ、アニメーターコントローラー、それらを再生するプレハブが書き出されます。どれも Unity 標準のアセットで、3D モデル、メッシュ、リグはビルドに含まれません。</p>
+      </div>
+      <div class="bundle">
+        <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 899px) 100vw, 80vw" alt="コライダー、ヒットボックス、HP バーが描画された騎士と、アニメーターコントローラーの下に並ぶ Idle、Walk、Attack クリップのフレーム、Hero のスクリプト (Movement、Shooter、Health)">
+      </div>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page figure flip" id="lighting-textures" data-name="テクスチャ" data-light="right" aria-labelledby="lighting-textures-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/guide/sunforge/en/output-reference/#files" hreflang="en">ベイクで書き出されるもの</a></p>
+        <h2 id="lighting-textures-title">法線マップと<em><wbr>ライティング用の<wbr>テクスチャ</em></h2>
+        <p class="lead">各シートには、色のほかに法線、マスク、ジオメトリテクスチャがあり、ベイクで Emission をオンにした場合はエミッションテクスチャもあります。ベイクで書き出されるのは、オンにしたテクスチャだけです。</p>
+        <ul class="names" data-switch="layer">
+          <li><button type="button" data-pick="in-game" aria-pressed="true"><b>ゲーム内</b><span>ライトに照らされて描画されたスプライト。</span></button></li>
+          <li><button type="button" data-pick="normal" aria-pressed="false"><b>法線</b><span>各表面が向いている方向。</span></button></li>
+          <li><button type="button" data-pick="mask" aria-pressed="false"><b>マスク</b><span>赤に金属、緑に滑らかさ、青にアンビエントオクルージョン。</span></button></li>
+          <li><button type="button" data-pick="geometry" aria-pressed="false"><b>ジオメトリ</b><span>スプライトのピボットから測った各テクセルの高さ。これにより、スプライト同士で影を落とし合えます。</span></button></li>
+          <li><button type="button" data-pick="emission" aria-pressed="false"><b>エミッション</b><span>どの部分が何色で発光するか。</span></button></li>
+        </ul>
+      </div>
+      <div class="pile" data-picks>
+        <img class="on" data-layer="in-game" src="/features/knight-page-in-game.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="ゲーム内で見た騎士">
+        <img data-late data-layer="normal" loading="lazy" alt="騎士の法線マップ">
+        <img data-late data-layer="mask" loading="lazy" alt="騎士のマスク">
+        <img data-late data-layer="geometry" loading="lazy" alt="騎士のジオメトリテクスチャ">
+        <img data-late data-layer="emission" loading="lazy" alt="発光する部分以外は黒い、騎士のエミッションテクスチャ">
+      </div>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page frame" id="glow" data-name="発光" data-light="left" aria-labelledby="glow-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/guide/sunforge/en/output-reference/#files" hreflang="en">ベイクで書き出されるもの</a></p>
+        <h2 id="glow-title"><em>シーンを<wbr>照らす</em><wbr>エミッションテクスチャ</h2>
+        <p class="lead">ベイクでは、発光部分がエミッションテクスチャに書き出されます。Glow Light をオンにすると発光部分にライトも追加され、近くの地面とスプライトを照らします。星をドラッグして比較してください。</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/emission-with.webp" srcset="/features/emission-with.768w.webp 768w, /features/emission-with.960w.webp 960w, /features/emission-with.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="ルーンと角が発光し、地面と背後の骸骨を照らす騎士">
+        <img class="before on" src="/features/emission-without.webp" srcset="/features/emission-without.768w.webp 768w, /features/emission-without.960w.webp 960w, /features/emission-without.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="騎士の発光とその光をオフにした同じ場面">
+        <span class="side left">発光オフ</span><span class="side right">発光オン</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="発光表示の開始位置">
+      </div>
+      <p class="credit">The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page editor flip" id="prefabs" data-name="プレハブ" data-light="right" aria-labelledby="prefabs-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/guide/sunforge/en/output-reference/#adjusting-a-prefab" hreflang="en">プレハブとアーキタイプ</a></p>
+        <h2 id="prefabs-title"><em>コライダーと<wbr>ヒットボックス付きの</em><wbr>プレハブ</h2>
+        <p class="lead">ベイクしたプレハブには、コライダー、ヒットボックス、HP バー、VFX ボックス、頭上のアンカーなど、アーキタイプが与えるパーツが付き、それぞれシーンビューでドラッグできます。</p>
+        <p class="fine">Hero、Enemy、Wildlife のアーキタイプはビヘイビアを追加します。Hero は歩いて撃ち、Enemy は近接攻撃し、Wildlife は歩き回ります。C# で自作のビヘイビアを書き、アーキタイプに追加できます。</p>
+      </div>
+      <figure class="window">
+        <img class="on" src="/features/scene-view.webp" srcset="/features/scene-view.768w.webp 768w, /features/scene-view.webp 822w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="822" height="981" style="--w: 822; --h: 981" alt="ベイクした騎士を映し、Sun Forge Gizmos パネルを開いて、パネルでチェックした項目をハンドルとともに騎士に描画したシーンビュー">
+      </figure>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page editor" id="preview" data-name="プレビュー" data-light="left" aria-labelledby="preview-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/guide/sunforge/en/bake-window/" hreflang="en">Bake Window</a></p>
+        <h2 id="preview-title">ベイクを<em><wbr>実行前に<wbr>プレビュー</em></h2>
+        <p class="lead">Bake Window では、3D モデル、ベイクカメラ、ベイクで書き出されるスプライトが視点を回せるプレビューに表示され、マーカーはドラッグして配置できます。</p>
+        <p class="fine">ベイクはエディター上で、Bake Window またはエディタースクリプトから実行します。</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 899px) 100vw, 70vw" alt="書き出すスプライトの横に騎士の 3D モデルのプレビューがあり、右側にベイクの設定が並ぶ Bake Window">
+        <span class="caption" style="left: 28.45%; top: 66.26%">2D 出力</span><span class="caption" style="left: 48.23%; top: 58.41%">3D ベイク元</span>
+      </figure>
+      <p class="credit">The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</p>
+    </section>
+
+    <section class="page editor flip" id="presets" data-name="プリセット" data-light="right" aria-labelledby="presets-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/guide/sunforge/en/bake-window/" hreflang="en">Bake Window</a></p>
+        <h2 id="presets-title">プリセット、<wbr>アーキタイプ、<em><wbr>バッチベイク</em></h2>
+        <p class="lead">プリセットには 1 つのモデルのベイク方法が保存され、アーキタイプには出力フォルダー、カメラ、影など、同じ種類のベイクすべてに共通する設定が保持されます。Batch タブには保存したすべてのプリセットが一覧表示され、選択したものを一度にベイクします。</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-batch.webp" srcset="/features/cards-batch.768w.webp 768w, /features/cards-batch.960w.webp 960w, /features/cards-batch.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="宝箱の上にプリセットギャラリーを開いた Bake Window と、その後ろにある、一度にベイクするプリセットにチェックを入れた Batch タブ">
+      </figure>
+      <p class="credit">ショーケースのモデルを使用しています。</p>
+    </section>
+
+    <section class="page questions" id="more" data-name="その他" data-light="left" aria-labelledby="more-title">
+      <div class="words">
+        <p class="eyebrow">スプライトベイカー</p>
+        <h2 id="more-title"><em>ベイクで<wbr>できる</em><wbr>ほかの<wbr>こと</h2>
+      </div>
+      <div class="answers">
+        <div id="what-bakes"><h3>キャラクター、<wbr>小道具、<wbr>パーティクル、<wbr>タイル</h3><p>モデルやプレハブは、アニメーションクリップと Particle System ごと、元のマテリアル (Shader Graph を含む) のままベイクされます。小道具、焚き火の炎などのパーティクルエフェクト、地面タイルもベイクできます。</p></div>
+        <div id="shadows"><h3>スプライト向けの<wbr>柔らかい<wbr>影</h3><p>ベイクでは、地面に投影した柔らかい影または丸影、パーティクルのフリップブック、スプライトアトラスも書き出します。影はベイクしたときの太陽の方向を保ちます。</p></div>
+        <div id="rebakes"><h3>再ベイクしても<wbr>プレハブは<wbr>そのまま</h3><p>再ベイクしても、プレハブの GUID、追加した子オブジェクトとコンポーネント、プラットフォームオーバーライド、シーンビューで調整したコライダー、ヒットボックス、HP バーはそのまま残ります。</p></div>
+        <div id="bake-time"><h3>ベイク時間と<wbr>テクスチャメモリ</h3><p>ショーケースの 16 方向のブナの木は、RTX 4060 を搭載した Ryzen 9 7900X で約 25 秒でベイクでき、Windows、Mac、Linux 向けにパックした状態で 9.5 MiB のテクスチャメモリを使います。騎士はアニメーション 4 つ分の 968 枚のスプライトで、ベイクは約 1 分、テクスチャメモリは 81 MiB です。</p></div>
+        <div id="code"><h3>Addressables と<wbr>エディタースクリプト</h3><p>ベイクには、書き出したプレハブとアトラスを Addressables に登録する機能があります。エディタースクリプトからベイクでき、自作の C# の処理でベイクを拡張できます。</p></div>
+        <div id="plain-sprites"><h3>ライティングなしの<wbr>スプライト</h3><p>ベイクは、ライティング用のテクスチャを持たないスプライトと、Unity のデフォルトのスプライトマテリアルを使うプレハブを書き出せるので、Sun Forge のライティングなしでもベイカーを使えます。</p></div>
+      </div>
+    </section>
+
+    <section class="page closing" id="next" data-name="ライティング" data-light="both" aria-labelledby="next-title">
+      <div class="words">
+        <h2 id="next-title"><em>ベイクした</em><wbr>スプライトを<wbr>ライティング</h2>
+        <p class="lead">1 回の購入で、スプライトベイカーと、ベイクで書き出したテクスチャを読み込む <a href="/ja/2d-lighting/">Sun Forge 2D Lighting</a> の両方が手に入ります。<a href="/ja/#features">すべての機能</a>を確認するか、<a href="/guide/sunforge/en/" hreflang="en">ガイド</a>を読んでください。</p>
+        <div class="row">
+          <p class="soon"><span>Unity Asset Store で</span><strong>近日公開</strong></p>
+        </div>
+        <p class="fine">Sun Forge には、Unity 6.3 LTS (6000.3.28f1 以降) または Unity 6.6、2D レンダラーまたはユニバーサルレンダラーを使う URP、リニア色空間が必要です。</p>
+      </div>
+      <footer class="foot">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="フッター">
+    <span class="parts"><a href="/ja/#features">すべての機能</a><a href="/ja/sprite-baker/" aria-current="page">スプライトベイカー</a><a href="/ja/2d-lighting/">2D ライティング</a></span>
+    <a href="/ja/learn/">解説記事</a>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/sprite-baker/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/sprite-baker/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/sprite-baker/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/sprite-baker/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+    </section>
+  </div>
+</main>
+<script src="/features/data.js"></script>
+<script src="/switches.js"></script>
+<script src="/pager.js"></script>
+<script src="/ring.js"></script>
+<script src="/plates.js"></script>
+</body>
+</html>

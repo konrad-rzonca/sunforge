@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 Unity 法线贴图让 2D 精灵有立体感 | Sun Forge</title>
+<meta name="description" content="2D 精灵如何在 Unity URP 中接受实时光照：添加法线贴图和遮罩、从哪里获取、单靠它们做不到什么，以及陷阱。">
+<link rel="canonical" href="https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/">
+<meta property="og:title" content="用 Unity 法线贴图让 2D 精灵有立体感 | Sun Forge">
+<meta property="og:description" content="2D 精灵如何在 Unity URP 中接受实时光照：添加法线贴图和遮罩、从哪里获取、单靠它们做不到什么，以及陷阱。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="同一像素画场景的三个版本：仅精灵；加法线贴图；加法线贴图、金属和发光">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "\u7528 Unity \u6cd5\u7ebf\u8d34\u56fe\u8ba9 2D \u7cbe\u7075\u6709\u7acb\u4f53\u611f", "description": "2D \u7cbe\u7075\u5982\u4f55\u5728 Unity URP \u4e2d\u63a5\u53d7\u5b9e\u65f6\u5149\u7167\uff1a\u6dfb\u52a0\u6cd5\u7ebf\u8d34\u56fe\u548c\u906e\u7f69\u3001\u4ece\u54ea\u91cc\u83b7\u53d6\u3001\u5355\u9760\u5b83\u4eec\u505a\u4e0d\u5230\u4ec0\u4e48\uff0c\u4ee5\u53ca\u9677\u9631\u3002", "image": "https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/", "inLanguage": "zh-Hans"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/zh-hans/"}, {"@type": "ListItem", "position": 2, "name": "\u5b66\u4e60", "item": "https://sunforgetools.com/zh-hans/learn/"}, {"@type": "ListItem", "position": 3, "name": "\u7cbe\u7075\u6cd5\u7ebf\u8d34\u56fe", "item": "https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+  <a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">功能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/zh-hans/#features">全部功能</a>
+        <a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+        <a href="/zh-hans/2d-lighting/">2D 光照</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">指南</a>
+    <a href="mailto:support@sunforgetools.com">技术支持</a>
+    <div class="languages" role="group" aria-label="语言"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/zh-hans/learn/">学习</a></p>
+      <h1>用 Unity 法线<wbr>贴图<wbr>让 2D 精灵<wbr>有<wbr>立体<wbr>感</h1>
+      <p class="lead">精灵是一张平面图片，因此光源照在上面时没有形体可依。法线贴图为精灵提供形体：每个像素都记录了该处表面朝向的方向。有了法线贴图，角色左侧的火把会照亮角色的左侧，火把移动时明暗也会随之移动。</p>
+    </header>
+    <h2 id="sprite-lit-and-light-2d-how-unity-lights-a-sprite">Sprite Lit 与 Light 2D：<wbr>Unity 如何<wbr>照亮<wbr>精灵</h2>
+    <p>Unity 的 2D 光源属于通用渲染管线（URP），在项目使用其 2D Renderer 时生效。此时，拖拽到 Scene 视图中的精灵会获得 Sprite-Lit-Default 材质，2D 光源会照亮这种材质。使用 Sprite-Unlit-Default 的精灵则不受 2D 光源影响。</p>
+    <p>要添加光源，请在 Hierarchy 窗口中右键单击，选择 <strong>Light</strong>（灯光），然后选择一种 2D 光源：Spot（聚光）、Freeform（自由形式）、Sprite（精灵）或 Global（全局）。全局光源会同等地照亮每个精灵。没有法线贴图时，其他光源照亮精灵的方式就像灯照在剪纸上：光源形状内更亮，画面本身却没有明暗。</p>
+    <h2 id="what-a-sprite-normal-map-stores">精灵<wbr>法线<wbr>贴图<wbr>存储<wbr>了<wbr>什么</h2>
+    <p>法线贴图是一张与精灵纹理对齐的纹理。红色记录每个像素的表面向右倾斜的程度，绿色记录向上倾斜的程度，蓝色记录朝向观察者的程度。正对观察者的像素是浅蓝色 #8080FF。</p>
+    <figure class="bare">
+      <img src="/features/knight-page-normal.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="Sun Forge 烘焙的骑士精灵的法线贴图：朝向摄像机的表面呈蓝色和紫色，向上倾斜的呈绿色，向右倾斜的呈粉色">
+      <figcaption>dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</figcaption>
+    </figure>
+    <h2 id="add-a-normal-map-to-a-sprite-in-unity">在 Unity 中<wbr>为<wbr>精灵<wbr>添加法线<wbr>贴图</h2>
+    <ol>
+      <li>导入法线贴图，并在 Inspector 窗口中将其 <strong>Texture Type</strong>（纹理类型）设为 <strong>Normal map</strong>（法线贴图）。</li>
+      <li>选择精灵的纹理，打开 <strong>Sprite Editor</strong>（Sprite 编辑器），并从其下拉菜单中选择 <strong>Secondary Textures</strong>（辅助纹理）。</li>
+      <li>单击 <strong>+</strong>，在 <strong>Name</strong>（名称）下拉菜单中选择 <strong>_NormalMap</strong>，指定法线贴图，然后单击 <strong>Apply</strong>（应用）。</li>
+      <li>确认精灵的 Sprite Renderer 使用 Sprite-Lit-Default，或其他会读取法线贴图的材质。</li>
+      <li>选择 Light 2D。在 <strong>Normal Maps</strong>（法线贴图）下，将 <strong>Quality</strong>（质量）设为 <strong>Fast</strong>（快速）或 <strong>Accurate</strong>。</li>
+    </ol>
+    <p>完成第 5 步之前，光源会忽略法线贴图。全局光源没有这项设置，因此场景中需要一个聚光、自由形式或精灵光源才能显示明暗。同一部分中的 <strong>Distance</strong>（距离）越小，光源离精灵越近，细节就越明显。</p>
+    <p>自己的着色器可以从 <strong>Assets &gt; Create &gt; Shader Graph &gt; URP &gt; Sprite Lit Shader Graph</strong>（资产 &gt; 创建 &gt; Shader Graph &gt; URP &gt; 精灵光照 Shader Graph）开始，这种 Shader Graph 有 <strong>Normal (Tangent Space)</strong> 输入。</p>
+    <h2 id="the-mask-texture-masktex">遮罩纹理 _MaskTex</h2>
+    <p>精灵还可以有第二张辅助纹理 <strong>_MaskTex</strong>。导入时将 <strong>Texture Type</strong>（纹理类型）设为 <strong>Default</strong>（默认），并禁用 <strong>sRGB (Color Texture)</strong>（sRGB（颜色纹理））。</p>
+    <p>遮罩决定光源的光可以落在哪里：<strong>Blend Style</strong>（混合样式）为 <strong>Multiply with Mask (R)</strong> 或 <strong>Additive with Mask (R)</strong> 的光源只照亮遮罩红色通道大于 0 的像素。在 2D Renderer 资产中，每种混合样式都可以改为读取绿色、蓝色或 Alpha 通道。请用遮罩制作边缘光，或只在盔甲上制作高光。</p>
+    <h2 id="where-normal-maps-come-from">法线<wbr>贴图<wbr>从<wbr>哪里<wbr>来</h2>
+    <ul>
+      <li><strong>手绘。</strong> 用法线贴图调色板中的方向颜色在精灵上绘制。Krita 有专门的笔刷。有动画的角色每一帧都需要一张贴图。</li>
+      <li><strong>从精灵生成。</strong> 绘制一张灰度高度贴图，表面越高处越白，然后在导入时将 <strong>Texture Type</strong>（纹理类型）设为 <strong>Normal map</strong>（法线贴图），并启用 <strong>Create from Grayscale</strong>（从“灰度”创建）。只根据画面生成的工具会猜测形体，大多是把轮廓变圆。</li>
+      <li><strong>从 3D 模型渲染。</strong> 如果精灵是 3D 模型的渲染图，就用同一个摄像机渲染模型的法线，这样每一帧都有与之匹配的贴图。Blender 的 Normal 通道以世界空间存储方向，因此保存前要把方向转换到摄像机视角。</li>
+    </ul>
+    <h2 id="what-a-normal-map-cannot-do-alone">单<wbr>靠<wbr>法线<wbr>贴图<wbr>做不到<wbr>的<wbr>事</h2>
+    <ul>
+      <li><strong>金属和平滑度。</strong> Unity 手册说明其 2D 光照不是基于物理的。Sprite-Lit-Default 读取颜色纹理、遮罩和法线贴图，但这些都不表示像素有多光亮，因此钢铁和布料受光的方式相同。手动放置一个带遮罩的光源，可以模拟出高光。</li>
+      <li><strong>相互投射阴影的精灵。</strong> Shadow Caster 2D 的形状来自轮廓：精灵的 Custom Outline、碰撞器或自己绘制的形状。Shadow Caster 2D 只有精灵的边缘，没有每个部分的高度。Unity 的 Happy Harvest 样本改为用拉长的精灵绘制树下的阴影。<a href="/zh-hans/learn/2d-shadows-top-down/">2D 与俯视角精灵的阴影</a>介绍了每种做法。</li>
+    </ul>
+    <p>两者都需要每个像素有更多数据：表面的金属度和平滑度，以及表面有多高。</p>
+    <h2 id="why-a-unity-sprite-normal-map-does-not-work">Unity 精灵<wbr>法线<wbr>贴图<wbr>为何<wbr>不起<wbr>作<wbr>用</h2>
+    <p>如果光源完全不起作用，请先查看 <a href="/zh-hans/learn/2d-lights-not-working/">2D 光源不生效时的检查项</a>。以下是法线贴图本身的陷阱：</p>
+    <ul>
+      <li><strong>纹理类型。</strong> 保持为 <strong>Sprite (2D and UI)</strong>（Sprite（2D 和 UI））的法线贴图会产生错误的明暗：光源移动时，暗面不动。请将 <strong>Texture Type</strong>（纹理类型）设为 <strong>Normal map</strong>（法线贴图），除非文件是高度贴图，否则禁用 <strong>Create from Grayscale</strong>（从“灰度”创建）。</li>
+      <li><strong>翻转的绿色通道。</strong> Unity 认为绿色表示向上，即 Y+ 或 OpenGL 约定。按另一种约定制作的贴图在光源位于上方时，看起来像是从下方照亮。请在纹理的导入设置中启用 <strong>Flip Green Channel</strong>（翻转绿色通道）。</li>
+      <li><strong>翻转的精灵。</strong> Sprite Renderer 中 <strong>Flip</strong>（翻转）的 X 只翻转绘制出的画面。绕 Y 轴旋转 180 度的精灵受光会出错，Unity 认为这是预期行为。如果用负的 <strong>Scale X</strong> 翻转，请在精灵上方放一个光源，检查受光的是否是精灵的顶部边缘。</li>
+      <li><strong>精灵图集。</strong> 精灵图集会为每种辅助纹理另建一张图集纹理，把各精灵的这种辅助纹理合并进去。请让同一图集中的每个精灵拥有相同数量的辅助纹理，否则合并后的纹理可能包含大量空白。如果用其他工具打包精灵表，该工具必须以相同的布局打包法线贴图，因为 Unity 用相同的 UV 读取两者。</li>
+    </ul>
+    <h2 id="sun-forge-normal-mask-geometry-and-emission-textures-for-each-sprite">Sun Forge：<wbr>每个<wbr>精灵<wbr>的<wbr>法线、<wbr>遮罩、<wbr>几何<wbr>信息<wbr>和<wbr>自发光<wbr>纹理</h2>
+    <p>Sun Forge 是一款 Unity 编辑器工具，在 Unity 内采用第三种方法。烘焙会把 3D 模型或预制件变成 2D 精灵预制件，每个方向一张精灵表。每张精灵表除了颜色外，还有<a href="/guide/sunforge/en/output-reference/#files" hreflang="en">法线、遮罩和几何信息纹理</a>；烘焙启用 <strong>Emission</strong> 时，还会有自发光纹理。</p>
+    <ul>
+      <li>遮罩用红色存储金属，用绿色存储平滑度，用蓝色存储环境光遮蔽。</li>
+      <li>几何信息纹理存储每个纹素相对精灵轴心的高度，使精灵能够相互投射阴影。</li>
+    </ul>
+    <figure class="bare">
+      <img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="Sun Forge 烘焙的同一名骑士的几何信息纹理：脚底处为黑色，各部分越高越亮">
+      <figcaption>dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</figcaption>
+    </figure>
+    <p>Sun Forge 的光照包 Sun Forge 2D Lighting 会读取这些纹理。投射阴影会爬上站在阴影中的精灵，高度与投射阴影的物体一致。</p>
+    <figure>
+      <img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="Sun Forge 照亮的烘焙精灵场景：断柱的阴影越过铺石地面，落在站在阴影中的骑士身上">
+      <figcaption>dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</figcaption>
+    </figure>
+    <p>光照包也能照亮自己绘制的精灵。请选择精灵，右键单击并选择 <a href="/guide/lighting/en/lighting/#sprite-textures" hreflang="en"><strong>Sun Forge &gt; Set Up for Lighting</strong></a>。自己的法线贴图能让精灵有立体感；没有法线贴图时，精灵按平坦的表面受光。选择会发光的颜色和像金属一样反光的颜色后，Sun Forge 会写入相应的发光纹理和金属纹理。</p>
+    <figure>
+      <img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" sizes="(max-width: 1100px) 100vw, 1040px" alt="同一像素画场景的三个版本：仅精灵；加法线贴图；加法线贴图、金属和发光">
+    </figure>
+    <p>Sun Forge 需要 Unity 6.3 LTS（6000.3.28f1 或更高版本）或 Unity 6.6，以及使用 2D Renderer 或 Universal Renderer 的 URP。烘焙器和光照包都可以单独使用：请参阅<a href="/zh-hans/sprite-baker/#lighting-textures">精灵烘焙器</a>和<a href="/zh-hans/2d-lighting/#drawn-sprites">光照包</a>。</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">延伸<wbr>阅<wbr>读</h2>
+      <ul>
+        <li><a href="/zh-hans/learn/2d-lights-not-working/">Unity 2D 光照不生效：排查要点</a></li>
+        <li><a href="/zh-hans/learn/2d-shadows-top-down/">Unity 中 2D 与俯视角精灵的阴影</a></li>
+        <li><a href="/zh-hans/2d-lighting/">Sun Forge 2D Lighting</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="页脚">
+    <span class="parts"><a href="/zh-hans/#features">全部功能</a><a href="/zh-hans/sprite-baker/">精灵烘焙</a><a href="/zh-hans/2d-lighting/">2D 光照</a></span>
+    <a href="/zh-hans/learn/">学习</a>
+    <a href="/guide/sunforge/en/" hreflang="en">指南</a>
+    <a href="mailto:support@sunforgetools.com">技术支持</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="语言"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

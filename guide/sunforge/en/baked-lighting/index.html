@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lighting Baked Sprites | Sun Forge Guide</title>
+<meta name="description" content="Sun Forge 2D Lighting lights the scene, and its own pages describe it (index.md, Packages). This page holds what a baked prefab adds to them.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/baked-lighting/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/baked-lighting/">
+<meta property="og:title" content="Lighting Baked Sprites | Sun Forge Guide">
+<meta property="og:description" content="Sun Forge 2D Lighting lights the scene, and its own pages describe it (index.md, Packages). This page holds what a baked prefab adds to them.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Lighting Baked Sprites", "item": "https://sunforgetools.com/guide/sunforge/en/baked-lighting/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/sunforge/en/pages/">Sun Forge Documentation</a></li><li><a href="/guide/sunforge/en/baked-lighting/" aria-current=page>Lighting Baked Sprites</a><ul><li><a href="/guide/sunforge/en/baked-lighting/#in-a-scene">In A Scene</a></li><li><a href="/guide/sunforge/en/baked-lighting/#a-shader-of-your-own">A Shader Of Your Own</a></li></ul></li><li><a href="/guide/sunforge/en/output-reference/">Output Reference</a></li><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Advanced</p><ul><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li></ul><nav class="choice" aria-label="Product"><a href="/guide/sunforge/en/" aria-current=true>Sun Forge</a><a href="/guide/lighting/en/">Sun Forge 2D Lighting</a></nav></details></aside><div class="content page-baked-lighting"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><article class="doc"><h1 id="lighting-baked-sprites">Lighting Baked Sprites</h1>
+<p>Sun Forge 2D Lighting lights the scene, and its own pages describe it (<a href="/guide/sunforge/en/pages/#packages"><code>index.md</code>, Packages</a>). This page holds what a baked prefab adds to them.</p>
+<h2 id="in-a-scene">In A Scene</h2>
+<ul>
+<li>A bake's <strong>Prefab Material</strong> (Bake tab, Advanced view) sets what its sprites draw. A new bake starts on <strong>Lighting Setup's Style</strong>: its sprites draw the material of the style the scene's Lighting Setup has, and Regular's in a scene with no Lighting Setup. Pick a material in the row's menu, or drop one on the row, and the sprites draw it in every scene, lit by that scene's Lighting Setup. <strong>Make a Material for This Bake</strong> in the same menu makes one of your own to tune.</li>
+<li>A sprite with an enabled Baked Renderer Binding carries its bake's camera elevation and height range, which the style material's rows change only on sprites without one. Its glow is its bake's times the material's <strong>Emission Scale</strong>. The light a bake adds for <strong>Glow Light</strong> brightens with a style material's <strong>Emission Scale</strong>, and with a material of your own at the next bake (<a href="/guide/lighting/en/lighting/#tuning-a-style"><code>Lighting.md</code>, Tuning A Style</a>).</li>
+<li>Each bake fits its own height range. A renderer of your own that draws baked sprites needs a Baked Renderer Binding, or it reads their heights at the material's range, and Check Setup reports it.</li>
+<li>A body on Unity's own sprite material shows no hit flash.</li>
+<li>For Unity's 2D lights, add a <strong>Shadow Caster 2D</strong> to a baked prefab's root. Its shadows fall on the Unity-Lit material.</li>
+<li>The mist does not cover marker glows and trails, or shadow sprites whose <strong>Material</strong> (Archetypes tab, SHADOW, Advanced view) uses a shader other than <strong>Sun Forge/Hand-Drawn Shadow</strong>.</li>
+<li>A Scale X of -1 on a parent does not mirror a baked shadow, so it still falls away from the sun. Outside a Cast Shadow Field, a shadow whose <strong>Material</strong> (Archetypes tab, SHADOW, Advanced view) uses another shader mirrors with its parent.</li>
+</ul>
+<h2 id="a-shader-of-your-own">A Shader Of Your Own</h2>
+<p>Build the graph with the <strong>Sun Forge Lit Color</strong> node first (<a href="/guide/lighting/en/custom-shaders/#shader-graph"><code>Custom-Shaders.md</code>, Shader Graph</a>). Then use it one of two ways:</p>
+<ul>
+<li><strong>On a baked sprite.</strong> Add a Lighting Style Renderer beside its <strong>Baked Renderer Binding</strong> (<strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer</strong>) and set its <strong>Material</strong> to your material. The sprite keeps its bake's values.</li>
+<li><strong>As the bake's material.</strong> Declare any of the properties of the <strong>Bake Elevation</strong> and <strong>Emission Scale</strong> rows (<a href="/guide/lighting/en/custom-shaders/#shader-graph"><code>Custom-Shaders.md</code>, Shader Graph</a>), and pick the material as the bake's <strong>Prefab Material</strong> (Advanced view). The bake fills the <strong>Bake Elevation</strong> row's, and the prefab needs no Lighting Style Renderer. If the material declares none, the bake adds no Baked Renderer Binding.</li>
+</ul>
+<p>Health flashes a hit actor when its material's graph connects the <strong>Hit Flash</strong> row's properties (<a href="/guide/lighting/en/custom-shaders/#shader-graph"><code>Custom-Shaders.md</code>, Shader Graph</a>).</p>
+<p>A baked effect's particles add their light to what is behind them whatever their alpha:</p>
+<ul>
+<li>If your material declares both <code>_SFEmissionScale</code> and <code>_SFEmissionOutsideAlpha</code>, a bake stores that light in the emission texture, and only the <strong>Emission Outside Alpha</strong> port draws it. Without <code>_SFEmissionOutsideAlpha</code>, the light bakes into the effect's color.</li>
+<li>Declare <code>_SFEmissionOutsideAlpha</code> only when it feeds that port, with <strong>Blending Mode</strong> and <strong>Premultiplied</strong> set up as the port's row says. Otherwise the glow almost disappears.</li>
+<li>Under a style whose Sprite material cannot draw it, a baked effect's Particles child keeps the material it was baked with.</li>
+<li>In a hand-written shader, the header of <code>SunForgeLitColor.hlsl</code> shows how to draw that light.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/sunforge/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

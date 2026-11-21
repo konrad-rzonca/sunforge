@@ -1,0 +1,556 @@
+<!doctype html>
+<html data-late="/late.eb66aebaedcb.txt" lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge：Unity 2D 光照与 3D 模型转 2D 精灵烘焙工具</title>
+<meta name="description" content="把 3D 模型烘焙成带动画、法线贴图和预制件的 2D 精灵表。在 Unity URP 中用实时太阳、光源和阴影照亮 2D 场景，如同 3D。">
+<link rel="canonical" href="https://sunforgetools.com/zh-hans/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/zh-hans/">
+<meta property="og:title" content="Sun Forge：Unity 2D 光照与 3D 模型转 2D 精灵烘焙工具">
+<meta property="og:description" content="把 3D 模型烘焙成带动画、法线贴图和预制件的 2D 精灵表。在 Unity URP 中用实时太阳、光源和阴影照亮 2D 场景，如同 3D。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="大教堂中，一颗金色星星悬浮在铁砧上方">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebSite", "name": "Sun Forge", "alternateName": ["SunForge", "sunforgetools.com"], "url": "https://sunforgetools.com/", "inLanguage": "zh-Hans"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Sun Forge", "description": "\u628a 3D \u6a21\u578b\u70d8\u7119\u6210\u5e26\u52a8\u753b\u3001\u6cd5\u7ebf\u8d34\u56fe\u548c\u9884\u5236\u4ef6\u7684 2D \u7cbe\u7075\u8868\u3002\u5728 Unity URP \u4e2d\u7528\u5b9e\u65f6\u592a\u9633\u3001\u5149\u6e90\u548c\u9634\u5f71\u7167\u4eae 2D \u573a\u666f\uff0c\u5982\u540c 3D\u3002", "image": "https://sunforgetools.com/assets/og.jpg", "url": "https://sunforgetools.com/", "applicationCategory": "DeveloperApplication", "softwareRequirements": "Unity 6.3 LTS\uff086000.3.28f1 \u6216\u66f4\u9ad8\u7248\u672c\uff09\u6216 Unity 6.6\uff0cURP \u642d\u914d 2D Renderer \u6216 Universal Renderer\uff0c\u7ebf\u6027\u989c\u8272\u7a7a\u95f4", "publisher": {"@id": "https://sunforgetools.com/#organization"}, "inLanguage": "zh-Hans"}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/pages.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+  <a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">功能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/zh-hans/#features">全部功能</a>
+        <a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+        <a href="/zh-hans/2d-lighting/">2D 光照</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">指南</a>
+    <a href="mailto:support@sunforgetools.com">技术支持</a>
+    <div class="languages" role="group" aria-label="语言"><a href="/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></div>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title" data-pending>
+    <div class="stage" aria-hidden="true">
+      <!-- build.py site writes the plate's files here. -->
+      <picture><source media="(max-width: 500px) and (max-aspect-ratio: 3/5) and (min-height: 640px)" srcset="/assets/plate-phone.webp 1170w, /assets/plate-phone-two-thirds.webp 780w, /assets/plate-phone-half.webp 585w" sizes="104vw" width="1170" height="2532"><img class="layer plate" alt="" fetchpriority="high" src="/assets/plate-half.webp" srcset="/assets/plate.webp 5400w, /assets/plate-half.webp 2700w" sizes="(max-aspect-ratio: 11/10) 258vh, 336vh" width="5400" height="1800"></picture>
+      <canvas class="layer embers under"></canvas>
+    </div>
+    <div class="shade" aria-hidden="true"><canvas></canvas></div>
+
+    <div class="copy">
+      <!-- The name's display spacing: each k- span sets the space after its letter (landing.css). -->
+      <h1 id="hero-title" translate="no" aria-label="Sun Forge"><span class="word sun" aria-hidden="true">S<span class="k-u">U</span>N</span> <span class="word forge" aria-hidden="true"><span class="k-f">F</span><span class="k-o">O</span><span class="k-r"><wbr>R</span>GE</span></h1>
+      <!-- build.py site writes brand.json's slogan here, one span per sentence. -->
+      <p class="slogan"><span>3D 烘焙成 2D。</span> <span>2D 打光如 3D。</span></p>
+      <div class="actions">
+        <p class="soon"><strong>即将上架</strong><span> Unity Asset Store</span></p>
+      </div>
+      <p class="meta">适用于 Unity 6 和 URP 的编辑器工具</p>
+    </div>
+
+    <canvas class="embers over" aria-hidden="true"></canvas>
+    <a class="cue" href="#features">看看能做什么</a>
+  </section>
+
+  <div class="pages" id="features" data-pager="页面">
+    <div class="nave" aria-hidden="true"><i class="left"></i><i class="right"></i></div>
+
+    <section class="page frame" id="world" data-name="世界" data-light="left" aria-labelledby="world-title">
+      <div class="words">
+        <p class="eyebrow">在游戏中</p>
+        <h2 id="world-title">这里<wbr>的<wbr>每个<wbr>角色<wbr>和<wbr>道具<em><wbr>都是 2D 精灵</em></h2>
+        <p class="lead">每个都是用 3D 模型烘焙出的平面精灵。太阳和火光实时照亮这些精灵。</p>
+        <div class="choices"><div class="switch" role="group" aria-label="时段" data-switch="hour"><button type="button" data-pick="dawn" aria-pressed="false">黎明</button><button type="button" data-pick="day" aria-pressed="false">白天</button><button type="button" data-pick="dusk" aria-pressed="true">黄昏</button><button type="button" data-pick="night" aria-pressed="false">夜晚</button></div></div>
+        <p class="fine">Sun Forge 是适用于 Unity 6 和 URP 的 3D 转 2D 精灵烘焙工具和实时 2D 光照。两者可以一起使用，也可以只用其中一个。</p>
+      </div>
+      <div class="scene hall" data-picks>
+        <img class="on" data-hour="dusk" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="黄昏时分，低垂的太阳和火光照亮一座石厅废墟：火盆旁的骑士、祭坛、一堆黄金、两具骷髅和蓝色水晶">
+        <img data-late data-hour="dawn" loading="lazy" alt="黎明时分的同一座石厅">
+        <img data-late data-hour="day" loading="lazy" alt="白天的同一座石厅">
+        <img data-late data-hour="night" loading="lazy" alt="夜晚，火盆和水晶照亮同一座石厅">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page figure flip" id="bake" data-name="烘焙" data-light="right" aria-labelledby="bake-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/sprite-baker/">精灵烘焙</a></p>
+        <h2 id="bake-title">把 3D 模型<em>烘焙成 2D 角色</em></h2>
+        <p class="lead">选择方向和动画。Sun Forge 会把每一帧渲染成精灵，并生成播放这些精灵的预制件。</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="动画" data-switch="clip"><button type="button" data-pick="Idle" aria-pressed="true">Idle</button><button type="button" data-pick="Walk" aria-pressed="false">Walk</button><button type="button" data-pick="Attack" aria-pressed="false">Attack</button></div>
+          <div class="switch" role="group" aria-label="圆环显示的内容" data-switch="target"><button type="button" data-pick="in-game" aria-pressed="true">游戏中</button><button type="button" data-pick="diffuse" aria-pressed="false">漫反射</button><button type="button" data-pick="normal" aria-pressed="false">法线</button><button type="button" data-pick="mask" aria-pressed="false">遮罩</button><button type="button" data-pick="geometry-texture" aria-pressed="false">几何信息</button><button type="button" data-pick="emission" aria-pressed="false">自发光</button></div>
+          <div class="switch" role="group" aria-label="方向" data-switch="directions"><span aria-hidden="true">方向</span><button type="button" data-pick="4" aria-pressed="false">4</button><button type="button" data-pick="8" aria-pressed="false">8</button><button type="button" data-pick="16" aria-pressed="true">16</button></div>
+        </div>
+        <p class="fine">将指针移到精灵上、轻点精灵或拖拽滑块，即可转动模型。与模型朝向对应的精灵会随之播放。</p>
+      </div>
+      <div class="ring" data-ring data-picks data-pending>
+        <canvas role="img" aria-label="骑士的十六个精灵围成一圈，每个对应一个烘焙方向，中间是骑士的 3D 模型，一台摄像机正在拍摄模型"></canvas>
+        <label class="turn"><span>旋转</span><input type="range" min="0" max="15" step="1" aria-label="模型的朝向"></label>
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame" id="lit" data-name="像 3D 一样受光" data-light="left" aria-labelledby="lit-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/">2D 光照</a></p>
+        <h2 id="lit-title">精灵<wbr>受光<em>像 3D 模型<wbr>一样</em></h2>
+        <p class="lead">金属会反光，褶皱处会变暗，烘焙出的精灵还会相互投射阴影。烘焙会生成光照所需的纹理，一张都不用手绘。拖拽星星可移去石厅的光照，选择纹理即可逐张查看。</p>
+        <div class="choices"><div class="switch" role="group" aria-label="星星左侧的纹理" data-switch="view"><button type="button" data-pick="diffuse" aria-pressed="true">漫反射</button><button type="button" data-pick="normal" aria-pressed="false">法线</button><button type="button" data-pick="mask" aria-pressed="false">遮罩</button><button type="button" data-pick="emission" aria-pressed="false">自发光</button><button type="button" data-pick="geometry" aria-pressed="false">几何信息</button></div></div>
+      </div>
+      <div class="scene hall wipe" data-wipe data-picks>
+        <img class="after" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="黄昏时分，低垂的太阳和厅中火光照亮一座由精灵构成的石厅废墟">
+        <img class="before on" data-view="diffuse" src="/features/ruins-view-diffuse.webp" srcset="/features/ruins-view-diffuse.768w.webp 768w, /features/ruins-view-diffuse.960w.webp 960w, /features/ruins-view-diffuse.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="同一帧画面，只显示精灵自身的颜色，没有光">
+        <img class="before" data-late data-view="normal" loading="lazy" alt="同一帧画面的法线贴图">
+        <img class="before" data-late data-view="mask" loading="lazy" alt="同一帧画面的遮罩纹理">
+        <img class="before" data-late data-view="emission" loading="lazy" alt="同一帧画面的自发光纹理：除发光部分外全为黑色">
+        <img class="before" data-late data-view="geometry" loading="lazy" alt="同一帧画面的几何信息纹理">
+        <span class="side left" data-names="view">漫反射</span><span class="side right">游戏中</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="46" aria-label="受光画面的起点">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame flip" id="faster" data-name="更快" data-light="right" aria-labelledby="faster-title">
+      <div class="words">
+        <p class="eyebrow">适用于 3D 游戏</p>
+        <h2 id="faster-title">1,000 个<wbr>角色：<em><wbr>3D 模型 18 F<wbr>PS，<wbr>精灵 148 FPS</em></h2>
+        <p class="lead">左侧：1,000 个带动画的 3D 模型。右侧：同一场战斗，换成烘焙出的精灵。如果 3D 游戏始终使用同一个摄像机角度，可以把游戏中的模型烘焙成精灵，改用 2D 制作这款游戏。拖拽星星即可对比。</p>
+        <div class="choices"><div class="switch" role="group" aria-label="星星右侧的 Sun Forge 画面" data-switch="look"><span translate="no">Sun Forge</span><button type="button" data-pick="optimized" aria-pressed="true">Optimized</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button><button type="button" data-pick="regular" aria-pressed="false">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">Pixel</button></div></div>
+      </div>
+      <div class="scene wipe" data-wipe data-picks>
+        <img class="after on" data-look="optimized" data-full src="/features/bench-optimized.webp" srcset="/features/bench-optimized.768w.webp 768w, /features/bench-optimized.960w.webp 960w, /features/bench-optimized.webp 1920w, /features/bench-optimized.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="俯视林间空地上的一场战斗，每个角色都是 Optimized 外观的烘焙精灵">
+        <img class="after" data-late data-look="realistic" data-full loading="lazy" alt="同一场战斗，角色均为 Realistic 外观的烘焙精灵">
+        <img class="after" data-late data-look="regular" data-full loading="lazy" alt="同一场战斗，角色均为 Regular 外观的烘焙精灵">
+        <img class="after" data-late data-look="cinematic" data-full loading="lazy" alt="同一场战斗，角色均为 Cinematic 外观的烘焙精灵">
+        <img class="after" data-late data-look="flat" data-full loading="lazy" alt="同一场战斗，角色均为 Flat 外观的烘焙精灵">
+        <img class="after" data-late data-look="pixel" data-full loading="lazy" alt="同一场战斗，角色均为烘焙成像素画的精灵，Pixel 外观">
+        <img class="before on" data-full src="/features/bench-3d.webp" srcset="/features/bench-3d.768w.webp 768w, /features/bench-3d.960w.webp 960w, /features/bench-3d.webp 1920w, /features/bench-3d.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="同一场战斗，每个角色都是带动画的 3D 模型">
+        <div class='tally left'><b>3D 模型</b><strong>18 <small>FPS</small></strong><span>1,804 MB GPU 内存</span></div><div class='tally right'><b>烘焙出的精灵</b><strong><data data-look='optimized' value='148'>148</data><data data-look='realistic' value='108' hidden>108</data><data data-look='regular' value='108' hidden>108</data><data data-look='cinematic' value='80' hidden>80</data><data data-look='flat' value='80' hidden>80</data><data data-look='pixel' value='142' hidden>142</data> <small>FPS</small></strong><span><data data-look='optimized' value='1165'>1,165</data><data data-look='realistic' value='1175' hidden>1,175</data><data data-look='regular' value='1175' hidden>1,175</data><data data-look='cinematic' value='1184' hidden>1,184</data><data data-look='flat' value='1182' hidden>1,182</data><data data-look='pixel' value='469' hidden>469</data> MB GPU 内存</span></div>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="烘焙精灵画面的起点">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。所有道具、地面和火焰均来自 Showcase 样本。测试配置：<span translate="no">AMD Ryzen 9 7900X, NVIDIA GeForce RTX 4060, 2560 × 1440</span>。</p>
+    </section>
+
+    <section class="page stack" id="own-sprites" data-name="自己的精灵" data-light="left" aria-labelledby="own-sprites-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/zh-hans/2d-lighting/#drawn-sprites">适用于手绘精灵</a></p>
+          <h2 id="own-sprites-title">照<wbr>亮<em><wbr>现有<wbr>的</em><wbr>精灵</h2>
+        </div>
+        <p class="lead">对精灵运行 Set Up for Lighting 命令，像素画也可以。自备的法线贴图能为精灵增添立体感。选择哪些颜色是金属、哪些颜色发光，Sun Forge 就会生成金属和发光所需的纹理。</p>
+      </div>
+      <figure class="thirds">
+        <img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" sizes="(max-width: 899px) 100vw, 70vw" alt="同一像素画场景的三个版本：仅精灵；加法线贴图；加法线贴图、金属和发光">
+        <figcaption><span>仅精灵</span><span>加法线贴图</span><span>加法线贴图、金属和发光</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="page frame flip" id="platformer" data-name="平台跳跃" data-light="right" aria-labelledby="platformer-title">
+      <div class="words">
+        <p class="eyebrow">适用于平台跳跃游戏</p>
+        <h2 id="platformer-title">从<wbr>侧面<wbr>烘焙，<em><wbr>用于<wbr>平台<wbr>跳跃<wbr>游戏</em></h2>
+        <p class="lead">Elevation Angle 为 0 时，模型会烘焙成侧视精灵。用可移动的太阳、自己放置的光源和自己调整的风格照亮关卡。</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="风格" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">像素画</button></div>
+          <div class="switch" role="group" aria-label="时段" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">白天</button><button type="button" data-pick="dusk" aria-pressed="false">黄昏</button><button type="button" data-pick="night" aria-pressed="false">夜晚</button></div>
+        </div>
+        <p class="fine">如需像素画效果，请以较低的 <strong>Pixels Per Unit</strong> 烘焙，并使用点过滤。</p>
+      </div>
+      <div class="scene" data-picks style="--pixel-frame: 1.055075">
+        <img class="on" data-hour="day" data-style="regular" src="/features/platformer-day-regular.webp" srcset="/features/platformer-day-regular.768w.webp 768w, /features/platformer-day-regular.960w.webp 960w, /features/platformer-day-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="白天的侧视关卡，Regular 风格：骑士在草地平台间跃起取金币，背后是群山">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="白天的关卡，Cinematic 风格">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="白天的关卡，Flat 风格">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的关卡，Regular 风格">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的关卡，Cinematic 风格">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的关卡，Flat 风格">
+        <img data-late data-hour="night" data-style="regular" loading="lazy" alt="夜晚的关卡，Regular 风格，火把照亮四周">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的关卡，Cinematic 风格">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="夜晚的关卡，Flat 风格">
+        <img data-late data-hour="day" data-style="pixel" loading="lazy" alt="白天的关卡，烘焙成像素画">
+        <img data-late data-hour="dusk" data-style="pixel" loading="lazy" alt="黄昏时分的关卡，烘焙成像素画">
+        <img data-late data-hour="night" data-style="pixel" loading="lazy" alt="夜晚的关卡，烘焙成像素画">
+      </div>
+      <p class="credit">角色、植物、宝箱和火把部件来自 Showcase 样本。</p>
+    </section>
+
+    <section class="page frame float" id="isometric" data-name="等距" data-light="left" aria-labelledby="isometric-title">
+      <div class="words">
+        <p class="eyebrow">适用于等距游戏</p>
+        <h2 id="isometric-title">为<em><wbr>等距<wbr>游戏</em>烘焙</h2>
+        <p class="lead">将 Elevation Angle 保持为 30，一块正方形地面就会绘制成 2:1 的菱形。可以把方块逐层堆叠，也可以用烘焙出的瓦片在 Tilemap 上绘制一层。</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="风格" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">像素画</button><button type="button" data-pick="diffuse" aria-pressed="false" data-locks="hour">漫反射</button><button type="button" data-pick="emission" aria-pressed="false" data-locks="hour cells">自发光</button></div>
+          <div class="switch" role="group" aria-label="时段" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">白天</button><button type="button" data-pick="dusk" aria-pressed="false">黄昏</button><button type="button" data-pick="night" aria-pressed="false">夜晚</button></div>
+          <div class="switch" role="group" aria-label="地形" data-switch="terrain"><button type="button" data-pick="stepped" aria-pressed="true">阶梯</button><button type="button" data-pick="one" aria-pressed="false">单层</button></div>
+          <div class="switch" role="group" aria-label="移动格与威胁格" data-switch="cells"><button type="button" data-pick="cells" aria-pressed="true">格子</button><button type="button" data-pick="clean" aria-pressed="false">无格子</button></div>
+        </div>
+      </div>
+      <div class="scene" data-picks>
+        <img class="on" data-terrain="stepped" data-cells="cells" data-hour="day" data-style="regular" src="/features/isometric-stepped-day-regular-cells.webp" srcset="/features/isometric-stepped-day-regular-cells.768w.webp 768w, /features/isometric-stepped-day-regular-cells.960w.webp 960w, /features/isometric-stepped-day-regular-cells.webp 1816w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1816" height="2164" style="--w: 1816; --h: 2164" alt="白天的阶梯状等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="夜晚的阶梯状等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="白天的阶梯状等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的阶梯状等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="白天的阶梯状等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="夜晚的阶梯状等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="白天的阶梯状等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="夜晚的阶梯状等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="diffuse" loading="lazy" alt="阶梯状等距岛屿，无光照，呈漫反射颜色，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="emission" loading="lazy" alt="阶梯状等距岛屿的自发光纹理：除发光部分外全为黑色，带移动格与威胁格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="白天的阶梯状等距岛屿，Regular 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Regular 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="夜晚的阶梯状等距岛屿，Regular 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="白天的阶梯状等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的阶梯状等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="白天的阶梯状等距岛屿，Flat 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，Flat 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="夜晚的阶梯状等距岛屿，Flat 风格">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="白天的阶梯状等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="黄昏时分的阶梯状等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="夜晚的阶梯状等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="diffuse" loading="lazy" alt="阶梯状等距岛屿，无光照，呈漫反射颜色">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="emission" loading="lazy" alt="阶梯状等距岛屿的自发光纹理：除发光部分外全为黑色">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="regular" loading="lazy" alt="白天的单层等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的单层等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="夜晚的单层等距岛屿，Regular 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="白天的单层等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的单层等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的单层等距岛屿，Cinematic 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="白天的单层等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的单层等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="夜晚的单层等距岛屿，Flat 风格，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="白天的单层等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="黄昏时分的单层等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="夜晚的单层等距岛屿，烘焙成像素画，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-style="diffuse" loading="lazy" alt="单层等距岛屿，无光照，呈漫反射颜色，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="cells" data-style="emission" loading="lazy" alt="单层等距岛屿的自发光纹理：除发光部分外全为黑色，带移动格与威胁格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="白天的单层等距岛屿，Regular 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的单层等距岛屿，Regular 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="夜晚的单层等距岛屿，Regular 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="白天的单层等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的单层等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的单层等距岛屿，Cinematic 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="白天的单层等距岛屿，Flat 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的单层等距岛屿，Flat 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="夜晚的单层等距岛屿，Flat 风格">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="白天的单层等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="黄昏时分的单层等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="夜晚的单层等距岛屿，烘焙成像素画">
+        <img data-late data-terrain="one" data-cells="clean" data-style="diffuse" loading="lazy" alt="单层等距岛屿，无光照，呈漫反射颜色">
+        <img data-late data-terrain="one" data-cells="clean" data-style="emission" loading="lazy" alt="单层等距岛屿的自发光纹理：除发光部分外全为黑色">
+      </div>
+      <p class="credit">角色、道具和植物来自 Showcase 样本。</p>
+    </section>
+
+    <section class="page frame flip" id="styles" data-name="风格" data-light="right" aria-labelledby="styles-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/#styles">光照</a></p>
+        <h2 id="styles-title">选择<wbr>光照<wbr>风格，<em><wbr>所有<wbr>精灵<wbr>的<wbr>光照<wbr>随之<wbr>改变</em></h2>
+        <p class="lead">Regular、Cinematic 和 Flat 照亮同一批精灵，无需重新烘焙。可将其中一种另存为自己的风格并加以调整。</p>
+        <div class="choices"><div class="switch" role="group" aria-label="风格" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button></div></div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-style="regular" src="/features/ruins-styles-regular.webp" srcset="/features/ruins-styles-regular.768w.webp 768w, /features/ruins-styles-regular.960w.webp 960w, /features/ruins-styles-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="火盆旁的骑士，以 Regular 风格打光">
+        <img data-late data-style="cinematic" loading="lazy" alt="同一画面，以 Cinematic 风格打光">
+        <img data-late data-style="flat" loading="lazy" alt="同一画面，以 Flat 风格打光">
+        <img data-late data-style="realistic" loading="lazy" alt="同一画面，以 Realistic 风格打光">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame" id="lights" data-name="光源" data-light="left" aria-labelledby="lights-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/#lights">光照</a></p>
+        <h2 id="lights-title">火光<em><wbr>照亮<wbr>周围<wbr>的<wbr>精灵</em></h2>
+        <p class="lead">这里的火是 Light Source，可以是点光源、聚光灯、线光源或矩形光源，还能像火焰一样闪烁。金属在火光下会反光。</p>
+      </div>
+      <div class="scene near">
+        <img class="on" src="/features/ruins-lights-night.webp" srcset="/features/ruins-lights-night.768w.webp 768w, /features/ruins-lights-night.960w.webp 960w, /features/ruins-lights-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="夜晚，骑士站在火盆旁，火光照亮他的盔甲、盾牌和黄金">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame flip" id="shadows" data-name="阴影" data-light="right" aria-labelledby="shadows-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/#shadows">光照</a></p>
+        <h2 id="shadows-title">精灵<em><wbr>相互</em>投<wbr>射<wbr>阴影</h2>
+        <p class="lead">每个烘焙出的精灵都存储了自身的高度，因此阴影会落在其他精灵上，最高可达投射阴影之物的高度。拖拽星星即可对比。</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="断柱的阴影投在骑士身上">
+        <img class="before on" src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="同一画面，阴影只落在地面上">
+        <span class="side left">仅地面</span><span class="side right">也投在精灵上</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="精灵阴影画面的起点">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame" id="emission" data-name="发光" data-light="left" aria-labelledby="emission-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/sprite-baker/#glow">烘焙生成的内容</a></p>
+        <h2 id="emission-title"><em>照亮<wbr>场景<wbr>的</em><wbr>发光</h2>
+        <p class="lead">烘焙会把发光部分写入自发光纹理。启用 Glow Light 时，烘焙还会在发光处添加一个光源，照亮附近的地面和精灵。拖拽星星即可对比。</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/emission-with.webp" srcset="/features/emission-with.768w.webp 768w, /features/emission-with.960w.webp 960w, /features/emission-with.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="骑士身上的符文和角发出光芒，照亮地面和他身后的骷髅">
+        <img class="before on" src="/features/emission-without.webp" srcset="/features/emission-without.768w.webp 768w, /features/emission-without.960w.webp 960w, /features/emission-without.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="同一画面，关闭了骑士的发光及其光源">
+        <span class="side left">发光关闭</span><span class="side right">发光开启</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="发光画面的起点">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page frame flip" id="mist" data-name="薄雾" data-light="right" aria-labelledby="mist-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/#mist">光照</a></p>
+        <h2 id="mist-title">精灵<wbr>站在<wbr>薄雾<wbr>中，<em><wbr>而<wbr>不是<wbr>雾后</em></h2>
+        <p class="lead">薄雾从脚底向上覆盖每个精灵，因为每个烘焙出的精灵都存储了自身的高度。每个 Light Source 也会照亮薄雾。</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="时段" data-switch="hour"><button type="button" data-pick="day" aria-pressed="false">白天</button><button type="button" data-pick="dusk" aria-pressed="false">黄昏</button><button type="button" data-pick="night" aria-pressed="true">夜晚</button></div>
+          <div class="switch" role="group" aria-label="风格" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button></div>
+        </div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-hour="night" data-style="regular" src="/features/ruins-mistlooks-night-regular.webp" srcset="/features/ruins-mistlooks-night-regular.768w.webp 768w, /features/ruins-mistlooks-night-regular.960w.webp 960w, /features/ruins-mistlooks-night-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="夜晚，骑士身处薄雾中，薄雾在火盆和水晶周围发光">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="夜晚的薄雾，Cinematic 风格">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="夜晚的薄雾，Flat 风格">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="黄昏时分的薄雾，Regular 风格">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="黄昏时分的薄雾，Cinematic 风格">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="黄昏时分的薄雾，Flat 风格">
+        <img data-late data-hour="day" data-style="regular" loading="lazy" alt="白天的薄雾，Regular 风格">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="白天的薄雾，Cinematic 风格">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="白天的薄雾，Flat 风格">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page stack" id="camera" data-name="任意摄像机" data-light="left" aria-labelledby="camera-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/zh-hans/sprite-baker/#directions">烘焙工具</a></p>
+          <h2 id="camera-title">侧视、<wbr>俯视<em><wbr>或<wbr>等距</em></h2>
+        </div>
+        <p class="lead">把 Elevation Angle 设为 0 到 90 度之间的任意值，同一个模型就能按游戏的摄像机烘焙出 1 到 64 个方向。</p>
+      </div>
+      <div class="views" style="--tallest: 676; --across: 984">
+        <figure><img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="按侧视角度烘焙的骑士"><figcaption>侧视，0°</figcaption></figure>
+        <figure><img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="按等距角度烘焙的骑士"><figcaption>等距，30°</figcaption></figure>
+        <figure><img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="按俯视角度烘焙的骑士"><figcaption>俯视，60°</figcaption></figure>
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page stack" id="prefabs" data-name="预制件" data-light="left" aria-labelledby="ready-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/zh-hans/sprite-baker/#prefabs">烘焙生成的内容</a></p>
+          <h2 id="ready-title"><em>带碰<wbr>撞器、<wbr>受击框<wbr>和<wbr>动画<wbr>的</em><wbr>预制<wbr>件</h2>
+        </div>
+        <p class="lead">每次烘焙都会生成一个预制件。预制件的碰撞器和受击框贴合模型，初始类型模板还会添加脚本，例如会行走和射击的 Hero。</p>
+      </div>
+      <div class="bundle">
+        <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 899px) 100vw, 80vw" alt="骑士身上画出碰撞器、受击框和血条，旁边是其动画器控制器下 Idle、Walk 和 Attack 动画剪辑的帧，以及 Hero 脚本：Movement、Shooter 和 Health">
+      </div>
+      <p class="credit">dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page editor flip" id="editor" data-name="烘焙窗口" data-light="right" aria-labelledby="editor-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/sprite-baker/#preview">烘焙窗口</a></p>
+        <h2 id="editor-title"><em>烘焙前</em>先<wbr>看到<wbr>精灵</h2>
+        <p class="lead">烘焙窗口显示模型、烘焙摄像机和将要生成的精灵。环绕旋转预览，播放动画剪辑，然后烘焙。</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 899px) 100vw, 70vw" alt="烘焙窗口：骑士 3D 模型的预览与将要生成的精灵并排，右侧是烘焙设置">
+        <span class="caption" style="left: 28.45%; top: 66.26%">2D 输出</span><span class="caption" style="left: 48.23%; top: 58.41%">3D 源</span>
+      </figure>
+      <p class="credit">dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page editor" id="gizmos" data-name="Gizmos" data-light="left" aria-labelledby="gizmos-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/sprite-baker/#preview">烘焙窗口</a></p>
+        <h2 id="gizmos-title"><em>在<wbr>预览<wbr>中</em><wbr>检查碰<wbr>撞器<wbr>和<wbr>受击<wbr>框</h2>
+        <p class="lead">在 Gizmos 菜单中勾选一行，预览即会按名称旁的颜色绘制该项。</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-gizmos.webp" srcset="/features/cards-gizmos.768w.webp 768w, /features/cards-gizmos.960w.webp 960w, /features/cards-gizmos.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="前方的烘焙窗口打开了 Gizmos 菜单，预览中画出骑士的碰撞器、受击框和锚点；后方是浅色主题下的同一窗口，设置位于预览下方">
+      </figure>
+      <p class="credit">dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</p>
+    </section>
+
+    <section class="page editor flip" id="workflow" data-name="预设" data-light="right" aria-labelledby="workflow-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/sprite-baker/#presets">烘焙窗口</a></p>
+        <h2 id="workflow-title">预设<em><wbr>和<wbr>批量<wbr>烘焙</em></h2>
+        <p class="lead">预设保存一个模型的烘焙方式。Batch 选项卡可一次烘焙选中的预设。</p>
+        <p class="fine">重新烘焙会保留预制件、自行添加的子对象和组件，以及平台覆盖。</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-batch.webp" srcset="/features/cards-batch.768w.webp 768w, /features/cards-batch.960w.webp 960w, /features/cards-batch.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="前方的烘焙窗口在宝箱上方打开了预设库，后方是 Batch 选项卡，勾选了要一次烘焙的预设">
+      </figure>
+      <p class="credit">以 Showcase 中的模型展示。</p>
+    </section>
+
+    <section class="page editor" id="platforms" data-name="平台" data-light="left" aria-labelledby="platforms-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/zh-hans/2d-lighting/#platforms">运行平台</a></p>
+        <h2 id="platforms-title">WebGL 2、<wbr>WebGPU <em>和 Android 均已<wbr>测试</em></h2>
+        <p class="lead">Sun Forge 面向 URP 支持的所有平台设计。游戏构建可在 Windows、网页端和 ARM64 Android 上运行。</p>
+      </div>
+      <figure class="targets">
+        <div class="devices">
+          <div class="target windows">
+            <span class="bar" aria-hidden="true"><b>我的游戏</b><i></i><i></i><i></i></span>
+            <span class="screen"><img src="/features/bench-cinematic.webp" srcset="/features/bench-cinematic.768w.webp 768w, /features/bench-cinematic.960w.webp 960w, /features/bench-cinematic.webp 1920w, /features/bench-cinematic.2560w.webp 2560w" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" sizes="(max-width: 899px) 160vw, 76vw" alt="林间空地上，骑士与骷髅正在交战，太阳、篝火和火把照亮战场"></span>
+          </div>
+          <div class="target web">
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+            <span class="screen"><img src="/features/ruins-hours-noon.webp" srcset="/features/ruins-hours-noon.768w.webp 768w, /features/ruins-hours-noon.960w.webp 960w, /features/ruins-hours-noon.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="正午的石厅废墟中，骑士和两具骷髅站在祭坛和一箱黄金旁"></span>
+          </div>
+          <div class="target android">
+            <span class="screen"><img src="/features/ruins-hours-night.webp" srcset="/features/ruins-hours-night.768w.webp 768w, /features/ruins-hours-night.960w.webp 960w, /features/ruins-hours-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="夜晚，两个火盆和发光的水晶照亮同一座石厅"></span>
+          </div>
+        </div>
+        <figcaption>
+          <div class="said"><strong>Windows</strong><ul class="apis"><li translate="no">Direct3D&nbsp;12</li></ul></div>
+          <div class="said"><strong>网页端</strong><ul class="apis"><li translate="no">WebGL&nbsp;2</li><li><span translate="no">WebGPU</span> <small>在 Unity 6.6 上</small></li></ul><p class="tested">已在 Chrome 中测试，WebGL 2 也在 Firefox 中测试过</p></div>
+          <div class="said"><strong>Android <small translate="no">ARM64</small></strong><ul class="apis"><li translate="no">Vulkan</li><li translate="no">OpenGL&nbsp;ES&nbsp;3</li></ul><p class="tested">已在 Pixel 8a 和 Galaxy A36 上测试</p></div>
+        </figcaption>
+      </figure>
+      <p class="credit">dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。战斗场景中的所有道具、地面和火焰均来自 Showcase 样本。</p>
+    </section>
+
+    <section class="page facts" id="included" data-name="包含内容" data-light="left" aria-labelledby="included-title">
+      <div>
+        <p class="eyebrow">包中内容</p>
+        <h2 id="included-title"><em>包含</em><wbr>哪些<wbr>内容</h2>
+        <ul class="ticks"><li>烘焙工具 Sun Forge，附带 Getting Started 样本</li><li>光照工具 Sun Forge 2D Lighting，附带 Lit Scene 样本</li><li>Showcase，可游玩的森林场景，附带场景中的 3D 模型和预设</li><li>完整的 C# 源代码</li></ul>
+      </div>
+      <div>
+        <p class="eyebrow">系统要求</p>
+        <h2>使用<em><wbr>要求</em></h2>
+        <dl class="needs">
+          <dt>Unity</dt><dd>6.3 LTS（6000.3.28f1 或更高版本）或 6.6</dd>
+          <dt>渲染管线</dt><dd>URP，搭配 2D Renderer 或 Universal Renderer。不支持内置渲染管线或 HDRP</dd>
+          <dt>颜色空间</dt><dd>线性</dd>
+          <dt>Windows 上</dt><dd>项目文件夹路径不超过 110 个字符</dd>
+          <dt>语言</dt><dd>本网站为简体中文；Asset Store 页面、文档、工具的窗口和消息，以及组件在 Inspector 窗口中的文字为英文。</dd><dd>技术支持接受中文咨询，回复借助翻译工具以中文撰写。</dd><dd>如发现中文翻译有误或难以理解，请在 GitHub 上 Sun Forge 公开仓库的 Issues 中反馈。</dd>
+          <dt>随附安装</dt><dd>Sun Forge 2D Lighting、URP、Render Pipelines Core、Burst、Input System 和 2D Sprite 包</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="page questions" id="questions" data-name="常见问题" data-light="right" aria-labelledby="questions-title">
+      <div class="words">
+        <p class="eyebrow">常见问题</p>
+        <h2 id="questions-title"><em>购买</em><wbr>之前</h2>
+      </div>
+      <div class="answers">
+        <div><h3>移动光<wbr>源后<wbr>需要<wbr>重新<wbr>烘焙<wbr>吗？</h3><p>不需要。太阳、光源和风格的改动都会实时生效。阴影随精灵移动，并保持烘焙时的方向。</p></div>
+        <div><h3>精灵<wbr>只能<wbr>在 Sun Forge 中<wbr>使用<wbr>吗？</h3><p>不是。烘焙生成的是标准的 Unity 精灵、图集、动画剪辑、动画器控制器和预制件。</p></div>
+        <div><h3>3D 模型<wbr>会<wbr>进入<wbr>游戏<wbr>吗？</h3><p>不会。构建中不包含任何 3D 模型、网格或骨架。</p></div>
+        <div><h3>适合 3D 游戏<wbr>吗？</h3><p>如果 3D 游戏只用一个固定的摄像机角度，可以把其中的模型烘焙成精灵，改用 2D 制作。</p></div>
+        <div><h3>可以<wbr>给<wbr>自己<wbr>画<wbr>的<wbr>精灵<wbr>打光<wbr>吗？</h3><p>可以。请选择精灵，右键单击，然后选择 <strong>Sun Forge &gt; Set Up for Lighting</strong>。自备的法线贴图能让精灵呈现立体感。</p></div>
+        <div><h3>可以<wbr>在<wbr>哪些<wbr>平台上<wbr>运行？</h3><p>Sun Forge 面向 URP 支持的所有平台设计。游戏构建可在 Windows（Direct3D 12）、ARM64 Android（Vulkan 或 OpenGL ES 3）和网页端（WebGL 2）上运行。在 Unity 6.6 上，网页端构建还可以使用 WebGPU 运行。</p></div>
+      </div>
+    </section>
+
+    <section class="page questions" id="more-questions" data-name="更多问题" data-light="left" aria-labelledby="more-questions-title">
+      <div class="words">
+        <p class="eyebrow">常见问题</p>
+        <h2 id="more-questions-title">更多<em><wbr>问题</em></h2>
+      </div>
+      <div class="answers">
+        <div><h3>不用<wbr>精灵<wbr>烘焙工具，<wbr>也<wbr>能<wbr>使用 2D 光照<wbr>吗？</h3><p>可以。两者都能单独使用。光照可以照亮任意 2D 或 2.5D 场景中自己绘制的精灵，烘焙也可以生成供 Unity 默认精灵材质使用的普通精灵。</p></div>
+        <div><h3>能<wbr>和 Unity 的 L<wbr>ight 2D 一起<wbr>使用<wbr>吗？</h3><p>可以。Light 2D 可以驱动 Sun Forge 的 Light Source，同时仍会照亮 Unity 的 Lit 材质。</p></div>
+        <div><h3>烘焙<wbr>需要<wbr>多长<wbr>时间？</h3><p>在配备 Ryzen 9 7900X 和 RTX 4060 的电脑上，烘焙一棵 16 个方向的树约需 25 秒，烘焙带 4 个动画的角色（968 个精灵）约需一分钟。</p></div>
+        <div><h3>烘<wbr>焙出<wbr>的<wbr>精灵<wbr>占用<wbr>多少<wbr>纹理内<wbr>存？</h3><p>在桌面平台上，Showcase 样本中 16 个方向的山毛榉树占用 9.5 MiB，骑士的 968 个精灵占用 81 MiB。减少方向、降低分辨率或减少光照纹理都能降低占用。</p></div>
+        <div><h3>可以<wbr>烘焙<wbr>什么？</h3><p>带动画剪辑和 Particle System 的模型或预制件，用自身的材质和 Shader Graph 烘焙。道具、粒子特效和地面瓦片也能烘焙。</p></div>
+        <div><h3>能<wbr>用<wbr>代<wbr>码<wbr>烘焙<wbr>或<wbr>使用 Addressables 吗？</h3><p>可以。能用编辑器代码烘焙，并用自己编写的 C# 步骤扩展烘焙；烘焙还可以把预制件和图集注册到 Addressables。</p></div>
+      </div>
+    </section>
+
+    <section class="page closing" id="buy" data-name="即将推出" data-light="both" aria-labelledby="buy-title">
+      <div class="words">
+        <h2 id="buy-title">即将登陆 <em>Unity Asset Store</em></h2>
+        <p class="lead">Sun Forge 会支持每个新的 Unity LTS 版本。</p>
+        <div class="row">
+          
+          <a class="mail" href="mailto:support@sunforgetools.com" translate="no">support@sunforgetools.com</a>
+        </div>
+      </div>
+      <footer class="foot">
+  <a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="页脚">
+    <span class="parts"><a href="/zh-hans/#features">全部功能</a><a href="/zh-hans/sprite-baker/">精灵烘焙</a><a href="/zh-hans/2d-lighting/">2D 光照</a></span>
+    <a href="/zh-hans/learn/">学习</a>
+    <a href="/guide/sunforge/en/" hreflang="en">指南</a>
+    <a href="mailto:support@sunforgetools.com">技术支持</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="语言"><a href="/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></span>
+  </nav>
+</footer>
+    </section>
+  </div>
+</main>
+<script type="text/plain" data-src="/features/data.js"></script>
+<script type="text/plain" data-src="/switches.js"></script>
+<script type="text/plain" data-src="/ring.js"></script>
+<script type="text/plain" data-src="/plates.js"></script>
+<script src="/assets/scene.js"></script>
+<script src="/light.js"></script>
+<script src="/embers.js"></script>
+<script src="/landing.js"></script>
+<script src="/pager.js"></script>
+</body>
+</html>

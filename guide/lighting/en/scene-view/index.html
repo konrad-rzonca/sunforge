@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene view | Sun Forge 2D Lighting Guide</title>
+<meta name="description" content="The Scene view panel of Sun Forge 2D Lighting, and what each of its rows draws.">
+<link rel="canonical" href="https://sunforgetools.com/guide/lighting/en/scene-view/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/lighting/en/scene-view/">
+<meta property="og:title" content="Scene view | Sun Forge 2D Lighting Guide">
+<meta property="og:description" content="The Scene view panel of Sun Forge 2D Lighting, and what each of its rows draws.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 2D Lighting Guide", "item": "https://sunforgetools.com/guide/lighting/en/"}, {"@type": "ListItem", "position": 3, "name": "Scene view", "item": "https://sunforgetools.com/guide/lighting/en/scene-view/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/lighting/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/lighting/en/">Overview</a></li><li><a href="/guide/lighting/en/menus/">Menus</a></li><li><a href="/guide/lighting/en/scene-view/" aria-current=page>Scene view</a></li><li><a href="/guide/lighting/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/lighting/en/pages/">Sun Forge 2D Lighting Documentation</a></li><li><a href="/guide/lighting/en/custom-shaders/">Custom Shaders</a></li><li><a href="/guide/lighting/en/lighting/">Lighting</a></li><li><a href="/guide/lighting/en/changelog/">Changelog</a></li></ul></details></aside><div class="content page-scene-view"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><section class="top"><h1>Scene view</h1><p class="lead">The Scene view panel of Sun Forge 2D Lighting, and what each of its rows draws.</p></section><section class="block"><h2 id="sun-forge-scene-panel">Sun Forge Gizmos</h2><p class="lead">Shows a switch in the Scene view for each kind of thing Sun Forge draws there, and hides while the scene has nothing for it.</p><div class="shots rows"><aside class="card" aria-hidden="true"><p class="rest">Point at a row to read what it draws.</p><p class="title"></p><p class="tip"></p></aside><figure class="shot" style="--own:198px;--ratio:1.0505"><div class="canvas" style="aspect-ratio:198/208"><img src="/guide/pictures/sun-forge-2d-lighting-the-panel-in-the-scene-view-4bba4a15-922x512x198x208.webp" width="198" height="208" alt="Sun Forge 2D Lighting: the panel in the Scene view" fetchpriority="high"><a href="/guide/lighting/en/scene-view/#lights" class="spot" style="left:7.0707%;top:32.2115%;width:90.4040%;height:10.0962%;z-index:3" data-title="Lights" data-tip="How far each light reaches on the ground. Select a prefab to edit the lights it holds, such as a candle&#x27;s flame." aria-label="Lights. How far each light reaches on the ground. Select a prefab to edit the lights it holds, such as a candle&#x27;s flame."></a><a href="/guide/lighting/en/scene-view/#shadow-height" class="spot" style="left:7.0707%;top:42.3077%;width:90.4040%;height:23.0769%;z-index:1" data-title="Shadow Height" data-tip="How high each flat thing, such as a rug, casts its shadow from. Drag the top of its stem." aria-label="Shadow Height. How high each flat thing, such as a rug, casts its shadow from. Drag the top of its stem."></a><a href="/guide/lighting/en/scene-view/#feet-line" class="spot" style="left:7.0707%;top:65.3846%;width:90.4040%;height:23.0769%;z-index:2" data-title="Feet Line" data-tip="Where each sprite you drew stands. Drag the dashed line to its feet, then Apply in its Inspector." aria-label="Feet Line. Where each sprite you drew stands. Drag the dashed line to its feet, then Apply in its Inspector."></a><a href="/guide/lighting/en/scene-view/#ping-lighting-setup" class="spot" style="left:88.8889%;top:23.0769%;width:9.5960%;height:9.1346%;z-index:5" data-title="Ping Lighting Setup" data-tip="Pings the Lighting Setup in effect here, in the Hierarchy." aria-label="Ping Lighting Setup. Pings the Lighting Setup in effect here, in the Hierarchy."></a><a href="/guide/lighting/en/scene-view/#texture-view" class="spot" style="left:7.0707%;top:88.4615%;width:90.4040%;height:10.0962%;z-index:4" data-title="Texture View" data-tip="Shows a texture the lighting reads from each sprite, in this Scene view only." aria-label="Texture View. Shows a texture the lighting reads from each sprite, in this Scene view only."></a></div></figure></div><div class="groups"><section class="part"><h2 class="label">Lighting</h2><ul class="entries"><li id="ping-lighting-setup"><div class="name"><h3>Ping Lighting Setup</h3></div><div><p>Pings the Lighting Setup in effect here, in the Hierarchy.</p></div></li><li id="lights"><div class="name"><h3>Lights</h3><span class="where">Shortcut Manager: Sun Forge › Toggle Lights</span></div><div><p>How far each light reaches on the ground. Select a prefab to edit the lights it holds, such as a candle&#x27;s flame.</p></div></li><li id="shadow-height"><div class="name"><h3>Shadow Height</h3><span class="where">Shortcut Manager: Sun Forge › Toggle Shadow Height</span></div><div><p>How high each flat thing, such as a rug, casts its shadow from. Drag the top of its stem.</p></div></li><li id="feet-line"><div class="name"><h3>Feet Line</h3><span class="where">Shortcut Manager: Sun Forge › Toggle Feet Line</span></div><div><p>Where each sprite you drew stands. Drag the dashed line to its feet, then Apply in its Inspector.</p></div></li><li id="texture-view"><div class="name"><h3>Texture View</h3></div><div><p>Shows a texture the lighting reads from each sprite, in this Scene view only.</p></div></li></ul></section></div></section></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/lighting/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/lighting/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

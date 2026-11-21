@@ -1,0 +1,555 @@
+<!doctype html>
+<html data-late="/late.eb66aebaedcb.txt" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge: 2D Lighting and 3D to 2D Sprite Baker for Unity</title>
+<meta name="description" content="Bake 3D models into 2D sprite sheets with animations, normal maps and prefabs. Light 2D scenes like 3D in Unity URP with a real-time sun, lights and shadows.">
+<link rel="canonical" href="https://sunforgetools.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/">
+<meta property="og:title" content="Sun Forge: 2D Lighting and 3D to 2D Sprite Baker for Unity">
+<meta property="og:description" content="Bake 3D models into 2D sprite sheets with animations, normal maps and prefabs. Light 2D scenes like 3D in Unity URP with a real-time sun, lights and shadows.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebSite", "name": "Sun Forge", "alternateName": ["SunForge", "sunforgetools.com"], "url": "https://sunforgetools.com/"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Sun Forge", "description": "Bake 3D models into 2D sprite sheets with animations, normal maps and prefabs. Light 2D scenes like 3D in Unity URP with a real-time sun, lights and shadows.", "image": "https://sunforgetools.com/assets/og.jpg", "url": "https://sunforgetools.com/", "applicationCategory": "DeveloperApplication", "softwareRequirements": "Unity 6.3 LTS (6000.3.28f1 or newer) or Unity 6.6, URP with the 2D Renderer or the Universal Renderer, the Linear color space", "publisher": {"@id": "https://sunforgetools.com/#organization"}}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/pages.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    <div class="languages" role="group" aria-label="Language"><a href="/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title" data-pending>
+    <div class="stage" aria-hidden="true">
+      <!-- build.py site writes the plate's files here. -->
+      <picture><source media="(max-width: 500px) and (max-aspect-ratio: 3/5) and (min-height: 640px)" srcset="/assets/plate-phone.webp 1170w, /assets/plate-phone-two-thirds.webp 780w, /assets/plate-phone-half.webp 585w" sizes="104vw" width="1170" height="2532"><img class="layer plate" alt="" fetchpriority="high" src="/assets/plate-half.webp" srcset="/assets/plate.webp 5400w, /assets/plate-half.webp 2700w" sizes="(max-aspect-ratio: 11/10) 258vh, 336vh" width="5400" height="1800"></picture>
+      <canvas class="layer embers under"></canvas>
+    </div>
+    <div class="shade" aria-hidden="true"><canvas></canvas></div>
+
+    <div class="copy">
+      <!-- The name's display spacing: each k- span sets the space after its letter (landing.css). -->
+      <h1 id="hero-title" translate="no" aria-label="Sun Forge"><span class="word sun" aria-hidden="true">S<span class="k-u">U</span>N</span> <span class="word forge" aria-hidden="true"><span class="k-f">F</span><span class="k-o">O</span><span class="k-r">R</span>GE</span></h1>
+      <!-- build.py site writes brand.json's slogan here, one span per sentence. -->
+      <p class="slogan"><span>Bake 3D into 2D.</span> <span>Light 2D like 3D.</span></p>
+      <div class="actions">
+        <p class="soon"><strong>Coming soon</strong><span> to the Unity Asset Store</span></p>
+      </div>
+      <p class="meta">An editor tool for Unity 6 and URP</p>
+    </div>
+
+    <canvas class="embers over" aria-hidden="true"></canvas>
+    <a class="cue" href="#features">See what it does</a>
+  </section>
+
+  <div class="pages" id="features" data-pager="Pages">
+    <div class="nave" aria-hidden="true"><i class="left"></i><i class="right"></i></div>
+
+    <section class="page frame" id="world" data-name="World" data-light="left" aria-labelledby="world-title">
+      <div class="words">
+        <p class="eyebrow">In your game</p>
+        <h2 id="world-title">Every character and prop here <em>is a 2D sprite</em></h2>
+        <p class="lead">Each one is a flat sprite baked from a 3D model. The sun and the fires light them live.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="Time of day" data-switch="hour"><button type="button" data-pick="dawn" aria-pressed="false">Dawn</button><button type="button" data-pick="day" aria-pressed="false">Day</button><button type="button" data-pick="dusk" aria-pressed="true">Dusk</button><button type="button" data-pick="night" aria-pressed="false">Night</button></div></div>
+        <p class="fine">Sun Forge is a 3D to 2D sprite baker and real-time 2D lighting for Unity 6 and URP. Use them together, or either one alone.</p>
+      </div>
+      <div class="scene hall" data-picks>
+        <img class="on" data-hour="dusk" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A ruined stone hall at dusk: a knight by a brazier, an altar, a hoard of gold, two skeletons and blue crystals, lit by the low sun and the fires">
+        <img data-late data-hour="dawn" loading="lazy" alt="The same hall at dawn">
+        <img data-late data-hour="day" loading="lazy" alt="The same hall by day">
+        <img data-late data-hour="night" loading="lazy" alt="The same hall at night, lit by its braziers and crystals">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page figure flip" id="bake" data-name="Bake" data-light="right" aria-labelledby="bake-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/sprite-baker/">The sprite baker</a></p>
+        <h2 id="bake-title">Bake a 3D model <em>into a 2D character</em></h2>
+        <p class="lead">Pick the directions and the animations. Sun Forge renders every frame as a sprite and builds the prefab that plays them.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="Animation" data-switch="clip"><button type="button" data-pick="Idle" aria-pressed="true">Idle</button><button type="button" data-pick="Walk" aria-pressed="false">Walk</button><button type="button" data-pick="Attack" aria-pressed="false">Attack</button></div>
+          <div class="switch" role="group" aria-label="What the ring shows" data-switch="target"><button type="button" data-pick="in-game" aria-pressed="true">In Game</button><button type="button" data-pick="diffuse" aria-pressed="false">Diffuse</button><button type="button" data-pick="normal" aria-pressed="false">Normal</button><button type="button" data-pick="mask" aria-pressed="false">Mask</button><button type="button" data-pick="geometry-texture" aria-pressed="false">Geometry</button><button type="button" data-pick="emission" aria-pressed="false">Emission</button></div>
+          <div class="switch" role="group" aria-label="Directions" data-switch="directions"><span aria-hidden="true">Directions</span><button type="button" data-pick="4" aria-pressed="false">4</button><button type="button" data-pick="8" aria-pressed="false">8</button><button type="button" data-pick="16" aria-pressed="true">16</button></div>
+        </div>
+        <p class="fine">Point at a sprite or tap it, or drag the slider, to turn the model. The sprite of the direction it faces plays with it.</p>
+      </div>
+      <div class="ring" data-ring data-picks data-pending>
+        <canvas role="img" aria-label="Sixteen sprites of a knight round a ring, one for each direction it was baked in, with its 3D model in the middle and a camera filming it"></canvas>
+        <label class="turn"><span>Turn</span><input type="range" min="0" max="15" step="1" aria-label="The direction the model faces"></label>
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame" id="lit" data-name="Lit like 3D" data-light="left" aria-labelledby="lit-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/">The 2D lighting</a></p>
+        <h2 id="lit-title">Sprites light <em>like 3D models</em></h2>
+        <p class="lead">Metal shines, creases darken, and baked sprites cast shadows on each other. A bake writes the textures the light reads, and you paint none of them. Drag the star to take the light off the hall, and pick a texture to see each one.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="The texture left of the star" data-switch="view"><button type="button" data-pick="diffuse" aria-pressed="true">Diffuse</button><button type="button" data-pick="normal" aria-pressed="false">Normal</button><button type="button" data-pick="mask" aria-pressed="false">Mask</button><button type="button" data-pick="emission" aria-pressed="false">Emission</button><button type="button" data-pick="geometry" aria-pressed="false">Geometry</button></div></div>
+      </div>
+      <div class="scene hall wipe" data-wipe data-picks>
+        <img class="after" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A ruined stone hall of sprites at dusk, lit by the low sun and its fires">
+        <img class="before on" data-view="diffuse" src="/features/ruins-view-diffuse.webp" srcset="/features/ruins-view-diffuse.768w.webp 768w, /features/ruins-view-diffuse.960w.webp 960w, /features/ruins-view-diffuse.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The same frame in the sprites' own colors, with no light">
+        <img class="before" data-late data-view="normal" loading="lazy" alt="The same frame as its normal maps">
+        <img class="before" data-late data-view="mask" loading="lazy" alt="The same frame as its masks">
+        <img class="before" data-late data-view="emission" loading="lazy" alt="The same frame as its emission textures: black but for what glows">
+        <img class="before" data-late data-view="geometry" loading="lazy" alt="The same frame as its Geometry textures">
+        <span class="side left" data-names="view">Diffuse</span><span class="side right">In Game</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="46" aria-label="Where the lit frame starts">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame flip" id="faster" data-name="Faster" data-light="right" aria-labelledby="faster-title">
+      <div class="words">
+        <p class="eyebrow">For 3D games</p>
+        <h2 id="faster-title">1,000 characters: <em>18 FPS in 3D, 148 as sprites</em></h2>
+        <p class="lead">Left, 1,000 animated 3D models. Right, the same battle as baked sprites. If your 3D game keeps one camera angle, bake its models into sprites and build it in 2D. Drag the star to compare.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="The Sun Forge half, right of the star" data-switch="look"><span translate="no">Sun Forge</span><button type="button" data-pick="optimized" aria-pressed="true">Optimized</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button><button type="button" data-pick="regular" aria-pressed="false">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">Pixel</button></div></div>
+      </div>
+      <div class="scene wipe" data-wipe data-picks>
+        <img class="after on" data-look="optimized" data-full src="/features/bench-optimized.webp" srcset="/features/bench-optimized.768w.webp 768w, /features/bench-optimized.960w.webp 960w, /features/bench-optimized.webp 1920w, /features/bench-optimized.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="A battle in a forest clearing, seen from above, with every character a baked sprite in the Optimized look">
+        <img class="after" data-late data-look="realistic" data-full loading="lazy" alt="The same battle as baked sprites in the Realistic look">
+        <img class="after" data-late data-look="regular" data-full loading="lazy" alt="The same battle as baked sprites in the Regular look">
+        <img class="after" data-late data-look="cinematic" data-full loading="lazy" alt="The same battle as baked sprites in the Cinematic look">
+        <img class="after" data-late data-look="flat" data-full loading="lazy" alt="The same battle as baked sprites in the Flat look">
+        <img class="after" data-late data-look="pixel" data-full loading="lazy" alt="The same battle as sprites baked as pixel art, in the Pixel look">
+        <img class="before on" data-full src="/features/bench-3d.webp" srcset="/features/bench-3d.768w.webp 768w, /features/bench-3d.960w.webp 960w, /features/bench-3d.webp 1920w, /features/bench-3d.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="The same battle with every character an animated 3D model">
+        <div class='tally left'><b>3D models</b><strong>18 <small>FPS</small></strong><span>1,804 MB GPU memory</span></div><div class='tally right'><b>Baked sprites</b><strong><data data-look='optimized' value='148'>148</data><data data-look='realistic' value='108' hidden>108</data><data data-look='regular' value='108' hidden>108</data><data data-look='cinematic' value='80' hidden>80</data><data data-look='flat' value='80' hidden>80</data><data data-look='pixel' value='142' hidden>142</data> <small>FPS</small></strong><span><data data-look='optimized' value='1165'>1,165</data><data data-look='realistic' value='1175' hidden>1,175</data><data data-look='regular' value='1175' hidden>1,175</data><data data-look='cinematic' value='1184' hidden>1,184</data><data data-look='flat' value='1182' hidden>1,182</data><data data-look='pixel' value='469' hidden>469</data> MB GPU memory</span></div>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="Where the baked sprites start">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified. Every prop, the ground and the flames come from the showcase sample. Measured on <span translate="no">AMD Ryzen 9 7900X, NVIDIA GeForce RTX 4060, 2560 × 1440</span>.</p>
+    </section>
+
+    <section class="page stack" id="own-sprites" data-name="Your sprites" data-light="left" aria-labelledby="own-sprites-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/2d-lighting/#drawn-sprites">For drawn sprites</a></p>
+          <h2 id="own-sprites-title">Light the sprites <em>you already have</em></h2>
+        </div>
+        <p class="lead">Run the Set Up for Lighting command on your sprites, pixel art too. A normal map you bring gives them depth. Pick which colors are metal and which glow, and Sun Forge writes the metal and glow textures.</p>
+      </div>
+      <figure class="thirds">
+        <img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" sizes="(max-width: 899px) 100vw, 70vw" alt="One scene of pixel art three times: the sprites alone, with a normal map, and with a normal map, metal and glow">
+        <figcaption><span>Sprite alone</span><span>With a normal map</span><span>With a normal map, metal and glow</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="page frame flip" id="platformer" data-name="Platformer" data-light="right" aria-labelledby="platformer-title">
+      <div class="words">
+        <p class="eyebrow">For platformers</p>
+        <h2 id="platformer-title">Bake from the side <em>for a platformer</em></h2>
+        <p class="lead">At Elevation Angle 0 your models bake as side-view sprites. Light the level with a sun you move, lights you place and a style you tune.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="Style" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">Pixel Art</button></div>
+          <div class="switch" role="group" aria-label="Time of day" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">Day</button><button type="button" data-pick="dusk" aria-pressed="false">Dusk</button><button type="button" data-pick="night" aria-pressed="false">Night</button></div>
+        </div>
+        <p class="fine">For pixel art, bake at a low <strong>Pixels Per Unit</strong> with point filtering.</p>
+      </div>
+      <div class="scene" data-picks style="--pixel-frame: 1.055075">
+        <img class="on" data-hour="day" data-style="regular" src="/features/platformer-day-regular.webp" srcset="/features/platformer-day-regular.768w.webp 768w, /features/platformer-day-regular.960w.webp 960w, /features/platformer-day-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A side-view level by day in Regular: a knight leaping for coins between grass platforms, with mountains behind">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="The level by day in Cinematic">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="The level by day in Flat">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="The level at dusk in Regular">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="The level at dusk in Cinematic">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="The level at dusk in Flat">
+        <img data-late data-hour="night" data-style="regular" loading="lazy" alt="The level at night in Regular, lit by its torches">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="The level at night in Cinematic">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="The level at night in Flat">
+        <img data-late data-hour="day" data-style="pixel" loading="lazy" alt="The level by day, baked as pixel art">
+        <img data-late data-hour="dusk" data-style="pixel" loading="lazy" alt="The level at dusk, baked as pixel art">
+        <img data-late data-hour="night" data-style="pixel" loading="lazy" alt="The level at night, baked as pixel art">
+      </div>
+      <p class="credit">The characters, plants, chest and torch parts come from the showcase sample.</p>
+    </section>
+
+    <section class="page frame float" id="isometric" data-name="Isometric" data-light="left" aria-labelledby="isometric-title">
+      <div class="words">
+        <p class="eyebrow">For isometric games</p>
+        <h2 id="isometric-title">Bake for <em>isometric games</em></h2>
+        <p class="lead">Keep the Elevation Angle at 30 and a square of ground draws as a 2:1 diamond. Stack blocks in levels, or paint one level on a Tilemap of baked tiles.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="Style" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">Pixel Art</button><button type="button" data-pick="diffuse" aria-pressed="false" data-locks="hour">Diffuse</button><button type="button" data-pick="emission" aria-pressed="false" data-locks="hour cells">Emission</button></div>
+          <div class="switch" role="group" aria-label="Time of day" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">Day</button><button type="button" data-pick="dusk" aria-pressed="false">Dusk</button><button type="button" data-pick="night" aria-pressed="false">Night</button></div>
+          <div class="switch" role="group" aria-label="Terrain" data-switch="terrain"><button type="button" data-pick="stepped" aria-pressed="true">Stepped</button><button type="button" data-pick="one" aria-pressed="false">One Level</button></div>
+          <div class="switch" role="group" aria-label="Move and threat cells" data-switch="cells"><button type="button" data-pick="cells" aria-pressed="true">Cells</button><button type="button" data-pick="clean" aria-pressed="false">No Cells</button></div>
+        </div>
+      </div>
+      <div class="scene" data-picks>
+        <img class="on" data-terrain="stepped" data-cells="cells" data-hour="day" data-style="regular" src="/features/isometric-stepped-day-regular-cells.webp" srcset="/features/isometric-stepped-day-regular-cells.768w.webp 768w, /features/isometric-stepped-day-regular-cells.960w.webp 960w, /features/isometric-stepped-day-regular-cells.webp 1816w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1816" height="2164" style="--w: 1816; --h: 2164" alt="A stepped isometric island by day in the Regular style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="A stepped isometric island at dusk in the Regular style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="A stepped isometric island at night in the Regular style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="A stepped isometric island by day in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="A stepped isometric island at dusk in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="A stepped isometric island at night in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="A stepped isometric island by day in the Flat style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="A stepped isometric island at dusk in the Flat style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="A stepped isometric island at night in the Flat style with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="A stepped isometric island by day baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="A stepped isometric island at dusk baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="A stepped isometric island at night baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="diffuse" loading="lazy" alt="A stepped isometric island, unlit, in its Diffuse colors, with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="emission" loading="lazy" alt="A stepped isometric island, as its Emission texture: black but for what glows, with its move and threat cells">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="A stepped isometric island by day in the Regular style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="A stepped isometric island at dusk in the Regular style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="A stepped isometric island at night in the Regular style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="A stepped isometric island by day in the Cinematic style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="A stepped isometric island at dusk in the Cinematic style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="A stepped isometric island at night in the Cinematic style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="A stepped isometric island by day in the Flat style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="A stepped isometric island at dusk in the Flat style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="A stepped isometric island at night in the Flat style">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="A stepped isometric island by day baked as pixel art">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="A stepped isometric island at dusk baked as pixel art">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="A stepped isometric island at night baked as pixel art">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="diffuse" loading="lazy" alt="A stepped isometric island, unlit, in its Diffuse colors">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="emission" loading="lazy" alt="A stepped isometric island, as its Emission texture: black but for what glows">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="regular" loading="lazy" alt="A one-level isometric island by day in the Regular style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="A one-level isometric island at dusk in the Regular style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="A one-level isometric island at night in the Regular style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="A one-level isometric island by day in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="A one-level isometric island at dusk in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="A one-level isometric island at night in the Cinematic style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="A one-level isometric island by day in the Flat style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="A one-level isometric island at dusk in the Flat style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="A one-level isometric island at night in the Flat style with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="A one-level isometric island by day baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="A one-level isometric island at dusk baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="A one-level isometric island at night baked as pixel art with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-style="diffuse" loading="lazy" alt="A one-level isometric island, unlit, in its Diffuse colors, with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="cells" data-style="emission" loading="lazy" alt="A one-level isometric island, as its Emission texture: black but for what glows, with its move and threat cells">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="A one-level isometric island by day in the Regular style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="A one-level isometric island at dusk in the Regular style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="A one-level isometric island at night in the Regular style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="A one-level isometric island by day in the Cinematic style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="A one-level isometric island at dusk in the Cinematic style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="A one-level isometric island at night in the Cinematic style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="A one-level isometric island by day in the Flat style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="A one-level isometric island at dusk in the Flat style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="A one-level isometric island at night in the Flat style">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="A one-level isometric island by day baked as pixel art">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="A one-level isometric island at dusk baked as pixel art">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="A one-level isometric island at night baked as pixel art">
+        <img data-late data-terrain="one" data-cells="clean" data-style="diffuse" loading="lazy" alt="A one-level isometric island, unlit, in its Diffuse colors">
+        <img data-late data-terrain="one" data-cells="clean" data-style="emission" loading="lazy" alt="A one-level isometric island, as its Emission texture: black but for what glows">
+      </div>
+      <p class="credit">The characters, props and plants come from the showcase sample.</p>
+    </section>
+
+    <section class="page frame flip" id="styles" data-name="Styles" data-light="right" aria-labelledby="styles-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/#styles">The lighting</a></p>
+        <h2 id="styles-title">Pick a lighting style <em>and every sprite relights</em></h2>
+        <p class="lead">Regular, Cinematic and Flat light the same sprites, with nothing baked again. Save one as your own and tune it.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="Style" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button></div></div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-style="regular" src="/features/ruins-styles-regular.webp" srcset="/features/ruins-styles-regular.768w.webp 768w, /features/ruins-styles-regular.960w.webp 960w, /features/ruins-styles-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The knight by the brazier, lit in Regular">
+        <img data-late data-style="cinematic" loading="lazy" alt="The same view lit in Cinematic">
+        <img data-late data-style="flat" loading="lazy" alt="The same view lit in Flat">
+        <img data-late data-style="realistic" loading="lazy" alt="The same view lit in Realistic">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame" id="lights" data-name="Lights" data-light="left" aria-labelledby="lights-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/#lights">The lighting</a></p>
+        <h2 id="lights-title">The fire <em>lights up the sprites around it</em></h2>
+        <p class="lead">The fire here is a Light Source, which can be a point, a spot, a line or a rectangle and can flicker like a flame. Metal shines in its light.</p>
+      </div>
+      <div class="scene near">
+        <img class="on" src="/features/ruins-lights-night.webp" srcset="/features/ruins-lights-night.768w.webp 768w, /features/ruins-lights-night.960w.webp 960w, /features/ruins-lights-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The knight at night beside a brazier, whose fire lights his armor, the shield and the gold">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame flip" id="shadows" data-name="Shadows" data-light="right" aria-labelledby="shadows-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/#shadows">The lighting</a></p>
+        <h2 id="shadows-title">Sprites cast shadows <em>on each other</em></h2>
+        <p class="lead">Each baked sprite stores its height, so a shadow falls on other sprites up to the height of what casts it. Drag the star to compare.</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A broken column's shadow falling across the knight">
+        <img class="before on" src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The same view with the shadow on the ground alone">
+        <span class="side left">Ground only</span><span class="side right">Sprites too</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="Where shadows on sprites start">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame" id="emission" data-name="Glow" data-light="left" aria-labelledby="emission-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/sprite-baker/#glow">What a bake writes</a></p>
+        <h2 id="emission-title">Glow that <em>lights the scene</em></h2>
+        <p class="lead">A bake writes glowing parts to an emission texture. With Glow Light on it also adds a light at the glow, which lights the ground and the sprites near it. Drag the star to compare.</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/emission-with.webp" srcset="/features/emission-with.768w.webp 768w, /features/emission-with.960w.webp 960w, /features/emission-with.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A knight whose runes and horns glow and light the ground and the skeleton behind him">
+        <img class="before on" src="/features/emission-without.webp" srcset="/features/emission-without.768w.webp 768w, /features/emission-without.960w.webp 960w, /features/emission-without.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The same view with the knight's glow and its light off">
+        <span class="side left">Glow off</span><span class="side right">Glow on</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="Where the glow starts">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page frame flip" id="mist" data-name="Mist" data-light="right" aria-labelledby="mist-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/#mist">The lighting</a></p>
+        <h2 id="mist-title">Sprites stand in the mist, <em>not behind it</em></h2>
+        <p class="lead">The mist covers each sprite from the feet up, because each baked sprite stores its height. Every Light Source lights the mist too.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="Time of day" data-switch="hour"><button type="button" data-pick="day" aria-pressed="false">Day</button><button type="button" data-pick="dusk" aria-pressed="false">Dusk</button><button type="button" data-pick="night" aria-pressed="true">Night</button></div>
+          <div class="switch" role="group" aria-label="Style" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button></div>
+        </div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-hour="night" data-style="regular" src="/features/ruins-mistlooks-night-regular.webp" srcset="/features/ruins-mistlooks-night-regular.768w.webp 768w, /features/ruins-mistlooks-night-regular.960w.webp 960w, /features/ruins-mistlooks-night-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The knight at night in mist that glows round the brazier and the crystals">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="The mist at night in Cinematic">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="The mist at night in Flat">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="The mist at dusk in Regular">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="The mist at dusk in Cinematic">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="The mist at dusk in Flat">
+        <img data-late data-hour="day" data-style="regular" loading="lazy" alt="The mist by day in Regular">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="The mist by day in Cinematic">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="The mist by day in Flat">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page stack" id="camera" data-name="Any camera" data-light="left" aria-labelledby="camera-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/sprite-baker/#directions">The baker</a></p>
+          <h2 id="camera-title">Side view, top-down <em>or isometric</em></h2>
+        </div>
+        <p class="lead">Set the Elevation Angle anywhere from 0 to 90 degrees, and the same model bakes for your game's camera, in 1 to 64 directions.</p>
+      </div>
+      <div class="views" style="--tallest: 676; --across: 984">
+        <figure><img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="The knight baked for a side view"><figcaption>Side view, 0°</figcaption></figure>
+        <figure><img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="The knight baked for an isometric view"><figcaption>Isometric, 30°</figcaption></figure>
+        <figure><img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="The knight baked for a top-down view"><figcaption>Top-down, 60°</figcaption></figure>
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page stack" id="prefabs" data-name="Prefab" data-light="left" aria-labelledby="ready-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/sprite-baker/#prefabs">What a bake writes</a></p>
+          <h2 id="ready-title">A prefab <em>with collider, hitbox and animations</em></h2>
+        </div>
+        <p class="lead">Each bake writes one. Its collider and hitbox fit the model, and a starter archetype adds scripts, such as a Hero that walks and shoots.</p>
+      </div>
+      <div class="bundle">
+        <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 899px) 100vw, 80vw" alt="The knight with its collider, hitbox and health bar drawn on it, beside frames of its Idle, Walk and Attack clips under its Animator Controller, and its Hero scripts: Movement, Shooter and Health">
+      </div>
+      <p class="credit">The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page editor flip" id="editor" data-name="Bake Window" data-light="right" aria-labelledby="editor-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/sprite-baker/#preview">The Bake Window</a></p>
+        <h2 id="editor-title">See the sprite <em>before you bake it</em></h2>
+        <p class="lead">The Bake Window shows your model, the bake camera and the sprite it will write. Orbit the preview, play a clip, then bake.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 899px) 100vw, 70vw" alt="The Bake Window: a preview of the knight's 3D model beside the sprite it will write, and the bake's settings on the right">
+        <span class="caption" style="left: 28.45%; top: 66.26%">2D Output</span><span class="caption" style="left: 48.23%; top: 58.41%">3D Source</span>
+      </figure>
+      <p class="credit">The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page editor" id="gizmos" data-name="Gizmos" data-light="left" aria-labelledby="gizmos-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/sprite-baker/#preview">The Bake Window</a></p>
+        <h2 id="gizmos-title">Check the collider and hitbox <em>in the preview</em></h2>
+        <p class="lead">Tick a row in the Gizmos menu and the preview draws it, in the color beside its name.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-gizmos.webp" srcset="/features/cards-gizmos.768w.webp 768w, /features/cards-gizmos.960w.webp 960w, /features/cards-gizmos.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="The Bake Window with its Gizmos menu open and the knight's collider, hitbox and anchors drawn in the preview, in front of the same window in the light theme with the settings under the preview">
+      </figure>
+      <p class="credit">The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</p>
+    </section>
+
+    <section class="page editor flip" id="workflow" data-name="Presets" data-light="right" aria-labelledby="workflow-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/sprite-baker/#presets">The Bake Window</a></p>
+        <h2 id="workflow-title">Presets and <em>batch baking</em></h2>
+        <p class="lead">A preset saves how one model bakes. The Batch tab bakes the presets you select in one run.</p>
+        <p class="fine">A rebake keeps the prefab, the children and components you added, and your platform overrides.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-batch.webp" srcset="/features/cards-batch.768w.webp 768w, /features/cards-batch.960w.webp 960w, /features/cards-batch.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="The Bake Window with its preset gallery open over a chest, in front of its Batch tab, with the presets to bake in one run ticked">
+      </figure>
+      <p class="credit">Shown with the showcase's models.</p>
+    </section>
+
+    <section class="page editor" id="platforms" data-name="Platforms" data-light="left" aria-labelledby="platforms-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/2d-lighting/#platforms">Where it runs</a></p>
+        <h2 id="platforms-title">Tested on WebGL&nbsp;2, WebGPU <em>and Android</em></h2>
+        <p class="lead">Sun Forge is built for every platform URP supports. Builds of your game run on Windows, on the web and on ARM64 Android.</p>
+      </div>
+      <figure class="targets">
+        <div class="devices">
+          <div class="target windows">
+            <span class="bar" aria-hidden="true"><b>Your game</b><i></i><i></i><i></i></span>
+            <span class="screen"><img src="/features/bench-cinematic.webp" srcset="/features/bench-cinematic.768w.webp 768w, /features/bench-cinematic.960w.webp 960w, /features/bench-cinematic.webp 1920w, /features/bench-cinematic.2560w.webp 2560w" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" sizes="(max-width: 899px) 160vw, 76vw" alt="Knights and skeletons fighting in a forest clearing, lit by the sun, campfires and torches"></span>
+          </div>
+          <div class="target web">
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+            <span class="screen"><img src="/features/ruins-hours-noon.webp" srcset="/features/ruins-hours-noon.768w.webp 768w, /features/ruins-hours-noon.960w.webp 960w, /features/ruins-hours-noon.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A knight and two skeletons by an altar and a chest of gold in a ruined stone hall at noon"></span>
+          </div>
+          <div class="target android">
+            <span class="screen"><img src="/features/ruins-hours-night.webp" srcset="/features/ruins-hours-night.768w.webp 768w, /features/ruins-hours-night.960w.webp 960w, /features/ruins-hours-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The same hall at night, lit by two braziers and glowing crystals"></span>
+          </div>
+        </div>
+        <figcaption>
+          <div class="said"><strong>Windows</strong><ul class="apis"><li translate="no">Direct3D&nbsp;12</li></ul></div>
+          <div class="said"><strong>The web</strong><ul class="apis"><li translate="no">WebGL&nbsp;2</li><li><span translate="no">WebGPU</span> <small>on Unity&nbsp;6.6</small></li></ul><p class="tested">Tested in Chrome, and WebGL&nbsp;2 in Firefox too</p></div>
+          <div class="said"><strong>Android <small translate="no">ARM64</small></strong><ul class="apis"><li translate="no">Vulkan</li><li translate="no">OpenGL&nbsp;ES&nbsp;3</li></ul><p class="tested">Tested on a Pixel&nbsp;8a and a Galaxy&nbsp;A36</p></div>
+        </figcaption>
+      </figure>
+      <p class="credit">The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified. In the battle, every prop, the ground and the flames come from the showcase sample.</p>
+    </section>
+
+    <section class="page facts" id="included" data-name="What you get" data-light="left" aria-labelledby="included-title">
+      <div>
+        <p class="eyebrow">In the package</p>
+        <h2 id="included-title">What <em>you get</em></h2>
+        <ul class="ticks"><li>The bake tool, Sun Forge, with a Getting Started sample</li><li>The lighting, Sun Forge 2D Lighting, with a Lit Scene sample</li><li>The Showcase, a playable forest scene with its 3D models and presets</li><li>The full C# source</li></ul>
+      </div>
+      <div>
+        <p class="eyebrow">Requirements</p>
+        <h2>What <em>it needs</em></h2>
+        <dl class="needs">
+          <dt>Unity</dt><dd>6.3 LTS (6000.3.28f1 or newer) or 6.6</dd>
+          <dt>Render pipeline</dt><dd>URP, with the 2D Renderer or the Universal Renderer. Not the Built-in Render Pipeline or HDRP</dd>
+          <dt>Color space</dt><dd>Linear</dd>
+          <dt>On Windows</dt><dd>A project folder path of 110 characters or fewer</dd>
+          <dt>Language</dt><dd>The editor and documentation are in English</dd>
+          <dt>Installs with it</dt><dd>Sun Forge 2D Lighting, URP, Render Pipelines Core, Burst, the Input System and the 2D Sprite package</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="page questions" id="questions" data-name="Questions" data-light="right" aria-labelledby="questions-title">
+      <div class="words">
+        <p class="eyebrow">Questions</p>
+        <h2 id="questions-title">Before <em>you buy</em></h2>
+      </div>
+      <div class="answers">
+        <div><h3>Do I rebake when I move a light?</h3><p>No. The sun, the lights and the style change live. Shadows move with their sprites and keep the direction they were baked with.</p></div>
+        <div><h3>Are the sprites locked to Sun Forge?</h3><p>No. A bake writes standard Unity sprites, atlases, animation clips, an Animator Controller and a prefab.</p></div>
+        <div><h3>Do my 3D models end up in the game?</h3><p>No. No 3D model, mesh or rig goes into your build.</p></div>
+        <div><h3>Does it fit a 3D game?</h3><p>If your 3D game keeps one camera angle, bake its models into sprites and build it in 2D.</p></div>
+        <div><h3>Can I light sprites I drew myself?</h3><p>Yes. Select your sprites, right-click and choose <strong>Sun Forge &gt; Set Up for Lighting</strong>. A normal map of your own gives them form.</p></div>
+        <div><h3>Where does it run?</h3><p>It is built for every platform URP supports. Builds of your game run on Windows with Direct3D 12, on ARM64 Android with Vulkan or OpenGL ES 3, and on the web with WebGL 2. On Unity 6.6, web builds run with WebGPU too.</p></div>
+      </div>
+    </section>
+
+    <section class="page questions" id="more-questions" data-name="More questions" data-light="left" aria-labelledby="more-questions-title">
+      <div class="words">
+        <p class="eyebrow">Questions</p>
+        <h2 id="more-questions-title">More <em>questions</em></h2>
+      </div>
+      <div class="answers">
+        <div><h3>Can I use the 2D lighting without the sprite baker?</h3><p>Yes. Each works without the other. The lighting lights sprites you drew in any 2D or 2.5D scene, and a bake can write plain sprites for Unity's default sprite material.</p></div>
+        <div><h3>Does it work with Unity's Light 2D?</h3><p>Yes. A Light 2D can drive a Sun Forge Light Source, and it keeps lighting Unity's Lit material.</p></div>
+        <div><h3>How long does a bake take?</h3><p>On a Ryzen 9 7900X with an RTX 4060, a tree in 16 directions bakes in about 25 seconds, and a 4-animation character, 968 sprites, in about a minute.</p></div>
+        <div><h3>How much texture memory do baked sprites take?</h3><p>On desktop, the showcase's beech tree in 16 directions takes 9.5 MiB, and its knight's 968 sprites 81 MiB. Fewer directions, a lower resolution or fewer lighting textures take less.</p></div>
+        <div><h3>What can I bake?</h3><p>A model or a prefab with its animation clips and particle systems, in its own materials and Shader Graphs. Props, particle effects and ground tiles bake too.</p></div>
+        <div><h3>Can I bake from code, or use Addressables?</h3><p>Yes. You can bake from editor code and extend the bake with your own C# steps, and a bake can register its prefab and atlases with Addressables.</p></div>
+      </div>
+    </section>
+
+    <section class="page closing" id="buy" data-name="Coming soon" data-light="both" aria-labelledby="buy-title">
+      <div class="words">
+        <h2 id="buy-title">Coming soon to <em>the Unity Asset Store</em></h2>
+        <p class="lead">Sun Forge supports each new Unity LTS release.</p>
+        <div class="row">
+          
+          <a class="mail" href="mailto:support@sunforgetools.com" translate="no">support@sunforgetools.com</a>
+        </div>
+      </div>
+      <footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="Language"><a href="/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+    </section>
+  </div>
+</main>
+<script type="text/plain" data-src="/features/data.js"></script>
+<script type="text/plain" data-src="/switches.js"></script>
+<script type="text/plain" data-src="/ring.js"></script>
+<script type="text/plain" data-src="/plates.js"></script>
+<script src="/assets/scene.js"></script>
+<script src="/light.js"></script>
+<script src="/embers.js"></script>
+<script src="/landing.js"></script>
+<script src="/pager.js"></script>
+</body>
+</html>

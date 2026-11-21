@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8-directional sprites in Unity: 4, 8 or 16? | Sun Forge</title>
+<meta name="description" content="How many directions a sprite set needs, the camera angle for side, top-down and isometric views, and how to pick the sprite for a facing in Unity.">
+<link rel="canonical" href="https://sunforgetools.com/learn/8-directional-sprites/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/learn/8-directional-sprites/">
+<meta property="og:title" content="8-directional sprites in Unity: 4, 8 or 16? | Sun Forge">
+<meta property="og:description" content="How many directions a sprite set needs, the camera angle for side, top-down and isometric views, and how to pick the sprite for a facing in Unity.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-8-directional-sprites.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="One knight baked as a sprite from the side, from 30 degrees above and from 60 degrees above">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "8-directional sprites in Unity: 4, 8 or 16?", "description": "How many directions a sprite set needs, the camera angle for side, top-down and isometric views, and how to pick the sprite for a facing in Unity.", "image": "https://sunforgetools.com/assets/share/learn-8-directional-sprites.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-18", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/learn/8-directional-sprites/"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Learn", "item": "https://sunforgetools.com/learn/"}, {"@type": "ListItem", "position": 3, "name": "8-directional sprites", "item": "https://sunforgetools.com/learn/8-directional-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/8-directional-sprites/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    <div class="languages" role="group" aria-label="Language"><a href="/learn/8-directional-sprites/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/8-directional-sprites/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/8-directional-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/8-directional-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/learn/">Learn</a></p>
+      <h1>8-directional sprites in Unity: 4, 8 or 16?</h1>
+      <p class="lead">A directional sprite set is one character drawn once for each direction it can face. Every frame of every animation is drawn again for every direction, so the number of directions multiplies both the art and the texture memory.</p>
+    </header>
+    <h2 id="4-8-or-16-directions">4, 8 or 16 directions</h2>
+    <p>The fewer directions there are, the further a sprite points away from where the character is heading.</p>
+    <p>Take a character with three animations of 8 frames each, at 128 by 128 pixels. Uncompressed RGBA 32 bit takes 4 bytes per pixel, so one frame takes 64 KiB.</p>
+    <div class="table" tabindex="0" role="group" aria-label="What each direction count costs">
+      <table>
+        <thead><tr><th scope="col">Directions</th><th scope="col">Largest error</th><th scope="col">Frames</th><th scope="col">Uncompressed</th><th scope="col">Drawn if you flip</th></tr></thead>
+        <tbody>
+        <tr><td>4</td><td>45°</td><td>96</td><td>6 MiB</td><td>3</td></tr>
+        <tr><td>8</td><td>22.5°</td><td>192</td><td>12 MiB</td><td>5</td></tr>
+        <tr><td>16</td><td>11.25°</td><td>384</td><td>24 MiB</td><td>9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A compressed format such as BC7, at 8 bits per pixel, takes a quarter of these figures.</p>
+    <ul>
+      <li><strong>4 directions</strong> fit movement on a grid and small pixel art.</li>
+      <li><strong>8 directions</strong> match the eight ways a keyboard moves a character.</li>
+      <li><strong>16 directions</strong> fit what turns freely, such as a vehicle or a character that aims at the pointer.</li>
+    </ul>
+    <h2 id="flip-sprites-to-draw-half-the-directions">Flip sprites to draw half the directions</h2>
+    <p>A character that looks the same from both sides needs only the directions on one side, plus straight up and straight down. For the other side, set the Sprite Renderer's <code>flipX</code>. It flips only the rendering, so use a negative scale when colliders must flip too.</p>
+    <p>Flipping looks wrong in two cases:</p>
+    <ul>
+      <li>The character is asymmetric. A sword in the right hand moves to the left hand.</li>
+      <li>Light is drawn into the sprite. A highlight painted on the left moves to the right, so the light changes sides when the character turns.</li>
+    </ul>
+    <h2 id="the-camera-angle-for-side-view-top-down-and-isometric-sprites">The camera angle for side view, top-down and isometric sprites</h2>
+    <p>A sprite set is also drawn for one camera elevation: how far the camera is raised above the horizon. At 0 degrees it sees the character from the side, as in a platformer. At 90 it looks straight down. Top-down games that show faces use an angle in between.</p>
+    <figure class="row">
+      <img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="A knight sprite baked from a 3D model at 0 degrees, a side view">
+      <img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="The same knight baked at 30 degrees, the isometric angle">
+      <img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="The same knight baked at 60 degrees, a top-down view">
+      <figcaption>Baked at 0, 30 and 60 degrees. The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <p>From an elevation of e, a circle on the ground is drawn as an ellipse whose height is sin(e) times its width, and a square tile seen corner first becomes a diamond with the same proportions. At 30 degrees sin(e) is 0.5, so the diamond is twice as wide as it is tall. That 2:1 diamond is what most games call isometric. It is the default Cell Size of Unity's isometric Tilemap, x 1 and y 0.5.</p>
+    <p>Two angles are often mixed up. The edges of a 2:1 tile run at about 26.6 degrees on the screen, and the camera that draws them is raised 30 degrees. True isometric projection is a third case: its camera is raised about 35.3 degrees, and its tile edges run at 30.</p>
+    <h2 id="how-to-make-isometric-sprites">How to make isometric sprites</h2>
+    <p>Draw them on a 2:1 grid, or render a 3D model with an orthographic camera raised 30 degrees, in Blender for example (<a href="/learn/3d-models-to-2d-sprites/">the steps</a>). Turn the model in equal steps and keep the camera and the light still, so the light comes from the same side of the screen in every direction.</p>
+    <h2 id="pick-the-sprite-for-a-direction-in-unity">Pick the sprite for a direction in Unity</h2>
+    <ol>
+      <li>Choose one direction order for your sheets, clips and code. The code below starts at facing right and counts counterclockwise, as <code>Mathf.Atan2</code> measures angles.</li>
+      <li>Turn the facing vector into an index:
+        <pre tabindex="0" translate="no"><code>static int DirectionIndex(Vector2 facing, int count)
+{
+    float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
+    int index = Mathf.RoundToInt(angle / (360f / count));
+    return (int)Mathf.Repeat(index, count);
+}</code></pre>
+      </li>
+      <li>Show the sprites of that index, in one of three ways:
+        <ul>
+          <li>Without an Animator, set <code>SpriteRenderer.sprite</code> from your own table of sprites by direction and frame.</li>
+          <li>With an Animator, add an integer parameter and a state for each direction, and give each transition a condition on the parameter. Set it with <code>SetInteger</code>.</li>
+          <li>With a <strong>2D Simple Directional</strong> blend tree, add one clip per direction and type its direction into <strong>Pos X</strong> and <strong>Pos Y</strong>, such as 1 and 0 for right. A blend tree mixes several motions, and a sprite cannot be half of one picture and half of another, so pass the direction of the index you picked, not the raw input.</li>
+        </ul>
+      </li>
+    </ol>
+    <h2 id="traps">Traps</h2>
+    <ul>
+      <li><strong>Direction order.</strong> Sheets start at different directions and run different ways. Before you wire a sheet up, write down which of your indexes each of its rows is.</li>
+      <li><strong>Jitter between two directions.</strong> A stick held on the line between two directions switches sprites every frame. Keep the current direction until the angle is past that line by a margin, here 5 degrees:
+        <pre tabindex="0" translate="no"><code>float step = 360f / count;
+float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
+if (Mathf.Abs(Mathf.DeltaAngle(current * step, angle)) &gt; step * 0.5f + 5f)
+    current = DirectionIndex(facing, count);</code></pre>
+        <p>When the vector is near zero, skip the update, so the character keeps facing the way it stopped.</p>
+      </li>
+      <li><strong>Squashed angles.</strong> In a 2:1 isometric game, a character that walks along a tile edge moves at 26.6 degrees on the screen, not 45, so a sprite picked from the screen vector is often the wrong one. Divide the vector's y by sin(e) first, which doubles it at 30 degrees.</li>
+      <li><strong>Drifting pivots.</strong> The pivot is where a sprite's local coordinates start. Put it at the same place between the feet in every frame of every direction, or the character shifts as it turns. The Sprite Editor's <strong>Automatic</strong> slicing cuts by transparency, so each frame gets a rectangle of its own size, and a preset pivot moves with the pose. Slice by grid instead, with the character at the same place in each cell.</li>
+    </ul>
+    <h2 id="bake-the-directions-from-a-3d-model-with-sun-forge">Bake the directions from a 3D model with Sun Forge</h2>
+    <p>Sun Forge is a Unity editor tool that does this rendering inside Unity. It bakes a 3D model or prefab, with its animation clips, into a 2D sprite prefab: a sprite sheet for each direction, and the animations with an Animator Controller.</p>
+    <p>In the <a href="/guide/sunforge/en/bake-window/">Bake Window</a>, you set <strong>Directions</strong> from 1 to 64 and can switch off any of them. <strong>Elevation Angle</strong> goes from 0 to 90 degrees in steps of 0.25: 0 for a side view, 90 for straight down, and 30 for the <a href="/guide/sunforge/en/output-reference/#isometric-scenes">2:1 diamond</a>.</p>
+    <figure class="bare">
+      <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 1100px) 100vw, 1040px" alt="A baked knight prefab with its collider, hitbox and health bar drawn on it, beside frames of its Idle, Walk and Attack clips">
+      <figcaption>The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <p>The output is standard Unity assets: sprites, sprite atlases, animation clips, an Animator Controller and a prefab. <a href="/sprite-baker/#directions">The sprite baker's page</a> has a ring of baked sprites you can turn.</p>
+    <p>The Bake tab shows the texture memory after each bake, and fewer directions take less. For scale, the knight in Sun Forge's showcase has 968 sprites over 4 animations and takes 81 MiB, packed for Windows, Mac and Linux.</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">Read next</h2>
+      <ul>
+        <li><a href="/learn/3d-models-to-2d-sprites/">Turning 3D models into 2D sprites in Unity</a></li>
+        <li><a href="/learn/2d-shadows-top-down/">Shadows for 2D and top-down sprites in Unity</a></li>
+        <li><a href="/sprite-baker/#directions">Sun Forge's sprite baker: directions and camera angles</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="Language"><a href="/learn/8-directional-sprites/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/8-directional-sprites/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/8-directional-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/8-directional-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

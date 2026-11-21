@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation | Sun Forge 2D Lighting Guide</title>
+<meta name="description" content="Hover a field in an Inspector for what it does. These pages hold what no field shows:">
+<link rel="canonical" href="https://sunforgetools.com/guide/lighting/en/pages/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/lighting/en/pages/">
+<meta property="og:title" content="Documentation | Sun Forge 2D Lighting Guide">
+<meta property="og:description" content="Hover a field in an Inspector for what it does. These pages hold what no field shows:">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 2D Lighting Documentation", "item": "https://sunforgetools.com/guide/lighting/en/pages/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/lighting/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/lighting/0.3/en/">Overview</a></li><li><a href="/guide/lighting/0.3/en/menus/">Menus</a></li><li><a href="/guide/lighting/0.3/en/scene-view/">Scene view</a></li><li><a href="/guide/lighting/0.3/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/lighting/0.3/en/pages/" aria-current=page>Sun Forge 2D Lighting Documentation</a></li><li><a href="/guide/lighting/0.3/en/custom-shaders/">Custom Shaders</a></li><li><a href="/guide/lighting/0.3/en/lighting/">Lighting</a></li><li><a href="/guide/lighting/0.3/en/changelog/">Changelog</a></li></ul></details></aside><div class="content page-pages"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><article class="doc"><h1 id="sun-forge-2d-lighting-documentation">Sun Forge 2D Lighting Documentation</h1>
+<p>Hover a field in an Inspector for what it does. These pages hold what no field shows:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Look up</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lighting.md</code></td>
+<td>The Light Source and your Light 2D lights, the style materials, the properties you tune on a copy, the textures a sprite is lit from and how to bring your own or pick the colors that glow or shine like metal, what each setting costs and the buttons that set them at once, and setting up a scene from a script</td>
+</tr>
+<tr>
+<td><code>Custom-Shaders.md</code></td>
+<td>Lighting a Shader Graph or shader of your own with the scene's style</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Lit Scene</strong> sample, which the Package Manager offers under <strong>Samples</strong>, is a lit scene to open and take apart. Its <code>README.md</code> says how it is set up.</p>
+<p>A script in an assembly definition of your own references <code>KonradRzonca.SunForge.Lighting</code>, and an editor script also <code>KonradRzonca.SunForge.Lighting.Editor</code>. The components are in the <code>KonradRzonca.SunForge</code> namespace, and the editor types in <code>KonradRzonca.SunForge.Editor</code>.</p>
+<p>These pages are also online at <a href="https://sunforgetools.com/guide/lighting/0.3/en/">https://sunforgetools.com/guide/lighting/0.3/en/</a>, with every menu, component and Scene view row and what each does.</p>
+</article></div></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/lighting/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/lighting/0.3/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

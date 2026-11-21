@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유니티 2D와 탑다운 스프라이트의 그림자 | Sun Forge</title>
+<meta name="description" content="유니티에서 2D 스프라이트에 그림자를 넣는 네 가지 방법(Shadow Caster 2D, 블롭, 기울인 사본, 3D 모델 렌더)과 각 방법이 맞는 경우, 함정을 다룹니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/learn/2d-shadows-top-down/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/learn/2d-shadows-top-down/">
+<meta property="og:title" content="유니티 2D와 탑다운 스프라이트의 그림자 | Sun Forge">
+<meta property="og:description" content="유니티에서 2D 스프라이트에 그림자를 넣는 네 가지 방법(Shadow Caster 2D, 블롭, 기울인 사본, 3D 모델 렌더)과 각 방법이 맞는 경우, 함정을 다룹니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="베이크된 스프라이트로 만든 씬. 부서진 기둥의 그림자가 돌바닥을 가로질러, 그림자 속에 선 기사 위로 드리웁니다.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "\uc720\ub2c8\ud2f0 2D\uc640 \ud0d1\ub2e4\uc6b4 \uc2a4\ud504\ub77c\uc774\ud2b8\uc758 \uadf8\ub9bc\uc790", "description": "\uc720\ub2c8\ud2f0\uc5d0\uc11c 2D \uc2a4\ud504\ub77c\uc774\ud2b8\uc5d0 \uadf8\ub9bc\uc790\ub97c \ub123\ub294 \ub124 \uac00\uc9c0 \ubc29\ubc95(Shadow Caster 2D, \ube14\ub86d, \uae30\uc6b8\uc778 \uc0ac\ubcf8, 3D \ubaa8\ub378 \ub80c\ub354)\uacfc \uac01 \ubc29\ubc95\uc774 \ub9de\ub294 \uacbd\uc6b0, \ud568\uc815\uc744 \ub2e4\ub8f9\ub2c8\ub2e4.", "image": "https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ko/learn/2d-shadows-top-down/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "\ud559\uc2b5", "item": "https://sunforgetools.com/ko/learn/"}, {"@type": "ListItem", "position": 3, "name": "2D \uc2a4\ud504\ub77c\uc774\ud2b8 \uadf8\ub9bc\uc790", "item": "https://sunforgetools.com/ko/learn/2d-shadows-top-down/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">기능</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ko/#features">모든 기능</a>
+        <a href="/ko/sprite-baker/">스프라이트 베이커</a>
+        <a href="/ko/2d-lighting/">2D 조명</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    <div class="languages" role="group" aria-label="언어"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/ko/learn/">학습</a></p>
+      <h1>유니티 2D와 탑다운 스프라이트의 그림자</h1>
+      <p class="lead">Unity에서 2D 스프라이트에 그림자를 넣는 방법은 네 가지입니다. URP의 Shadow Caster 2D, 발밑의 블롭 스프라이트, 스프라이트를 어둡게 기울인 사본, 스프라이트의 원본 3D 모델에서 렌더한 그림자입니다. 하나를 고르려면, 그림자가 화면과 같은 평면에 놓이는지 캐릭터가 서 있는 지면에 놓이는지부터 정하세요.</p>
+    </header>
+    <h2 id="two-kinds-of-2d-shadows">두 종류의 2D 그림자</h2>
+    <p>옆에서 보는 플랫포머는 평평한 월드이며, 바로 위에서 내려다보는 던전도 마찬가지입니다. 벽이 횃불의 빛을 막고, 벽 뒤는 어둡습니다.</p>
+    <p>탑다운이나 2.5D 월드에서는 카메라가 비스듬히 내려다보고, 캐릭터는 지면 위에 똑바로 서 있습니다. 여기서 그림자는 캐릭터의 발치에서 지면에 놓이며, 태양 반대쪽을 향합니다.</p>
+    <figure>
+      <img src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="Sun Forge로 베이크한 스프라이트로 만든 씬. 비스듬히 위에서 본 돌바닥 위에 기사, 부서진 기둥, 돌 블록이 있고, 저마다 옆 지면에 부드러운 그림자가 놓여 있습니다.">
+      <figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <p>Shadow Caster 2D 컴포넌트는 첫 번째 종류의 그림자를 만들고, 나머지 세 방법은 두 번째 종류를 만듭니다.</p>
+    <h2 id="unity-s-shadow-caster-2d-and-light-2d">Unity의 Shadow Caster 2D와 Light 2D</h2>
+    <p>Shadow Caster 2D는 2D 광원이 그림자를 드리울 때 쓰는 모양을 정하는 URP 컴포넌트입니다. 프로젝트에는 2D 렌더러를 쓰는 URP가 필요하고, 스프라이트에는 기본 머티리얼인 Sprite-Lit-Default처럼 2D 광원이 비추는 머티리얼이 필요합니다.</p>
+    <ol>
+      <li>계층 구조 창에서 마우스 오른쪽 버튼을 클릭하고 <strong>Light</strong>(광원) 메뉴를 선택한 다음, Spot, Freeform, Sprite 중 하나를 고릅니다.</li>
+      <li>Light 2D 컴포넌트에서 <strong>Shadows</strong>(그림자) 체크박스를 켭니다. <strong>Strength</strong>(강도) 필드는 그림자 캐스터가 빛을 얼마나 막을지 0~1 사이로 정하고, <strong>Softness</strong>(부드러움) 필드는 그림자 가장자리를 부드럽게 합니다.</li>
+      <li>그림자를 드리울 스프라이트를 선택하고 <strong>Add Component</strong>(컴포넌트 추가) 버튼을 클릭해 <strong>Shadow Caster 2D</strong> 컴포넌트를 추가합니다. 그 모양은 스프라이트 에디터에서 정한 스프라이트의 Custom Outline이며, 씬 뷰는 이 모양을 흰색으로 그립니다.</li>
+      <li>다른 모양을 쓰려면 <strong>Casting Source</strong>(캐스팅 소스) 필드를 같은 게임 오브젝트에 있는 Polygon Collider 2D 같은 콜라이더로 설정하거나, <strong>Shape Editor</strong> 옵션으로 설정하고 <strong>Edit Shape</strong> 버튼을 클릭합니다.</li>
+      <li>여러 스프라이트의 그림자를 합치려면 그 스프라이트를 <strong>Composite Shadow Caster 2D</strong> 컴포넌트가 있는 게임 오브젝트의 자식으로 만듭니다.</li>
+    </ol>
+    <p><strong>Casting Option</strong>(캐스팅 옵션) 필드는 그림자 캐스터가 다른 스프라이트에 그림자를 드리울지, 자신에게 드리울지, 둘 다인지 정하고, <strong>Target Sorting Layers</strong>(타겟 정렬 레이어) 필드는 그림자를 받을 정렬 레이어를 정합니다.</p>
+    <p>이 방법으로는 탑다운 캐릭터에게 지면 위 그림자를 줄 수 없습니다:</p>
+    <ul>
+      <li>그림자 캐스터는 빛을 막는 외곽선입니다. 스프라이트의 키나 그림자의 길이를 정하는 설정은 없습니다.</li>
+      <li>햇빛처럼 모든 스프라이트를 고르게 비추는 전역 광원에는 <strong>Shadows</strong> 섹션이 없습니다. 다른 종류의 광원은 광원이 있는 위치에서 그림자를 드리우므로, 그림자 캐스터의 반대편에 그림자가 생깁니다.</li>
+    </ul>
+    <p>Unity의 탑다운 샘플 Happy Harvest의 가이드에 따르면, 이 그림자는 끝없이 투영되어 일반적인 햇빛에는 어색해 보입니다. 이 샘플은 캐릭터의 발에 둔 그림자 캐스터로 램프와 불 근처에서만 그림자를 드리웁니다. 나무와 덤불에는 블롭 그림자를 씁니다.</p>
+    <h2 id="a-blob-shadow-under-a-2d-sprite">2D 스프라이트 아래의 블롭 그림자</h2>
+    <p>블롭 그림자는 캐릭터의 발치에 자식 스프라이트로 그리는 부드럽고 어두운 타원입니다. 어떤 스프라이트, 어떤 애니메이션에도 쓸 수 있으며, 스프라이트를 하나 더 그리는 비용만 듭니다. 캐릭터가 지면에 닿는 위치는 보여 주지만, 캐릭터의 모양이나 태양의 방향은 보여 주지 않습니다. Sprite Renderer 컴포넌트의 <strong>Color</strong>(컬러) 필드를 약간 투명한 검은색으로 설정하세요. 그러면 텍스처 하나를 어떤 지면에서든 쓸 수 있습니다.</p>
+    <h2 id="a-skewed-copy-as-a-sprite-cast-shadow">드리운 그림자로 쓰는 스프라이트의 기울인 사본</h2>
+    <p>캐릭터 모양의 그림자를 만들려면 캐릭터의 스프라이트를 한 번 더 그리세요. 이 사본을 검은색으로 칠하고 반투명하게 만든 다음, 납작하게 누르고 지면에 눕도록 기울이세요.</p>
+    <ul>
+      <li>사본은 피벗이 발에 있는 자식 오브젝트의 두 번째 Sprite Renderer 컴포넌트입니다. 애니메이션이 있는 캐릭터라면 매 프레임 <code>LateUpdate</code>(Unity가 모든 <code>Update</code> 다음에 호출하는 메서드)에서 스크립트가 본체의 현재 스프라이트와 뒤집기 상태를 사본에 복사합니다.</li>
+      <li>Transform 컴포넌트에는 기울이기 설정이 없습니다. 스케일이 비균일한 부모 아래에서 자식을 회전하면 자식이 기울어져 보이므로, 이렇게 사본을 기울일 수 있습니다. 다른 방법은 각 버텍스를 피벗 위 높이만큼 옆으로 옮기는 그림자 셰이더입니다.</li>
+    </ul>
+    <p>사본은 태양이 아니라 카메라가 보는 캐릭터의 모습을 보여 줍니다. 태양이 카메라 방향에서 멀어질수록 외곽선이 덜 맞습니다.</p>
+    <h2 id="a-shadow-rendered-from-the-3d-model">3D 모델에서 렌더한 그림자</h2>
+    <p>스프라이트가 3D 모델을 렌더한 것이라면 그림자도 모델에서 렌더하세요. 블렌더의 Cycles에서 오브젝트의 <strong>Shadow Catcher</strong> 체크박스(<strong>Object Properties &gt; Visibility</strong>)를 켜면 지면 평면이 그림자 광선만 받으므로, 평면을 렌더하면 그림자만 담깁니다. 그림자를 본체와 프레임마다 맞춘 별도의 시트로 렌더하고, 캐릭터 아래의 두 번째 Sprite Renderer 컴포넌트에 표시하세요.</p>
+    <p>이 그림자의 외곽선은 태양이 보는 모습과 같습니다. 시트 수가 두 배가 되고, 그림자 방향은 렌더할 때 고정됩니다. 바라보는 방향이 여러 개인 캐릭터라면 모델이 도는 동안 태양을 월드에 고정하세요. 그러지 않으면 캐릭터가 돌 때마다 그림자도 함께 돌아갑니다.</p>
+    <h2 id="traps-with-2d-sprite-shadows">2D 스프라이트 그림자의 함정</h2>
+    <ul>
+      <li><strong>정렬.</strong> 탑다운 씬은 보통 스프라이트를 y값으로 정렬합니다. 2D 렌더러 에셋의 <strong>Transparency Sort Mode</strong>(투명 정렬 모드) 필드를 <strong>Custom Axis</strong>(커스텀 축) 옵션으로 설정하고, 축을 (0, 1, 0)으로 지정하는 방식입니다. 그림자를 캐릭터와 같은 정렬 레이어에 두면, 그림자를 만든 캐릭터 뒤에 선 캐릭터의 발을 그림자가 덮습니다. 그림자 전용 정렬 레이어를 만들어 <strong>Project Settings &gt; Tags and Layers</strong>(프로젝트 설정 &gt; 태그와 레이어) 창에서 지면 레이어 다음, 캐릭터 레이어 앞에 두세요. Unity는 목록 순서대로 레이어를 그립니다.</li>
+      <li><strong>겹침.</strong> 반투명한 그림자 두 개가 겹치는 곳은 지면이 두 번 어두워집니다. 해결하려면 직접 만든 그림자 셰이더가 필요합니다. URP가 지원하는 ShaderLab의 <code>Stencil</code> 명령을 쓰면, 첫 그림자가 그리는 픽셀마다 표시를 남겨 이후 그림자가 그 픽셀을 건너뜁니다.</li>
+      <li><strong>방향.</strong> 씬의 모든 그림자는 같은 방향을 가리켜야 하며, 스프라이트에 그리거나 렌더해 넣은 빛과도 맞아야 합니다. 기울인 사본은 모두 하나의 각도로 제어하고, 모든 모델은 하나의 태양 아래에서 렌더하세요.</li>
+      <li><strong>다른 스프라이트.</strong> 블롭, 사본, 렌더한 시트는 지면만 어둡게 합니다. 나무 그림자 안으로 걸어 들어간 캐릭터는 그대로 밝게 보입니다. 그림자를 모든 캐릭터 아래에 그리며, 나무와 캐릭터 어느 스프라이트도 높이를 저장하지 않기 때문입니다. Shadow Caster 2D 컴포넌트의 그림자는 <strong>Target Sorting Layers</strong>(타겟 정렬 레이어) 필드에 있는 정렬 레이어의 모든 스프라이트에, 지면과 다른 캐릭터를 가리지 않고 드리웁니다.</li>
+    </ul>
+    <h2 id="how-sun-forge-does-it">Sun Forge의 방식</h2>
+    <p>Sun Forge는 네 번째 방법을 쓰는 Unity 에디터 툴입니다. 베이크는 3D 모델을 2D 스프라이트 프리팹으로 바꾸고, 스프라이트의 그림자도 만듭니다. 그림자는 지면에 투영된 부드러운 그림자나 타원형 그림자입니다.</p>
+    <p>그림자는 스프라이트와 함께 움직이고 해가 지면 옅어집니다. 베이크할 때의 태양 방향을 유지하며 씬의 태양이 움직여도 돌아가지 않으므로, 하루 동안 그림자가 돌아가야 하는 게임에는 맞지 않습니다.</p>
+    <p>베이크된 각 시트에는 색 텍스처 외에 지오메트리 텍스처가 있으며, 여기에는 스프라이트의 피벗에서 잰 각 텍셀의 높이가 담깁니다. 이 높이로 베이크된 스프라이트끼리 <a href="/guide/lighting/en/components/#sunforgecastshadowfield" hreflang="en">서로 그림자를 드리울</a> 수 있습니다. 드리운 그림자는 그림자를 드리운 물체의 높이만큼, 그 안에 선 스프라이트를 타고 올라갑니다.</p>
+    <figure class="bare">
+      <img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="베이크된 기사 스프라이트의 지오메트리 텍스처: 발은 검은색, 머리 쪽으로 갈수록 밝은 색">
+      <figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <figure>
+      <img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="부서진 기둥의 그림자가 기사 위로 드리운, 베이크된 스프라이트의 같은 씬">
+      <figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <p>Sun Forge를 사용하려면 Unity 6.3 LTS(6000.3.28f1 이상) 또는 Unity 6.6, URP(2D 렌더러 또는 유니버설 렌더러)가 필요합니다. <a href="/ko/2d-lighting/#shadows">조명 페이지</a>에서 드리운 그림자를 끈 모습과 켠 모습으로 같은 씬을 볼 수 있습니다.</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">다음 글</h2>
+      <ul>
+        <li><a href="/ko/learn/2d-sprite-normal-maps/">유니티 노멀 맵으로 2D 스프라이트에 입체감 주기</a></li>
+        <li><a href="/ko/learn/2d-day-night-cycle/">유니티 2D 낮과 밤 사이클, 구름 그림자 구현</a></li>
+        <li><a href="/ko/2d-lighting/#shadows">Sun Forge 2D Lighting: 드리운 그림자</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="바닥글">
+    <span class="parts"><a href="/ko/#features">모든 기능</a><a href="/ko/sprite-baker/">스프라이트 베이커</a><a href="/ko/2d-lighting/">2D 조명</a></span>
+    <a href="/ko/learn/">학습</a>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

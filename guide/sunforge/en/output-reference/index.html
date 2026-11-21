@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Output Reference | Sun Forge Guide</title>
+<meta name="description" content="A bake writes into &lt;Output Root&gt;/&lt;Output Name&gt;/. An archetype with a blank Output Root bakes into Output/&lt;archetype&gt; in the Sun Forge Folder…">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/output-reference/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/output-reference/">
+<meta property="og:title" content="Output Reference | Sun Forge Guide">
+<meta property="og:description" content="A bake writes into &lt;Output Root&gt;/&lt;Output Name&gt;/. An archetype with a blank Output Root bakes into Output/&lt;archetype&gt; in the Sun Forge Folder…">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Output Reference", "item": "https://sunforgetools.com/guide/sunforge/en/output-reference/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/sunforge/en/pages/">Sun Forge Documentation</a></li><li><a href="/guide/sunforge/en/baked-lighting/">Lighting Baked Sprites</a></li><li><a href="/guide/sunforge/en/output-reference/" aria-current=page>Output Reference</a><ul><li><a href="/guide/sunforge/en/output-reference/#files">Files</a></li><li><a href="/guide/sunforge/en/output-reference/#rebaking">Rebaking</a></li><li><a href="/guide/sunforge/en/output-reference/#adjusting-a-prefab">Adjusting A Prefab</a></li><li><a href="/guide/sunforge/en/output-reference/#characters-in-props">Characters In Props</a></li><li><a href="/guide/sunforge/en/output-reference/#animation-events">Animation Events</a></li><li><a href="/guide/sunforge/en/output-reference/#extra-textures">Extra Textures</a></li><li><a href="/guide/sunforge/en/output-reference/#your-source-s-materials">Your Source&#x27;s Materials</a></li><li><a href="/guide/sunforge/en/output-reference/#texture-settings">Texture Settings</a></li><li><a href="/guide/sunforge/en/output-reference/#ground-tiles-on-a-tilemap">Ground Tiles On A Tilemap</a></li><li><a href="/guide/sunforge/en/output-reference/#isometric-scenes">Isometric Scenes</a></li><li><a href="/guide/sunforge/en/output-reference/#pixel-art">Pixel Art</a></li><li><a href="/guide/sunforge/en/output-reference/#addressables">Addressables</a></li><li><a href="/guide/sunforge/en/output-reference/#version-control">Version Control</a></li></ul></li><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Advanced</p><ul><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li></ul><nav class="choice" aria-label="Product"><a href="/guide/sunforge/en/" aria-current=true>Sun Forge</a><a href="/guide/lighting/en/">Sun Forge 2D Lighting</a></nav></details></aside><div class="content page-output-reference"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><article class="doc"><h1 id="output-reference">Output Reference</h1>
+<h2 id="files">Files</h2>
+<p>A bake writes into <code>&lt;Output Root&gt;/&lt;Output Name&gt;/</code>. An archetype with a blank <strong>Output Root</strong> bakes into <code>Output/&lt;archetype&gt;</code> in the Sun Forge Folder, <code>Assets/SunForge</code> unless you change it in <strong>Project Settings &gt; Sun Forge</strong>. <code>Dnn</code> numbers a direction: <code>D00</code> shows the model's back, and the numbers run clockwise. A direction an animation does not bake writes no file, so its number is skipped.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;Name&gt;.prefab</code></td>
+<td>The prefab to place in a scene</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_BakedData.asset</code></td>
+<td>Everything the bake measured, which scripts read</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Controller.controller</code></td>
+<td>The Animator Controller, when the bake has animations and <strong>Animation Player</strong> (Advanced view) is <strong>Auto</strong> or <strong>Animator</strong></td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Dnn.png</code></td>
+<td>The rest pose, one sheet per direction. A bake writes these, and their shadows, only when no animation entry's <strong>Mode</strong> is <strong>Idle</strong></td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_&lt;Clip&gt;_Dnn.png</code></td>
+<td>One sheet per animation and direction</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Shadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_Shadow_Dnn.png</code></td>
+<td>Ground-projected shadows</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_EllipseShadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_EllipseShadow_Dnn.png</code></td>
+<td>Ellipse shadows</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Particles_Dnn.png</code>, <code>&lt;Name&gt;_Particles_Controller.controller</code></td>
+<td>Particle flipbooks, and their controller when an Animator plays them: under <strong>Animator</strong>, or under <strong>Auto</strong> in a bake with animations</td>
+</tr>
+<tr>
+<td><code>&lt;sheet&gt;_Normal.png</code>, <code>_MaskTex.png</code>, <code>_Emission.png</code>, <code>_Geometry.png</code>, <code>_CastHeight.png</code></td>
+<td>Extra textures beside a sheet</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas.spriteatlasv2</code>, <code>_Shadow_Atlas</code>, <code>_Particles_Atlas</code></td>
+<td>Sprite atlases. With <strong>Bake Cast Height Texture</strong> (Advanced view) on, the ellipse shadows pack into <code>_EllipseShadow_Atlas</code></td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas_2.spriteatlasv2</code>, <code>_Atlas_3</code> and so on, and the same for each atlas above</td>
+<td>The rest of that atlas's sprites, when packing them all into one would need more memory than a 16 GB computer has free. The Bake tab's summary (Advanced view) counts them. A rebake that needs fewer deletes the rest, but keeps one you added your own sprites to, with yours alone</td>
+</tr>
+</tbody>
+</table></div>
+<p>A bake can write both shadow types. The prefab then shows the ground-projected shadow and keeps the ellipse one disabled. Shadows are baked, so moving the scene's sun never moves them.</p>
+<p>An archetype with <strong>Leaves The Ground</strong> on (Archetypes tab, PHYSICS, Advanced view) bakes a prefab that draws its body on a <code>Body</code> child, <strong>Height Above Ground</strong> above the prefab's ground point. The root keeps the collider, the movers and the shadows on the ground. The <code>Body</code> child hangs from a <code>GroundSort</code> child at the ground point, whose Sorting Group sorts the body where the prefab stands: set its <strong>Order in Layer</strong> to change where the body sorts. The Glow and Particles children hang from the <code>Body</code> child. A script changes the height while the game runs (<a href="/guide/sunforge/en/scripting/#reading-baked-data"><code>Scripting.md</code>, Reading Baked Data</a>).</p>
+<p>A prefab's particles draw over its whole body, even the parts of the model in front of them, such as a lantern's bars around its flame. A character standing in front of the prefab draws over both. They sort at the position of the prefab's Particles child, so moving that child up puts them behind the whole body.</p>
+<p>A prefab baked from particles alone, such as a campfire flame, sorts by where it stands, like a character. Place a flame on a campfire's position or just in front of it to draw it over the campfire. For a fire on a raised prop such as a torch, bake the two together, or set <strong>Origin Below Ground</strong> (Advanced view) to minus the prop's height and place the fire at the prop's base. A fire baked with its prop lights the prop from the bake too, shaded by the prop's own shape, as strongly as the lighting style's <strong>Glow Parts Light On Its Object</strong> sets (<a href="/guide/lighting/en/lighting/#light-source"><code>Lighting.md</code>, Light Source</a>). A fire baked apart lights the prop as any other light does. A looping flame baked on its own brings its own Glow light, which lights what is around the flame and leaves the flame to its own glow. To use the prop's light instead, turn off the flame's <strong>Glow Light</strong> and add its Particles child to <strong>Glow Renderers</strong> on the Light Source of the prop's Glow child. An effect a script spawns in the air, such as a hit spark at a character's chest, sorts by the point where it appears, so it draws behind that character unless you set the <strong>Order in Layer</strong> of its Particles child above the character's.</p>
+<p>Each sheet holds only what its frames draw, so sheet sizes follow the model's poses and differ between animations.</p>
+<p>Under a Pixel Perfect Camera, parts of a prefab that an extension publishes separately stay on whole pixels with <strong>Grid Snapping</strong> set to <strong>Upscale Render Texture</strong>. Under <strong>Pixel Snapping</strong> each part can sit a fraction of a pixel off the body (<a href="/guide/lighting/en/lighting/#pixel-perfect-camera"><code>Lighting.md</code>, Pixel Perfect Camera</a>).</p>
+<h2 id="rebaking">Rebaking</h2>
+<ul>
+<li>Every file keeps its GUID across a rebake, so scenes and scripts that reference the prefab or its baked data keep working. A reference to a sprite or clip keeps working while its animation entry keeps its output name and direction count, and its direction stays on. A reference to an Animator state keeps working while the entry keeps its output name, and one to a rest pose sprite while no animation entry's <strong>Mode</strong> is <strong>Idle</strong>, the rest pose keeps its direction count and the sprite's direction stays on.</li>
+<li>If you delete an output folder and bake again, the new files take the place of the old ones: a scene keeps each prefab you placed, with the changes you made to it there, and a reference to a sprite or clip keeps working as after a rebake. Any bake into that folder does this, so another model baked there appears where the old one was placed. This works for a folder first baked at that place in this project, and not for one that was renamed or moved there.</li>
+<li>A rebake writes over or deletes only files an earlier bake of the same output wrote, and only while they are as that bake left them. A file you changed stays. Anything else you add to the output folder stays.</li>
+<li>When you change the preset's archetype, that archetype's <strong>Output Root</strong>, or the Sun Forge Folder while that <strong>Output Root</strong> is blank, the next bake moves the output folder to the new place, so scenes keep the prefab. To bake a separate copy instead, use <strong>Save As…</strong> first. Under another <strong>Output Name</strong>, after you moved the output folder yourself, or when the bake cannot move it, the bake makes a new folder and leaves the old one. The Bake tab says which before you bake.</li>
+<li>A file already in the output folder that is named like one of the bake's files, such as an older version's output, stops the bake. The Bake tab then shows <strong>Replace them</strong>. Press it to bake over those files in place, so scenes that use the prefab keep it. Of those files, the press deletes the ones this bake does not make, whoever made them, and the Console names them. The prefab's renderer, collider, physics body and shadow become this bake's: each takes the bake's values, and an old one the bake does not use is removed.</li>
+<li>If you edited a sheet and its animation now covers a different area, the bake stops and names the sheet, because its new frames no longer line up with yours.</li>
+<li>A child the bake added, such as <code>Shadow</code>, <code>Glow</code> or <code>Body</code>, keeps the name you give it and the place you move it to under the prefab, and the bake keeps updating it there.</li>
+<li>Turning <strong>Leaves The Ground</strong> (Archetypes tab, PHYSICS, Advanced view) on or off moves the components that draw and play the body to or from the <code>Body</code> child, with the values you set on them, and the Console says so. A Glow or Particles child you did not move goes with them. Other children you added stay where they are: move those that ride the body under the <code>Body</code> child. Overrides of those components in scenes and Prefab Variants, and references to them from outside the prefab, stay behind: set them again in the new place. A Height Above Ground you set on the body stays, and the Console names it. The bake gives the <code>GroundSort</code> child the body's <strong>Order in Layer</strong>, until you set another order on the <code>GroundSort</code> child.</li>
+<li>A child the bake no longer needs stays, as yours, while it holds something you added. A component of yours of a kind the bake adds is used as the bake's, and the bake sets on it only what the prefab draws with, such as the sprite. An Animator of yours with no controller takes the bake's, unless you emptied it after a bake set it.</li>
+<li>A component Unity adds with a behavior, for the behavior's <code>[RequireComponent]</code>, is removed once you take the behavior off the list. A component the bake added stays while another component on the same object requires it. When that one is yours, the Console names both, and the next bake after you remove yours removes the bake's.</li>
+<li>A rebake writes over what the shaders and the packer read, such as <strong>Texture Type</strong>, <strong>sRGB (Color Texture)</strong>, each sprite's rect and pivot, and an atlas's <strong>Padding</strong>, <strong>Allow Rotation</strong> and <strong>Tight Packing</strong>, and over the prefab's sprites and the links between its body, shadows and glow, except a <strong>Glow Renderers</strong> list you changed on its Glow light. Set <strong>Filter Mode</strong>, <strong>Compression</strong>, <strong>Generate Mip Maps</strong> and, for the atlases, <strong>Atlas Max Size</strong> in the archetype's <strong>OUTPUT</strong> section (Advanced view), because every bake writes them too. An extra texture always takes its sheet's Max Size.</li>
+<li>A child or component you add to the prefab, any other value you change on it, an import setting you change on a texture or atlas, and a platform override stay on a rebake. The Console names any whose bake value changes too.</li>
+<li>To keep Animator edits through every rebake, put your own controller, or an Animator Override Controller built on the generated one, on the prefab's Animator.</li>
+<li>Switching <strong>Animation Player</strong> (Advanced view) to <strong>Flipbook Player</strong>, or removing the last animation entry under <strong>Auto</strong>, deletes the bake's controllers unless you changed them. Switching back, or adding an entry under <strong>Auto</strong>, makes them again. A reference to one works again, unless the output folder was renamed or moved after its first bake.</li>
+<li>If Unity closes during a bake, a folder whose name starts with <code>__SFS_</code> can stay in the output root. Do not use its assets. The next bake into that root deletes it.</li>
+</ul>
+<h2 id="adjusting-a-prefab">Adjusting A Prefab</h2>
+<p>Select a baked prefab, or a copy of it in a scene, to adjust its hitbox, collider, health bar, VFX box, overhead anchor, glow point and facing in the Scene view:</p>
+<ol>
+<li>Turn its row on by clicking its name in the <strong>Sun Forge Gizmos</strong> panel in the Scene view: <strong>Collider</strong>, <strong>Hitbox</strong>, <strong>Attach Points</strong> for the health bar, VFX box and overhead anchor, <strong>Glow Point</strong> or <strong>Facing</strong>. <strong>Edit</strong> beside it in the Inspector does the same: under <strong>Anchors</strong> on the Baked Prefab, or on <strong>Facing</strong>.</li>
+<li>Drag its handles. Point at a handle to see its name and value. To type a value, unfold it under <strong>Anchors</strong> on the Baked Prefab, or use <strong>Angle</strong> on <strong>Facing</strong>. Each also says which copies a change reaches and has <strong>Reset</strong>.</li>
+</ol>
+<p>When a row is set to <strong>All in View</strong>, by clicking the small icon at its right end, a hitbox shows on a prefab with a Health or with a Shooter that has no Muzzle marker, and a health bar where its Health shows one. Any you adjusted show too. Select a prefab to see and drag its hitbox and health bar.</p>
+<p>An adjustment of the prefab reaches every copy that does not override it, and an adjustment of a copy overrides it there. A rebake keeps your adjustments.</p>
+<p>A marker is set by the bake, so it has no handle in the Scene view. <strong>Open in Bake Window</strong> on the prefab's Inspector opens the bake that made it. Add a marker in the <strong>MARKERS</strong> section (Bake tab, Advanced view) and pick its <strong>Bone</strong>. To move one, turn on <strong>Markers</strong> in the preview's <strong>Gizmos</strong> menu and drag it. Then bake again.</p>
+<h2 id="characters-in-props">Characters In Props</h2>
+<p>A character that stands in a bush can draw between the bush's parts: the part in front of the character's feet draws over it, and the rest behind it. To turn this on:</p>
+<ol>
+<li>Under <strong>Project Settings &gt; Sun Forge</strong>, tick <strong>Per-Pixel Prop Sorting</strong> for each platform whose builds should split props. Props split in Play mode and in builds, and Play mode follows the active platform's value.</li>
+<li>Bake. The archetype's <strong>Pixel Sort</strong> (Archetypes tab, GAMEPLAY, Advanced view) says which prefabs are characters:</li>
+</ol>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Pixel Sort</th>
+<th>The prefab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Automatic</strong></td>
+<td>Is a character when it plays an animation or has a behavior that moves it, and a prop otherwise</td>
+</tr>
+<tr>
+<td><strong>Character</strong></td>
+<td>Is a character</td>
+</tr>
+<tr>
+<td><strong>Prop</strong></td>
+<td>Is a prop</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>Draws whole, and no prop splits around it</td>
+</tr>
+</tbody>
+</table></div>
+<p>A character gets a <strong>Pixel Sort Character</strong>, and a prop's body sprite has <strong>Split Around Characters</strong> ticked on its <strong>Baked Renderer Binding</strong>. A script, such as an options menu, turns the split on or off for the rest of the run with <code>SunForgePixelSort.Enabled</code>.</p>
+<p>To correct one prefab:</p>
+<ul>
+<li>To keep a prop whole, untick <strong>Split Around Characters</strong> on its body sprite. A rebake keeps your choice.</li>
+<li>To make a prefab that only sways in place, such as a fern in the wind, split around characters, untick its <strong>Pixel Sort Character</strong>. Untick it rather than remove it: a rebake keeps it unticked, and adds back one you removed.</li>
+<li>A prop splits at the front edge of the character's collider. To split it higher or lower, turn off <strong>Automatic Depth</strong> on the Pixel Sort Character and type a <strong>Depth</strong>.</li>
+<li>To make a character you built yourself, or a baked prop your own script moves, split props, add a Pixel Sort Character to it: <strong>Add Component &gt; Sun Forge &gt; Pixel Sort Character</strong>.</li>
+<li>A character that you draw in front of props through its z or its own sort point still splits them. Untick its Pixel Sort Character.</li>
+</ul>
+<p>A prop draws whole in every camera while a perspective camera draws its layer, where it sorts on another sorting layer, order or render queue than the character, and where <strong>Split Around Characters</strong> is unticked on its Baked Renderer Binding. Only a few props split at a time. The parts sort right when Unity sorts sprites along y, along z, or along a <strong>Custom Axis</strong> whose y and z share a sign, such as (0, 1, 1). <strong>Check Setup</strong> on the Lighting Setup reports a perspective camera, and a Custom Axis whose y and z have opposite signs.</p>
+<h3 id="splitting-with-your-own-shader">Splitting With Your Own Shader</h3>
+<p>A prop drawn with a shader of your own splits only when the shader draws its share of the pieces:</p>
+<ul>
+<li>A Shader Graph: wire the graph's <strong>Alpha</strong> from the <strong>Sun Forge Lit Color</strong> node, then tick <strong>Split Around Characters</strong> on the prop's body sprite. A bake leaves it unticked on a prop whose material is a graph with that node, because a graph whose Alpha skips the node draws the prop twice where a character stands in it.</li>
+<li>A hand-written shader: follow the header of <code>SunForgeWalkBands.hlsl</code> (<a href="/guide/lighting/en/custom-shaders/#hand-written-shaders"><code>Custom-Shaders.md</code>, Hand-Written Shaders</a>). A prop whose shader does not take part draws whole.</li>
+</ul>
+<h2 id="animation-events">Animation Events</h2>
+<p>An Animation Event in a source clip fires in the baked animation as the frame that shows its pose appears, whichever player <strong>Animation Player</strong> (Advanced view) picks.</p>
+<ul>
+<li>It calls the method of that name on each script on the prefab's root. Add a script with that method to the prefab's root, or list one under GAMEPLAY (Advanced view).</li>
+<li>An event outside the entry's <strong>Range</strong> is left out. An event between two frames fires on the nearer one, so at a lower <strong>Frame Rate</strong> two events one source frame apart can fire together. In a looping animation, an event in the last half-frame fires on the first frame, so it fires as each loop starts, the first one included.</li>
+<li>An event no script handles does nothing, and the bake names it in the Console.</li>
+<li>When an animation has events, its state in the controller has a <strong>Speed</strong> of 2, and the controller has a <code>SunForge:Events</code> parameter at 1. Leave both: they play the animation at its baked rate, with its events.</li>
+<li>Under <strong>Flipbook Player</strong>, and on a prefab baked with <strong>Leaves The Ground</strong> (Archetypes tab, PHYSICS, Advanced view), a method that takes an <code>AnimationEvent</code> gets its function name, parameters and time. Reading its Animator clip or state info logs an error, so check <code>isFiredByAnimator</code> first. On such a prefab a method that takes an <code>AnimationEventInfo</code> is not called, and under an Animator the events of a clip of your own fire on the <code>Body</code> child.</li>
+</ul>
+<h2 id="extra-textures">Extra Textures</h2>
+<p>Each extra texture is bound to its sheet as a sprite secondary texture. The lighting's page has the names and channels of the normal, mask, emission and Geometry textures (<a href="/guide/lighting/en/lighting/#sprite-textures"><code>Lighting.md</code>, Sprite Textures</a>). A bake adds these:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Texture</th>
+<th>Secondary texture name</th>
+<th>Channels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mask</td>
+<td><code>_MaskTex</code></td>
+<td>A is 1 where the bake's sun lit the texel and 0 in the model's own shadow</td>
+</tr>
+<tr>
+<td>Cast height</td>
+<td><code>_CastHeightTex</code></td>
+<td>On ground-projected shadow sheets with <strong>Bake Cast Height Texture</strong> (Advanced view) on. R × range is how far the tallest point casting each texel is above the pivot of the sprite that casts it. The body's pivot is on the ground. Texels the shadow does not cover read 0. The coverage is the shadow sheet's alpha. Linear</td>
+</tr>
+</tbody>
+</table></div>
+<p>A sprite's normal map is drawn at the bake camera's angle, and a ground tile's is drawn top-down. <code>range</code> is the bake's height range.</p>
+<p>A texture you bind to a sheet under one of these names is replaced while the bake writes that texture.</p>
+<p>A Shader Graph made from URP's 2D Sprite Lit or 2D Sprite Custom Lit template names its mask <code>_MaskMap</code>. Set that property's Reference to <code>_MaskTex</code> to read the baked mask. The Custom Lit template also names its normal map <code>_Normal_Map</code>: set its Reference to <code>_NormalMap</code>.</p>
+<p>On the Unity-Lit material under the 2D Renderer, a Light 2D blend style masked on a channel lights a texel by that channel of the mask. Unity's stock Multiply with Mask and Additive with Mask blend styles read red, so they light a baked sprite only where it is metal. Point them at blue or alpha, or use the unmasked blend styles. A blend style masked on alpha also applies the self-shadow baked into the mask, which the Unity-Lit material otherwise leaves out.</p>
+<p>In a Geometry texture the bake writes, alpha is the frame's front edge (<a href="/guide/lighting/en/custom-shaders/#geometry-textures"><code>Custom-Shaders.md</code>, Geometry Textures</a>). A Sorted Ground Cover draws a blade over the sprite only where the blade is rooted in front of that edge. In every frame, the edge is the front of the parts that stay within 0.25 world units of the ground through all frames of the entries ticked under <strong>Measure Sizes From</strong> (Bake tab, ANIMATION, Advanced view). In the rest pose, and in every frame when no entry is ticked, a part counts while it is within 0.25 world units of the ground in that frame, so grass stops in front of a weapon held low there.</p>
+<ul>
+<li>Beside thicker parts, a part narrower than about 0.05 world units does not count, such as a planted sword tip, the point of a pointed toe, or a small creature's paws when it sits on thick haunches or has a thick tail on the ground. Neither does a part lying flat on the ground beside them, such as petals.</li>
+<li>A thick part in front of the feet, such as a hammer head, a rock or the base a model stands on, counts, so grass stops in front of it. So does a thick part the ticked entries keep low beside the feet, such as the rim of a shield.</li>
+<li>A part touching the ground counts in that frame, even when a ticked entry lifts it more than 0.25 world units. With a Run ticked, grass stops in front of a foot while it is planted and can draw over it while it is in the air. In a frame where the body is off the ground, the edge is the front of what the ticked entries keep low, such as a cape hem.</li>
+</ul>
+<h2 id="your-source-s-materials">Your Source's Materials</h2>
+<ul>
+<li>A sprite drawn with a Sun Forge lighting material bakes the normal, mask and emission textures it draws with, such as those <strong>Set Up for Lighting</strong> gives the sprite. Its normal texture bakes as a sprite standing upright in your scene, seen from each direction, and is read as drawn top-down where the sprite is on the Ground role. Its <strong>Ambient Occlusion Strength</strong> bakes so the prefab's material draws it as it looked, and its <strong>Normal Map Strength</strong> too, up to that material's own. The prefab's material is the one the baked prefab draws with in the open scene: the <strong>Prefab Material</strong> (Advanced view), or the material the scene's lighting style gives in its place. For particles, it is the material of the prefab's Particles child.</li>
+<li>A part whose base color or <strong>Tint</strong> matches the <strong>Tint</strong> of the prefab's material bakes without that color, so the prefab shows it once, as the part showed it. A clip that changes the part's base color shows each frame's color, no brighter than the prefab material's Tint. Any other part bakes its base color, and the prefab's material tints it again.</li>
+<li>A model's color texture bakes as its color, and your scene lights the sprite again, so light or shade painted into the texture shows in every sprite. The material's <strong>Occlusion Map</strong> bakes into the mask texture. Where the bake also draws its own ambient occlusion, it keeps the darker of the two, so use the map for detail finer than the mesh, such as bark furrows.</li>
+<li>On a Sprite Renderer, each of the sprite's Secondary Textures bakes in place of the material's texture of the same name, so a normal map kept there bakes as it lights the sprite in your scene. In Shader Graph, the texture property of that name needs <strong>Show In Inspector</strong> on, or the bake cannot find it.</li>
+<li>A clip that swaps the material of a mesh, sprite or line, or swaps a sprite with 2D Animation's Sprite Swap, bakes each frame with what that frame shows. Values a clip animates on a material, such as a color, a glow, a texture's offset or a cutoff, bake on every frame as the clip plays them. On a scene object, values a script sets on its renderers with a MaterialPropertyBlock bake as the object shows them when you bake. The script itself does not run during the bake.</li>
+<li>A character rigged with 2D Animation bakes each frame in the pose its bones and 2D IK give it.</li>
+<li>A shader of your own bakes its color from the texture and color it marks as main, or else from <code>_BaseMap</code> or <code>_MainTex</code> and <code>_BaseColor</code> or <code>_Color</code>. In Shader Graph, right-click a property and choose <strong>Set as Main Texture</strong> or <strong>Set as Main Color</strong>. Its normal map bakes from <code>_BumpMap</code> or <code>_NormalMap</code>, scaled by <code>_BumpScale</code> as URP's Lit scales it, and its glow from <code>_EmissionColor</code> and <code>_EmissionMap</code> when its <strong>Emission</strong> box (the <code>_EMISSION</code> keyword) is on, or always if the shader has no such keyword. For a shader you cannot edit, a bake extension can give the bake's copy of the model a material that uses these property names (<a href="/guide/sunforge/en/scripting/#extensions"><code>Scripting.md</code>, Extensions</a>). The Bake tab still names that material, because it checks the model before extensions run.</li>
+<li>A Sprite Renderer's <strong>Color</strong> and a Line Renderer's <strong>Color</strong> gradient tint their part as they do in the scene. Their alpha multiplies the material's alpha, and the bake cuts the product as it cuts the material's own alpha. A mesh's own vertex colors do not bake, because URP's Lit and Standard ignore them.</li>
+<li>A material that fades by alpha bakes cut at half opacity, so glass and other see-through surfaces bake either solid or open. Where the prefab's material also fades by alpha and its <strong>Tint</strong> alpha matches the part's base color alpha, the bake cuts the part as if that alpha were 1, and the prefab fades the part by it as the part faded.</li>
+<li>The bake draws both faces of your model's surfaces, whatever their material's <strong>Render Face</strong>, so a one-sided leaf card or cape seen from behind still shows in the sprite, where the Scene view shows what is behind it. A part turned inside out around other parts, such as an outline hull or a shell around a glow, bakes over what lies inside it, and the Bake tab names it.</li>
+<li>On a ground tile, light reaches what lies under a surface that renders both faces, such as a grass card whose material has <strong>Render Face</strong> set to <strong>Both</strong>. A surface that renders one face is solid down to the ground, so give a closed rock a one-sided material.</li>
+<li>A glowing part lights its own model only where it is in the open: a part pushed inside a solid lights nothing. A surface that renders one face is the skin of a solid, so a glow behind the back of such a surface, such as a bulb under a lamp shade modeled as one layer of faces, lights nothing on that side. Set the shade material's <strong>Render Face</strong> to <strong>Both</strong>.</li>
+</ul>
+<h2 id="texture-settings">Texture Settings</h2>
+<ul>
+<li>
+<p>The atlases pack when <strong>Sprite Packer Mode</strong> (<strong>Project Settings &gt; Editor</strong>) is <strong>Sprite Atlas V2 - Enabled</strong> or <strong>Sprite Atlas V2 - Enabled for Builds</strong>. Under any other mode each sheet ships as a separate texture, and the Bake tab offers <strong>Use Sprite Atlas V2</strong>.</p>
+</li>
+<li>
+<p>The atlases pack with Sun Forge's packer, which keeps every frame on the texture compression grid so a sprite does not shimmer as its frames play. If you clear or replace an atlas's <strong>Scriptable Packer</strong>, a rebake keeps your choice.</p>
+</li>
+<li>
+<p>A body atlas packs its normal maps as BC5 on Windows, Mac and Linux, and on the Web while the Web platform uses DXT, as it does by default (see the table below). BC5 keeps more of their detail at the same memory. Its baked normal maps then carry a BC5 override on the same tab. The atlas packs them as BC7 on a tab instead, at the same memory, and no baked normal map takes BC5 there, when:</p>
+<ul>
+<li>it packs a sprite of yours that has a normal map,</li>
+<li>you turn off <strong>Override</strong> on a baked normal map's tab, or set its <strong>Format</strong> to anything but <strong>BC5</strong>, or</li>
+<li>you turn on <strong>Use Crunch Compression</strong> on a baked normal map, on the Web at any <strong>Compression</strong> and on Windows, Mac and Linux below <strong>High Quality</strong> (<strong>Compression</strong>, Advanced view).</li>
+</ul>
+<p>To give a baked normal map BC5 again, turn on <strong>Override</strong> on its tab and set <strong>Format</strong> to <strong>BC5</strong>. The atlas keeps its usual format on a tab when you set a <strong>Format</strong> of your own on the atlas's Default tab or on that tab, or turn on <strong>Override</strong> there at a <strong>Compression</strong> of None, and when the archetype's <strong>Compression</strong> (Advanced view) is <strong>None</strong>.</p>
+<p>On the atlas's <code>_NormalMap</code> texture, an <strong>Override</strong> or <strong>Format</strong> you change on a tab stays. If you remove the <code>_NormalMap</code> texture, later bakes do not give it BC5 again, though they add it back while a tab of the atlas crunches. For later bakes to set its format again, add <code>_NormalMap</code> again if you removed it, turn on <strong>Override</strong> and set <strong>Format</strong> to <strong>BC5</strong>. An override you add to an atlas the bake gave none stays. While the <code>_NormalMap</code> texture's tab holds a <strong>BC5</strong> override you set, the baked normal maps take BC5 too, except one whose tab you changed, which <strong>Check Setup</strong> names.</p>
+</li>
+<li>
+<p>On the Web, while the Web platform uses DXT, a body atlas packs its sprites and their emission as BC7 and their masks as DXT5. BC7 takes the memory of the DXT5 that <strong>Automatic</strong> picks and shows fewer blocky steps under the lighting. A browser without these formats, such as most phone browsers, unpacks each such texture to 4 times its memory. A Web build for phones can use ASTC or ETC2 instead: set <strong>Texture Compression</strong> and bake again. A <strong>Format</strong> of yours on the atlas's Default or Web tab, an <strong>Override</strong> there at a <strong>Compression</strong> of None, <strong>Use Crunch Compression</strong> (Advanced view) and a <strong>Compression</strong> (Advanced view) of <strong>None</strong> keep what they pick. A field you change on the atlas's Web tab stays, and if you turn off its <strong>Override</strong>, later bakes leave it off.</p>
+</li>
+<li>
+<p><strong>Use Crunch Compression</strong> (Advanced view) crunches the atlases, the sheets while the atlases do not pack, and a ground tile's textures. It shrinks a Web build that uses DXT, and a desktop build while <strong>Compression</strong> (Advanced view) is below <strong>High Quality</strong>, at some cost in quality, and a sprite that stands still can flicker. It does nothing in an ASTC build, such as Android's by default. Normal maps and Geometry textures stay uncrunched.</p>
+</li>
+<li>
+<p>A bake replaces a format that would draw a Geometry texture wrong on any tab, yours included, and says so in the Console: a crunched format with its uncrunched format, ETC2_RGB4_PUNCHTHROUGH_ALPHA with ETC2_RGBA8 on a Geometry texture, and Alpha8 with RGBA32 on a Geometry texture and with RGB24 on a cast height texture.</p>
+</li>
+<li>
+<p>A build warns of such a format set since the last bake, and of a format that loses part of a Geometry texture where a bake's keeps it: DXT5, Automatic where it packs DXT5, ARGB16, which keeps 16 heights, a format without alpha, or ASTC wider than 4x4. A Web build that packs the atlases in another format than the one you chose for it, or where a bake follows another format, gets one line that says why, what to change and which atlases to bake again. Otherwise each atlas baked for another format gets a line of its own. It also warns of a body atlas that packs DXT5 in a DXT Web build where a bake writes BC7 or BC5, and of an atlas whose Geometry textures fell behind its other tabs. Each line says what to do. The build goes on. A format of yours that loses part of it stays.</p>
+</li>
+<li>
+<p>At <strong>Low Quality</strong>, <strong>Normal Quality</strong> and <strong>High Quality</strong> (<strong>Compression</strong>, Advanced view), a Geometry texture packs as BC7 on Windows, Mac and Linux, at DXT5's memory with finer heights, and a cast height texture packs as R8. <strong>None</strong> stays uncompressed. On the Web they follow <strong>Texture Compression</strong> on the Web platform (<strong>File &gt; Build Profiles</strong>). At <strong>Use Player Settings</strong>, the default, they follow <strong>Texture compression format</strong> in <strong>Player Settings &gt; Web</strong>. Bake again after you change either:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>The Web platform uses</th>
+<th>Geometry texture</th>
+<th>Cast height texture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DXT</td>
+<td>BC7</td>
+<td>R8</td>
+</tr>
+<tr>
+<td>ETC2</td>
+<td>Automatic</td>
+<td>R8</td>
+</tr>
+<tr>
+<td>ASTC</td>
+<td>Automatic</td>
+<td>Automatic</td>
+</tr>
+</tbody>
+</table></div>
+<p>A browser without BC7, such as most phone browsers, unpacks a BC7 texture to 4 times its memory. With ETC2, a light close to a tall sprite can light it in bands.</p>
+<p>A build script that names no format in <code>BuildPlayerOptions.subtarget</code> packs the textures in the <strong>Texture compression format</strong> of Player Settings, whatever <strong>Texture Compression</strong> says. Name the format there, such as <code>(int)WebGLTextureSubtarget.ASTC</code>. In Unity 6000.6, such a build and a build at <strong>Use Player Settings</strong> can ship the sprite atlases' pages in an earlier format. After you change <strong>Texture compression format</strong>, select the sprite atlases and right-click &gt; <strong>Reimport</strong> while <strong>Texture Compression</strong> is <strong>Use Player Settings</strong>.</p>
+<p>While the atlases do not pack, each texture takes these formats on its own tabs.</p>
+</li>
+<li>
+<p>A <strong>Format</strong> of yours on the atlas's Default tab or on a platform's tab, or an <strong>Override</strong> at a <strong>Compression</strong> of None, replaces these on that platform. Set <strong>Format</strong> back to <strong>Automatic</strong> and the next bake writes them again. Any other <strong>Override</strong>, such as crunch or a lower <strong>Max Size</strong>, leaves them. A <strong>Format</strong> you set on a Geometry texture or cast height texture stays. If you remove such a tab, later bakes do not add it back.</p>
+</li>
+<li>
+<p>At <strong>Normal Quality</strong> or <strong>Low Quality</strong> (<strong>Compression</strong>, Advanced view), a sprite that stands still can shimmer on Android and in a Web build that uses ASTC.</p>
+</li>
+<li>
+<p>To crunch one platform only, open its tab on each baked atlas in the output folder, turn on <strong>Override</strong> and <strong>Use Crunch Compression</strong>, and leave <strong>Format</strong> at <strong>Automatic</strong>. While the atlases do not pack, do the same on the baked sprite sheets, not their normal maps or Geometry textures, because default texture presets do not apply to them. A rebake keeps your override. An override at the same size as its Default tab follows it: on a sheet as the sheet's size changes, and on an atlas as the archetype's <strong>Atlas Max Size</strong> (Advanced view) changes. A smaller <strong>Max Texture Size</strong> on an atlas splits it into more pages and saves nothing.</p>
+</li>
+<li>
+<p>While a tab of an atlas crunches, each bake gives the atlas's <code>_NormalMap</code>, <code>_GeometryTex</code> and <code>_CastHeightTex</code> textures uncrunched tabs that follow the atlas's tabs. While the <code>_NormalMap</code> texture holds a BC5 or BC7 tab of the bake's, it gets those uncrunched tabs even when no tab crunches, and so does a Geometry texture or cast height texture that holds one of the formats above. While the <code>_MaskTex</code> texture holds the bake's DXT5 Web tab, it gets tabs that follow the atlas's other tabs, crunch included. Those tabs hold the atlas's tabs as they were at the bake, so bake again after you change one. <strong>Check Setup</strong> names an atlas whose Geometry textures fell behind. A value you change on one of these tabs stays, except crunch or a format that draws a Geometry texture wrong.</p>
+</li>
+<li>
+<p>With <strong>Generate Mip Maps</strong> (Advanced view) on, a sprite drawn at a quarter of its size or less lights its outermost pixel flatter and sorts it nearer the ground. From an eighth, that pixel blends with its neighbor's in the sheet or atlas. With <strong>Bake Cast Height Texture</strong> (Advanced view) also on, from half its size, the edge of the shadow it casts on other sprites shifts a little.</p>
+</li>
+<li>
+<p>A sheet baked while the atlases do not pack takes the archetype's <strong>Compression</strong> (Advanced view), and one baked while they pack is uncompressed. While they do not pack, each baked sheet, normal map and emission texture also takes, on its own tabs, the format its atlas would pack it in. A ground tile's textures take <strong>Compression</strong> and <strong>Use Crunch Compression</strong> (Advanced view) whatever the packer does. After you change the project's <strong>Sprite Packer Mode</strong>, rebake what you baked before.</p>
+</li>
+</ul>
+<h2 id="ground-tiles-on-a-tilemap">Ground Tiles On A Tilemap</h2>
+<ul>
+<li>Draw the Tilemap with your style's Ground material, <code>SunForge_&lt;Style&gt;_Ground</code>.</li>
+<li>A Tilemap needs a <strong>Baked Renderer Binding</strong> to light its tiles as their prefab does. <strong>Check Setup</strong> adds it.</li>
+<li>A Tilemap lights all its tiles with one bake's values, so put tiles from bakes that differ on Tilemaps of their own.</li>
+<li>A tile with <strong>Tile View</strong> (Archetypes tab, OUTPUT) set to <strong>Isometric</strong> has a diamond sprite mesh, which a Tilemap needs to fit its cells. Every bake writes it, so <strong>Mesh Type</strong> does not keep another value.</li>
+</ul>
+<h2 id="isometric-scenes">Isometric Scenes</h2>
+<p>To build a stepped 2:1 isometric scene from baked blocks:</p>
+<ol>
+<li>Keep each archetype's <strong>Elevation Angle</strong> (<strong>CAMERA</strong> section) at 30, which draws a square of ground as a 2:1 diamond, and give them all one <strong>Pixels Per Unit</strong>.</li>
+<li>Add a <strong>Grid</strong> with <strong>Cell Layout</strong> set to <strong>Isometric</strong> and a <strong>Cell Size</strong> of your diamond's width, half that width, and 1.</li>
+<li>Model each terrain block with a corner toward the camera. Bake it as a prop with <strong>Directions</strong> at 1 and <strong>SHADOW</strong> off, turn off its <strong>Cast Shadow Caster</strong>, and place it at <code>Grid.GetCellCenterWorld</code>.</li>
+<li>To stand a prefab on a raised block, set <strong>Height Above Ground</strong> on each of its <strong>Baked Renderer Binding</strong> components to the block's height, then call <code>SunForgeBakedShadowSync.PlaceAtHeight</code>, which moves it and its shadows up. Move a prefab with no <strong>Baked Shadow Sync</strong>, such as a particle bake, and a prefab baked with <strong>Leaves The Ground</strong> up by hand instead: add the block's height times the cosine of the <strong>Elevation Angle</strong>, 0.866 at 30, to its y position. The <code>Body</code> child's <strong>Height Above Ground</strong> stays its height above the block.</li>
+<li>Set each block's <strong>Order in Layer</strong> to -10 times (x + y) of its cell, so nearer cells draw on top. Give anything on that cell a value above its block's and below the next row's.</li>
+<li>Add the height a Light Source stands on to its <strong>Height Above Ground</strong>. Its pool keeps its <strong>Ground Radius</strong> on the block, and the Scene view's outline stays at ground height.</li>
+<li>Set the Cast Shadow Field's <strong>Mode</strong> to <strong>Ground Material And Sprites</strong>, so shadows fall on the blocks and on what stands on them.</li>
+<li>To paint the lowest level instead of building it from blocks, draw it on a Tilemap of ground tiles (<a href="/guide/sunforge/en/output-reference/#ground-tiles-on-a-tilemap"><code>Output-Reference.md</code>, Ground Tiles On A Tilemap</a>) and set the Tilemap's <strong>Order in Layer</strong> below every block's. Its tiles light as the tops of the blocks do.</li>
+</ol>
+<h2 id="pixel-art">Pixel Art</h2>
+<p>To bake pixel art that the scene's lighting lights:</p>
+<ol>
+<li>In the archetype's <strong>CAMERA</strong> section, set <strong>Pixels Per Unit</strong> to your art's density, such as 32. Use the same value on every archetype the scene uses, ground tiles included.</li>
+<li>In the Advanced view, in the archetype's <strong>QUALITY</strong> section, turn off <strong>Supersampling</strong> and set <strong>Animation Frame Rate</strong> to a low rate, such as 12.</li>
+<li>In the archetype's <strong>OUTPUT</strong> section (Advanced view), set <strong>Filter Mode</strong> to Point and turn off <strong>Generate Mip Maps</strong>.</li>
+<li>In the archetype's <strong>SHADOW</strong> section (Advanced view), set <strong>Softness</strong> to 0, and under <strong>Ground-Projected</strong> set <strong>Resolution Scale</strong> to 1, so each shadow pixel is a sprite pixel.</li>
+<li>For an outline, set the bake's <strong>Prefab Material</strong> (Advanced view) to <strong>Regular with Pixel Outline</strong> or <strong>Cinematic with Pixel Outline</strong>. To outline every sprite in a style, turn on <strong>Pixel Outline</strong> on the style's Sprite material instead (<a href="/guide/lighting/en/lighting/#tuning-a-style"><code>Lighting.md</code>, Tuning A Style</a>).</li>
+<li>Bake, and add a Pixel Perfect Camera to the scene's camera (<a href="/guide/lighting/en/lighting/#pixel-perfect-camera"><code>Lighting.md</code>, Pixel Perfect Camera</a>).</li>
+<li>Clear <strong>Post Processing Enabled</strong> on the Lighting Setup, because bloom blurs the pixels. This turns off the style's whole post-processing.</li>
+</ol>
+<p>With <strong>Supersampling</strong> off, a ground tile seen at an angle keeps whole rows of the tile seen from above, so each of its pixels is one the art has.</p>
+<h2 id="addressables">Addressables</h2>
+<p>With <strong>Mark Addressable</strong> (Advanced view) on, a bake registers its prefab and its sprite atlases, each addressed by its path. A load by the label returns the atlases with the prefabs, so give the load the <code>GameObject</code> type.</p>
+<ul>
+<li>A rebake keeps each entry's address and group. An entry you remove comes back at the next bake.</li>
+<li>Changing the archetype's <strong>Addressables Group</strong> (Advanced view) moves no entry already registered. Move the prefab and its atlases together in the Addressables Groups window.</li>
+<li>A rebake replaces the label the last bake added with this bake's, and keeps every label you added.</li>
+<li>After the output folder moves, whether a bake or you moved it, its entries keep their old paths as addresses until you change them.</li>
+<li>An asset an Animation Event passes, such as an AudioClip, goes into the bundle with the prefab.</li>
+<li>While the atlases do not pack, if other Addressables content uses a baked sprite, mark that sprite's sheet and extra textures Addressable, so the build keeps one copy of each.</li>
+</ul>
+<h2 id="version-control">Version Control</h2>
+<p>Commit your bake presets and your Sun Forge Folder, which holds your archetype libraries and edited materials. Its <code>Output</code> folder is bake output. A bake can recreate its output from these, but references to the recreated files break if the output folder was renamed or moved after its first bake, so also commit the output if scenes or prefabs reference baked assets. If you load baked content only through Addressables, you can leave the output out. If you change a baked file's settings, such as a platform override or an Addressables entry, commit the output too.</p>
+<p>With Unity's version control integration on, a bake checks out each output file it changes.</p>
+</article></div></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/sunforge/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

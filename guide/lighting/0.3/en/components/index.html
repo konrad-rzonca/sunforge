@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components | Sun Forge 2D Lighting Guide</title>
+<meta name="description" content="Every component and asset type of Sun Forge 2D Lighting, and what each one does.">
+<link rel="canonical" href="https://sunforgetools.com/guide/lighting/en/components/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/lighting/en/components/">
+<meta property="og:title" content="Components | Sun Forge 2D Lighting Guide">
+<meta property="og:description" content="Every component and asset type of Sun Forge 2D Lighting, and what each one does.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Components", "item": "https://sunforgetools.com/guide/lighting/en/components/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/lighting/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/lighting/0.3/en/">Overview</a></li><li><a href="/guide/lighting/0.3/en/menus/">Menus</a></li><li><a href="/guide/lighting/0.3/en/scene-view/">Scene view</a></li><li><a href="/guide/lighting/0.3/en/components/" aria-current=page>Components</a><ul><li><a href="/guide/lighting/0.3/en/components/#sun-forge-lighting">Sun Forge › Lighting</a></li><li><a href="/guide/lighting/0.3/en/components/#asset-types">Asset types</a></li></ul></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/lighting/0.3/en/pages/">Sun Forge 2D Lighting Documentation</a></li><li><a href="/guide/lighting/0.3/en/custom-shaders/">Custom Shaders</a></li><li><a href="/guide/lighting/0.3/en/lighting/">Lighting</a></li><li><a href="/guide/lighting/0.3/en/changelog/">Changelog</a></li></ul></details></aside><div class="content page-components"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><section class="top"><h1>Components</h1><p class="lead">Every component and asset type of Sun Forge 2D Lighting, and what each one does.</p></section><section class="block"><section class="part" id="sun-forge-lighting"><h2 class="label">Add Component › Sun Forge › Lighting</h2><ul class="entries cols"><li id="sunforgecanopyshade"><div class="name"><h3>Canopy Shade</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Shades the ground and sprites under tree crowns, from a canopy map you draw or paint.</p></div></li><li id="sunforgecastshadowcaster"><div class="name"><h3>Cast Shadow Caster</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Makes a sprite cast its shadow, or the shadow you drew for it, under the sun.</p></div></li><li id="sunforgecastshadowfield"><div class="name"><h3>Cast Shadow Field</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Casts every sprite&#x27;s shadow onto the ground and onto standing sprites, darkening overlaps once.</p></div></li><li id="sunforgecastshadowpair"><div class="name"><h3>Cast Shadow Pair</h3></div><div><p>Pairs a sprite with the shadow sprite you drew for it.</p></div></li><li id="sunforgelightsource"><div class="name"><h3>Light Source</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Lights sprites around a point, along a line or over a rectangle, steady or flickering.</p><p class="covered"><a href="/guide/lighting/0.3/en/lighting/#light-source">Lighting › Light Source</a></p></div></li><li id="sunforgelightingsetup"><div class="name"><h3>Lighting Setup</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Lights the scene with a sun or moon, sky, clouds and mist in its lighting style.</p></div></li><li id="sunforgelightingstylerenderer"><div class="name"><h3>Lighting Style Renderer</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Gives a renderer you placed by hand the lighting style&#x27;s material or one of your own, and lets you pick which colors of a sprite you drew glow or shine like metal.</p><p class="covered"><a href="/guide/lighting/0.3/en/custom-shaders/#shader-graph">Custom Shaders › Shader Graph</a></p></div></li><li id="sunforgescenelights"><div class="name"><h3>Scene Lights</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Turns the brightness of every Light Source in the scene up or down with one dial.</p></div></li><li id="sunforgesortedgroundcover"><div class="name"><h3>Sorted Ground Cover</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Makes sprites stand in a grass sheet, with grass in front of their feet drawn over them.</p></div></li></ul></section><section class="part" id="asset-types"><h2 class="label">Asset types</h2><ul class="entries cols"><li id="sunforgelightingstyle"><div class="name"><h3>Sun Forge Lighting Style</h3><span class="chip" title="Draws its own Inspector">Inspector</span></div><div><p>Holds a lighting style&#x27;s materials, post-processing and default lighting values.</p></div></li></ul></section></section></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/lighting/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/lighting/0.3/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

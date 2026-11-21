@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D の昼夜サイクルと雲の影 | Sun Forge</title>
+<meta name="description" content="Unity 2D の URP シーンで Global Light 2D、Gradient、Volume を使って昼夜サイクルを作り、雲の影を加え、よくある落とし穴を避ける方法を解説します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/learn/2d-day-night-cycle/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/learn/2d-day-night-cycle/">
+<meta property="og:title" content="Unity 2D の昼夜サイクルと雲の影 | Sun Forge">
+<meta property="og:description" content="Unity 2D の URP シーンで Global Light 2D、Gradient、Volume を使って昼夜サイクルを作り、雲の影を加え、よくある落とし穴を避ける方法を解説します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-day-night-cycle.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="石にオレンジ色の太陽光が当たり、その奥が青い陰になった、夕暮れのスプライトの石造りの遺跡">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity 2D \u306e\u663c\u591c\u30b5\u30a4\u30af\u30eb\u3068\u96f2\u306e\u5f71", "description": "Unity 2D \u306e URP \u30b7\u30fc\u30f3\u3067 Global Light 2D\u3001Gradient\u3001Volume \u3092\u4f7f\u3063\u3066\u663c\u591c\u30b5\u30a4\u30af\u30eb\u3092\u4f5c\u308a\u3001\u96f2\u306e\u5f71\u3092\u52a0\u3048\u3001\u3088\u304f\u3042\u308b\u843d\u3068\u3057\u7a74\u3092\u907f\u3051\u308b\u65b9\u6cd5\u3092\u89e3\u8aac\u3057\u307e\u3059\u3002", "image": "https://sunforgetools.com/assets/share/learn-2d-day-night-cycle.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ja/learn/2d-day-night-cycle/", "inLanguage": "ja"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "\u89e3\u8aac\u8a18\u4e8b", "item": "https://sunforgetools.com/ja/learn/"}, {"@type": "ListItem", "position": 3, "name": "\u663c\u3068\u591c", "item": "https://sunforgetools.com/ja/learn/2d-day-night-cycle/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">機能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ja/#features">すべての機能</a>
+        <a href="/ja/sprite-baker/">スプライトベイカー</a>
+        <a href="/ja/2d-lighting/">2D ライティング</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    <div class="languages" role="group" aria-label="言語"><a href="/learn/2d-day-night-cycle/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-day-night-cycle/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-day-night-cycle/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-day-night-cycle/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/ja/learn/">解説記事</a></p>
+      <h1>Unity 2D の<wbr>昼夜サイクルと<wbr>雲の<wbr>影</h1>
+      <p class="lead">URP の 2D シーンでは、時刻に合わせて Global Light 2D の色を Gradient に沿って変えることで昼夜サイクルを作ります。夜には Volume で画面をカラーグレーディングし、日が暮れるとランプが徐々に灯り、スクロールする雲のテクスチャが地面に影を落とします。以下の手順は Unity 6.3 向けです。</p>
+    </header>
+    <h2 id="unity-2d-day-night-cycle-with-a-global-light-2d">Global Light 2D で<wbr>作る Unity 2D の<wbr>昼夜サイクル</h2>
+    <p><strong>Light Type</strong> を <strong>Global</strong> にした Light 2D は、すべての 2D ゲームオブジェクトを均等に照らします。その色を変えると、照らされるスプライトはすべてそれに合わせて色が変わります。</p>
+    <ol>
+      <li>スプライトのマテリアルは、新しいスプライトにデフォルトで設定される <strong>Sprite-Lit-Default</strong> のままにします。2D ライトは <strong>Sprite-Unlit-Default</strong> には影響しません。</li>
+      <li>Hierarchy ウィンドウで右クリックし、<strong>Light</strong> を選択してグローバルの 2D ライトを選びます。または任意の 2D ライトを選び、その <strong>Light Type</strong> を <strong>Global</strong> に設定します。Unity では、グローバルライトはブレンドスタイルとソートレイヤーごとに 1 つまでです。</li>
+      <li>下のスクリプトを任意のゲームオブジェクトに追加し、ライトを割り当てます。その <strong>Light Color</strong> のグラデーションでは、両端を真夜中、中央を正午にします。</li>
+      <li>カメラの <strong>Post Processing</strong> をオンにします。<strong>GameObject &gt; Volume &gt; Global Volume</strong> を選択し、<strong>New</strong> (新規) をクリックしてプロファイルを作り、続けて <strong>Add Override</strong> (オーバーライドを追加) をクリックして <strong>Color Adjustments</strong> を選びます。<strong>Saturation</strong> を下げるなど、夜の見た目に設定します。Volume をスクリプトに割り当てると、スクリプトがその <strong>Weight</strong> を設定します。</li>
+      <li>ランプや火ごとに 2D スポットライトを追加し、スクリプトのリストに入れます。古いバージョン向けのチュートリアルでは、このライトをポイントライトと呼んでいます。</li>
+    </ol>
+    <pre tabindex="0" translate="no"><code>using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
+public class DayCycle : MonoBehaviour
+{
+    public Light2D globalLight;
+    public Gradient lightColor;   // the same color at both ends
+    public AnimationCurve night;  // 1 at time 0 and at 1, 0 by day
+    public Volume nightVolume;
+    public Light2D[] lamps;
+    public float lampIntensity = 1f;
+    public float dayLengthSeconds = 600f;
+    public float time;            // 0 and 1 are midnight, 0.5 is noon
+
+    void Update()
+    {
+        time = Mathf.Repeat(time + Time.deltaTime / dayLengthSeconds, 1f);
+        float n = night.Evaluate(time);
+
+        globalLight.color = lightColor.Evaluate(time);
+        nightVolume.weight = n;
+        foreach (Light2D lamp in lamps)
+            lamp.intensity = lampIntensity * n;
+    }
+}</code></pre>
+    <h2 id="traps-in-a-2d-day-and-night-cycle">2D の<wbr>昼夜サイクルの<wbr>落とし穴</h2>
+    <ul>
+      <li><strong>真夜中のループ。</strong> <code>Gradient.Evaluate</code> は 0 から 1 の時間を受け取り、スクリプトは真夜中に時間を 0 に戻します。Gradient の最初と最後の色が違うと、そこでシーンが急に切り替わります。両端を同じ色にし、夜のカーブも両端を同じ値にしてください。Gradient に置けるカラーキーは最大 8 個なので、キーを置く時刻を選んでください。</li>
+      <li><strong>急に点くライト。</strong> 決まった時刻に有効にしたランプは、1 フレームで突然現れます。そこでスクリプトは代わりに各ランプの <code>intensity</code> を夜のカーブから設定するため、カーブが上がるにつれてランプが明るくなります。</li>
+      <li><strong>発光するものまで暗くなる。</strong> グローバルライトは、窓や炎も含め、照らされるスプライトをすべて暗くします。発光部分は、Sprite-Unlit-Default マテリアルを使った別のスプライトとして描いてください。Volume の <strong>Color Filter</strong> と <strong>Post Exposure</strong> は、発光部分も含めて画面全体を変えます。夜の暗さと色味はライトの色で表し、Volume は彩度とコントラストに使ってください。</li>
+      <li><strong>ブルームのしきい値。</strong> ブルームは <strong>Intensity</strong> (強さ) が 0 を超えるまでオフです。オンになると、<strong>Threshold</strong> (しきい値) より明るいピクセルにだけかかります。デフォルトは 0.9 です。照らされるスプライトの発光は夜にはしきい値を下回ります。これも発光をアンリットで描画する理由の 1 つです。Light 2D の <strong>Intensity</strong> が 1 を超えるとスプライトは元の色より明るくなるため、正午には淡い色の壁がしきい値を超えてブルームがかかることがあります。</li>
+    </ul>
+    <h2 id="unity-2d-sunlight-what-a-global-light-2d-cannot-show">Unity 2D の<wbr>太陽光: Global Light 2D では<wbr>表せない<wbr>こと</h2>
+    <p>グローバルライトには方向がありません。すべてを均等に照らし、その Inspector には <strong>Normal Maps</strong> (法線マップ) と <strong>Shadows</strong> (影) のセクションがありません。そのため、正午と夕暮れの違いは色だけになります。スプライトのどの面もほかの面より明るくならず、影を落とすものもありません。</p>
+    <p>太陽の位置を表すには、次の 2 つがどちらも必要です。</p>
+    <ol>
+      <li>各スプライトの法線マップ。Sprite Editor ウィンドウで <strong>Secondary Textures</strong> (補助的テクスチャ) を開き、<code>_NormalMap</code> という名前で追加してください (<a href="/ja/learn/2d-sprite-normal-maps/">手順</a>)。</li>
+      <li>位置を持つライト。大きな 2D スポットライトを追加し、<strong>Normal Maps</strong> の <strong>Quality</strong> (品質) を <strong>Fast</strong> (高速) または <strong>Accurate</strong> に設定して、スクリプトで一日を通して動かすか回転させてください。</li>
+    </ol>
+    <p>Unity の Happy Harvest サンプルは、スクリプトで回転させる大きなスポットライトを使って、この方法で昼を照らしています。Unity は 2 つの負荷を挙げています。法線マップはレイヤーバッチごとにフルサイズのレンダーパスを 1 つ追加し、大きなライト 1 つは小さなライト数個より負荷が高くなることがあります。</p>
+    <p>Shadow Caster 2D の影はこのようなライトから生まれ、グローバルライトからは生まれません。太陽の影には、Happy Harvest は引き伸ばした丸影のスプライトを使い、スクリプトで一日を通して回転させ、長さを変えています。<a href="/ja/learn/2d-shadows-top-down/">2D と見下ろしのスプライトの影</a>で、それぞれの方法を比較しています。</p>
+    <h2 id="unity-2d-cloud-shadows">Unity 2D の<wbr>雲の<wbr>影</h2>
+    <p>Unity 標準の機能だけを使う方法が 2 つあります。</p>
+    <ul>
+      <li><strong>スクロールするオーバーレイ。</strong> 暗く柔らかな雲のテクスチャを、地面より手前にソートされる Sprite Renderer に設定してください。テクスチャが画面全体に繰り返されるように <strong>Draw Mode</strong> (描画モード) を <strong>Tiled</strong> に設定し、Sprite-Unlit-Default マテリアルを割り当ててください。毎フレーム動かし、1 タイル分ずれたら位置を戻してください。その下に描画されるものは、ランプの光や発光するスプライトも含めてすべて暗くなります。</li>
+      <li><strong>光を減算するライト。</strong> 2D レンダラーアセットの <strong>Light Blend Styles</strong> で、いずれかのスタイルの <strong>Blend Mode</strong> を <strong>Subtractive</strong> (減法) に設定してください。<strong>Light Type</strong> を <strong>Sprite</strong> にした Light 2D を追加し、雲のテクスチャをそのスプライトに設定し、そのブレンドスタイルを選んで、同じように動かしてください。このライトは、その <strong>Target Sorting Layers</strong> にある照らされるスプライトからだけ光を差し引くため、アンリットの発光は明るさを保ちます。</li>
+    </ul>
+    <p>どちらの方法でも、オーバーレイの色かライトの強さを使って、雲も夜のカーブに合わせてフェードさせてください。そうしないと、真夜中でも正午と同じくらい影が濃くなります。</p>
+    <h2 id="how-sun-forge-2d-lighting-does-it">Sun Forge 2D Lighting での<wbr>実現方法</h2>
+    <p><a href="/ja/2d-lighting/#sun-and-sky">Sun Forge 2D Lighting</a> は、2D レンダラーまたはユニバーサルレンダラーで使う URP 向けのライティングパッケージです。太陽、月、空と、昼から夜までの天候を備えています。描いたスプライトを照らすには、スプライトを選択して右クリックし、<strong>Sun Forge &gt; Set Up for Lighting</strong> を選んでください。自作の法線マップがあれば立体感が出ます。法線マップがない場合、スプライトは平らな表面として照らされます。</p>
+    <figure>
+      <img src="/features/ruins-hours-noon.webp" srcset="/features/ruins-hours-noon.768w.webp 768w, /features/ruins-hours-noon.960w.webp 960w, /features/ruins-hours-noon.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="正午の白い日光の下、Sun Forge でライティングした、騎士、2 つの火鉢、金貨の山がある石造りの遺跡">
+      <figcaption>The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <p>Lighting Setup の <a href="/guide/lighting/en/lighting/#time-of-day" hreflang="en"><strong>Time Of Day</strong></a> で 0 から 24 までの時刻を設定し、ライティングスタイルで各時刻の光を設定します。スクリプトで一日を進めるには、<code>Update</code> で <code>SunForgeLightingSetup.TimeOfDay</code> を設定してください。ライティングは編集モード、再生モード、プレイヤーでリアルタイムに描画されるため、時刻が変わるとスプライトも照らし直されます。</p>
+    <figure>
+      <img src="/features/ruins-hours-dusk.webp" srcset="/features/ruins-hours-dusk.768w.webp 768w, /features/ruins-hours-dusk.960w.webp 960w, /features/ruins-hours-dusk.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="石にオレンジ色の太陽光が当たり、その奥が青い陰になった、夕暮れの同じ遺跡">
+      <figcaption>The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <ul>
+      <li>夜には、月明かりに照らされた表面は青くなり、火の光と発光は色を保ちます。</li>
+      <li>ライトはポイント、スポット、ライン、矩形のいずれかにでき、火のようにちらつかせることもできます。Unity の Light 2D で Sun Forge の Light Source を制御でき、その Light 2D は Unity の Lit マテリアルも引き続き照らします。</li>
+      <li>空とともに、流れる雲の影と地面を這う霧が加わります。サイドビューにはそれらがかかる地面が映らないため、どちらも表示されません。</li>
+    </ul>
+    <figure>
+      <img src="/features/ruins-hours-night.webp" srcset="/features/ruins-hours-night.768w.webp 768w, /features/ruins-hours-night.960w.webp 960w, /features/ruins-hours-night.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="石は暗く、火鉢と青いクリスタルがまわりの地面を照らす、夜の同じ遺跡">
+      <figcaption>The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <figure>
+      <img src="/features/ruins-mistlooks-dusk-regular.webp" srcset="/features/ruins-mistlooks-dusk-regular.768w.webp 768w, /features/ruins-mistlooks-dusk-regular.960w.webp 960w, /features/ruins-mistlooks-dusk-regular.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="騎士、火鉢、財宝のまわりに地面を這う霧がかかった、夕暮れの遺跡">
+      <figcaption>The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <p>影は、ベイクしたとき、または描いたときの太陽の方向に落ち、太陽が動いても回転しません。日が沈むにつれて薄れていきます。</p>
+    <p>Unity 6.3 LTS (6000.3.28f1 以降) または Unity 6.6、URP、リニア色空間が必要です。</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">次に<wbr>読む記事</h2>
+      <ul>
+        <li><a href="/ja/learn/2d-fog-and-mist/">Unity 2D シーンのフォグと地面を這う霧</a></li>
+        <li><a href="/ja/learn/2d-shadows-top-down/">Unity で 2D と見下ろしのスプライトに影を落とす方法</a></li>
+        <li><a href="/ja/2d-lighting/#sun-and-sky">Sun Forge 2D Lighting: 太陽と空</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="フッター">
+    <span class="parts"><a href="/ja/#features">すべての機能</a><a href="/ja/sprite-baker/">スプライトベイカー</a><a href="/ja/2d-lighting/">2D ライティング</a></span>
+    <a href="/ja/learn/">解説記事</a>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/learn/2d-day-night-cycle/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-day-night-cycle/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-day-night-cycle/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-day-night-cycle/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

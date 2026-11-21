@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D day and night cycle and cloud shadows | Sun Forge</title>
+<meta name="description" content="Build a day and night cycle in a Unity 2D URP scene with a Global Light 2D, a Gradient and a Volume, add cloud shadows, and avoid the usual traps.">
+<link rel="canonical" href="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<meta property="og:title" content="Unity 2D day and night cycle and cloud shadows | Sun Forge">
+<meta property="og:description" content="Build a day and night cycle in a Unity 2D URP scene with a Global Light 2D, a Gradient and a Volume, add cloud shadows, and avoid the usual traps.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-day-night-cycle.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A stone ruin of sprites at dusk: orange sunlight on the stone and blue shade behind it">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity 2D day and night cycle and cloud shadows", "description": "Build a day and night cycle in a Unity 2D URP scene with a Global Light 2D, a Gradient and a Volume, add cloud shadows, and avoid the usual traps.", "image": "https://sunforgetools.com/assets/share/learn-2d-day-night-cycle.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/learn/2d-day-night-cycle/"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Learn", "item": "https://sunforgetools.com/learn/"}, {"@type": "ListItem", "position": 3, "name": "Day and night", "item": "https://sunforgetools.com/learn/2d-day-night-cycle/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-day-night-cycle/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-day-night-cycle/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    <div class="languages" role="group" aria-label="Language"><a href="/learn/2d-day-night-cycle/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/2d-day-night-cycle/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-day-night-cycle/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-day-night-cycle/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/learn/">Learn</a></p>
+      <h1>Unity 2D day and night cycle and cloud shadows</h1>
+      <p class="lead">In a 2D URP scene, a day and night cycle is a Global Light 2D whose color follows a Gradient over the time of day. A Volume grades the picture at night, lamps fade in after dusk, and a scrolling cloud texture shades the ground. The steps below are for Unity 6.3.</p>
+    </header>
+    <h2 id="unity-2d-day-night-cycle-with-a-global-light-2d">Unity 2D day night cycle with a Global Light 2D</h2>
+    <p>A Light 2D with <strong>Light Type</strong> set to <strong>Global</strong> lights all 2D GameObjects equally. Change its color and every lit sprite changes with it.</p>
+    <ol>
+      <li>Keep your sprites on the <strong>Sprite-Lit-Default</strong> material, which new sprites get by default. 2D lights do not affect <strong>Sprite-Unlit-Default</strong>.</li>
+      <li>Right-click in the Hierarchy, select <strong>Light</strong> and pick the global 2D light, or pick any 2D light and set its <strong>Light Type</strong> to <strong>Global</strong>. Unity allows one global light per blend style and sorting layer.</li>
+      <li>Add the script below to any GameObject and assign the light. In its <strong>Light Color</strong> gradient, put midnight at both ends and noon in the middle.</li>
+      <li>Enable <strong>Post Processing</strong> on the camera. Choose <strong>GameObject &gt; Volume &gt; Global Volume</strong>, click <strong>New</strong> for a profile, then <strong>Add Override</strong> and pick <strong>Color Adjustments</strong>. Set it to your night look, such as a lower <strong>Saturation</strong>. Assign the Volume to the script, which sets its <strong>Weight</strong>.</li>
+      <li>Add a Spot Light 2D for each lamp or fire, and list them in the script. Tutorials for older versions call this light a Point light.</li>
+    </ol>
+    <pre tabindex="0" translate="no"><code>using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
+public class DayCycle : MonoBehaviour
+{
+    public Light2D globalLight;
+    public Gradient lightColor;   // the same color at both ends
+    public AnimationCurve night;  // 1 at time 0 and at 1, 0 by day
+    public Volume nightVolume;
+    public Light2D[] lamps;
+    public float lampIntensity = 1f;
+    public float dayLengthSeconds = 600f;
+    public float time;            // 0 and 1 are midnight, 0.5 is noon
+
+    void Update()
+    {
+        time = Mathf.Repeat(time + Time.deltaTime / dayLengthSeconds, 1f);
+        float n = night.Evaluate(time);
+
+        globalLight.color = lightColor.Evaluate(time);
+        nightVolume.weight = n;
+        foreach (Light2D lamp in lamps)
+            lamp.intensity = lampIntensity * n;
+    }
+}</code></pre>
+    <h2 id="traps-in-a-2d-day-and-night-cycle">Traps in a 2D day and night cycle</h2>
+    <ul>
+      <li><strong>The loop at midnight.</strong> <code>Gradient.Evaluate</code> takes a time from 0 to 1, and the script wraps the time back to 0 at midnight. If the gradient's first and last colors differ, the scene jumps there. Give both ends the same color, and the night curve the same value. A Gradient takes at most 8 color keys, so choose which hours get one.</li>
+      <li><strong>Lights that pop on.</strong> A lamp enabled at a fixed hour appears in one frame. The script sets each lamp's <code>intensity</code> from the night curve instead, so the lamps come up as the curve rises.</li>
+      <li><strong>Glowing things that dim.</strong> The global light darkens every lit sprite, a window or a flame included. Draw the glowing parts as separate sprites with the Sprite-Unlit-Default material. In the Volume, <strong>Color Filter</strong> and <strong>Post Exposure</strong> change the whole picture, glowing parts included. Put the night's darkness and tint in the light's color, and use the Volume for saturation and contrast.</li>
+      <li><strong>Bloom thresholds.</strong> Bloom is off until its <strong>Intensity</strong> is above 0. It then applies only to pixels brighter than its <strong>Threshold</strong>, 0.9 by default. A glow on a lit sprite falls under the threshold at night, another reason to draw it unlit. A Light 2D <strong>Intensity</strong> above 1 brightens sprites beyond their own color, so at noon a pale wall can pass the threshold and bloom.</li>
+    </ul>
+    <h2 id="unity-2d-sunlight-what-a-global-light-2d-cannot-show">Unity 2D sunlight: what a Global Light 2D cannot show</h2>
+    <p>A global light has no direction. It lights everything equally, and its Inspector has no <strong>Normal Maps</strong> and no <strong>Shadows</strong> sections. Noon and dusk then differ only in color: no side of a sprite is brighter than another, and nothing casts a shadow.</p>
+    <p>To show where the sun is, you need both of these:</p>
+    <ol>
+      <li>A normal map on each sprite. In the Sprite Editor, open <strong>Secondary Textures</strong> and add it under the name <code>_NormalMap</code> (<a href="/learn/2d-sprite-normal-maps/">the steps</a>).</li>
+      <li>A light with a position. Add a large Spot Light 2D, under <strong>Normal Maps</strong> set its <strong>Quality</strong> to <strong>Fast</strong> or <strong>Accurate</strong>, and move or turn it from the script over the day.</li>
+    </ol>
+    <p>Unity's Happy Harvest sample lights its day this way, with a large Spot light that a script turns. Unity names two costs: normal maps add a full-size render pass per layer batch, and one large light can cost more than several small ones.</p>
+    <p>Shadow Caster 2D shadows come from lights like that one, never from the global light. For the sun's shadows, Happy Harvest uses stretched blob sprites, which a script turns and lengthens over the day. <a href="/learn/2d-shadows-top-down/">Shadows for 2D and top-down sprites</a> compares the ways.</p>
+    <h2 id="unity-2d-cloud-shadows">Unity 2D cloud shadows</h2>
+    <p>Two ways use only Unity's own tools:</p>
+    <ul>
+      <li><strong>A scrolling overlay.</strong> Put a dark, soft cloud texture on a Sprite Renderer that sorts above the ground. Set its <strong>Draw Mode</strong> to <strong>Tiled</strong> so the texture repeats over the view, and give it the Sprite-Unlit-Default material. Move it each frame and wrap its position by one tile. It darkens everything drawn under it, lamp light and glowing sprites included.</li>
+      <li><strong>A light that subtracts.</strong> In the 2D Renderer asset, under <strong>Light Blend Styles</strong>, set one style's <strong>Blend Mode</strong> to <strong>Subtractive</strong>. Add a Light 2D with <strong>Light Type</strong> set to <strong>Sprite</strong>, give it the cloud texture as its sprite, pick that blend style, and move it the same way. It takes light only from lit sprites on its <strong>Target Sorting Layers</strong>, so unlit glows keep their brightness.</li>
+    </ul>
+    <p>With either one, fade the clouds by the night curve too, through the overlay's color or the light's intensity. Otherwise the shadows are as dark at midnight as at noon.</p>
+    <h2 id="how-sun-forge-2d-lighting-does-it">How Sun Forge 2D Lighting does it</h2>
+    <p><a href="/2d-lighting/#sun-and-sky">Sun Forge 2D Lighting</a> is a lighting package for URP, under the 2D Renderer or the Universal Renderer. It has a sun, a moon, a sky and weather from day to night. To light sprites you drew, select them, right-click and choose <strong>Sun Forge &gt; Set Up for Lighting</strong>. A normal map of your own gives them form. Without one, a sprite is lit as a flat surface.</p>
+    <figure>
+      <img src="/features/ruins-hours-noon.webp" srcset="/features/ruins-hours-noon.768w.webp 768w, /features/ruins-hours-noon.960w.webp 960w, /features/ruins-hours-noon.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="A stone ruin with a knight, two braziers and a pile of gold, lit by Sun Forge at noon in white daylight">
+      <figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <p><a href="/guide/lighting/en/lighting/#time-of-day"><strong>Time Of Day</strong></a> on the Lighting Setup sets the hour, from 0 to 24, and the lighting style sets the light at each hour. To run a day from a script, set <code>SunForgeLightingSetup.TimeOfDay</code> in <code>Update</code>. The lighting draws live in Edit mode, Play mode and a player, so the sprites relight as the hour changes.</p>
+    <figure>
+      <img src="/features/ruins-hours-dusk.webp" srcset="/features/ruins-hours-dusk.768w.webp 768w, /features/ruins-hours-dusk.960w.webp 960w, /features/ruins-hours-dusk.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="The same ruin at dusk: orange sunlight on the stone and blue shade behind it">
+      <figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <ul>
+      <li>At night, moonlit surfaces turn blue while firelight and glows keep their color.</li>
+      <li>A light can be a point, a spot, a line or a rectangle, and can flicker like fire. A Unity Light 2D can drive a Sun Forge Light Source, and it keeps lighting Unity's Lit material.</li>
+      <li>The sky adds drifting cloud shadows and ground mist. In a side view neither shows, because a side view shows no ground for them to lie on.</li>
+    </ul>
+    <figure>
+      <img src="/features/ruins-hours-night.webp" srcset="/features/ruins-hours-night.768w.webp 768w, /features/ruins-hours-night.960w.webp 960w, /features/ruins-hours-night.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="The same ruin at night: the stone is dark, and the braziers and blue crystals light the ground around them">
+      <figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <figure>
+      <img src="/features/ruins-mistlooks-dusk-regular.webp" srcset="/features/ruins-mistlooks-dusk-regular.768w.webp 768w, /features/ruins-mistlooks-dusk-regular.960w.webp 960w, /features/ruins-mistlooks-dusk-regular.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="The ruin at dusk with ground mist around the knight, a brazier and the treasure">
+      <figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+    </figure>
+    <p>Shadows fall in the sun direction they were baked or drawn for and do not turn as the sun moves. They fade as the sun sets.</p>
+    <p>It needs Unity 6.3 LTS (6000.3.28f1 or newer) or Unity 6.6, URP and the Linear color space.</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">Read next</h2>
+      <ul>
+        <li><a href="/learn/2d-fog-and-mist/">Fog and ground mist in a Unity 2D scene</a></li>
+        <li><a href="/learn/2d-shadows-top-down/">Shadows for 2D and top-down sprites in Unity</a></li>
+        <li><a href="/2d-lighting/#sun-and-sky">Sun Forge 2D Lighting: the sun and sky</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="Language"><a href="/learn/2d-day-night-cycle/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/2d-day-night-cycle/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-day-night-cycle/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-day-night-cycle/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

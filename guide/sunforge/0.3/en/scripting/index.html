@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scripting | Sun Forge Guide</title>
+<meta name="description" content="Reference the assemblies you use from your own assembly definition.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/scripting/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/scripting/">
+<meta property="og:title" content="Scripting | Sun Forge Guide">
+<meta property="og:description" content="Reference the assemblies you use from your own assembly definition.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Scripting", "item": "https://sunforgetools.com/guide/sunforge/en/scripting/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/sunforge/0.3/en/">Overview</a></li><li><a href="/guide/sunforge/0.3/en/menus/">Menus</a></li><li><a href="/guide/sunforge/0.3/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/0.3/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/sunforge/0.3/en/pages/">Sun Forge Documentation</a></li><li><a href="/guide/sunforge/0.3/en/baked-lighting/">Lighting Baked Sprites</a></li><li><a href="/guide/sunforge/0.3/en/output-reference/">Output Reference</a></li><li><a href="/guide/sunforge/0.3/en/scripting/" aria-current=page>Scripting</a><ul><li><a href="/guide/sunforge/0.3/en/scripting/#reading-baked-data">Reading Baked Data</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#writing-a-behavior">Writing A Behavior</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#side-view-games">Side-View Games</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#physics-world">Physics World</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#adapters">Adapters</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#extensions">Extensions</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#project-defaults">Project Defaults</a></li><li><a href="/guide/sunforge/0.3/en/scripting/#baking-from-code">Baking From Code</a></li></ul></li><li><a href="/guide/sunforge/0.3/en/changelog/">Changelog</a></li></ul><p class="label">Advanced</p><ul><li><a href="/guide/sunforge/0.3/en/bake-window/">Bake Window</a></li></ul><nav class="choice" aria-label="Product"><a href="/guide/sunforge/0.3/en/" aria-current=true>Sun Forge</a><a href="/guide/lighting/0.3/en/">Sun Forge 2D Lighting</a></nav></details></aside><div class="content page-scripting"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><article class="doc"><h1 id="scripting">Scripting</h1>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Assembly</th>
+<th>Namespace</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KonradRzonca.SunForge.Runtime</code></td>
+<td><code>KonradRzonca.SunForge</code></td>
+<td>Baked data, the adapter contract and markers</td>
+</tr>
+<tr>
+<td><code>KonradRzonca.SunForge.Lighting</code></td>
+<td><code>KonradRzonca.SunForge</code></td>
+<td>The lighting components, from the Sun Forge 2D Lighting package</td>
+</tr>
+<tr>
+<td><code>KonradRzonca.SunForge.Gameplay</code></td>
+<td><code>KonradRzonca.SunForge.Gameplay</code></td>
+<td>The gameplay behaviors and physics</td>
+</tr>
+<tr>
+<td><code>KonradRzonca.SunForge.Editor</code></td>
+<td><code>KonradRzonca.SunForge.Editor</code></td>
+<td>Extensions, presets, validation and running bakes from code</td>
+</tr>
+<tr>
+<td><code>KonradRzonca.SunForge.Lighting.Editor</code></td>
+<td><code>KonradRzonca.SunForge.Editor</code></td>
+<td>Loading the shipped lighting styles and setting up a scene's lighting from code, from the Sun Forge 2D Lighting package</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reference the assemblies you use from your own assembly definition.</p>
+<p>A component's class is its Inspector name with SunForge in front: <code>SunForgeLightSource</code> for Light Source. Add Component finds it by its Inspector name.</p>
+<h2 id="reading-baked-data">Reading Baked Data</h2>
+<p><code>SunForgeBakedPrefab.Of(component)</code> finds the baked data from any component on the actor, a child's included:</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using UnityEngine;
+
+public sealed class ShowBakeInfo : MonoBehaviour
+{
+    void Start()
+    {
+        SunForgeBakedPrefab baked = SunForgeBakedPrefab.Of(this);
+        SunForgeBakedData data = baked.Data;
+        Vector3 textPoint = baked.AnchorSpace.TransformPoint(baked.Anchors.OverheadAnchor);
+        Rect hitbox = baked.WorldHitbox;
+        Debug.Log($&quot;{data.OutputName} bakes {data.Clips.Count} clips. Text goes at {textPoint}. Hits land in {hitbox}.&quot;);
+    }
+}
+</code></pre>
+<p><code>WorldHitbox</code> is the hitbox the actor uses, in world space. <code>Anchors</code> holds every rectangle and point it uses. They are in the local space of <code>AnchorSpace</code>, the body's transform, except <code>Anchors.Collider</code>, which is in the root's: <code>baked.Anchors.HealthBar.ToWorld(baked.AnchorSpace)</code> gives a rectangle in world space. <code>Anchors.VFXBox</code> is the box where you place and scale an effect on the actor, such as a burning or frozen status. <code>BodyRenderer</code> is the Sprite Renderer that draws the body.</p>
+<p>A prefab baked with <strong>Leaves The Ground</strong> (Archetypes tab, PHYSICS, Advanced view) draws its body on a <code>Body</code> child above the root. To change its height while the game runs, set <code>HeightAboveGround</code> on that child's <code>SunForgeBakedRendererBinding</code>, then call <code>PlaceAtHeight(Vector3.zero)</code> on the root's <code>SunForgeBakedShadowSync</code>. The body and its Glow light rise to the new height, the shadows move to where the sun casts it on the ground, and the root, its collider and its movers stay on the ground. On a prefab you scaled, the body stands at the height times the scale until a script calls <code>PlaceAtHeight</code>.</p>
+<h2 id="writing-a-behavior">Writing A Behavior</h2>
+<ul>
+<li>Start one with <strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong>. Once Unity compiles it, the <strong>+ Add Behavior</strong> picker (GAMEPLAY, Advanced view) lists it under <strong>Your Project</strong>, named as its <code>[AddComponentMenu]</code> names it, else by its class name.</li>
+<li><code>[SunForgeBehavior(&quot;Walks between waypoints.&quot;, movesActor: true)]</code> shows that sentence under its name on its row, and when you point at it in the picker. <code>movesActor: true</code> says it moves the actor: the Bake Window warns when one prefab has two movers. A movable prefab with no mover in its behaviors gets Linear Damping, so it slows to a stop after a bump.</li>
+<li>Find the actor's <code>SunForgeBakedPrefab</code> with <code>SunForgeBakedPrefab.Of(this)</code> and read its <code>Data</code> when you need it, so a later <code>SetData</code> reaches your script.</li>
+<li>Compose <code>SunForgeLocomotion</code> for movement, which turns the actor as it walks and moves it through an <code>ISunForgePhysicsBody</code>. Call its <code>ClearCachedAnimator</code> from <code>OnEnable</code>, so an actor whose visual you swapped plays the new one.</li>
+<li>To walk an actor that has Movement to a point, turn its <code>ReadsInput</code> off and call <code>SunForgeMovement.WalkTowards(point, Time.deltaTime)</code> each frame until it returns true. In a mover of your own, <code>SunForgeLocomotion.DriveTowards</code> does the same.</li>
+<li>Movement reads only the keyboard. On a touchscreen, turn its <code>ReadsInput</code> off and each frame call <code>SunForgeMovement.Walk(direction, Time.deltaTime)</code> with the direction from your own touch control.</li>
+<li>After you swap the visual of an actor that has Movement, Wander, the Melee Attacker or the Shooter, disable and enable the actor, so they play the new one.</li>
+<li>Play animations through <code>SunForgeActorAnimation.Of(this)</code>, whose triggers, bools, Speed and restart work under whichever player the bake's <strong>Animation Player</strong> (Advanced view) picks. <code>SunForgeActorAnimation.BakedParticlesOf(this)</code> returns what plays the actor's particles: <code>Play(SunForgeAnimatorParameters.BakedParticlesState, t)</code>, with <code>t</code> from 0 to 1, starts or replays them. Particles whose source has <strong>Play On Awake</strong> off show nothing until this call, and <code>Reset()</code> stops them again. Activate a pooled effect before you play it.</li>
+<li>To learn when an animation has finished, start it with <code>PlayTracked</code> or <code>SetTriggerTracked</code>. Each returns a <code>SunForgeAnimationWait</code>: read its <code>IsDone</code>, or <code>yield return</code> it in a coroutine.</li>
+<li><code>SunForgeActorAnimation.Of(this).BakedDurationSecondsOf(SunForgeAnimatorParameters.Attack)</code> returns how many seconds the Attack animation lasts at a playback rate of 1. Divide by <code>PlaybackRate</code> for another rate.</li>
+<li>To act partway through an animation under a changing rate or a pause, read how far it has played: <code>TryGetPlaying(out int clip, out float time)</code> gives the clip that plays and its normalized time, 0.5 halfway through a <strong>Play Once</strong> entry. Attack plays while <code>clip</code> equals the index from <code>SunForgeBakedPrefab.Of(this).Data.TryGetClipIndex(SunForgeAnimatorParameters.Attack, out int attack)</code>.</li>
+<li>A method with an Animation Event's function name runs when the baked animation reaches that event, if its script is on the prefab's root (<a href="/guide/sunforge/0.3/en/output-reference/#animation-events"><code>Output-Reference.md</code>, Animation Events</a>).</li>
+<li><code>SunForgeBakedPrefab.WorldHitbox</code> gives the hitbox a baked actor uses. <code>SunForgeHitSweep.WorldHitboxRect</code> gives it for any object, one with no bake included, and <code>SunForgeHitSweep.TrySweepIntoRect</code> tests a moving point against it. For a projectile of your own, <code>SunForgeHitSweep.TryFirstHit</code> returns the first actor with a <code>SunForgeHealth</code> that its move hits.</li>
+</ul>
+<h2 id="side-view-games">Side-View Games</h2>
+<p>Movement, Wander and the Melee Attacker move an actor up and down the screen as well as across it, with no gravity, like a flyer or a swimmer. In a side view they lift it off its floor. To walk an actor that has Movement only left and right, turn its <code>ReadsInput</code> off and each frame call <code>SunForgeMovement.Walk(direction, Time.deltaTime)</code> with a direction whose y is 0. Give an actor that stays on its floor a mover of your own in place of Wander or the Melee Attacker.</p>
+<p>For a platformer, bake at <strong>Elevation Angle</strong> 0 (Archetypes tab, CAMERA) and move the actor with a script of your own:</p>
+<ol>
+<li>Set <strong>Directions</strong> to 4 and switch off the directions facing 0° and 180°, so the actor faces left or right and rests facing right.</li>
+<li>For a collider that covers the whole body rather than the feet, press <strong>Cover Whole Body</strong> under <strong>Elevation Angle</strong>, or in the <strong>PHYSICS</strong> section (Advanced view) set the collider's <strong>Ignore Below Height</strong> to 0, clear its <strong>Ignore Above Height</strong> and set its <strong>Multiplier</strong> to 1.</li>
+<li>Start the script with <strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong>, add <code>movesActor: true</code> to its <code>[SunForgeBehavior]</code> and list it in GAMEPLAY (Advanced view) in place of Movement, Wander or the Melee Attacker, so the bake sets the Rigidbody 2D's <strong>Linear Damping</strong> to 0. A script you add to the prefab yourself needs the Rigidbody 2D's <strong>Linear Damping</strong> at 0.</li>
+<li>Give the actor gravity: raise <strong>Gravity Scale</strong> on its Rigidbody 2D, which a rebake keeps. In the script, set the Rigidbody 2D's horizontal velocity from your input, and its vertical velocity only to jump. With a Physics World, set gravity in its world definition and write the <code>Velocity</code> of the actor's <code>SunForgePhysicsBody</code>.</li>
+<li>Each frame, standing still included, call <code>SunForgeFacing.FaceUnlessHeld</code> with the direction the actor walks and <code>Time.deltaTime</code>, so the actor keeps facing where a Shooter aims. Also call <code>SunForgeActorAnimation.Of(this).SetMoveSpeed</code> with 1 while it walks and 0 at rest. A Shooter whose <strong>While Walking</strong> is Keep Walking needs both: without <code>SetMoveSpeed</code> it plays Attack on every shot, and without <code>FaceUnlessHeld</code> its walk never plays backward while the actor shoots one way and walks the other. <code>SetBool(Animator.StringToHash(&quot;Jump&quot;), true)</code> plays the <strong>Loop While Bool</strong> entry named Jump until you set it false.</li>
+<li>The Shooter also fires on Space. If your script jumps on Space, turn the Shooter's <strong>Reads Input</strong> off, aim it with <code>AimAt</code> or <code>AimDirection</code>, and call its <code>Fire</code> from your script.</li>
+</ol>
+<h2 id="physics-world">Physics World</h2>
+<p>To run baked prefabs in a Unity low-level 2D physics world, create one with <strong>Assets &gt; Create &gt; Sun Forge &gt; Physics World</strong>, set its world, body and shape definitions in its Inspector, and name it in the archetype's <strong>PHYSICS</strong> section (Advanced view). Each prefab with a <strong>Collider Shape</strong> then gets a <code>SunForgePhysicsBody</code>. Use zero gravity for a top-down world.</p>
+<p>A bake from more than one direction measures the hitbox, collider, VFX box and health bar over every direction, and again for each direction alone. Each has a <strong>Follows Facing</strong> row on the Archetypes tab (HITBOX &amp; ANCHORS, and PHYSICS for the collider, Advanced view). With it off, the prefab uses the one rectangle measured over every direction. With it on, the prefab uses the rectangle of the direction it faces, and <code>SunForgeFacing.Face</code> and <code>SunForgeFacing.FaceUnlessHeld</code> turn the collider and the <code>SunForgePhysicsBody</code> shape with the sprite. The overhead anchor follows the hitbox's <strong>Follows Facing</strong>. A collider you resize yourself keeps your size through turns and rebakes.</p>
+<p>If you build your own physics from the baked data, read <code>SunForgeBakedPrefab.Anchors</code>, the anchors the actor uses, with the prefab's adjustments (<a href="/guide/sunforge/0.3/en/output-reference/#adjusting-a-prefab"><code>Output-Reference.md</code>, Adjusting A Prefab</a>). Read it again when <code>SunForgeBakedPrefab.AnchorsChanged</code> fires, which happens when an actor with a <strong>Follows Facing</strong> row on turns to another direction, when an adjustment changes, and when it gets other baked data. Whatever the rows say, <code>SunForgeBakedData.MeasuredAnchorsOf</code> returns what the bake measured for one direction and <code>SunForgeBakedData.CombinedAnchors</code> what it measured over all of them. <code>Anchors.RootBone</code> is the root bone averaged over the directions, and <code>MeasuredAnchorsOf</code> gives one direction's.</p>
+<h2 id="adapters">Adapters</h2>
+<p>An adapter changes what goes on every baked prefab it supports, after the bake builds it and before the bake saves it. Implement <code>ISunForgeBakePrefabModifier</code> in any editor or runtime assembly. Sun Forge finds it with no registration.</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using UnityEngine;
+
+public sealed class SortingLayerAdapter : ISunForgeBakePrefabModifier
+{
+    public string ModifierId =&gt; &quot;com.example.adapters.sorting-layer&quot;;
+
+    public bool Supports(SunForgeBakedData data) =&gt; data.ArchetypeName == &quot;Character&quot;;
+
+    public void Apply(GameObject prefabRoot, SunForgeBakedData data, SunForgeBakeReporter reporter)
+    {
+        if (!prefabRoot.TryGetComponent(out SpriteRenderer renderer))
+            throw new SunForgeBakeStopException(&quot;Add a SpriteRenderer to the prefab root, then bake again.&quot;);
+
+        renderer.sortingLayerName = &quot;Actors&quot;;
+    }
+}
+</code></pre>
+<h2 id="extensions">Extensions</h2>
+<p>An extension runs inside the bake: it can split the model into separately published parts, and add its own data to the baked data. Implement <code>ISunForgeBakeExtension</code> in an editor assembly. Sun Forge finds it with no registration. This one has its own section on the Bake tab and publishes one value. The data it publishes goes in a runtime assembly, so the game can read it:</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using UnityEngine;
+
+[Serializable]
+public sealed class WorldHeightData : SunForgeBakedExtensionData
+{
+    [SerializeField] float worldHeight;
+
+    public WorldHeightData(float worldHeight) =&gt; this.worldHeight = worldHeight;
+
+    public float WorldHeight =&gt; worldHeight;
+}
+</code></pre>
+<p>The extension and its settings go in an editor assembly:</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+
+[Serializable]
+public sealed class WorldHeightSettings : SunForgeBakeExtensionSettings
+{
+}
+
+public sealed class WorldHeightBakeExtension : ISunForgeBakeExtension
+{
+    public string ExtensionId =&gt; &quot;com.example.extensions.worldheight&quot;;
+
+    public SunForgeBakeExtensionSection SettingsSection { get; } = new(
+        typeof(WorldHeightSettings), &quot;WORLD HEIGHT&quot;,
+        &quot;Publishes the model's world height beside its sprites.&quot;,
+        &quot;Publishes the world height on the bake's data.&quot;);
+
+    public bool Supports(SunForgeBakeExtensionContext context) =&gt; true;
+
+    public SunForgeBakedExtensionData Execute(SunForgeBakeExtensionExecuteContext context) =&gt;
+        new WorldHeightData(context.Settings.ModelWorldHeight);
+}
+</code></pre>
+<p>A game reads it with <code>data.Extension&lt;WorldHeightData&gt;()?.WorldHeight</code>.</p>
+<h2 id="project-defaults">Project Defaults</h2>
+<p>An editor script can set the Addressables group and label new archetypes start with, and pin the camera and sun your game draws with:</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+
+[InitializeOnLoad]
+static class MyGameSunForgeDefaults
+{
+    static MyGameSunForgeDefaults() =&gt; SunForgeBakeGameDefaults.SetCurrent(new SunForgeBakeGameDefaults(
+        addressablesGroupName: &quot;Baked&quot;,
+        addressablesLabel: &quot;Baked&quot;,
+        archetypeOverrides: new SunForgeBakeGameConstants(
+            cameraElevation: 30f,
+            shadowSun: new SunForgeSunAngles(35f, 215f),
+            setBy: &quot;MyGame rendering constants&quot;)));
+}
+</code></pre>
+<p>Every other value a new bake starts with, such as its direction count and its output folder, is the Default archetype's. Change it on the <strong>Archetypes</strong> tab, or once from an editor script such as a menu item:</p>
+<pre><code class="language-csharp">SunForgeBakeArchetype archetype = SunForgeBakeArchetypeLibraryLocator.FindOrCreate().Default;
+archetype.Camera.DirectionCount = 16;
+archetype.OutputRoot = &quot;Assets/Baked&quot;;
+EditorUtility.SetDirty(archetype);
+</code></pre>
+<h2 id="baking-from-code">Baking From Code</h2>
+<p>A <code>SunForgeBakeRequest</code> is a bake preset together with the archetype library it uses. Create the preset, then hand the request to <code>SunForgeBakeRunner</code>:</p>
+<pre><code class="language-csharp">using System.Collections.Generic;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEngine;
+
+SunForgeBakeArchetypeLibrary library = SunForgeBakeArchetypeLibraryLocator.FindOrCreate();
+SunForgeBakeArchetype character = library.FindArchetype(&quot;Character&quot;);
+SunForgeBakePreset preset = SunForgeBakePreset.CreateWithDefaults(library, source, character);
+var request = new SunForgeBakeRequest(library, preset);
+
+// Every problem the bake has, without baking. A bake with a blocking one is refused.
+List&lt;SunForgeBakeDiagnostic&gt; findings = SunForgeBakeRunner.Validate(request);
+if (findings.Exists(finding =&gt; finding.Blocks))
+{
+    foreach (SunForgeBakeDiagnostic finding in findings)
+        if (finding.Blocks)
+            Debug.LogError(finding.Message);
+    return;
+}
+
+SunForgeBakeResult result = SunForgeBakeRunner.Run(request);
+if (result.Status == SunForgeBakeStatus.Failed)
+    Debug.LogException(result.Exception);
+foreach (string warning in result.Warnings)
+    Debug.LogWarning(warning);
+foreach (string error in result.Errors)
+    Debug.LogError(error);
+SunForgeBakedData baked = result.BakedData;
+</code></pre>
+<p><code>FindOrCreate</code> returns the project's archetype library. In a project with none, it saves the library the Bake Window's first bake would, with the same starter archetypes, in the Sun Forge Folder's <code>Presets</code> folder. <code>FindArchetype</code> takes the name the <strong>Archetypes</strong> tab shows, and returns null when the project has renamed or removed that archetype. Given null, <code>CreateWithDefaults</code> uses the Default archetype.</p>
+<p><code>preset.Validate(library)</code> returns the same list as <code>SunForgeBakeRunner.Validate</code>. <code>SunForgeBakePreset.CreateWithDefaults</code> sets up the preset as the Bake Window sets up a new bake: its sprites draw the material of the style the scene's Lighting Setup has, and the Regular style's in a scene with none. A preset from <code>ScriptableObject.CreateInstance</code> has no Prefab Material, archetype or animation entries.</p>
+<p>Setting <code>preset.PrefabMaterial</code> picks that material for the bake, so its sprites draw it in every scene. <code>preset.FollowLightingStyle()</code> has them draw the material of the style the scene's Lighting Setup has instead. It sets <code>PrefabMaterial</code> to the Regular style's material for the role of the material it had, or its Ground material on a ground tile, which they draw in a scene with no Lighting Setup. A preset that has your editable copy of that material keeps it. <code>preset.FollowsLightingStyle</code> and <code>SunForgeBakedData.FollowsLightingStyle</code> say which of the two a preset and a bake do. To give a preset the animation entries the Bake Window adds, call <code>preset.AddClipSettingsIfEmpty()</code> after you set its <code>Source</code>.</p>
+<p><code>preset.ClipSettings</code> holds the animation entries, in the order of the Bake tab's <strong>ANIMATION</strong> section. Build an entry with <code>new SunForgeBakeClipSettings(clipName, outputName, mode)</code>, where <code>clipName</code> is the clip's name, <code>File|Name</code> for one of two clips that share a name, or null for the rest pose. Each <code>With</code> method returns the entry with one setting changed, so assign it back:</p>
+<pre><code class="language-csharp">preset.ClipSettings.Add(new SunForgeBakeClipSettings(&quot;Run&quot;, null, SunForgeBakeClipMode.LoopWhileBool).WithFrameRate(12));
+preset.ClipSettings[0] = preset.ClipSettings[0].WithMode(SunForgeBakeClipMode.PlayOnce);
+</code></pre>
+<p>You can load a saved library or preset once and pass it to every bake. Before you change one in code, load it again: an import can unload the one you hold, and a change to that one is lost.</p>
+<ul>
+<li><strong>To keep the change</strong>, call <code>EditorUtility.SetDirty</code> on the library or preset. Unity then keeps the change and saves it with the project. Without that call Unity can drop the change at the next import.</li>
+<li><strong>To change a preset for one bake only</strong>, make a copy with <code>Object.Instantiate(preset)</code>, change the copy and bake it.</li>
+</ul>
+<p>A library or preset that you make in code and do not save lasts only until Unity frees unused objects, which any import can do, a bake's included. Make it again before each bake, or keep it in a static field until you destroy it.</p>
+<p>To set up the lighting of the scene the baked prefabs go in from a script, see <a href="/guide/lighting/0.3/en/lighting/#setting-up-from-a-script"><code>Lighting.md</code>, Setting Up From A Script</a>.</p>
+</article></div></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/sunforge/0.3/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/sunforge/0.3/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

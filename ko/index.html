@@ -1,0 +1,556 @@
+<!doctype html>
+<html data-late="/late.eb66aebaedcb.txt" lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge: 유니티 2D 조명, 3D를 2D 스프라이트로 베이크</title>
+<meta name="description" content="3D 모델을 애니메이션, 노멀 맵, 프리팹과 함께 2D 스프라이트 시트로 베이크합니다. 유니티 URP에서 실시간 태양, 광원, 그림자로 2D 씬을 3D처럼 비춥니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/">
+<meta property="og:title" content="Sun Forge: 유니티 2D 조명, 3D를 2D 스프라이트로 베이크">
+<meta property="og:description" content="3D 모델을 애니메이션, 노멀 맵, 프리팹과 함께 2D 스프라이트 시트로 베이크합니다. 유니티 URP에서 실시간 태양, 광원, 그림자로 2D 씬을 3D처럼 비춥니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="대성당 안 모루 위에 떠 있는 금빛 별">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebSite", "name": "Sun Forge", "alternateName": ["SunForge", "sunforgetools.com"], "url": "https://sunforgetools.com/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Sun Forge", "description": "3D \ubaa8\ub378\uc744 \uc560\ub2c8\uba54\uc774\uc158, \ub178\uba40 \ub9f5, \ud504\ub9ac\ud339\uacfc \ud568\uaed8 2D \uc2a4\ud504\ub77c\uc774\ud2b8 \uc2dc\ud2b8\ub85c \ubca0\uc774\ud06c\ud569\ub2c8\ub2e4. \uc720\ub2c8\ud2f0 URP\uc5d0\uc11c \uc2e4\uc2dc\uac04 \ud0dc\uc591, \uad11\uc6d0, \uadf8\ub9bc\uc790\ub85c 2D \uc52c\uc744 3D\ucc98\ub7fc \ube44\ucda5\ub2c8\ub2e4.", "image": "https://sunforgetools.com/assets/og.jpg", "url": "https://sunforgetools.com/", "applicationCategory": "DeveloperApplication", "softwareRequirements": "Unity 6.3 LTS(6000.3.28f1 \uc774\uc0c1) \ub610\ub294 Unity 6.6, URP(2D \ub80c\ub354\ub7ec \ub610\ub294 \uc720\ub2c8\ubc84\uc124 \ub80c\ub354\ub7ec), \uc120\ud615 \uc0c9 \uacf5\uac04", "publisher": {"@id": "https://sunforgetools.com/#organization"}, "inLanguage": "ko"}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/pages.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">기능</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ko/#features">모든 기능</a>
+        <a href="/ko/sprite-baker/">스프라이트 베이커</a>
+        <a href="/ko/2d-lighting/">2D 조명</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    <div class="languages" role="group" aria-label="언어"><a href="/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title" data-pending>
+    <div class="stage" aria-hidden="true">
+      <!-- build.py site writes the plate's files here. -->
+      <picture><source media="(max-width: 500px) and (max-aspect-ratio: 3/5) and (min-height: 640px)" srcset="/assets/plate-phone.webp 1170w, /assets/plate-phone-two-thirds.webp 780w, /assets/plate-phone-half.webp 585w" sizes="104vw" width="1170" height="2532"><img class="layer plate" alt="" fetchpriority="high" src="/assets/plate-half.webp" srcset="/assets/plate.webp 5400w, /assets/plate-half.webp 2700w" sizes="(max-aspect-ratio: 11/10) 258vh, 336vh" width="5400" height="1800"></picture>
+      <canvas class="layer embers under"></canvas>
+    </div>
+    <div class="shade" aria-hidden="true"><canvas></canvas></div>
+
+    <div class="copy">
+      <!-- The name's display spacing: each k- span sets the space after its letter (landing.css). -->
+      <h1 id="hero-title" translate="no" aria-label="Sun Forge"><span class="word sun" aria-hidden="true">S<span class="k-u">U</span>N</span> <span class="word forge" aria-hidden="true"><span class="k-f">F</span><span class="k-o">O</span><span class="k-r">R</span>GE</span></h1>
+      <!-- build.py site writes brand.json's slogan here, one span per sentence. -->
+      <p class="slogan"><span>3D를 2D로 베이크.</span> <span>2D에도 3D 같은 조명을.</span></p>
+      <div class="actions">
+        <p class="soon"><span>Unity 에셋 스토어 </span><strong>출시 예정</strong></p>
+      </div>
+      <p class="meta">Unity 6 및 URP용 에디터 툴</p>
+    </div>
+
+    <canvas class="embers over" aria-hidden="true"></canvas>
+    <a class="cue" href="#features">기능 소개</a>
+  </section>
+
+  <div class="pages" id="features" data-pager="페이지 목록">
+    <div class="nave" aria-hidden="true"><i class="left"></i><i class="right"></i></div>
+
+    <section class="page frame" id="world" data-name="월드" data-light="left" aria-labelledby="world-title">
+      <div class="words">
+        <p class="eyebrow">게임 안에서</p>
+        <h2 id="world-title">여기 보이는 캐릭터와 프롭은 모두 <em>2D 스프라이트</em></h2>
+        <p class="lead">모두 3D 모델에서 베이크한 평면 스프라이트입니다. 태양과 불이 실시간으로 비춥니다.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="시간대" data-switch="hour"><button type="button" data-pick="dawn" aria-pressed="false">새벽</button><button type="button" data-pick="day" aria-pressed="false">낮</button><button type="button" data-pick="dusk" aria-pressed="true">해 질 녘</button><button type="button" data-pick="night" aria-pressed="false">밤</button></div></div>
+        <p class="fine">Sun Forge는 Unity 6 및 URP에서 3D를 2D로 바꾸는 스프라이트 베이커이자 실시간 2D 조명입니다. 둘은 함께 써도 되고, 하나만 따로 써도 됩니다.</p>
+      </div>
+      <div class="scene hall" data-picks>
+        <img class="on" data-hour="dusk" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="해 질 녘의 무너진 석조 홀: 화로 옆의 기사, 제단, 금 더미, 스켈레톤 둘, 푸른 수정. 낮게 뜬 태양과 안쪽의 불이 비춥니다.">
+        <img data-late data-hour="dawn" loading="lazy" alt="새벽의 같은 홀">
+        <img data-late data-hour="day" loading="lazy" alt="낮의 같은 홀">
+        <img data-late data-hour="night" loading="lazy" alt="화로와 수정이 비추는 밤의 같은 홀">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page figure flip" id="bake" data-name="베이크" data-light="right" aria-labelledby="bake-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/sprite-baker/">스프라이트 베이커</a></p>
+        <h2 id="bake-title">3D 모델을 <em>2D 캐릭터로</em> 베이크</h2>
+        <p class="lead">방향과 애니메이션을 고르세요. Sun Forge가 모든 프레임을 스프라이트로 렌더링하고, 그 스프라이트를 재생하는 프리팹을 만듭니다.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="애니메이션" data-switch="clip"><button type="button" data-pick="Idle" aria-pressed="true">Idle</button><button type="button" data-pick="Walk" aria-pressed="false">Walk</button><button type="button" data-pick="Attack" aria-pressed="false">Attack</button></div>
+          <div class="switch" role="group" aria-label="링에 표시되는 대상" data-switch="target"><button type="button" data-pick="in-game" aria-pressed="true">인게임</button><button type="button" data-pick="diffuse" aria-pressed="false">디퓨즈</button><button type="button" data-pick="normal" aria-pressed="false">노멀</button><button type="button" data-pick="mask" aria-pressed="false">마스크</button><button type="button" data-pick="geometry-texture" aria-pressed="false">지오메트리</button><button type="button" data-pick="emission" aria-pressed="false">이미션</button></div>
+          <div class="switch" role="group" aria-label="방향" data-switch="directions"><span aria-hidden="true">방향</span><button type="button" data-pick="4" aria-pressed="false">4</button><button type="button" data-pick="8" aria-pressed="false">8</button><button type="button" data-pick="16" aria-pressed="true">16</button></div>
+        </div>
+        <p class="fine">스프라이트를 가리키거나 탭하거나, 슬라이더를 드래그해 모델을 돌려 보세요. 모델이 바라보는 방향의 스프라이트가 함께 재생됩니다.</p>
+      </div>
+      <div class="ring" data-ring data-picks data-pending>
+        <canvas role="img" aria-label="베이크한 방향마다 하나씩 링을 이루는 기사 스프라이트 16개와 가운데의 3D 모델, 그 모델을 촬영하는 카메라"></canvas>
+        <label class="turn"><span>회전</span><input type="range" min="0" max="15" step="1" aria-label="모델이 바라보는 방향"></label>
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame" id="lit" data-name="3D 같은 조명" data-light="left" aria-labelledby="lit-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/">2D 조명</a></p>
+        <h2 id="lit-title"><em>3D 모델처럼</em> 빛을 받는 스프라이트</h2>
+        <p class="lead">금속은 반짝이고 주름은 어두워지며, 베이크된 스프라이트는 서로 그림자를 드리웁니다. 조명에 필요한 텍스처는 베이크가 모두 만듭니다. 직접 그려야 할 텍스처는 하나도 없습니다. 별을 드래그해 홀의 조명을 끄고, 텍스처를 골라 하나씩 살펴보세요.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="별 왼쪽에 보이는 텍스처" data-switch="view"><button type="button" data-pick="diffuse" aria-pressed="true">디퓨즈</button><button type="button" data-pick="normal" aria-pressed="false">노멀</button><button type="button" data-pick="mask" aria-pressed="false">마스크</button><button type="button" data-pick="emission" aria-pressed="false">이미션</button><button type="button" data-pick="geometry" aria-pressed="false">지오메트리</button></div></div>
+      </div>
+      <div class="scene hall wipe" data-wipe data-picks>
+        <img class="after" src="/features/ruins-world-dusk.webp" srcset="/features/ruins-world-dusk.768w.webp 768w, /features/ruins-world-dusk.960w.webp 960w, /features/ruins-world-dusk.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="해 질 녘, 스프라이트로 지은 무너진 석조 홀. 낮게 뜬 태양과 안쪽의 불이 비춥니다.">
+        <img class="before on" data-view="diffuse" src="/features/ruins-view-diffuse.webp" srcset="/features/ruins-view-diffuse.768w.webp 768w, /features/ruins-view-diffuse.960w.webp 960w, /features/ruins-view-diffuse.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="조명 없이 스프라이트 본래 색으로 본 같은 프레임">
+        <img class="before" data-late data-view="normal" loading="lazy" alt="노멀 맵으로 본 같은 프레임">
+        <img class="before" data-late data-view="mask" loading="lazy" alt="마스크 텍스처로 본 같은 프레임">
+        <img class="before" data-late data-view="emission" loading="lazy" alt="이미션 텍스처로 본 같은 프레임: 발광하는 부분 외에는 검은색">
+        <img class="before" data-late data-view="geometry" loading="lazy" alt="지오메트리 텍스처로 본 같은 프레임">
+        <span class="side left" data-names="view">디퓨즈</span><span class="side right">인게임</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="46" aria-label="조명이 적용된 프레임이 시작되는 위치">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame flip" id="faster" data-name="속도 향상" data-light="right" aria-labelledby="faster-title">
+      <div class="words">
+        <p class="eyebrow">3D 게임용</p>
+        <h2 id="faster-title">캐릭터 1,000개: <em>3D는 18FPS, 스프라이트는 148FPS</em></h2>
+        <p class="lead">왼쪽은 애니메이션이 적용된 3D 모델 1,000개, 오른쪽은 베이크된 스프라이트로 만든 같은 전투입니다. 카메라 각도가 하나로 고정된 3D 게임이라면, 모델을 스프라이트로 베이크해 게임을 2D로 만드세요. 별을 드래그해 비교해 보세요.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="별 오른쪽에 보이는 Sun Forge 화면" data-switch="look"><span translate="no">Sun Forge</span><button type="button" data-pick="optimized" aria-pressed="true">Optimized</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button><button type="button" data-pick="regular" aria-pressed="false">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">Pixel</button></div></div>
+      </div>
+      <div class="scene wipe" data-wipe data-picks>
+        <img class="after on" data-look="optimized" data-full src="/features/bench-optimized.webp" srcset="/features/bench-optimized.768w.webp 768w, /features/bench-optimized.960w.webp 960w, /features/bench-optimized.webp 1920w, /features/bench-optimized.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="위에서 본 숲속 빈터의 전투. 모든 캐릭터가 Optimized 스타일의 베이크된 스프라이트입니다.">
+        <img class="after" data-late data-look="realistic" data-full loading="lazy" alt="Realistic 스타일의 베이크된 스프라이트로 본 같은 전투">
+        <img class="after" data-late data-look="regular" data-full loading="lazy" alt="Regular 스타일의 베이크된 스프라이트로 본 같은 전투">
+        <img class="after" data-late data-look="cinematic" data-full loading="lazy" alt="Cinematic 스타일의 베이크된 스프라이트로 본 같은 전투">
+        <img class="after" data-late data-look="flat" data-full loading="lazy" alt="Flat 스타일의 베이크된 스프라이트로 본 같은 전투">
+        <img class="after" data-late data-look="pixel" data-full loading="lazy" alt="스프라이트를 픽셀 아트로 베이크해 Pixel 스타일로 본 같은 전투">
+        <img class="before on" data-full src="/features/bench-3d.webp" srcset="/features/bench-3d.768w.webp 768w, /features/bench-3d.960w.webp 960w, /features/bench-3d.webp 1920w, /features/bench-3d.2560w.webp 2560w" sizes="(max-width: 899px) 100vw, (min-width: 1921px) max(63vw, 177.78vh), 63vw" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" alt="모든 캐릭터를 애니메이션이 적용된 3D 모델로 그린 같은 전투">
+        <div class='tally left'><b>3D 모델</b><strong>18 <small>FPS</small></strong><span>GPU 메모리 1,804MB</span></div><div class='tally right'><b>베이크된 스프라이트</b><strong><data data-look='optimized' value='148'>148</data><data data-look='realistic' value='108' hidden>108</data><data data-look='regular' value='108' hidden>108</data><data data-look='cinematic' value='80' hidden>80</data><data data-look='flat' value='80' hidden>80</data><data data-look='pixel' value='142' hidden>142</data> <small>FPS</small></strong><span>GPU 메모리 <data data-look='optimized' value='1165'>1,165</data><data data-look='realistic' value='1175' hidden>1,175</data><data data-look='regular' value='1175' hidden>1,175</data><data data-look='cinematic' value='1184' hidden>1,184</data><data data-look='flat' value='1182' hidden>1,182</data><data data-look='pixel' value='469' hidden>469</data>MB</span></div>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="베이크된 스프라이트가 시작되는 위치">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다. 프롭, 지면, 불꽃은 모두 쇼케이스 샘플에서 가져왔습니다. <span translate="no">AMD Ryzen 9 7900X, NVIDIA GeForce RTX 4060, 2560 × 1440</span>에서 측정했습니다.</p>
+    </section>
+
+    <section class="page stack" id="own-sprites" data-name="직접 그린 스프라이트" data-light="left" aria-labelledby="own-sprites-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/ko/2d-lighting/#drawn-sprites">직접 그린 스프라이트용</a></p>
+          <h2 id="own-sprites-title"><em>기존</em> 스프라이트에 조명 적용</h2>
+        </div>
+        <p class="lead">픽셀 아트를 포함한 스프라이트에서 Set Up for Lighting 메뉴를 선택하세요. 노멀 맵을 가져와 쓰면 스프라이트에 입체감이 생깁니다. 금속으로 쓸 색과 발광할 색을 고르면 Sun Forge가 금속 텍스처와 발광 텍스처를 만듭니다.</p>
+      </div>
+      <figure class="thirds">
+        <img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" sizes="(max-width: 899px) 100vw, 70vw" alt="픽셀 아트 씬 하나를 세 가지로 본 모습: 스프라이트만, 노멀 맵 적용, 노멀 맵과 금속, 발광 적용">
+        <figcaption><span>스프라이트만</span><span>노멀 맵 적용</span><span>노멀 맵, 금속, 발광 적용</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="page frame flip" id="platformer" data-name="플랫포머" data-light="right" aria-labelledby="platformer-title">
+      <div class="words">
+        <p class="eyebrow">플랫포머용</p>
+        <h2 id="platformer-title"><em>플랫포머용</em> 사이드 뷰 베이크</h2>
+        <p class="lead">Elevation Angle 필드가 0이면 모델을 사이드 뷰 스프라이트로 베이크합니다. 태양을 움직이고, 광원을 배치하고, 스타일을 조정해 레벨을 비추세요.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="스타일" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">픽셀 아트</button></div>
+          <div class="switch" role="group" aria-label="시간대" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">낮</button><button type="button" data-pick="dusk" aria-pressed="false">해 질 녘</button><button type="button" data-pick="night" aria-pressed="false">밤</button></div>
+        </div>
+        <p class="fine">픽셀 아트로 만들려면 <strong>Pixels Per Unit</strong> 필드 값을 낮게 설정하고 점 필터링으로 베이크하세요.</p>
+      </div>
+      <div class="scene" data-picks style="--pixel-frame: 1.055075">
+        <img class="on" data-hour="day" data-style="regular" src="/features/platformer-day-regular.webp" srcset="/features/platformer-day-regular.768w.webp 768w, /features/platformer-day-regular.960w.webp 960w, /features/platformer-day-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="Regular 스타일로 본 낮의 사이드 뷰 레벨. 기사가 풀밭 발판 사이에서 동전을 향해 뛰어오르고, 뒤로 산이 보입니다.">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 레벨">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 레벨">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 레벨">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 레벨">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 레벨">
+        <img data-late data-hour="night" data-style="regular" loading="lazy" alt="Regular 스타일로 본 밤의 레벨. 횃불이 비춥니다.">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 레벨">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 레벨">
+        <img data-late data-hour="day" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 낮의 레벨">
+        <img data-late data-hour="dusk" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 해 질 녘의 레벨">
+        <img data-late data-hour="night" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 밤의 레벨">
+      </div>
+      <p class="credit">캐릭터, 식물, 상자, 횃불 부품은 쇼케이스 샘플에서 가져왔습니다.</p>
+    </section>
+
+    <section class="page frame float" id="isometric" data-name="아이소메트릭" data-light="left" aria-labelledby="isometric-title">
+      <div class="words">
+        <p class="eyebrow">아이소메트릭 게임용</p>
+        <h2 id="isometric-title"><em>아이소메트릭 게임용</em> 베이크</h2>
+        <p class="lead">Elevation Angle 필드를 30으로 두면 정사각형 지면이 2:1 마름모로 보입니다. 블록을 여러 층으로 쌓거나, 베이크된 타일로 이루어진 Tilemap에 한 층을 칠하세요.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="스타일" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="pixel" aria-pressed="false">픽셀 아트</button><button type="button" data-pick="diffuse" aria-pressed="false" data-locks="hour">디퓨즈</button><button type="button" data-pick="emission" aria-pressed="false" data-locks="hour cells">이미션</button></div>
+          <div class="switch" role="group" aria-label="시간대" data-switch="hour"><button type="button" data-pick="day" aria-pressed="true">낮</button><button type="button" data-pick="dusk" aria-pressed="false">해 질 녘</button><button type="button" data-pick="night" aria-pressed="false">밤</button></div>
+          <div class="switch" role="group" aria-label="지형" data-switch="terrain"><button type="button" data-pick="stepped" aria-pressed="true">계단식</button><button type="button" data-pick="one" aria-pressed="false">한 층</button></div>
+          <div class="switch" role="group" aria-label="이동 칸과 위협 칸" data-switch="cells"><button type="button" data-pick="cells" aria-pressed="true">칸 표시</button><button type="button" data-pick="clean" aria-pressed="false">칸 숨김</button></div>
+        </div>
+      </div>
+      <div class="scene" data-picks>
+        <img class="on" data-terrain="stepped" data-cells="cells" data-hour="day" data-style="regular" src="/features/isometric-stepped-day-regular-cells.webp" srcset="/features/isometric-stepped-day-regular-cells.768w.webp 768w, /features/isometric-stepped-day-regular-cells.960w.webp 960w, /features/isometric-stepped-day-regular-cells.webp 1816w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1816" height="2164" style="--w: 1816; --h: 2164" alt="Regular 스타일로 본 낮의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="Regular 스타일로 본 밤의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 낮의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 해 질 녘의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 밤의 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="diffuse" loading="lazy" alt="조명 없이 디퓨즈 색으로 본 계단식 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="cells" data-style="emission" loading="lazy" alt="이미션 텍스처로 본 계단식 아이소메트릭 섬: 발광하는 부분 외에는 검은색. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="Regular 스타일로 본 낮의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="Regular 스타일로 본 밤의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 낮의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 해 질 녘의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 밤의 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="diffuse" loading="lazy" alt="조명 없이 디퓨즈 색으로 본 계단식 아이소메트릭 섬">
+        <img data-late data-terrain="stepped" data-cells="clean" data-style="emission" loading="lazy" alt="이미션 텍스처로 본 계단식 아이소메트릭 섬: 발광하는 부분 외에는 검은색">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="regular" loading="lazy" alt="Regular 스타일로 본 낮의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="regular" loading="lazy" alt="Regular 스타일로 본 밤의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="day" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 낮의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="dusk" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 해 질 녘의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-hour="night" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 밤의 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-style="diffuse" loading="lazy" alt="조명 없이 디퓨즈 색으로 본 한 층짜리 아이소메트릭 섬. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="cells" data-style="emission" loading="lazy" alt="이미션 텍스처로 본 한 층짜리 아이소메트릭 섬: 발광하는 부분 외에는 검은색. 이동 칸과 위협 칸이 보입니다.">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="regular" loading="lazy" alt="Regular 스타일로 본 낮의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="regular" loading="lazy" alt="Regular 스타일로 본 밤의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="day" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 낮의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="dusk" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 해 질 녘의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-hour="night" data-style="pixel" loading="lazy" alt="픽셀 아트로 베이크한 밤의 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-style="diffuse" loading="lazy" alt="조명 없이 디퓨즈 색으로 본 한 층짜리 아이소메트릭 섬">
+        <img data-late data-terrain="one" data-cells="clean" data-style="emission" loading="lazy" alt="이미션 텍스처로 본 한 층짜리 아이소메트릭 섬: 발광하는 부분 외에는 검은색">
+      </div>
+      <p class="credit">캐릭터, 프롭, 식물은 쇼케이스 샘플에서 가져왔습니다.</p>
+    </section>
+
+    <section class="page frame flip" id="styles" data-name="스타일" data-light="right" aria-labelledby="styles-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/#styles">조명</a></p>
+        <h2 id="styles-title">조명 스타일을 고르면 <em>모든 스프라이트에 적용</em></h2>
+        <p class="lead">Regular, Cinematic, Flat 스타일은 아무것도 다시 베이크하지 않고 같은 스프라이트를 비춥니다. 하나를 새 스타일로 저장하고 직접 조정하세요.</p>
+        <div class="choices"><div class="switch" role="group" aria-label="스타일" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button><button type="button" data-pick="realistic" aria-pressed="false">Realistic</button></div></div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-style="regular" src="/features/ruins-styles-regular.webp" srcset="/features/ruins-styles-regular.768w.webp 768w, /features/ruins-styles-regular.960w.webp 960w, /features/ruins-styles-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="Regular 스타일로 비춘 화로 옆의 기사">
+        <img data-late data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 비춘 같은 화면">
+        <img data-late data-style="flat" loading="lazy" alt="Flat 스타일로 비춘 같은 화면">
+        <img data-late data-style="realistic" loading="lazy" alt="Realistic 스타일로 비춘 같은 화면">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame" id="lights" data-name="광원" data-light="left" aria-labelledby="lights-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/#lights">조명</a></p>
+        <h2 id="lights-title"><em>주변 스프라이트를 비추는</em> 불</h2>
+        <p class="lead">여기서 불은 Light Source 컴포넌트입니다. 점, 스폿, 선, 사각형 광원이 될 수 있으며 불꽃처럼 깜박일 수도 있습니다. 금속은 그 빛을 받아 반짝입니다.</p>
+      </div>
+      <div class="scene near">
+        <img class="on" src="/features/ruins-lights-night.webp" srcset="/features/ruins-lights-night.768w.webp 768w, /features/ruins-lights-night.960w.webp 960w, /features/ruins-lights-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="밤에 화로 옆에 선 기사. 화로의 불이 갑옷과 방패, 금을 비춥니다.">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame flip" id="shadows" data-name="그림자" data-light="right" aria-labelledby="shadows-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/#shadows">조명</a></p>
+        <h2 id="shadows-title"><em>서로</em> 그림자를 드리우는 스프라이트</h2>
+        <p class="lead">베이크된 스프라이트는 각각 높이를 저장하므로, 그림자는 그림자를 드리운 물체의 높이까지 다른 스프라이트를 덮습니다. 별을 드래그해 비교해 보세요.</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="기사 위로 드리운 부서진 기둥의 그림자">
+        <img class="before on" src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="그림자가 지면에만 드리운 같은 화면">
+        <span class="side left">지면만</span><span class="side right">스프라이트에도</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="스프라이트에 드리운 그림자가 시작되는 위치">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame" id="emission" data-name="발광" data-light="left" aria-labelledby="emission-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/sprite-baker/#glow">베이크 결과물</a></p>
+        <h2 id="emission-title"><em>씬을 비추는</em> 발광</h2>
+        <p class="lead">베이크는 발광하는 부분을 이미션 텍스처에 기록합니다. Glow Light 토글을 켜면 발광하는 곳에 광원도 추가하며, 이 광원이 근처의 지면과 스프라이트를 비춥니다. 별을 드래그해 비교해 보세요.</p>
+      </div>
+      <div class="scene near wipe" data-wipe>
+        <img class="after" src="/features/emission-with.webp" srcset="/features/emission-with.768w.webp 768w, /features/emission-with.960w.webp 960w, /features/emission-with.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="룬과 뿔이 발광하며 지면과 뒤의 스켈레톤을 비추는 기사">
+        <img class="before on" src="/features/emission-without.webp" srcset="/features/emission-without.768w.webp 768w, /features/emission-without.960w.webp 960w, /features/emission-without.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="기사의 발광과 그 빛을 끈 같은 화면">
+        <span class="side left">발광 끔</span><span class="side right">발광 켬</span>
+        <i class="seam"></i>
+        <input type="range" min="0" max="100" value="50" aria-label="발광이 시작되는 위치">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page frame flip" id="mist" data-name="안개" data-light="right" aria-labelledby="mist-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/#mist">조명</a></p>
+        <h2 id="mist-title"><em>뒤가 아니라</em> 안개 속에 선 스프라이트</h2>
+        <p class="lead">베이크된 스프라이트는 각각 높이를 저장하므로, 안개가 스프라이트를 발부터 위로 덮습니다. 모든 Light Source 컴포넌트는 안개도 비춥니다.</p>
+        <div class="choices">
+          <div class="switch" role="group" aria-label="시간대" data-switch="hour"><button type="button" data-pick="day" aria-pressed="false">낮</button><button type="button" data-pick="dusk" aria-pressed="false">해 질 녘</button><button type="button" data-pick="night" aria-pressed="true">밤</button></div>
+          <div class="switch" role="group" aria-label="스타일" data-switch="style"><button type="button" data-pick="regular" aria-pressed="true">Regular</button><button type="button" data-pick="cinematic" aria-pressed="false">Cinematic</button><button type="button" data-pick="flat" aria-pressed="false">Flat</button></div>
+        </div>
+      </div>
+      <div class="scene near" data-picks>
+        <img class="on" data-hour="night" data-style="regular" src="/features/ruins-mistlooks-night-regular.webp" srcset="/features/ruins-mistlooks-night-regular.768w.webp 768w, /features/ruins-mistlooks-night-regular.960w.webp 960w, /features/ruins-mistlooks-night-regular.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="밤의 안개 속 기사. 화로와 수정 주위로 안개가 빛납니다.">
+        <img data-late data-hour="night" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 밤의 안개">
+        <img data-late data-hour="night" data-style="flat" loading="lazy" alt="Flat 스타일로 본 밤의 안개">
+        <img data-late data-hour="dusk" data-style="regular" loading="lazy" alt="Regular 스타일로 본 해 질 녘의 안개">
+        <img data-late data-hour="dusk" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 해 질 녘의 안개">
+        <img data-late data-hour="dusk" data-style="flat" loading="lazy" alt="Flat 스타일로 본 해 질 녘의 안개">
+        <img data-late data-hour="day" data-style="regular" loading="lazy" alt="Regular 스타일로 본 낮의 안개">
+        <img data-late data-hour="day" data-style="cinematic" loading="lazy" alt="Cinematic 스타일로 본 낮의 안개">
+        <img data-late data-hour="day" data-style="flat" loading="lazy" alt="Flat 스타일로 본 낮의 안개">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page stack" id="camera" data-name="모든 카메라" data-light="left" aria-labelledby="camera-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/ko/sprite-baker/#directions">베이커</a></p>
+          <h2 id="camera-title">사이드 뷰, 탑다운 <em>또는 아이소메트릭</em></h2>
+        </div>
+        <p class="lead">Elevation Angle 필드를 0~90도 사이의 원하는 값으로 설정하면, 같은 모델을 게임의 카메라에 맞춰 1~64방향으로 베이크합니다.</p>
+      </div>
+      <div class="views" style="--tallest: 676; --across: 984">
+        <figure><img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="사이드 뷰용으로 베이크한 기사"><figcaption>사이드 뷰, 0°</figcaption></figure>
+        <figure><img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="아이소메트릭 뷰용으로 베이크한 기사"><figcaption>아이소메트릭, 30°</figcaption></figure>
+        <figure><img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="탑다운 뷰용으로 베이크한 기사"><figcaption>탑다운, 60°</figcaption></figure>
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page stack" id="prefabs" data-name="프리팹" data-light="left" aria-labelledby="ready-title">
+      <div class="words">
+        <div>
+          <p class="eyebrow"><a href="/ko/sprite-baker/#prefabs">베이크 결과물</a></p>
+          <h2 id="ready-title"><em>콜라이더, 히트박스, 애니메이션을 갖춘</em> 프리팹</h2>
+        </div>
+        <p class="lead">베이크할 때마다 프리팹을 하나 만듭니다. 콜라이더와 히트박스는 모델에 맞으며, 기본 제공 아키타입은 스크립트를 추가합니다. 예를 들어 Hero는 걷고 쏩니다.</p>
+      </div>
+      <div class="bundle">
+        <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 899px) 100vw, 80vw" alt="콜라이더, 히트박스, 체력 바가 그려진 기사. 옆에는 애니메이터 컨트롤러 아래의 Idle, Walk, Attack 클립 프레임과 Hero 스크립트(Movement, Shooter, Health)가 있습니다.">
+      </div>
+      <p class="credit">dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page editor flip" id="editor" data-name="Bake Window" data-light="right" aria-labelledby="editor-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/sprite-baker/#preview">Bake Window</a></p>
+        <h2 id="editor-title"><em>베이크하기 전에</em> 스프라이트 확인</h2>
+        <p class="lead">Bake Window에는 모델, 베이크 카메라, 베이크할 스프라이트가 표시됩니다. 미리보기에서 시점을 모델 주위로 돌리고 클립을 재생한 다음 베이크하세요.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 899px) 100vw, 70vw" alt="Bake Window. 기사의 3D 모델 미리보기 옆에 베이크가 만들 스프라이트가 있고, 오른쪽에 베이크 설정이 있습니다.">
+        <span class="caption" style="left: 28.45%; top: 66.26%">2D 출력</span><span class="caption" style="left: 48.23%; top: 58.41%">3D 소스</span>
+      </figure>
+      <p class="credit">dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page editor" id="gizmos" data-name="기즈모" data-light="left" aria-labelledby="gizmos-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/sprite-baker/#preview">Bake Window</a></p>
+        <h2 id="gizmos-title"><em>미리보기에서</em> 콜라이더와 히트박스 확인</h2>
+        <p class="lead">Gizmos 메뉴에서 행을 체크하면 미리보기가 그 항목을 이름 옆의 색으로 그립니다.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-gizmos.webp" srcset="/features/cards-gizmos.768w.webp 768w, /features/cards-gizmos.960w.webp 960w, /features/cards-gizmos.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="Gizmos 메뉴가 열려 있고 미리보기에 기사의 콜라이더, 히트박스, 앵커가 그려진 Bake Window. 그 뒤로 밝은 테마에서 설정이 미리보기 아래에 있는 같은 창이 보입니다.">
+      </figure>
+      <p class="credit">dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</p>
+    </section>
+
+    <section class="page editor flip" id="workflow" data-name="프리셋" data-light="right" aria-labelledby="workflow-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/sprite-baker/#presets">Bake Window</a></p>
+        <h2 id="workflow-title">프리셋과 <em>배치 베이크</em></h2>
+        <p class="lead">프리셋은 모델 하나를 베이크하는 방식을 저장합니다. Batch 탭은 선택한 프리셋을 한 번에 베이크합니다.</p>
+        <p class="fine">다시 베이크해도 같은 프리팹에 베이크되며, 직접 추가한 자식 오브젝트와 컴포넌트, 플랫폼 오버라이드도 그대로 남습니다.</p>
+      </div>
+      <figure class="cards">
+        <img src="/features/cards-batch.webp" srcset="/features/cards-batch.768w.webp 768w, /features/cards-batch.960w.webp 960w, /features/cards-batch.webp 1612w" loading="lazy" width="1612" height="1118" style="--w: 1612; --h: 1118" sizes="(max-width: 899px) 100vw, 70vw" alt="상자 위에 프리셋 갤러리가 열린 Bake Window. 그 뒤로 한 번에 베이크할 프리셋에 체크 표시가 된 Batch 탭이 보입니다.">
+      </figure>
+      <p class="credit">쇼케이스의 모델로 보여 주는 화면입니다.</p>
+    </section>
+
+    <section class="page editor" id="platforms" data-name="플랫폼" data-light="left" aria-labelledby="platforms-title">
+      <div class="words">
+        <p class="eyebrow"><a href="/ko/2d-lighting/#platforms">실행 환경</a></p>
+        <h2 id="platforms-title">WebGL 2, WebGPU, <em>Android</em>에서 테스트 완료</h2>
+        <p class="lead">Sun Forge는 URP가 지원하는 모든 플랫폼을 대상으로 만들었습니다. 게임 빌드는 Windows, 웹, ARM64 Android에서 실행됩니다.</p>
+      </div>
+      <figure class="targets">
+        <div class="devices">
+          <div class="target windows">
+            <span class="bar" aria-hidden="true"><b>게임</b><i></i><i></i><i></i></span>
+            <span class="screen"><img src="/features/bench-cinematic.webp" srcset="/features/bench-cinematic.768w.webp 768w, /features/bench-cinematic.960w.webp 960w, /features/bench-cinematic.webp 1920w, /features/bench-cinematic.2560w.webp 2560w" loading="lazy" width="1920" height="1080" style="--w: 1920; --h: 1080" sizes="(max-width: 899px) 160vw, 76vw" alt="숲속 빈터에서 싸우는 기사와 스켈레톤. 태양, 모닥불, 횃불이 비춥니다."></span>
+          </div>
+          <div class="target web">
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+            <span class="screen"><img src="/features/ruins-hours-noon.webp" srcset="/features/ruins-hours-noon.768w.webp 768w, /features/ruins-hours-noon.960w.webp 960w, /features/ruins-hours-noon.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="한낮의 무너진 석조 홀. 제단과 금이 든 상자 옆에 기사와 스켈레톤 둘이 있습니다."></span>
+          </div>
+          <div class="target android">
+            <span class="screen"><img src="/features/ruins-hours-night.webp" srcset="/features/ruins-hours-night.768w.webp 768w, /features/ruins-hours-night.960w.webp 960w, /features/ruins-hours-night.webp 1920w" sizes="(max-width: 899px) 100vw, 63vw" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="밤의 같은 홀. 화로 두 개와 발광하는 수정이 비춥니다."></span>
+          </div>
+        </div>
+        <figcaption>
+          <div class="said"><strong>Windows</strong><ul class="apis"><li translate="no">Direct3D&nbsp;12</li></ul></div>
+          <div class="said"><strong>웹</strong><ul class="apis"><li translate="no">WebGL&nbsp;2</li><li><span translate="no">WebGPU</span> <small>Unity 6.6에서</small></li></ul><p class="tested">Chrome에서 테스트했으며, WebGL 2는 Firefox에서도 테스트했습니다</p></div>
+          <div class="said"><strong>Android <small translate="no">ARM64</small></strong><ul class="apis"><li translate="no">Vulkan</li><li translate="no">OpenGL&nbsp;ES&nbsp;3</li></ul><p class="tested">Pixel 8a, Galaxy A36에서 테스트했습니다</p></div>
+        </figcaption>
+      </figure>
+      <p class="credit">dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다. 전투 속 프롭, 지면, 불꽃은 모두 쇼케이스 샘플에서 가져왔습니다.</p>
+    </section>
+
+    <section class="page facts" id="included" data-name="포함 내용" data-light="left" aria-labelledby="included-title">
+      <div>
+        <p class="eyebrow">패키지 구성</p>
+        <h2 id="included-title"><em>구매하면</em> 받는 구성품</h2>
+        <ul class="ticks"><li>Sun Forge: Getting Started 샘플이 포함된 베이크 툴</li><li>Sun Forge 2D Lighting: Lit Scene 샘플이 포함된 조명 패키지</li><li>쇼케이스 샘플: 3D 모델과 프리셋이 포함된 플레이 가능한 숲 씬</li><li>전체 C# 소스 코드</li></ul>
+      </div>
+      <div>
+        <p class="eyebrow">요구 사항</p>
+        <h2><em>필요한</em> 환경</h2>
+        <dl class="needs">
+          <dt>Unity</dt><dd>6.3 LTS(6000.3.28f1 이상) 또는 6.6</dd>
+          <dt>렌더 파이프라인</dt><dd>URP(2D 렌더러 또는 유니버설 렌더러). 빌트인 렌더 파이프라인과 HDRP는 지원하지 않습니다</dd>
+          <dt>색 공간</dt><dd>선형</dd>
+          <dt>Windows에서</dt><dd>110자 이하의 프로젝트 폴더 경로</dd>
+          <dt>언어</dt><dd>이 웹사이트는 한국어로 제공되며, 에셋 스토어 페이지와 문서, Sun Forge의 창, 인스펙터, 메시지는 영어로 표시됩니다.</dd><dd>지원 문의는 한국어로 보내셔도 됩니다. 답변은 번역 도구를 사용해 한국어로 보내 드립니다.</dd><dd>한국어 번역의 오류나 이해하기 어려운 부분은 GitHub에 공개된 Sun Forge 저장소의 Issues 탭에 알려 주세요.</dd>
+          <dt>함께 설치되는 패키지</dt><dd>Sun Forge 2D Lighting, URP, Render Pipelines Core, Burst, Input System, 2D Sprite 패키지</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="page questions" id="questions" data-name="질문" data-light="right" aria-labelledby="questions-title">
+      <div class="words">
+        <p class="eyebrow">질문</p>
+        <h2 id="questions-title"><em>구매 전</em> 확인 사항</h2>
+      </div>
+      <div class="answers">
+        <div><h3>광원을 움직이면 다시 베이크해야 합니까?</h3><p>아닙니다. 태양, 광원, 스타일은 실시간으로 바뀝니다. 그림자는 스프라이트와 함께 움직이며, 베이크할 때의 방향을 그대로 유지합니다.</p></div>
+        <div><h3>스프라이트는 Sun Forge에서만 쓸 수 있습니까?</h3><p>아닙니다. 베이크는 표준 Unity 스프라이트, 아틀라스, 애니메이션 클립, 애니메이터 컨트롤러, 프리팹을 만듭니다.</p></div>
+        <div><h3>3D 모델이 게임에 포함됩니까?</h3><p>아닙니다. 3D 모델, 메시, 리그는 빌드에 포함되지 않습니다.</p></div>
+        <div><h3>3D 게임에도 쓸 수 있습니까?</h3><p>카메라 각도가 하나로 고정된 3D 게임이라면, 모델을 스프라이트로 베이크해 게임을 2D로 만드세요.</p></div>
+        <div><h3>직접 그린 스프라이트에도 조명을 적용할 수 있습니까?</h3><p>네. 스프라이트를 선택하고 마우스 오른쪽 버튼을 클릭한 다음 <strong>Sun Forge &gt; Set Up for Lighting</strong> 메뉴를 선택하세요. 직접 만든 노멀 맵으로 스프라이트에 입체감을 줄 수 있습니다.</p></div>
+        <div><h3>어떤 플랫폼에서 실행됩니까?</h3><p>URP가 지원하는 모든 플랫폼을 대상으로 만들었습니다. 게임 빌드는 Direct3D 12를 쓰는 Windows, Vulkan 또는 OpenGL ES 3을 쓰는 ARM64 Android, WebGL 2를 쓰는 웹에서 실행됩니다. Unity 6.6에서는 웹 빌드가 WebGPU로도 실행됩니다.</p></div>
+      </div>
+    </section>
+
+    <section class="page questions" id="more-questions" data-name="추가 질문" data-light="left" aria-labelledby="more-questions-title">
+      <div class="words">
+        <p class="eyebrow">질문</p>
+        <h2 id="more-questions-title">추가 <em>질문</em></h2>
+      </div>
+      <div class="answers">
+        <div><h3>스프라이트 베이커 없이 2D 조명만 쓸 수 있습니까?</h3><p>네. 둘은 각각 따로 작동합니다. 조명은 어떤 2D 또는 2.5D 씬에서든 직접 그린 스프라이트를 비추며, 베이크는 Unity의 기본 스프라이트 머티리얼에 쓸 일반 스프라이트만 만들 수도 있습니다.</p></div>
+        <div><h3>Unity의 Light 2D와 함께 작동합니까?</h3><p>네. Light 2D 컴포넌트로 Sun Forge의 Light Source 컴포넌트를 제어할 수 있으며, Light 2D는 Unity의 Lit 머티리얼도 계속 비춥니다.</p></div>
+        <div><h3>베이크하는 데 시간이 얼마나 걸립니까?</h3><p>Ryzen 9 7900X와 RTX 4060 기준으로 나무 하나를 16방향으로 베이크하는 데 약 25초, 애니메이션 4개가 있는 캐릭터(스프라이트 968개)는 약 1분이 걸립니다.</p></div>
+        <div><h3>베이크된 스프라이트는 텍스처 메모리를 얼마나 차지합니까?</h3><p>데스크톱에서는 쇼케이스의 너도밤나무를 16방향으로 베이크하면 9.5MiB, 쇼케이스 기사의 스프라이트 968개는 81MiB를 차지합니다. 방향 수나 조명 텍스처 수를 줄이거나 해상도를 낮추면 메모리를 덜 차지합니다.</p></div>
+        <div><h3>무엇을 베이크할 수 있습니까?</h3><p>애니메이션 클립과 Particle System 컴포넌트가 있는 모델이나 프리팹을 원래의 머티리얼과 셰이더 그래프 그대로 베이크할 수 있습니다. 프롭, 파티클 이펙트, 지면 타일도 베이크할 수 있습니다.</p></div>
+        <div><h3>코드로 베이크하거나 Addressables에 등록할 수 있습니까?</h3><p>네. 에디터 코드에서 베이크하고 직접 만든 C# 단계로 베이크를 확장할 수 있으며, 베이크할 때 프리팹과 아틀라스를 Addressables에 등록할 수도 있습니다.</p></div>
+      </div>
+    </section>
+
+    <section class="page closing" id="buy" data-name="출시 예정" data-light="both" aria-labelledby="buy-title">
+      <div class="words">
+        <h2 id="buy-title"><em>Unity 에셋 스토어</em> 출시 예정</h2>
+        <p class="lead">Sun Forge는 새로운 Unity LTS 릴리스를 모두 지원합니다.</p>
+        <div class="row">
+          
+          <a class="mail" href="mailto:support@sunforgetools.com" translate="no">support@sunforgetools.com</a>
+        </div>
+      </div>
+      <footer class="foot">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="바닥글">
+    <span class="parts"><a href="/ko/#features">모든 기능</a><a href="/ko/sprite-baker/">스프라이트 베이커</a><a href="/ko/2d-lighting/">2D 조명</a></span>
+    <a href="/ko/learn/">학습</a>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+    </section>
+  </div>
+</main>
+<script type="text/plain" data-src="/features/data.js"></script>
+<script type="text/plain" data-src="/switches.js"></script>
+<script type="text/plain" data-src="/ring.js"></script>
+<script type="text/plain" data-src="/plates.js"></script>
+<script src="/assets/scene.js"></script>
+<script src="/light.js"></script>
+<script src="/embers.js"></script>
+<script src="/landing.js"></script>
+<script src="/pager.js"></script>
+</body>
+</html>

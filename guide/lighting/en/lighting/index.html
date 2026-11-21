@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lighting | Sun Forge 2D Lighting Guide</title>
+<meta name="description" content="The Sun Forge Gizmos panel in the Scene view has a row for each thing it shows. Lights draws how far each light reaches on the ground, Shadow Height how…">
+<link rel="canonical" href="https://sunforgetools.com/guide/lighting/en/lighting/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/lighting/en/lighting/">
+<meta property="og:title" content="Lighting | Sun Forge 2D Lighting Guide">
+<meta property="og:description" content="The Sun Forge Gizmos panel in the Scene view has a row for each thing it shows. Lights draws how far each light reaches on the ground, Shadow Height how…">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 2D Lighting Guide", "item": "https://sunforgetools.com/guide/lighting/en/"}, {"@type": "ListItem", "position": 3, "name": "Lighting", "item": "https://sunforgetools.com/guide/lighting/en/lighting/"}]}
+</script>
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+  <a class="brand" href="/#top" aria-label="Sun Forge home">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">Features</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/#features">All features</a>
+        <a href="/sprite-baker/">Sprite baker</a>
+        <a href="/2d-lighting/">2D lighting</a>
+      </div>
+    </div>
+    <a href="/guide/lighting/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+  </nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>if (matchMedia("(max-width: 860px)").matches) document.currentScript.parentElement.open = false;</script><ul><li><a href="/guide/lighting/en/">Overview</a></li><li><a href="/guide/lighting/en/menus/">Menus</a></li><li><a href="/guide/lighting/en/scene-view/">Scene view</a></li><li><a href="/guide/lighting/en/components/">Components</a></li></ul><p class="label">Documentation</p><ul><li><a href="/guide/lighting/en/pages/">Sun Forge 2D Lighting Documentation</a></li><li><a href="/guide/lighting/en/custom-shaders/">Custom Shaders</a></li><li><a href="/guide/lighting/en/lighting/" aria-current=page>Lighting</a><ul><li><a href="/guide/lighting/en/lighting/#light-source">Light Source</a></li><li><a href="/guide/lighting/en/lighting/#materials">Materials</a></li><li><a href="/guide/lighting/en/lighting/#tuning-a-style">Tuning A Style</a></li><li><a href="/guide/lighting/en/lighting/#time-of-day">Time Of Day</a></li><li><a href="/guide/lighting/en/lighting/#style-quality">Style Quality</a></li><li><a href="/guide/lighting/en/lighting/#performance">Performance</a></li><li><a href="/guide/lighting/en/lighting/#sprite-textures">Sprite Textures</a></li><li><a href="/guide/lighting/en/lighting/#painting-a-geometry-texture">Painting A Geometry Texture</a></li><li><a href="/guide/lighting/en/lighting/#cast-shadows">Cast Shadows</a></li><li><a href="/guide/lighting/en/lighting/#canopy-shade">Canopy Shade</a></li><li><a href="/guide/lighting/en/lighting/#side-views">Side Views</a></li><li><a href="/guide/lighting/en/lighting/#pixel-perfect-camera">Pixel Perfect Camera</a></li><li><a href="/guide/lighting/en/lighting/#setting-up-from-a-script">Setting Up From A Script</a></li></ul></li><li><a href="/guide/lighting/en/changelog/">Changelog</a></li></ul></details></aside><div class="content page-lighting"><p class="notice" hidden data-other="This guide is for version 0.3. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><article class="doc"><h1 id="lighting">Lighting</h1>
+<p>The <strong>Sun Forge Gizmos</strong> panel in the Scene view has a row for each thing it shows. <strong>Lights</strong> draws how far each light reaches on the ground, <strong>Shadow Height</strong> how high a flat sprite such as a rug casts its shadow from, and <strong>Feet Line</strong> where a sprite you drew stands. Every row starts off. Turn one on to see its marks and to drag the handles of what you select. The rows draw nothing while the Scene view's <strong>Gizmos</strong> is off, and the panel says so. A row shows only while the scene has something for it, and the panel hides while it has no row to show. To hide it for good, use the Scene view's <strong>Overlays</strong> menu. The crosshair beside <strong>Lighting</strong> pings the scene's Lighting Setup in the Hierarchy, and <strong>Texture View</strong> at the foot of the panel shows a texture from each sprite (Sprite Textures).</p>
+<h2 id="light-source">Light Source</h2>
+<p>A Light Source lights the styled materials under both URP renderers. Create one with <strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Light</strong>, or <strong>Spot Light</strong>, <strong>Line Light</strong> or <strong>Rectangle Light</strong> for a cone, a line or a rectangle of light, and move it to where the light shows, such as onto a lamp's flame. For a starting look, such as a torch, a street lamp or a window, open <strong>Fire</strong>, <strong>Lamps</strong>, <strong>Magic</strong> or <strong>Windows and Doors</strong> in the same submenu. To make an object you already have into a light, such as a lamp prefab, use <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Light Source</strong>. Its pool lies on the ground <strong>Height Above Ground</strong> below it and reaches <strong>Ground Radius</strong> out, across the ground and across anything raised, and the Scene view's outline stays at ground height. A <strong>Ground Radius</strong> of 0 lights nothing. Raising a light keeps its <strong>Ground Radius</strong> and makes the ground right below it dimmer. The ground is evenly lit inside <strong>Inner Radius</strong> and fades from there to <strong>Ground Radius</strong>. In Regular and Cinematic, nearby metal reflects the pool, and the pool lights the sides and undersides of standing sprites that face it, tinted by the ground's color, or by the Lighting Setup's <strong>Ground Bounce Color</strong> where you set one. <strong>Ground Bounce Strength</strong> in the style's <strong>Default Lighting Values</strong> turns this light down together with the rest of the light the ground bounces. To save its GPU time at some quality levels or at all of them, set <strong>Light From Lit Ground</strong> in the style's <strong>Quality</strong> section (Style Quality).</p>
+<p>When you select it, the Scene view draws a line from the light down to the ground and a dashed outline where its light ends there. Drag the dot above the light to set <strong>Height Above Ground</strong>: the light rises or sinks and its pool stays where it is. On side-view art, dragging it sets how far in front of the art the light stands, and the light stays where it is. The other handles set <strong>Ground Radius</strong>, <strong>Inner Radius</strong>, the size and the spot angles. Point at a handle to see its name and value. With <strong>Lights</strong> on in the Sun Forge Gizmos panel, selecting a prefab also shows the handles of its lights, such as a candle's flame.</p>
+<p>Each light shows a bulb in the Scene view in its color, and a light a Light 2D drives shows the Light 2D's icon. A camera lights up to 512 lights, or 128 in a WebGL 2 player, and a gray bulb marks a light the main camera can see but leaves out because more reach its view. Its Inspector says why, and whether <strong>Is Prioritized</strong> under <strong>Special Cases</strong> keeps it lit. While the build target is WebGL with WebGL 2 in its Graphics APIs, the Scene view and the bulbs show what a WebGL 2 player lights.</p>
+<p>To make a spot, lower <strong>Outer Spot Angle</strong>. Its handles then show in the Scene view. Drag the <strong>Aim</strong> handle, the dot with an arc past the pool's edge, to aim it. It turns the GameObject.</p>
+<p>To light along a line or over a rectangle, such as a tube lamp or a glowing panel, set <strong>Shape</strong>. <strong>Shape Length</strong> runs along the GameObject's up axis, which the <strong>Aim</strong> handle turns.</p>
+<p><strong>Glow Renderers</strong> lists the renderers that draw a light's glow. The light does not light the glowing particles in the list, such as a flame's, so they show their own glow, and every other light still lights them. For this light to light them, take them out of the list. A Flame then stops flickering their glow.</p>
+<p>To make a light flicker like fire, set <strong>Kind</strong> to <strong>Flame</strong>. In Play mode the glow of each renderer in <strong>Glow Renderers</strong> flickers with it. For a flame sprite of your own, add its renderer to the list. When the light is a child of that sprite, the button below the list adds it for you.</p>
+<p>A sprite Sun Forge rendered with a Glow light, and a sprite whose textures you wrote with <strong>Write Textures</strong>, keep in their emission texture the light their own glowing parts send them. On a sprite whose textures you wrote with <strong>Write Textures</strong>, the faces its normal texture turns toward the glowing parts take more of that light, and the faces turned away take less. The lighting style sets how such a sprite's Glow light lights the sprite itself, and the Glow light's <strong>Light On Its Object Shift</strong> and <strong>Glow Parts Light Scale</strong>, under <strong>Special Cases</strong>, change that for that sprite alone. <strong>Glow Light On Its Object</strong> is how much the light lights it as it lights the things around it. <strong>Glow Parts Light On Its Object</strong> is how strongly the light kept in the texture shows. A flame sprite of your own is lit by its Light Source as any other sprite is.</p>
+<p>A sprite with a Regular, Cinematic or Flat material, or a material made from one, takes its Glow light as its material's style sets it when the scene's style is another of the three, such as a Flat material in a Regular scene. The Lighting Setup's two <strong>Glow</strong> values then do not change it. For this, Realistic counts as Regular, and a style of your own counts as the style you made it from. Every sprite in a scene with no Lighting Setup takes its Glow light the same way. The Glow light's <strong>Light On Its Object Shift</strong> and <strong>Glow Parts Light Scale</strong> still change such a sprite, except <strong>Glow Parts Light Scale</strong> on a Cinematic material, because Cinematic shows none of the light kept in the texture.</p>
+<p>Your Light 2D lights keep lighting the Unity-Lit material. To light your styled sprites with them too:</p>
+<ol>
+<li>Choose <strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong> and click <strong>Apply</strong>. Each Light 2D that targets every sorting layer gets a Light Source that it drives, so scripts and animations that change the Light 2D change the Light Source too.</li>
+<li>For a Light 2D that leaves a sorting layer out, select the Lighting Setup and click <strong>Fix</strong> beside the finding that names the light.</li>
+<li>Set each Light Source's <strong>Height Above Ground</strong> to how high its Light 2D hangs above the ground. The light stays at the Light 2D. The Light 2D lights the Unity-Lit material around itself. On styled sprites it lights the ground below it, so its pool looks flattened, like the ground in your art. On side-view art, set a small Height instead: the light stands that far in front of the art, and its pool lies around it.</li>
+</ol>
+<h2 id="materials">Materials</h2>
+<p>The package has four styles: Regular, Cinematic, Flat and Realistic. Realistic is for art that should look lifelike. It shades as Regular does, with no rim on sunlit edges and no widened sun glint, under a hazy day's sun and sky. To change a scene's style, select its <strong>Lighting Setup</strong> and click a style under <strong>Style</strong>.</p>
+<p>Each style has an Indoor variant, for a room. It keeps the style's materials and post-processing. Its sun is the room's main light, its sky is dim and warm, and it has no clouds. To light a room with one:</p>
+<ol>
+<li>Select the scene's <strong>Lighting Setup</strong>. Under <strong>Style</strong>, click <strong>Indoor</strong>, then the style you want.</li>
+<li>For each lamp, fire or window, choose a starting look under <strong>GameObject &gt; Sun Forge &gt; Light Source</strong>, such as <strong>Lamps &gt; Lantern</strong>, <strong>Fire &gt; Fireplace</strong> or <strong>Windows and Doors &gt; Window</strong>.</li>
+<li>Under Regular, Cinematic or Realistic, to have metal reflect your room, import a panorama of it with <strong>Texture Shape</strong> set to <strong>Cube</strong>, and assign it as the Lighting Setup's <strong>Environment</strong>. With none, metal reflects the dim, warm sky. Under Flat, metal reflects no image and no sky.</li>
+</ol>
+<p>Flat's Indoor is dimmer than the other styles' Indoor, so that its Light Sources brighten the art around them. Under a higher <strong>Sun Intensity</strong> they only tint it. For a Flat room of your own, set the Lighting Setup's <strong>Light Sources In Sunlight</strong> to 1 and lower <strong>Sun Intensity</strong>.</p>
+<p>Every style has one material per role:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>For</th>
+<th>Material</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sprite</strong></td>
+<td>Actors, props and effects that stand up</td>
+<td><code>SunForge_&lt;Style&gt;_SpriteLit</code></td>
+</tr>
+<tr>
+<td><strong>Ground</strong></td>
+<td>Terrain, roads, decals and other flat art drawn top-down, and a side view's floors and walls</td>
+<td><code>SunForge_&lt;Style&gt;_Ground</code></td>
+</tr>
+<tr>
+<td><strong>Ground Clutter</strong></td>
+<td>Stones, tufts, grass and other small solids lying on the ground, drawn from the same angle as your standing sprites</td>
+<td><code>SunForge_&lt;Style&gt;_GroundClutter</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A sprite whose <strong>Lighting Style Renderer</strong> names a <strong>Material</strong> draws that material under every style. A sprite that names none draws the material of the Lighting Setup's style for its <strong>Role</strong>, so it changes when the style does.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Comes from</th>
+<th>What</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The scene's Lighting Setup</td>
+<td>Sun, sky and weather, the lights, cast shadows, mist and the post-processing</td>
+</tr>
+<tr>
+<td>The sprite's material</td>
+<td>How the sprite is shaded, and its properties (Tuning A Style)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Unity-Lit material, <code>SunForge_URP_SpriteLit</code>, belongs to no style. Unity's 2D lights light it under the 2D Renderer, and under the Universal Renderer URP's lights light it as an upright sprite in a scene whose up is +Y, such as a side view or a 3D scene. It reads a sprite's normal, mask and emission textures, and takes no mist, cast shadows or ground cover from the Lighting Setup.</p>
+<h2 id="tuning-a-style">Tuning A Style</h2>
+<p>To tune a look, save it as a style of your own:</p>
+<ol>
+<li>Select your <strong>Lighting Setup</strong> and click <strong>Save As New Style</strong>. The Lighting Setup takes the new style and looks the same. The style has its own materials and post-processing profile, saved beside it. Under <strong>Style</strong>, the Lighting Setup shows what every Lighting Setup on the style shares: its <strong>Look</strong>, post-processing, <strong>Cloud And Mist Texture</strong> and <strong>Quality</strong>.</li>
+<li>In <strong>Look</strong>, set the rows. Each row sets the style's Sprite, Ground and Ground Clutter materials together.</li>
+<li>To tune the post-processing, edit the overrides under <strong>Post Processing Profile</strong>.</li>
+</ol>
+<p>For a style that starts as Regular, choose <strong>Assets &gt; Create &gt; Sun Forge &gt; Lighting Style</strong> instead.</p>
+<p>The Lighting Setup's <strong>Values</strong> hold the sun, sky and weather, and under <strong>Glow</strong> how a Glow light lights the object it belongs to. Under Regular, <strong>Glow Light On Its Object</strong> at 0 with <strong>Glow Parts Light On Its Object</strong> at 1 lights the object by what its glowing parts send it. Regular sets <strong>Glow Parts Light On Its Object</strong> higher, which brightens that light.</p>
+<p>A dimmed row does nothing in the scene as it is now, such as a night row by day. Its tooltip says why. Your edit is kept.</p>
+<p>Realistic's materials are Regular's with other values, so a row listed for Regular applies to Realistic too. Realistic has no Pixel Outline material.</p>
+<p>Each row's tooltip says what it does. Some rows need more:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Styles</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Night Vision Strength</strong></td>
+<td>All</td>
+<td>On Flat, start at 0.5</td>
+</tr>
+<tr>
+<td><strong>Highlight Ceiling</strong></td>
+<td>Regular, Cinematic</td>
+<td>Red, green and blue each level off on their own, so a bright firelit glint turns from orange to gold to yellow. Without tonemapping, as under Regular, a glint above 1 turns to flat color</td>
+</tr>
+<tr>
+<td><strong>Pixel Outline</strong>, <strong>Pixel Outline Color</strong></td>
+<td>Regular, Cinematic</td>
+<td>The ring draws only inside the sprite's rectangle, so leave a transparent pixel around the art, and on a sprite whose <strong>Mesh Type</strong> is Tight keep <strong>Extrude Edges</strong> at 1 or more. To outline only some sprites, set the <strong>Material</strong> of their Lighting Style Renderer to <code>SunForge_Regular_SpriteLit_PixelOutline</code> or <code>SunForge_Cinematic_SpriteLit_PixelOutline</code>, the shipped Sprite material with <strong>Pixel Outline</strong> on</td>
+</tr>
+<tr>
+<td><strong>Outline Width (World Units)</strong></td>
+<td>Flat</td>
+<td>The default draws one sprite pixel at 64 Pixels Per Unit, and one and a half at 96. A sprite scaled down keeps the width, so a small copy looks more heavily outlined. Crease lines stay one sprite pixel wide</td>
+</tr>
+<tr>
+<td><strong>Light And Shade Color</strong></td>
+<td>Flat</td>
+<td>Start at 0.5</td>
+</tr>
+<tr>
+<td><strong>Receives Cast Shadows</strong>, <strong>Bake Camera Elevation (Degrees)</strong>, <strong>Height Range (World Units)</strong>, <strong>Shadow Sun Elevation (Degrees)</strong>, <strong>Shadow Sun Direction (Degrees)</strong></td>
+<td>All</td>
+<td>Not in <strong>Look</strong>: select your style and click <strong>Open</strong> beside a material to set them on that material. The Lighting Setup's <strong>Art View</strong> outranks <strong>Bake Camera Elevation (Degrees)</strong></td>
+</tr>
+<tr>
+<td><strong>Emission Scale</strong></td>
+<td>All</td>
+<td>Not in <strong>Look</strong>: set it on each material, as above. It also brightens the Glow light that <strong>Write Textures</strong> adds (<strong>Glow, Surfaces and Edges</strong>, on a sprite's Lighting Style Renderer)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Leave <strong>Flat On Ground</strong> and <strong>Uses Top-Down Normal Map</strong> as they are: they match the material's role.</p>
+<p>Leave two transparent pixels around each sprite, so two sprites in one texture are four pixels apart. Where a sprite has fewer, Flat's outline and the rims of Regular and Cinematic are missing along that edge.</p>
+<p>The style's post-processing is its Volume profile, <code>SunForge_&lt;Style&gt;_PostProcessing</code>. The Lighting Setup applies it at priority 0.5. A Volume of your own with a priority below 0.5 sets what the profile leaves out, such as a vignette on Flat. One at 1 or more overrides the style. Regular and Flat turn tonemapping off, so a tonemapper set for the whole project does not show under them. Set it on a Volume with a priority of 1 or more instead. Realistic's profile sets <strong>Tonemapping</strong> to Neutral, with Regular's vignette and no change to contrast or saturation. Its bloom starts at a higher brightness than the other styles', so a glow blooms and a sunlit wall barely does. The styles are tuned for the URP asset's <strong>Grading Mode</strong> at <strong>Low Dynamic Range</strong>, its default. At <strong>High Dynamic Range</strong>, which HDR display output also turns on, their nights are darker, and under Cinematic a fire's bright core turns a flat yellow. To turn the style's post-processing off, clear <strong>Post Processing Enabled</strong> on the Lighting Setup.</p>
+<h2 id="time-of-day">Time Of Day</h2>
+<p><strong>Time Of Day</strong>, under <strong>Style</strong> on the Lighting Setup, sets the hour, from 0 to 24. Each value follows the style at that hour. The marks on the slider show the hours the style keys.</p>
+<p>The style's <strong>Hours</strong> hold its keys. 12:00 is always its <strong>Default Lighting Values</strong>, and each other key sets some values at its hour. Between keys, a value blends from the last key that sets it to the next one. Regular, Cinematic, Flat and Realistic key dawn, morning, afternoon, dusk and a night from 20:00 to 04:00. An Indoor style keys only 12:00. To change them:</p>
+<ol>
+<li>Select your <strong>Lighting Setup</strong>. If it uses one of Sun Forge's styles, click <strong>Save As New Style</strong>.</li>
+<li>Select the style and open <strong>Hours</strong>. Each key lists every value with a checkbox in front of it. Select a value's checkbox to set it at that hour.</li>
+<li>Click <strong>Add Hour</strong> for a new key. Turn on <strong>Held</strong> for a key that holds its values over a span of hours.</li>
+</ol>
+<p>The values an hour usually sets:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Value</th>
+<th>What it changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sun Elevation</strong></td>
+<td>Which sides the sun lights, and how bright level ground is</td>
+</tr>
+<tr>
+<td><strong>Sun Color</strong>, <strong>Sun Intensity</strong>, <strong>Sun Warmth</strong></td>
+<td>The sunlight's color and brightness</td>
+</tr>
+<tr>
+<td><strong>Ambient Sky Color</strong>, <strong>Ambient Sky Intensity</strong></td>
+<td>The light from the sky, in shade and on every side</td>
+</tr>
+<tr>
+<td><strong>Night</strong>, and the moon's values</td>
+<td>Night fades the sun into the moon and turns materials to night vision</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong> and the values under it</td>
+<td>Longer ground shadows, as at dusk</td>
+</tr>
+<tr>
+<td><strong>Ground Shadow Strength</strong></td>
+<td>How dark shadow sprites and a Cast Shadow Field's ground overlay are</td>
+</tr>
+<tr>
+<td><strong>Mist Enabled</strong> and the values under it</td>
+<td>Ground mist</td>
+</tr>
+</tbody>
+</table></div>
+<p>A value you set on the Lighting Setup keeps your value at every hour. The revert button on its row, or <strong>Revert All</strong>, gives it back to the hours. A line under the values names the ones you set that the style's hours would change.</p>
+<p>To run a day from a script, set <code>SunForgeLightingSetup.TimeOfDay</code> in <code>Update</code>. The Lighting Setup shows that hour in the same frame.</p>
+<h2 id="style-quality">Style Quality</h2>
+<p>A style's <strong>Quality</strong> section sets which costly parts of the lighting draw at each quality level. The shipped styles draw each <strong>Standard</strong> option at every level and no <strong>Extra</strong> option. To change that:</p>
+<ol>
+<li>Select your <strong>Lighting Setup</strong>. If it uses one of Sun Forge's styles, click <strong>Save As New Style</strong>.</li>
+<li>Select the style. Its <strong>Quality</strong> section lists each option.</li>
+<li>Beside the option, pick <strong>Every Level</strong>, <strong>Never</strong>, or <strong>From</strong> and a level. <strong>From High</strong>, for example, draws the option at High and at each level listed after it in <strong>Project Settings &gt; Quality</strong>, and leaves it out at the levels listed before it.</li>
+</ol>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Group</th>
+<th>Styles</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Light From Lit Ground</strong></td>
+<td>Standard</td>
+<td>Regular, Cinematic</td>
+<td>Whether a Light Source's pool on the ground lights the sides and undersides of standing sprites that face it, and nearby metal reflects it</td>
+</tr>
+<tr>
+<td><strong>Exact Shadows On Sprites</strong></td>
+<td>Extra</td>
+<td>Every style</td>
+<td>Whether a shadow on a sprite stays correct where shadows overlap or its caster stands close to the sprite, where it otherwise fades or shows an edge. It needs a Cast Shadow Field that casts on sprites</td>
+</tr>
+</tbody>
+</table></div>
+<p>When your game changes its quality level, the lighting follows on the next frame. A style that leaves a <strong>Standard</strong> option out or draws an <strong>Extra</strong> one at some level adds shader variants to your builds, and a style that does neither adds none. If you build Addressables or asset bundles, clear their build cache after you change a style's <strong>Quality</strong>.</p>
+<h2 id="performance">Performance</h2>
+<p>A setting that costs frame time shows a gauge after its name. The needle points left for a small cost, up for a medium one and right for a large one, and the tooltip says what it costs. The <strong>Lighting Setup</strong>'s <strong>Performance</strong> section lists what costs in the open scenes, largest first, with <strong>Select</strong> beside each line. A setting that costs nothing as it is set, such as a switch that is off, is dimmed at the end.</p>
+<p>To set the costly settings at once, open <strong>Performance</strong> and click <strong>Fastest</strong>, <strong>Balanced</strong> or <strong>Full</strong>, then tune any setting from there:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Mist Enabled</th>
+<th>Cast Shadow Stretch Enabled</th>
+<th>Post Processing Enabled</th>
+<th>Cast Shadow Field</th>
+<th>Sorted Ground Cover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fastest</strong></td>
+<td>Off</td>
+<td>Off</td>
+<td>Off</td>
+<td>At most a quarter of the art's resolution, ground only</td>
+<td>Disabled</td>
+</tr>
+<tr>
+<td><strong>Balanced</strong></td>
+<td>Off</td>
+<td>Back to the style's, if off</td>
+<td>On</td>
+<td>Half the art's resolution, sprites too</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td><strong>Full</strong></td>
+<td>Back to the style's, if off</td>
+<td>Back to the style's, if off</td>
+<td>On</td>
+<td>At least the art's resolution, sprites too</td>
+<td>Enabled</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each button leaves the style, the Light Sources and Unity's Render Scale as they are. Undo takes its changes back in one step.</p>
+<p>What each setting cost in a test scene, with and without it. A desktop is an RTX 4060, a phone a Pixel 8a. A range spans the readings. A desktop reading under about 0.8 ms is within the noise between runs.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Where you set it</th>
+<th>Cost</th>
+<th>Measured</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Render Scale</strong></td>
+<td>The URP asset of each quality level</td>
+<td>Large</td>
+<td>Desktop at 1920 by 1080, 2026-11: 0.5 saved 1.3 to 1.5 ms of GPU</td>
+</tr>
+<tr>
+<td><strong>Mist Enabled</strong></td>
+<td>Lighting Setup, or the style's <strong>Default Lighting Values</strong></td>
+<td>Large</td>
+<td>Phone, 2026-10: about 40 ms. Desktop at 2560 by 1440, 2026-11: 1.0 to 1.7 ms</td>
+</tr>
+<tr>
+<td><strong>Pixels Per Unit</strong></td>
+<td>Cast Shadow Field</td>
+<td>Large</td>
+<td>Phone, 2026-10: 64 against 128 saved about 30 of 83 ms of GPU. Desktop, 2026-11: 16 against 64 within the noise</td>
+</tr>
+<tr>
+<td><strong>Style</strong></td>
+<td>Lighting Setup</td>
+<td>Medium</td>
+<td>Phone, 2026-10: Cinematic more than Regular, Flat less. Desktop, 2026-11: Cinematic 0.3 to 3 ms and Flat 0.2 to 1.1 ms more than Regular</td>
+</tr>
+<tr>
+<td><strong>Mode</strong></td>
+<td>Cast Shadow Field</td>
+<td>Medium</td>
+<td>Desktop with 1,000 animated characters, 2026-11: an And Sprites mode 0.7 to 1 ms of GPU and 0.5 to 1.3 ms of main thread more than its Only mode</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong></td>
+<td>Lighting Setup, or the style's <strong>Default Lighting Values</strong> and <strong>Hours</strong></td>
+<td>Medium</td>
+<td>Desktop, 2026-11: about 1 ms in three of four readings, and about 0.6 ms at Regular's dawn and dusk, whose hours turn it on</td>
+</tr>
+<tr>
+<td><strong>Post Processing Enabled</strong></td>
+<td>Lighting Setup</td>
+<td>Medium</td>
+<td>Phone, 2026-10: about 1 ms. Desktop, 2026-11: up to 1.6 ms</td>
+</tr>
+<tr>
+<td><strong>Light From Lit Ground</strong></td>
+<td>The style's <strong>Quality</strong></td>
+<td>Medium</td>
+<td>Desktop under Cinematic, 2026-10: 0.7 to 1.4 ms, and 2026-11: 0.2 to 1.1 ms</td>
+</tr>
+<tr>
+<td><strong>Exact Shadows On Sprites</strong></td>
+<td>The style's <strong>Quality</strong></td>
+<td>Medium</td>
+<td>Desktop, 2026-11: 0.5 to 2.2 ms in three of four readings</td>
+</tr>
+<tr>
+<td><strong>Mist Height</strong></td>
+<td>Lighting Setup, or the style's <strong>Default Lighting Values</strong></td>
+<td>Small</td>
+<td>Grows with the height. Not timed alone</td>
+</tr>
+<tr>
+<td><strong>Ground Radius</strong></td>
+<td>Light Source, and <strong>Intensity</strong> on Scene Lights</td>
+<td>Small</td>
+<td>Desktop, 2026-11: the test scene's lights within the noise</td>
+</tr>
+<tr>
+<td><strong>Sorted Ground Cover</strong></td>
+<td>Its component on a grass sheet</td>
+<td>Small</td>
+<td>Desktop at 2560 by 1440 with 1,000 characters, 2026-11: 0.3 to 0.5 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>On a desktop, 2026-11, <strong>Cloud Strength</strong>, <strong>Canopy Shade Strength</strong> and the Lighting Setup's <strong>Sprite Emission Enabled</strong>, <strong>Ambient Occlusion Enabled</strong> and <strong>Self Shadow Enabled</strong> cost nothing measurable. On a phone, 2026-10, cloud, canopy shade and ambient occlusion cost 1 ms or less each.</p>
+<h2 id="sprite-textures">Sprite Textures</h2>
+<p>To give a sprite you drew its textures:</p>
+<ul>
+<li>Bring your own. Save each as a PNG beside the sprite's texture, named as in the table, where <code>&lt;sheet&gt;</code> is that texture's file name without its extension. Then run <strong>Set Up for Lighting</strong>, or click <strong>Change Setup</strong> on the sprite's Lighting Style Renderer. Under <strong>Sprites</strong>, the sprite's row names each file it found, and <strong>Apply</strong> gives it to the sprite. A sprite that already has a texture of that kind keeps it.</li>
+<li>Have Sun Forge write them. Once <strong>Set Up for Lighting</strong> has set the sprite up, select its object and open <strong>Glow, Surfaces and Edges</strong> on its Lighting Style Renderer. Pick the colors that glow under <strong>Glow Colors</strong> and the ones that shine like metal under <strong>Surface Colors</strong>, and turn on <strong>Round Edges</strong> for rounded edges. Then click <strong>Write Textures</strong>.</li>
+</ul>
+<p>You can also bind them under <strong>Secondary Textures</strong> in Unity's Sprite Editor. A style's material reads them from any sprite that has them:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Texture</th>
+<th>File</th>
+<th>Secondary texture name</th>
+<th>Channels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal</td>
+<td><code>&lt;sheet&gt;_Normal.png</code></td>
+<td><code>_NormalMap</code></td>
+<td>On Ground in a scene drawn from above, a normal map drawn top-down. Otherwise, one drawn from the same angle as your standing sprites. Fill its texels outside the sprite with the flat normal, 128, 128, 255, or the sprite's edge draws dark. Read it with <code>SFUnpackNormal</code> from <code>SunForgeNormalDecode.hlsl</code>, or the <strong>Sun Forge Sample Normal Map</strong> node in Shader Graph. Both read 128 as level</td>
+</tr>
+<tr>
+<td>Mask</td>
+<td><code>&lt;sheet&gt;_MaskTex.png</code></td>
+<td><code>_MaskTex</code></td>
+<td>R metallic, G smoothness, B ambient occlusion, and on a sprite Sun Forge rendered, A how much sun reaches it. Linear</td>
+</tr>
+<tr>
+<td>Emission</td>
+<td><code>&lt;sheet&gt;_Emission.png</code></td>
+<td><code>_EmissionTex</code></td>
+<td>The glow's color at intensity 1, sRGB, and on a texture Sun Forge rendered or wrote, A how much light the sprite takes from its own glow</td>
+</tr>
+<tr>
+<td>Geometry texture</td>
+<td><code>&lt;sheet&gt;_Geometry.png</code></td>
+<td><code>_GeometryTex</code></td>
+<td>R height above the pivot: black at the pivot, brighter is higher. A is optional (<a href="/guide/lighting/en/custom-shaders/#geometry-textures"><code>Custom-Shaders.md</code>, Geometry Textures</a>). Linear and uncrunched</td>
+</tr>
+</tbody>
+</table></div>
+<p>A sprite with a mask of another layout under <code>_MaskTex</code> lights wrong.</p>
+<p>To see these textures on your sprites, turn on <strong>Texture View</strong> at the foot of the <strong>Sun Forge Gizmos</strong> panel and pick one. It shows in that Scene view only and changes nothing in the scene. <strong>Shaded</strong> on the note at the top of the view goes back to the scene. A view shows only what a lit or unlit URP material draws, so sprites under <code>Sprites/Default</code>, cast shadows, lines and text hide. A sprite that 2D Animation deforms on the GPU draws in its bind pose. A Sprite Mask with Unity's built-in material masks nothing, so sprites set to Visible Inside Mask hide. The note says when either applies, and <strong>Use URP Material</strong> on it gives those masks URP's material.</p>
+<ul>
+<li>Under <strong>Normal</strong>, turn on <strong>Flag Missing</strong> to outline each sprite with no normal map of its own.</li>
+<li>Under <strong>Geometry</strong>, the colors run to the tallest height the view draws, and the scale in the note gives that height in units. They settle when the view stops moving. A texel with no height shows in dim gray.</li>
+<li>Under <strong>Emission</strong>, a sprite with no emission shows in dim gray.</li>
+</ul>
+<h2 id="painting-a-geometry-texture">Painting A Geometry Texture</h2>
+<p>A sprite that stands upright needs no Geometry texture. Paint one for a sprite that is not an upright card, such as a table top, a cart or a figure lying down.</p>
+<ol>
+<li>Paint gray over every pixel the sprite covers: black at the ground, brighter the higher it stands. On a sheet, leave a sprite transparent to keep it an upright card.</li>
+<li>Put the sprite's pivot on its front edge where it meets the ground, such as a cart's front wheels. Grass draws over the sprite only in front of the pivot. For a sprite that stands on another, such as a lamp on a table, put the pivot where it meets the table, and set <strong>Height Above Ground</strong> on its Lighting Style Renderer to the table's height.</li>
+<li>Export a PNG named <code>&lt;sheet&gt;_Geometry.png</code> beside the sheet.</li>
+<li>Run <strong>Set Up for Lighting</strong>. The sprite's row names the texture, and <strong>Apply</strong> imports it and gives it to the sprite.</li>
+</ol>
+<ul>
+<li>To work in pixels, gray is <code>height in pixels * 255 / (Pixels Per Unit * range)</code>, where range is the material's <strong>Height Range (World Units)</strong>. At 32 Pixels Per Unit and the default range of 8, one gray step is about one pixel.</li>
+<li>A part that stands straight up, such as a chimney, and is N pixels tall in the drawing is <code>N / cos(elevation)</code> pixels high, where elevation is the angle of the Lighting Setup's <strong>Art View</strong>.</li>
+<li>With Point filtering, nothing around the sprite matters. A filtered sheet needs the export's background transparent. Anything you leave transparent needs a PNG with alpha.</li>
+</ul>
+<h2 id="cast-shadows">Cast Shadows</h2>
+<ul>
+<li><strong>Set Up for Lighting</strong> sets the <strong>Sprite Sort Point</strong> of each sprite it sets up as <strong>Standing</strong> to <strong>Pivot</strong>, so standing sprites that share a Sorting Layer and an Order in Layer sort by Y from their feet. A sprite in a Sorting Group keeps its sort point.</li>
+<li>A Cast Shadow Field follows one camera, so in split screen both views share the shadows of the camera it follows.</li>
+<li>In a dense crowd of hundreds of casters, a small part of a sprite can stay lit where a neighbor's shadow falls on it. The Cast Shadow Field's Inspector says when that can happen, and what to do.</li>
+<li>A caster whose shadow is far from the camera's view costs almost nothing. One whose Sprite Renderers are turned off costs a check of each of them every frame.</li>
+<li>The Cast Shadow Field draws once a frame, before the first camera. If a script moves the camera or a sprite between two renders in one frame, as a capture does, call its <code>Redraw</code> before the later render.</li>
+<li>A Scale X of -1 on a parent, which turns a character to face left, does not mirror a paired shadow, so it still falls away from the sun. Outside a Cast Shadow Field, a shadow sprite whose shader is not <strong>Sun Forge/Hand-Drawn Shadow</strong> mirrors with its parent.</li>
+<li>A shadow sprite is as dark as you drew it under the Regular style's daylight with no cloud over it. It is darker under a sun stronger against its sky, as in the Realistic style, and fades as the sun or moon weakens against the sky, under cloud and under a lower sun. A higher <strong>Ground Shadow Strength</strong> on the Lighting Setup darkens it. It also fades inside a Light Source's light, except on the Flat look and in a side view. Outside a Cast Shadow Field, a shadow sprite whose shader is not <strong>Sun Forge/Hand-Drawn Shadow</strong> keeps its darkness.</li>
+</ul>
+<p>A sprite that does not receive cast shadows also takes no mist and stands in no ground cover.</p>
+<p>The mist also does not cover particles, shadow sprites whose shader is not <strong>Sun Forge/Hand-Drawn Shadow</strong>, or shaders of your own that do not light through <strong>Sun Forge Lit Color</strong>.</p>
+<h2 id="canopy-shade">Canopy Shade</h2>
+<p>A Canopy Shade takes the sky's light off the ground and the sprites under tree crowns. To set one up:</p>
+<ol>
+<li>Choose <strong>GameObject &gt; Sun Forge &gt; Canopy Shade</strong>.</li>
+<li>Put your trees, and nothing else, under one object, with groups inside it if you like, and set the Canopy Shade's <strong>Trees</strong> to it.</li>
+<li>Set <strong>Rect</strong> to the ground the trees stand on.</li>
+<li>Click <strong>Draw Map</strong>. It saves the map beside the scene and sets <strong>Map</strong> and <strong>Canopy Height</strong>.</li>
+</ol>
+<p>After you move, add or remove a tree, click <strong>Draw Map</strong> again. If you changed the map, Draw Map keeps yours and saves a new one.</p>
+<p>Run <strong>Set Up for Lighting</strong> on trees made from your own sprites, or they cast no shade.</p>
+<p>Set <strong>Canopy Shade Strength</strong> on the Lighting Setup to choose how much of the shade shows.</p>
+<p>To paint a map instead, cover <strong>Rect</strong> with it: white is open sky and black is under closed crowns. Draw each crown's shade 1 / sin e times as wide as it is deep, where e is the angle of the Lighting Setup's <strong>Art View</strong>, which is <strong>From Above</strong> wherever canopy shade shows. Parts of a sprite above <strong>Canopy Height</strong> stay lit.</p>
+<h2 id="side-views">Side Views</h2>
+<p>Art drawn from the side, such as a platformer's, is a side view. To light a side-view scene:</p>
+<ol>
+<li>Choose <strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong>.</li>
+<li>In the window's first row, <strong>Art View</strong>, pick <strong>From the Side</strong>, then click <strong>Apply</strong>. Your sprites, floors and walls then light as a side view, under any style and material.</li>
+<li>On the Lighting Setup, set <strong>Sun Direction</strong> and <strong>Sun Elevation</strong> so the sun comes from the side.</li>
+<li>For a torch or a fire, add a light with <strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Fire &gt; Torch</strong>. By day its pool shows in Regular and Cinematic. In Flat, a pool shows by day only where the light is much brighter than the sun and sky on that surface, or wherever it reaches once you raise the Lighting Setup's <strong>Light Sources In Sunlight</strong>. At night, a brighter moon or night sky does not take the pool away. If the sun drowns a pool, raise the light's <strong>Intensity</strong>, and raise <strong>Ground Radius</strong> to widen it.</li>
+</ol>
+<p><strong>Art View</strong> is also on the Lighting Setup, where you can change it later. Each scene's Lighting Setup has its own, so one project can hold side-view and top-down levels.</p>
+<p>On side-view art:</p>
+<ul>
+<li><strong>Set Up for Lighting</strong> moves no pivot and adds no Cast Shadow Caster or Cast Shadow Field. It sets each sprite to the <strong>Sprite</strong> role, and each Tiled sprite, Tilemap and Sprite Shape to <strong>Ground</strong>, for floors and walls.</li>
+<li>A Light Source shines from its GameObject and lights the art as it lights the ground from above. Its light reaches <strong>Ground Radius</strong> across the screen, and <strong>Height Above Ground</strong> is how far in front of the art it stands: a higher light lights the art more evenly and more dimly. For a lamp on a wall or in a hand, set a small Height, however high it hangs. A light you add from the <strong>Light Source</strong> menu after step 2 starts at a Height that suits side-view art. <strong>Shape</strong> and the spot angles lie on the screen.</li>
+<li>Cloud shadows, canopy shade, mist, ground cover, cast shadows and <strong>Light From Lit Ground</strong> do not show, because a side view shows no ground for them to lie on.</li>
+<li>The Ground material lights floors and walls as if they face the camera, like a Sprite, and reads their normal map as a Sprite's.</li>
+<li>A light lights every side-view sprite within its reach, a backdrop included. To keep a backdrop unlit, add it to the light's <strong>Excluded Objects</strong>.</li>
+<li>A sprite at a smaller <strong>Z</strong> than a light, such as a character walking past a wall torch, is in front of it: the light reaches only the sprite's edges, and in Flat none of the sprite. To light the sprite's front, give the light the sprite's Z or a smaller one.</li>
+</ul>
+<h2 id="pixel-perfect-camera">Pixel Perfect Camera</h2>
+<p>URP's Pixel Perfect Camera draws each sprite pixel as a block of whole screen pixels. Set its <strong>Assets Pixels Per Unit</strong> to your sprites' Pixels Per Unit. A sprite at another Pixels Per Unit, or a scaled one, draws pixels of another size.</p>
+<p>The camera works under the 2D Renderer and the Universal Renderer. <strong>Grid Snapping</strong> set to <strong>Upscale Render Texture</strong> works under the 2D Renderer only.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Grid Snapping</th>
+<th>Sprites move in steps of</th>
+<th>Lights, mist and cast shadows change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong></td>
+<td>Screen pixels</td>
+<td>From one screen pixel to the next, so they fall smoothly across a sprite pixel</td>
+</tr>
+<tr>
+<td><strong>Pixel Snapping</strong></td>
+<td>Whole sprite pixels</td>
+<td>From one screen pixel to the next, so they fall smoothly across a sprite pixel</td>
+</tr>
+<tr>
+<td><strong>Upscale Render Texture</strong></td>
+<td>Whole sprite pixels</td>
+<td>Once per sprite pixel, like the art, because the scene renders at the camera's <strong>Reference Resolution</strong> and is scaled up</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="setting-up-from-a-script">Setting Up From A Script</h2>
+<p>An editor script can light a scene in a style and do what <strong>Fix All</strong> does:</p>
+<pre><code class="language-csharp">using System.Collections.Generic;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+SunForgeSceneLighting.SetUp(SunForgeShippedLightingStyle.Regular);
+SunForgeSceneLighting.FixAll();
+
+// On the Universal Renderer, the sort that Fix All skips. A Custom Axis is a choice of yours, so keep it.
+if (GraphicsSettings.transparencySortMode != TransparencySortMode.CustomAxis)
+{
+    GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+    GraphicsSettings.transparencySortAxis = new Vector3(0f, 1f, 0f);
+}
+
+IReadOnlyList&lt;string&gt; left = SunForgeSceneLighting.Check();
+foreach (string message in left)
+    Debug.LogWarning(message);
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SetUp</code> sets the style of the scene's Lighting Setup, or adds a Lighting Setup in that style to a scene with none, and selects nothing. <code>SetUp(SunForgeShippedLightingStyle.Regular, SunForgeLightingStyleVariant.Indoor)</code> sets the scene up in Regular's Indoor variant.</li>
+<li><code>FixAll</code> applies every fix that <strong>Fix All</strong> applies, except a fix that opens <strong>Set Up for Lighting</strong>, and opens no window. It returns what is left: what only you can fix, each fix Fix All skips because it changes a choice of yours, and each finding to fix in <strong>Set Up for Lighting</strong>. Call it once the scene has its sprites, and again after you add more: it adds what they need, such as a Cast Shadow Field for a sprite that casts a shadow. <code>Check</code> returns what is left and changes nothing. Show or log the messages. Their wording changes with the editor's language, so do not compare them.</li>
+<li>A camera that is already loaded keeps its own sort until its scene loads again, and a Scene view keeps its sort until you open it again. To sort them now, also set <code>transparencySortMode</code> and <code>transparencySortAxis</code> on each loaded camera and on each camera <code>SceneView.GetAllSceneCameras()</code> returns.</li>
+<li>The changes are in the open scenes and the project's assets in memory. Save both before the script ends, as the last two lines do.</li>
+</ul>
+<p>A script can save a style of your own and tune it as <strong>Look</strong> does (Tuning A Style). This one saves the scene's look and turns <strong>Pixel Outline</strong> on:</p>
+<pre><code class="language-csharp">var setup = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeLightingStyle style = SunForgeSceneLighting.SaveAsNewStyle(setup, &quot;Assets/Lighting/My Style.asset&quot;);
+IReadOnlyList&lt;Material&gt; materials = SunForgeLightingStyleEditing.EnsureOwnMaterials(style);
+
+SunForgeLightingStyleSetting row = SunForgeLightingStyleSettings.Find(&quot;_SFPixelOutline&quot;);
+foreach (Material material in materials)
+{
+    if (!material.HasProperty(row.Name))
+        continue;
+
+    Undo.RecordObject(material, &quot;Set Pixel Outline&quot;);
+    material.SetFloat(row.Name, 1f);
+    if (row.Keyword != null)
+        material.EnableKeyword(row.Keyword);
+}
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SaveAsNewStyle</code> does what <strong>Save As New Style</strong> does with the path you would choose in its save panel: it saves the style with its own materials and post-processing profile, and returns it. It creates a missing folder. Where a file is at the path, it throws, unless you pass <code>overwrite: true</code> and the file is a lighting style, which it then saves into. To tune a style you saved before, load it with <code>AssetDatabase.LoadAssetAtPath&lt;SunForgeLightingStyle&gt;</code> instead.</li>
+<li><code>EnsureOwnMaterials</code> does what <strong>Make Copies for This Style</strong> does, and returns the style's materials. <code>EnsureOwnProfile</code> does what <strong>Make a Copy for This Style</strong> does under <strong>Post Processing Profile</strong>, and returns the profile. Both leave a part that is already the style's own as it is. A shipped style is read-only, so both throw for one.</li>
+<li><code>SunForgeLightingStyleSettings.MaterialProperties</code> lists every row with the <code>Name</code> of its property, its <code>Tooltip</code> and its <code>Group</code>. A row's label in <strong>Look</strong> is the property's description in the material's shader: <code>shader.GetPropertyDescription(shader.FindPropertyIndex(row.Name))</code>.</li>
+<li>A slider's limits are the shader's, from <code>shader.GetPropertyRangeLimits</code>. <code>SetFloat</code> does not keep a value inside them.</li>
+<li>A row with a <code>Keyword</code> needs both: set the property, and turn the keyword on with <code>EnableKeyword</code> or off with <code>DisableKeyword</code>. A row with a <code>Switch</code> shows only while the row that name gives is on, as <strong>Pixel Outline Color</strong> does under <strong>Pixel Outline</strong>.</li>
+<li><code>Undo.RecordObject</code> before each change makes the scene draw it at once. Without it, call <code>Publish</code> on the Lighting Setup.</li>
+<li>The <code>BakedArt</code> rows are not in <strong>Look</strong>: set one on the material it is for. Leave the <code>Orientation</code> rows as they are.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+  <a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="Footer">
+    <span class="parts"><a href="/#features">All features</a><a href="/sprite-baker/">Sprite baker</a><a href="/2d-lighting/">2D lighting</a></span>
+    <a href="/learn/">Learn</a>
+    <a href="/guide/lighting/en/">Guide</a>
+    <a href="mailto:support@sunforgetools.com">Support</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a>
+  </nav>
+</footer>
+</main>
+<script src="/guide/lighting/en/search.js"></script>
+<script src="/guide.js"></script>
+</body>
+</html>

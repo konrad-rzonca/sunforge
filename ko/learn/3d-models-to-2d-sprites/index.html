@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유니티에서 3D 모델을 2D 스프라이트로 변환하기 | Sun Forge</title>
+<meta name="description" content="3D 모델을 블렌더에서, 또는 카메라와 렌더 텍스처로 렌더해 유니티용 2D 스프라이트로 만들고, 분할하고 애니메이션을 만들어 패킹하는 방법과 흔한 함정을 다룹니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/">
+<meta property="og:title" content="유니티에서 3D 모델을 2D 스프라이트로 변환하기 | Sun Forge">
+<meta property="og:description" content="3D 모델을 블렌더에서, 또는 카메라와 렌더 텍스처로 렌더해 유니티용 2D 스프라이트로 만들고, 분할하고 애니메이션을 만들어 패킹하는 방법과 흔한 함정을 다룹니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-3d-models-to-2d-sprites.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sun Forge의 Bake Window. 기사의 3D 모델 미리보기 옆에 베이크가 만들 스프라이트가 있습니다.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "\uc720\ub2c8\ud2f0\uc5d0\uc11c 3D \ubaa8\ub378\uc744 2D \uc2a4\ud504\ub77c\uc774\ud2b8\ub85c \ubcc0\ud658\ud558\uae30", "description": "3D \ubaa8\ub378\uc744 \ube14\ub80c\ub354\uc5d0\uc11c, \ub610\ub294 \uce74\uba54\ub77c\uc640 \ub80c\ub354 \ud14d\uc2a4\ucc98\ub85c \ub80c\ub354\ud574 \uc720\ub2c8\ud2f0\uc6a9 2D \uc2a4\ud504\ub77c\uc774\ud2b8\ub85c \ub9cc\ub4e4\uace0, \ubd84\ud560\ud558\uace0 \uc560\ub2c8\uba54\uc774\uc158\uc744 \ub9cc\ub4e4\uc5b4 \ud328\ud0b9\ud558\ub294 \ubc29\ubc95\uacfc \ud754\ud55c \ud568\uc815\uc744 \ub2e4\ub8f9\ub2c8\ub2e4.", "image": "https://sunforgetools.com/assets/share/learn-3d-models-to-2d-sprites.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "\ud559\uc2b5", "item": "https://sunforgetools.com/ko/learn/"}, {"@type": "ListItem", "position": 3, "name": "3D \ubaa8\ub378\uc744 2D \uc2a4\ud504\ub77c\uc774\ud2b8\ub85c", "item": "https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/3d-models-to-2d-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/3d-models-to-2d-sprites/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">기능</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ko/#features">모든 기능</a>
+        <a href="/ko/sprite-baker/">스프라이트 베이커</a>
+        <a href="/ko/2d-lighting/">2D 조명</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    <div class="languages" role="group" aria-label="언어"><a href="/learn/3d-models-to-2d-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/3d-models-to-2d-sprites/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/3d-models-to-2d-sprites/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/3d-models-to-2d-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/ko/learn/">학습</a></p>
+      <h1>유니티에서 3D 모델을 2D 스프라이트로 변환하기</h1>
+      <p class="lead">3D 모델로 만든 2D 스프라이트는 고정된 카메라로 모델을 렌더해 배경을 투명하게 저장한 이미지입니다. 애니메이션이 있는 캐릭터는 이런 이미지 여러 장으로 이루어지며, 프레임마다, 애니메이션마다, 방향마다 한 장씩 필요합니다. 프레임을 렌더해 스프라이트로 분할하고, 애니메이션 클립을 만든 다음 텍스처를 패킹합니다.</p>
+    </header>
+    <h2 id="how-to-make-2d-sprites-from-3d-models-in-blender">블렌더에서 3D 모델로 2D 스프라이트를 만드는 방법</h2>
+    <ol>
+      <li>카메라 타입을 Orthographic 옵션으로 설정합니다. 그러면 모델은 거리와 관계없이 같은 크기로 보입니다. 이미지 속 모델의 크기는 Orthographic Scale 값으로 정합니다.</li>
+      <li>렌더 설정의 Film 섹션에서 Transparent 체크박스를 켭니다.</li>
+      <li>알파 채널이 남도록 PNG 같은 포맷을 쓰고, 출력 색을 RGBA 옵션으로 설정합니다.</li>
+      <li>애니메이션을 이미지 시퀀스로 렌더합니다. 다른 방향은 모델이나 카메라를 돌려 다시 렌더합니다.</li>
+    </ol>
+    <p>PNG 파일을 그대로 임포트해 파일마다 스프라이트 하나로 쓰거나, 먼저 시트 하나로 합치세요.</p>
+    <h2 id="rendering-a-3d-model-to-sprites-in-unity">Unity에서 3D 모델을 스프라이트로 렌더하기</h2>
+    <ol>
+      <li>카메라를 추가하고 <strong>Projection</strong>(투사) 필드를 <strong>Orthographic</strong>(직교) 옵션으로 설정합니다. <strong>Size</strong>(크기) 필드 값은 월드 단위로 잰 뷰 높이의 절반입니다.</li>
+      <li><strong>Background Type</strong>(배경 타입) 필드를 <strong>Solid Color</strong>(단색) 옵션으로 설정하고, <strong>Background</strong>(배경) 필드에서 색의 알파를 0으로 설정합니다.</li>
+      <li><strong>Assets &gt; Create &gt; Rendering &gt; Render Texture</strong>(에셋 &gt; 생성 &gt; 렌더링 &gt; 렌더 텍스처) 메뉴로 렌더 텍스처를 만들고, 컬러 형식은 알파 채널이 있는 것으로 고릅니다. 이 텍스처를 카메라의 <strong>Output Texture</strong>(출력 텍스처) 필드에 할당합니다.</li>
+      <li>URP에서는 카메라의 <strong>Post Processing</strong>(포스트 프로세싱) 체크박스를 끄거나 URP 에셋의 <strong>Alpha Processing</strong> 체크박스를 켭니다. 그러지 않으면 포스트 프로세싱이 알파를 1로 바꿉니다.</li>
+      <li>에디터 스크립트에서 프레임마다 <code>clip.SampleAnimation(model, time)</code> 메서드로 모델의 자세를 잡고 이미지를 저장합니다:</li>
+    </ol>
+    <pre tabindex="0" translate="no"><code>static void SaveFrame(Camera camera, RenderTexture target, string path)
+{
+    camera.targetTexture = target;
+    camera.Render();
+
+    RenderTexture previous = RenderTexture.active;
+    RenderTexture.active = target;
+    var frame = new Texture2D(target.width, target.height, TextureFormat.RGBA32, false);
+    frame.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+    frame.Apply();
+    RenderTexture.active = previous;
+
+    System.IO.File.WriteAllBytes(path, ImageConversion.EncodeToPNG(frame));
+    Object.DestroyImmediate(frame);
+}</code></pre>
+    <p>렌더 텍스처와 <code>Texture2D</code>의 포맷은 같아야 합니다. 선형 색 공간을 쓰는 프로젝트에서는 이름 끝이 <code>_SRGB</code>인 렌더 텍스처 포맷을 고르세요. 그러지 않으면 저장한 색이 어둡게 나옵니다.</p>
+    <h2 id="slicing-a-sprite-sheet-in-the-sprite-editor">스프라이트 에디터에서 스프라이트 시트 분할하기</h2>
+    <ol>
+      <li>2D Sprite 패키지가 설치되어 있는지 확인합니다.</li>
+      <li>이미지를 선택하고 <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Sprite (2D and UI)</strong>(스프라이트(2D 및 UI)) 옵션으로, <strong>Sprite Mode</strong>(스프라이트 모드) 필드를 <strong>Multiple</strong>(다중) 옵션으로 설정한 다음 <strong>Apply</strong>(적용) 버튼을 클릭합니다.</li>
+      <li>스프라이트 에디터를 열고 <strong>Slice</strong>(분할) 메뉴를 엽니다. 크기가 같은 프레임에는 <strong>Grid By Cell Size</strong> 옵션을, 행과 열의 수가 정해져 있으면 <strong>Grid By Cell Count</strong> 옵션을 고릅니다.</li>
+      <li><strong>Pivot</strong>(피벗) 필드를 설정하고 <strong>Slice</strong> 버튼을 클릭한 다음 <strong>Apply</strong> 버튼을 클릭합니다.</li>
+    </ol>
+    <h2 id="animation-clips-and-an-animator-controller-from-the-frames">프레임으로 만드는 애니메이션 클립과 애니메이터 컨트롤러</h2>
+    <ol>
+      <li>첫 스프라이트를 씬으로 드래그합니다. 그러면 Sprite Renderer 컴포넌트가 있는 게임 오브젝트가 생깁니다.</li>
+      <li>그 게임 오브젝트를 선택한 상태로 애니메이션 창에서 <strong>Create</strong>(생성) 버튼을 클릭하고 클립을 저장합니다. Unity가 이 클립을 기본 상태로 하는 애니메이터 컨트롤러를 만들고, 게임 오브젝트에 Animator 컴포넌트를 추가합니다.</li>
+      <li>프레임마다 스프라이트 하나씩, Sprite Renderer 컴포넌트의 스프라이트에 키를 추가합니다.</li>
+      <li>애니메이션을 더 만들 때마다 애니메이션 창의 클립 메뉴에서 <strong>Create New Clip</strong>(새 클립 생성) 옵션을 고르고, 애니메이터 컨트롤러에서 클립 사이에 전환을 추가합니다.</li>
+    </ol>
+    <p>클립이 많다면 이 단계를 스크립트로 처리하세요. Unity의 <code>AnimationClip</code> 스크립트 레퍼런스에는 프로젝트 창에서 선택한 스프라이트로 클립을 만드는 예제가 있습니다.</p>
+    <h2 id="the-traps">함정</h2>
+    <h3 id="pixels-per-unit">단위당 픽셀(Pixels Per Unit)</h3>
+    <p>Pixels Per Unit 값은 스프라이트 이미지에서 월드 공간 1단위에 해당하는 픽셀 수입니다. 임포트할 때 쓸 값을 정하고, 렌더 텍스처의 높이를 2 x Size x Pixels Per Unit 픽셀로 만드세요. Size 값이 1.5이고 Pixels Per Unit 값이 64라면 192픽셀입니다. 그러면 2D 씬의 스프라이트가 모델과 같은 높이가 됩니다. 모든 스프라이트에 같은 값을 쓰세요. 그러지 않으면 일부 스프라이트가 다른 스프라이트보다 선명해 보입니다.</p>
+    <h3 id="pivots-and-framing">피벗과 구도</h3>
+    <p>피벗은 이미지에서 스프라이트의 로컬 좌표가 시작되는 점입니다. 캐릭터라면 피벗을 발에, 모든 프레임에서 같은 픽셀에 두세요. 그러려면 모든 애니메이션의 모든 프레임을 같은 카메라 위치에서, 같은 Size 값과 같은 해상도로, 가장 넓은 자세가 들어갈 만큼 넓게 렌더하세요. 그런 다음 그리드로 분할하고 모든 스프라이트에 같은 피벗을 지정하세요. <strong>Automatic</strong>(자동) 옵션으로 분할하면 투명 픽셀을 기준으로 자르므로 프레임마다 다른 사각형이 생깁니다. 그러면 Bottom 같은 피벗이 프레임마다 몸의 다른 지점에 놓여 캐릭터가 떨립니다.</p>
+    <h3 id="premultiplied-alpha-and-edge-halos">프리멀티플라이드 알파와 가장자리 헤일로</h3>
+    <p>투명한 지오메트리를 렌더 텍스처에 블렌딩하면 텍스처는 각 색에 알파를 미리 곱해 저장합니다. 일반적인 투명도(<code>Blend SrcAlpha OneMinusSrcAlpha</code>)를 쓰는 머티리얼은 알파를 한 번 더 곱하므로 반투명 픽셀이 어두워집니다. PNG를 저장하기 전에 색을 알파로 나누거나, 프리멀티플라이드 색을 블렌딩하는 셰이더(<code>Blend One OneMinusSrcAlpha</code>)를 쓰세요.</p>
+    <p>텍스처 필터링은 가장자리 픽셀을 옆의 투명 픽셀과 섞습니다. 텍스처의 임포트 설정에서 <strong>Alpha Is Transparency</strong>(알파값을 투명으로 사용) 체크박스를 켜세요. 그러면 Unity가 색 채널을 바깥으로 확장해 가장자리의 필터링 아티팩트를 막습니다.</p>
+    <h3 id="texture-size-and-atlas-packing">텍스처 크기와 아틀라스 패킹</h3>
+    <p>방향 8개, 256 x 256픽셀 프레임 16개로 된 애니메이션 3개면 프레임 384개, 약 2,500만 픽셀이며, 압축하지 않으면 96MiB입니다. Pixels Per Unit 값을 절반으로 하면 그 4분의 1만 차지합니다.</p>
+    <p>Unity는 임포트할 때 <strong>Max Size</strong>(최대 크기) 필드 값보다 큰 텍스처를 그 크기로 줄입니다. 큰 시트는 Max Size 값을 높이거나 애니메이션별로 나누세요. 그런 다음 <strong>Assets &gt; Create &gt; 2D &gt; Sprite Atlas</strong>(에셋 &gt; 생성 &gt; 2D &gt; 스프라이트 아틀라스) 메뉴로 스프라이트 아틀라스를 만들어 스프라이트를 패킹하세요. 스프라이트 아틀라스는 텍스처를 하나로 합치므로, Unity가 그 안의 모든 스프라이트를 드로우 콜 하나로 그릴 수 있습니다.</p>
+    <h3 id="lighting-baked-into-the-color-or-normal-maps">색에 베이크된 조명, 또는 노멀 맵</h3>
+    <p>렌더에 들어간 빛은 스프라이트 색의 일부가 됩니다. 왼쪽에서 빛을 받은 기사는 오른쪽에 횃불이 있어도 계속 왼쪽에서 빛을 받습니다. 게임 중에 바뀌는 빛을 쓰려면 색은 균일한 빛 아래에서 렌더하고, 같은 프레임의 노멀 맵을 같은 카메라로 렌더하세요. 스프라이트 에디터에서 노멀 맵을 <code>_NormalMap</code> 이름의 보조 텍스처로 추가하고, Sprite-Lit-Default 같은 머티리얼을 쓰고, 2D 광원의 <strong>Normal Maps</strong>(노멀 맵) 섹션에서 <strong>Quality</strong>(품질) 필드를 <strong>Fast</strong>(빠름) 옵션이나 <strong>Accurate</strong> 옵션으로 설정하세요. Unity는 두 텍스처를 같은 UV 좌표로 샘플링하므로, 노멀 맵은 스프라이트 텍스처와 위치가 맞아야 합니다. 단계와 함정은 <a href="/ko/learn/2d-sprite-normal-maps/">Unity의 스프라이트 노멀 맵</a>에서 볼 수 있습니다.</p>
+    <figure class="bare">
+      <img src="/features/knight-page-normal.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="Sun Forge가 베이크한 기사 스프라이트의 노멀 맵. 각 색은 그 부분의 표면이 향하는 방향을 나타냅니다.">
+      <figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <h2 id="a-3d-to-2d-sprite-converter-inside-unity-sun-forge">Unity 안에서 3D를 2D 스프라이트로 변환하는 툴: Sun Forge</h2>
+    <p>Sun Forge는 이 사이트가 소개하는 스프라이트 베이커입니다. Unity 에디터 안에서 <a href="/guide/sunforge/en/bake-window/" hreflang="en">Bake Window</a> 또는 <a href="/guide/sunforge/en/scripting/#baking-from-code" hreflang="en">에디터 코드</a>로 베이크합니다. 모델이나 프리팹을 애니메이션 클립, Particle System 컴포넌트와 함께, 셰이더 그래프를 포함한 원래의 머티리얼 그대로 베이크할 수 있습니다.</p>
+    <figure class="bare">
+      <img src="/features/cards-window.webp" srcset="/features/cards-window.768w.webp 768w, /features/cards-window.960w.webp 960w, /features/cards-window.webp 1841w" loading="lazy" width="1841" height="1110" style="--w: 1841; --h: 1110" sizes="(max-width: 1100px) 100vw, 1040px" alt="Sun Forge의 Bake Window. 기사의 3D 모델 미리보기 옆에 베이크가 만들 스프라이트가 있고, 오른쪽에 베이크 설정이 있습니다.">
+      <figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <p>베이크가 만드는 2D 스프라이트 프리팹에는 방향마다 스프라이트 시트, 애니메이션과 애니메이터 컨트롤러, 조명 텍스처, 그림자, 콜라이더, 게임플레이 컴포넌트가 있습니다.</p>
+    <figure class="bare">
+      <img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" sizes="(max-width: 1100px) 100vw, 1040px" alt="콜라이더, 히트박스, 체력 바가 표시된 베이크된 기사. 옆에는 Idle, Walk, Attack 클립의 프레임이 있습니다.">
+      <figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>카메라.</strong> 베이크 카메라의 각도는 0~90도 사이에서 정할 수 있습니다. 사이드 뷰부터 바로 위에서 내려다보는 각도까지, 아이소메트릭을 포함한 그 사이의 모든 각도를 쓸 수 있습니다. 베이크는 1~64방향을 만들며, <a href="/ko/learn/8-directional-sprites/">게임에 필요한 방향 수</a>는 별도의 글에서 다룹니다.</li>
+      <li><strong>해상도와 메모리.</strong> 새 베이크의 Pixels Per Unit 값은 96입니다. 베이크할 때마다 Bake 탭에 출력이 차지하는 텍스처 메모리가 표시됩니다.</li>
+      <li><strong>조명.</strong> 각 시트에는 색 텍스처 외에 노멀, 마스크, 지오메트리 텍스처가 있으며, Sun Forge 2D Lighting 패키지가 이 텍스처를 읽으므로 태양과 광원을 실시간으로 바꿀 수 있습니다. 베이크는 켠 텍스처만 만들며, 프리팹에 Unity의 기본 스프라이트 머티리얼을 지정하도록 설정할 수도 있습니다.</li>
+    </ul>
+    <p>Sun Forge를 사용하려면 Unity 6.3 LTS(6000.3.28f1 이상) 또는 Unity 6.6, URP(2D 렌더러 또는 유니버설 렌더러)가 필요합니다. 빌트인 렌더 파이프라인이나 HDRP에서는 위의 단계를 따르세요. <a href="/ko/sprite-baker/">스프라이트 베이커 페이지</a>에서 베이크의 각 부분을 볼 수 있습니다.</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">다음 글</h2>
+      <ul>
+        <li><a href="/ko/learn/8-directional-sprites/">유니티 8방향 스프라이트: 4, 8, 16방향 중 어느 쪽?</a></li>
+        <li><a href="/ko/learn/2d-sprite-normal-maps/">유니티 노멀 맵으로 2D 스프라이트에 입체감 주기</a></li>
+        <li><a href="/ko/sprite-baker/">Sun Forge의 스프라이트 베이커</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="바닥글">
+    <span class="parts"><a href="/ko/#features">모든 기능</a><a href="/ko/sprite-baker/">스프라이트 베이커</a><a href="/ko/2d-lighting/">2D 조명</a></span>
+    <a href="/ko/learn/">학습</a>
+    <a href="/guide/sunforge/en/" hreflang="en">가이드</a>
+    <a href="mailto:support@sunforgetools.com">지원</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/learn/3d-models-to-2d-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/3d-models-to-2d-sprites/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/3d-models-to-2d-sprites/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/3d-models-to-2d-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

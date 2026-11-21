@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity の法線マップで 2D スプライトを立体的に見せる方法 | Sun Forge</title>
+<meta name="description" content="Unity URP で 2D スプライトにリアルタイムの光を当てる仕組み、法線マップとマスクの追加方法と入手先、この 2 つだけではできないこと、落とし穴を解説します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/">
+<meta property="og:title" content="Unity の法線マップで 2D スプライトを立体的に見せる方法 | Sun Forge">
+<meta property="og:description" content="Unity URP で 2D スプライトにリアルタイムの光を当てる仕組み、法線マップとマスクの追加方法と入手先、この 2 つだけではできないこと、落とし穴を解説します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="スプライトのみ、法線マップあり、法線マップと金属と発光ありの 3 通りで見た、同じドット絵のシーン">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity \u306e\u6cd5\u7dda\u30de\u30c3\u30d7\u3067 2D \u30b9\u30d7\u30e9\u30a4\u30c8\u3092\u7acb\u4f53\u7684\u306b\u898b\u305b\u308b\u65b9\u6cd5", "description": "Unity URP \u3067 2D \u30b9\u30d7\u30e9\u30a4\u30c8\u306b\u30ea\u30a2\u30eb\u30bf\u30a4\u30e0\u306e\u5149\u3092\u5f53\u3066\u308b\u4ed5\u7d44\u307f\u3001\u6cd5\u7dda\u30de\u30c3\u30d7\u3068\u30de\u30b9\u30af\u306e\u8ffd\u52a0\u65b9\u6cd5\u3068\u5165\u624b\u5148\u3001\u3053\u306e 2 \u3064\u3060\u3051\u3067\u306f\u3067\u304d\u306a\u3044\u3053\u3068\u3001\u843d\u3068\u3057\u7a74\u3092\u89e3\u8aac\u3057\u307e\u3059\u3002", "image": "https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/", "inLanguage": "ja"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "\u89e3\u8aac\u8a18\u4e8b", "item": "https://sunforgetools.com/ja/learn/"}, {"@type": "ListItem", "position": 3, "name": "\u30b9\u30d7\u30e9\u30a4\u30c8\u306e\u6cd5\u7dda\u30de\u30c3\u30d7", "item": "https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<!-- The tab's marks are drawn for 16 pixels and for 32, with a dark outline for a light tab bar and
+     none for a dark one. mark-96.png has no media query, so Google's results have one icon above
+     48 pixels in either color scheme. -->
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+    <i class="mark"></i>
+    <span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+  </a>
+  <nav>
+    <div class="parts">
+      <button type="button" popovertarget="feature-pages">機能</button>
+      <div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+        <a href="/ja/#features">すべての機能</a>
+        <a href="/ja/sprite-baker/">スプライトベイカー</a>
+        <a href="/ja/2d-lighting/">2D ライティング</a>
+      </div>
+    </div>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    <div class="languages" role="group" aria-label="言語"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+  </nav>
+</header>
+
+<main class="read" id="top">
+  <article>
+    <header>
+      <p class="eyebrow"><a href="/ja/learn/">解説記事</a></p>
+      <h1>Unity の<wbr>法線マップで 2D スプライトを<wbr>立体的に<wbr>見せる<wbr>方法</h1>
+      <p class="lead">スプライトは平らな絵なので、光が当たる立体的な形がありません。法線マップがその形を与えます。ピクセルごとに、その部分の表面が向いている方向を保持しています。法線マップがあれば、キャラクターの左にあるたいまつはキャラクターの左側を照らし、たいまつが動くとシェーディングも動きます。</p>
+    </header>
+    <h2 id="sprite-lit-and-light-2d-how-unity-lights-a-sprite">Sprite Lit と Light 2D: Unity が<wbr>スプライトを<wbr>照らす<wbr>仕組み</h2>
+    <p>Unity の 2D ライトはユニバーサルレンダーパイプライン (URP) の一部で、プロジェクトが 2D レンダラーを使っているときに機能します。その場合、シーンビューにドラッグしたスプライトには Sprite-Lit-Default マテリアルが設定され、2D ライトで照らされます。Sprite-Unlit-Default のスプライトは 2D ライトを無視します。</p>
+    <p>ライトを追加するには、Hierarchy ウィンドウで右クリックし、<strong>Light</strong> を選んで、スポット、フリーフォーム、スプライト、グローバルのいずれかの 2D ライトを選んでください。グローバルライトはすべてのスプライトを均等に照らします。法線マップがない場合、それ以外のライトは、紙の切り抜きの上にかざしたランプのようにスプライトを照らします。ライトの形の内側が明るくなるだけで、絵そのものにはシェーディングが付きません。</p>
+    <h2 id="what-a-sprite-normal-map-stores">スプライトの<wbr>法線マップ (ノーマルマップ) が<wbr>保持する<wbr>情報</h2>
+    <p>法線マップは、スプライトのテクスチャと位置が揃ったテクスチャです。赤は各ピクセルの表面がどれだけ右に傾いているか、緑はどれだけ上に傾いているか、青はどれだけ正面を向いているかを保持します。正面をまっすぐ向いたピクセルは、明るい青の #8080FF になります。</p>
+    <figure class="bare">
+      <img src="/features/knight-page-normal.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="カメラを向いた面は青と紫、上に傾いた面は緑、右に傾いた面はピンクの、Sun Forge でベイクした騎士スプライトの法線マップ">
+      <figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <h2 id="add-a-normal-map-to-a-sprite-in-unity">Unity で<wbr>スプライトに<wbr>法線マップを<wbr>追加する<wbr>方法</h2>
+    <ol>
+      <li>法線マップをインポートし、Inspector で <strong>Texture Type</strong> を <strong>Normal map</strong> (法線マップ) に設定します。</li>
+      <li>スプライトのテクスチャを選択し、<strong>Sprite Editor</strong> を開いて、そのドロップダウンから <strong>Secondary Textures</strong> (補助的テクスチャ) を選択します。</li>
+      <li><strong>+</strong> をクリックし、<strong>Name</strong> (名前) ドロップダウンで <strong>_NormalMap</strong> を選択します。法線マップを割り当て、<strong>Apply</strong> (適用する) をクリックします。</li>
+      <li>スプライトの Sprite Renderer が Sprite-Lit-Default、または法線マップを読み取るほかのマテリアルを使っていることを確認します。</li>
+      <li>Light 2D を選択します。<strong>Normal Maps</strong> (法線マップ) で <strong>Quality</strong> (品質) を <strong>Fast</strong> (高速) または <strong>Accurate</strong> に設定します。</li>
+    </ol>
+    <p>手順 5 を済ませるまで、ライトは法線マップを無視します。グローバルライトにはこの設定がないため、シェーディングを表示するには、シーンにスポット、フリーフォーム、スプライトのいずれかのライトが必要です。同じセクションの <strong>Distance</strong> (距離) を小さくするとライトがスプライトに近づき、細部がよりはっきり見えます。</p>
+    <p>自作のシェーダーは、<strong>Assets &gt; Create &gt; Shader Graph &gt; URP &gt; Sprite Lit Shader Graph</strong> (アセット &gt; 作成 &gt; シェーダーグラフ &gt; URP &gt; スプライト Lit シェーダーグラフ) から作り始められます。このグラフには <strong>Normal (Tangent Space)</strong> 入力があります。</p>
+    <h2 id="the-mask-texture-masktex">マスクテクスチャ _MaskTex</h2>
+    <p>スプライトには、2 つ目の補助的テクスチャ <strong>_MaskTex</strong> を設定できます。<strong>Texture Type</strong> を <strong>Default</strong> にし、<strong>sRGB (Color Texture)</strong> をオフにしてインポートしてください。</p>
+    <p>マスクは、光が当たってよい場所を示します。<strong>Blend Style</strong> が <strong>Multiply with Mask (R)</strong> または <strong>Additive with Mask (R)</strong> のライトは、マスクの赤チャンネルが 0 より大きいピクセルだけを照らします。2D レンダラーアセットでは、ブレンドスタイルごとに、赤の代わりに緑、青、アルファを読み取るように設定できます。リムライトや、鎧だけに当たるきらめきに使ってください。</p>
+    <h2 id="where-normal-maps-come-from">法線マップの<wbr>入手先</h2>
+    <ul>
+      <li><strong>手描き。</strong> 法線マップ用のパレットから方向を表す色を取り、スプライトの上に塗ります。Krita には専用のブラシがあります。アニメーションするキャラクターには、フレームごとに法線マップが必要です。</li>
+      <li><strong>スプライトから生成。</strong> 表面が高いほど白くなるグレースケールのハイトマップを描き、<strong>Texture Type</strong> を <strong>Normal map</strong> (法線マップ) にし、<strong>Create from Grayscale</strong> (グレースケールから作成) をオンにしてインポートしてください。絵だけから生成するツールは形を推測し、たいていはアウトラインを丸めるだけです。</li>
+      <li><strong>3D モデルからレンダリング。</strong> スプライトが 3D モデルをレンダリングしたものなら、同じカメラからモデルの法線をレンダリングすれば、どのフレームにも一致する法線マップができます。Blender の Normal パスは方向をワールド空間で保持するため、保存する前にカメラから見た向きに変換してください。</li>
+    </ul>
+    <h2 id="what-a-normal-map-cannot-do-alone">法線マップだけでは<wbr>できない<wbr>こと</h2>
+    <ul>
+      <li><strong>金属と滑らかさ。</strong> Unity のマニュアルによると、Unity の 2D ライティングは物理ベースではありません。Sprite-Lit-Default が読み取るのはカラーテクスチャ、マスク、法線マップで、どれもピクセルの光沢を示さないため、鋼も布も同じように光を受けます。手動で配置したマスク付きのライトで、きらめきを擬似的に表現できます。</li>
+      <li><strong>互いに影を落とすスプライト。</strong> Shadow Caster 2D は、スプライトの Custom Outline、コライダー、自分で描いたシェイプのいずれかのアウトラインから形を取ります。わかるのはスプライトの縁だけで、各部分がどれだけ高く立っているかはわかりません。Unity の Happy Harvest サンプルでは、代わりに木の下の影を引き伸ばしたスプライトとして描画しています。<a href="/ja/learn/2d-shadows-top-down/">2D と見下ろしのスプライトの影</a>で、それぞれの方法を紹介しています。</li>
+    </ul>
+    <p>どちらにも、ピクセルごとのデータがさらに必要です。表面がどれだけメタリックで滑らかか、そしてどれだけ高く立っているかです。</p>
+    <h2 id="why-a-unity-sprite-normal-map-does-not-work">Unity の<wbr>スプライトの<wbr>法線マップが<wbr>機能しない<wbr>原因</h2>
+    <p>ライトを当てても何も変わらない場合は、まず <a href="/ja/learn/2d-lights-not-working/">Unity の 2D ライトが反映されないときのチェック項目</a>を確認してください。ここでは法線マップそのものの落とし穴を挙げます。</p>
+    <ul>
+      <li><strong>テクスチャタイプ。</strong> <strong>Sprite (2D and UI)</strong> のままの法線マップは正しくシェーディングされず、ライトが動いても暗い側が動きません。<strong>Texture Type</strong> を <strong>Normal map</strong> (法線マップ) に設定し、ファイルがハイトマップでない限り <strong>Create from Grayscale</strong> (グレースケールから作成) はオフにしてください。</li>
+      <li><strong>反転した緑チャンネル。</strong> Unity は緑が上を表すことを前提としています。これは Y+ または OpenGL と呼ばれる規約です。逆の規約で作られた法線マップでは、ライトが上にあるのに下から照らされたように見えます。テクスチャのインポート設定で <strong>Flip Green Channel</strong> (緑のチャンネルを反転) をオンにしてください。</li>
+      <li><strong>反転したスプライト。</strong> Sprite Renderer の <strong>Flip</strong> (反転) の X は、描画されるものだけを反転します。Y 軸まわりに 180 度回転させたスプライトは正しく照らされませんが、Unity はこれを仕様としています。負の <strong>Scale X</strong> で反転する場合は、スプライトの上にライトを置き、上側の縁が照らされていることを確認してください。</li>
+      <li><strong>スプライトアトラス。</strong> スプライトアトラスは、含まれるスプライトの補助的テクスチャをまとめて専用のテクスチャにします。アトラス内のすべてのスプライトに同じ数の補助的テクスチャを設定してください。そうしないと、まとめたテクスチャに大きな空き領域ができることがあります。シートを別のツールでパックする場合は、法線マップも同じレイアウトでパックする必要があります。Unity は両方を同じ UV で読み取るためです。</li>
+    </ul>
+    <h2 id="sun-forge-normal-mask-geometry-and-emission-textures-for-each-sprite">Sun Forge: スプライトごとの<wbr>法線、<wbr>マスク、<wbr>ジオメトリ、<wbr>エミッションの<wbr>各テクスチャ</h2>
+    <p>Unity のエディターツールである Sun Forge は、3 つ目の方法を Unity の中で実現します。ベイクは 3D モデルまたはプレハブを 2D のスプライトプレハブに変換し、方向ごとにスプライトシートを作ります。各シートには、カラーテクスチャに加えて<a href="/guide/sunforge/en/output-reference/#files" hreflang="en">法線、マスク、ジオメトリの各テクスチャ</a>が付き、ベイクで <strong>Emission</strong> がオンのときはエミッションテクスチャも付きます。</p>
+    <ul>
+      <li>マスクは、赤に金属、緑に滑らかさ、青にアンビエントオクルージョンを保持します。</li>
+      <li>ジオメトリテクスチャは、スプライトのピボットから見た各テクセルの高さを保持します。これによって、スプライト同士が影を落とし合えます。</li>
+    </ul>
+    <figure class="bare">
+      <img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="足元が黒く、高い部分ほど明るい、Sun Forge でベイクした同じ騎士のジオメトリテクスチャ">
+      <figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <p>Sun Forge のライティングパッケージである Sun Forge 2D Lighting が、これらのテクスチャを読み取ります。キャストシャドウは、その中に立っているスプライトを、影を落とすものと同じ高さまで這い上がります。</p>
+    <figure>
+      <img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.webp 1920w" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" sizes="(max-width: 1100px) 100vw, 1040px" alt="壊れた柱の影が石畳を横切り、その中に立っている騎士にかかる、Sun Forge でライティングしたベイク済みスプライトのシーン">
+      <figcaption>The Forgotten Knight は dark_igorek、骸骨は LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+    </figure>
+    <p>このライティングは、描いたスプライトも照らします。スプライトを選択して右クリックし、<a href="/guide/lighting/en/lighting/#sprite-textures" hreflang="en"><strong>Sun Forge &gt; Set Up for Lighting</strong></a> を選んでください。自作の法線マップがあれば立体感が出ます。ない場合、スプライトは平らな表面として照らされます。発光させる色と金属のように光らせる色を選ぶと、Sun Forge がそのエミッションテクスチャと金属テクスチャを書き出します。</p>
+    <figure>
+      <img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" sizes="(max-width: 1100px) 100vw, 1040px" alt="スプライトのみ、法線マップあり、法線マップと金属と発光ありの 3 通りで見た、同じドット絵のシーン">
+    </figure>
+    <p>Sun Forge には、Unity 6.3 LTS (6000.3.28f1 以降) または Unity 6.6 と、2D レンダラーまたはユニバーサルレンダラーを使う URP が必要です。ベイカーとライティングは、それぞれ単独でも動作します。<a href="/ja/sprite-baker/#lighting-textures">スプライトベイカー</a>と<a href="/ja/2d-lighting/#drawn-sprites">ライティング</a>を参照してください。</p>
+    <nav class="onward" aria-labelledby="onward-title">
+      <h2 id="onward-title">次に<wbr>読む記事</h2>
+      <ul>
+        <li><a href="/ja/learn/2d-lights-not-working/">Unity の 2D ライトが反映されないときのチェック項目</a></li>
+        <li><a href="/ja/learn/2d-shadows-top-down/">Unity で 2D と見下ろしのスプライトに影を落とす方法</a></li>
+        <li><a href="/ja/2d-lighting/">Sun Forge 2D Lighting</a></li>
+      </ul>
+    </nav>
+  </article>
+  <footer class="foot">
+  <a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+  <nav aria-label="フッター">
+    <span class="parts"><a href="/ja/#features">すべての機能</a><a href="/ja/sprite-baker/">スプライトベイカー</a><a href="/ja/2d-lighting/">2D ライティング</a></span>
+    <a href="/ja/learn/">解説記事</a>
+    <a href="/guide/sunforge/en/" hreflang="en">ガイド</a>
+    <a href="mailto:support@sunforgetools.com">サポート</a>
+    
+    <a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+  </nav>
+</footer>
+</main>
+
+</body>
+</html>

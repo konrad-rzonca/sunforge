@@ -1,0 +1,316 @@
+/* The guide's pages (tools/guide.py), in the type and colors of the home page's pages. A guide page is read
+   and searched, so it scrolls freely and its type is smaller than theirs. This sheet reads landing.css's
+   tokens, and every rule is under .guide: the site's footer is inside a guide page's main, so a class of
+   foot.html or page.html must not be one of this sheet's. */
+.guide {
+  --line: rgba(246, 234, 216, 0.14);
+  --line-soft: rgba(246, 234, 216, 0.08);
+  --light: 255 188 116;
+  --bar: var(--nav-height);
+  --pad: var(--margin);
+  --side: clamp(232px, 17vw, 296px);
+  --gold-line: color-mix(in srgb, var(--accent) 34%, transparent);
+  --gold-wash: color-mix(in srgb, var(--accent) 12%, transparent);
+  position: relative; display: flex; flex-direction: column; min-height: 100svh; padding: var(--bar) 0 28px;
+  font-family: var(--text-face); font-size: 16px; line-height: 1.5; color: var(--ink-soft);
+}
+html:has(.guide) { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 24px); }
+@media (prefers-reduced-motion: reduce) { html:has(.guide) { scroll-behavior: auto; } }
+.guide [hidden] { display: none !important; }
+.guide :is(h1, h2, h3, h4, p, ul, dl, dd, figure) { margin: 0; }
+.guide ul { padding: 0; list-style: none; }
+.guide :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+.guide > .foot { width: auto; margin: clamp(56px, 10svh, 112px) var(--pad) 0; }
+
+/* The light behind the pages, as behind the home page's: shafts from a window high on the left. */
+.guide .nave { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.guide .nave i { position: absolute; inset: 0;
+  background:
+    conic-gradient(from 98deg at -6% -16%, transparent 0deg, rgb(var(--light) / 0.085) 6deg, transparent 13deg, rgb(var(--light) / 0.05) 19deg, transparent 27deg,
+      rgb(var(--light) / 0.075) 34deg, transparent 44deg, rgb(var(--light) / 0.04) 52deg, transparent 62deg, transparent 360deg),
+    radial-gradient(60% 80% at 0% 8%, rgb(var(--light) / 0.09), transparent 72%);
+  -webkit-mask: radial-gradient(82% 118% at 0% 0%, #000 12%, transparent 76%); mask: radial-gradient(82% 118% at 0% 0%, #000 12%, transparent 76%); }
+
+/* The page: the list of the guide's pages, under the search, beside the content. */
+.guide .shell { position: relative; z-index: 1; flex: 1; display: grid; grid-template-columns: var(--side) minmax(0, 1fr); }
+/* The content is a container, so a part can be as wide as it (100cqw) or lay itself out by its width. */
+.guide .content { container: content / inline-size; width: 100%; max-width: 1520px; margin: 0 auto; padding: 0 var(--pad); }
+.guide .side { position: sticky; top: var(--bar); z-index: 2; align-self: start; display: flex; flex-direction: column; height: calc(100vh - var(--bar)); height: calc(100svh - var(--bar));
+  padding: 22px 0 0 var(--pad); border-right: 1px solid var(--line-soft); }
+.guide .side details { flex: 1; min-height: 0; overflow: auto; padding: 18px 20px 40px 0; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.guide .side summary { display: none; }
+.guide .side .label { margin: 26px 0 8px; }
+.guide .side a { position: relative; display: block; padding: 7px 0; font-size: 15px; line-height: 1.3; color: var(--link); transition: color 0.25s; }
+.guide .side a:hover { color: var(--ink); }
+.guide .side a[aria-current] { color: var(--accent); }
+.guide .side ul a[aria-current]::before { content: ""; position: absolute; left: -15px; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; background: var(--accent); transform: rotate(45deg); }
+.guide .side ul ul { margin: 0 0 8px; padding-left: 14px; border-left: 1px solid var(--line-soft); }
+.guide .side ul ul a { padding: 4px 0; font-size: 13.5px; color: var(--ink-quiet); }
+/* The products this guide names, and the versions and languages the page has. */
+.guide .choice { display: flex; flex-wrap: wrap; gap: 0 16px; margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line-soft);
+  font-family: var(--label-face); font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.guide .choice + .choice { margin-top: 6px; padding-top: 0; border-top: 0; }
+.guide .choice a, .guide .choice span { padding: 6px 0; font-size: inherit; color: var(--ink-quiet); }
+.guide .choice a:hover { color: var(--ink); }
+
+/* The search: a field over the list, and what it finds under the field, over the content. */
+.guide .finder { position: relative; margin-right: 20px; }
+.guide .search { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); transition: border-color 0.25s; }
+.guide .search:focus-within { border-color: var(--accent); }
+.guide .search span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.guide .search input { flex: 1; width: 0; min-width: 0; padding: 8px 0; border: 0; outline: 0; background: none; color: var(--ink); font: 400 15px/1.2 var(--text-face); }
+.guide .search input::placeholder { color: var(--ink-quiet); }
+.guide .search input::-webkit-search-cancel-button { display: none; }
+.guide kbd { display: inline-block; margin-left: 5px; padding: 4px 6px 3px; border: 1px solid var(--gold-line); border-radius: 2px; font-family: var(--label-face); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; line-height: 1; white-space: nowrap; color: var(--accent); vertical-align: 0.1em; }
+.guide .search kbd { margin: 0; border-color: var(--line); color: var(--ink-quiet); }
+.guide .found { position: absolute; left: 0; top: calc(100% + 1px); width: min(640px, 100vw - 2 * var(--pad)); max-height: min(72vh, 720px); overflow: auto;
+  background: color-mix(in srgb, var(--night) 96%, #fff); border: 1px solid var(--line); border-top: 0; box-shadow: 0 30px 80px rgb(0 0 0 / 0.6); }
+.guide .found a { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 2px 18px; padding: 13px 20px; border-top: 1px solid var(--line-soft); }
+.guide .found a:first-child { border-top: 0; }
+.guide .found a:is(:hover, :focus-visible) { outline: none; background: var(--gold-wash); }
+.guide .found small { grid-row: span 2; padding-top: 4px; font-family: var(--label-face); font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.guide .found b { font-family: "League Spartan", var(--script), sans-serif; font-size: 17px; font-weight: 700; line-height: 1.2; color: var(--ink); }
+.guide .found span { font-size: 13.5px; line-height: 1.45; color: var(--ink-quiet); }
+.guide .found p { padding: 16px 20px; color: var(--ink-quiet); }
+
+/* Words. */
+.guide :is(h1, h2) { font-family: "League Spartan", var(--script), sans-serif; font-weight: 800; letter-spacing: -0.005em; text-wrap: balance; color: var(--ink); }
+.guide h1 { font-size: clamp(38px, min(5vw, 9svh), 76px); line-height: 1.02; }
+.guide h1 em { display: block; font-style: normal; color: var(--wordmark); background: var(--forge-fill); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.guide h2 { font-size: clamp(28px, 2.6vw, 40px); line-height: 1.06; scroll-margin-top: calc(var(--bar) + 24px); }
+.guide h2 a:hover { color: var(--accent); }
+.guide :is(.eyebrow, .label) { font-family: var(--label-face); font-weight: 700; text-transform: uppercase; color: var(--accent); }
+.guide .eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-bottom: 16px; font-size: 13px; letter-spacing: 0.22em; line-height: 1.5; }
+.guide .eyebrow::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--accent); transform: rotate(45deg); }
+.guide .eyebrow a:hover { color: var(--ink); }
+.guide .eyebrow kbd { margin-left: 0; letter-spacing: 0.08em; }
+.guide .label { font-size: 12px; letter-spacing: 0.2em; line-height: 1.5; }
+.guide .lead { max-width: 40em; margin-top: 18px; font-family: var(--text-face); font-size: clamp(16px, 1.2vw, 20px); font-weight: 400; line-height: 1.55; letter-spacing: -0.006em; color: var(--ink-soft); }
+.guide .top { padding-top: clamp(40px, 8svh, 96px); }
+.guide .block { margin-top: clamp(56px, 9svh, 104px); scroll-margin-top: calc(var(--bar) + 24px); }
+.guide .block > h2 + * { margin-top: 26px; }
+.guide .notice { margin-top: 24px; padding: 14px 18px; border: 1px solid var(--gold-line); border-radius: 4px; background: var(--gold-wash); color: var(--ink); }
+/* A shipped page can spell out a whole address as a link, which wraps where a phone's screen ends. */
+.guide :is(.more, .covered, .doc) a { overflow-wrap: break-word; color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold-line); text-decoration-thickness: 1px; text-underline-offset: 0.22em; transition: text-decoration-color 0.25s; }
+.guide :is(.more, .covered, .doc) a:hover { text-decoration-color: var(--accent); }
+.guide .more { font-size: 15.5px; }
+.guide b { font-weight: 600; color: var(--ink); }
+
+/* The home's first screen: the words, and beside them the map of the editor. */
+.guide .top.with-map { display: grid; grid-template-columns: minmax(280px, 5fr) minmax(0, 8fr); gap: clamp(28px, 4vw, 80px); align-items: center; padding-block: clamp(36px, 6svh, 72px) 0; }
+
+/* A drawing of Unity's editor: its menu bar, its panels by name, the product's own pictures of the Scene view
+   and the Bake Window, and a numbered mark on each place the product adds something to. */
+.guide .map { position: relative; display: grid; grid-template: 6.5% minmax(0, 1fr) 23% / 17% minmax(0, 1fr) 23%; aspect-ratio: 16 / 10; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  background: color-mix(in srgb, var(--night) 88%, #fff); box-shadow: 0 50px 110px -40px rgb(0 0 0 / 0.9); container-type: inline-size; font-family: var(--label-face); }
+.guide .map > div { position: relative; border: solid var(--line); border-width: 0 0 1px 0; overflow: hidden; }
+.guide .map i { position: absolute; left: 1.6cqw; top: 1.3cqw; z-index: 1; font-size: max(6px, 1.15cqw); font-style: normal; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
+.guide .map u { display: block; height: 0.9cqw; margin: 1.5cqw 1.6cqw 0; border-radius: 1px; background: var(--line-soft); text-decoration: none; }
+.guide .map u:first-of-type { margin-top: 4.6cqw; }
+.guide .map u:nth-of-type(2) { width: 62%; }
+.guide .map u:nth-of-type(3) { width: 44%; }
+.guide .map .bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 2.2cqw; padding: 0 1.6cqw; font-size: max(6px, 1.25cqw); font-weight: 600; letter-spacing: 0.04em; color: var(--ink-quiet); }
+.guide .map .bar .on { color: var(--accent); }
+.guide .map .hierarchy { grid-area: 2 / 1; border-right-width: 1px; }
+.guide .map .view { grid-area: 2 / 2; background: #3a3a3a; }
+.guide .map .view i { color: rgb(255 255 255 / 0.7); text-shadow: 0 1px 2px #000; }
+.guide .map .view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 100% 100%; }
+.guide .map .inspector { grid-area: 2 / 3 / 4 / 4; border-left-width: 1px; border-bottom-width: 0; }
+.guide .map .inspector .add { width: auto; height: auto; margin-top: 3cqw; padding: 0.7cqw 0; border: 1px solid var(--gold-line); background: none; font-size: max(5px, 1cqw); font-weight: 700; letter-spacing: 0.14em; text-align: center; text-transform: uppercase; color: var(--accent); }
+.guide .map .project { grid-area: 3 / 1 / 4 / 3; border-bottom-width: 0; }
+.guide .map .project u { width: 30%; }
+.guide .map .floating { position: absolute; left: 5%; top: 19%; width: 50%; height: auto; border: 1px solid var(--line); border-radius: 0.6cqw; box-shadow: 0 2.5cqw 6cqw rgb(0 0 0 / 0.75); }
+.guide .pin { position: absolute; z-index: 2; display: flex; align-items: center; gap: 0.9cqw; translate: -1.5cqw -50%; font-size: max(9px, 1.25cqw); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+.guide .pin b { position: relative; z-index: 0; display: grid; place-items: center; width: max(17px, 3cqw); height: max(17px, 3cqw); font-size: max(9px, 1.35cqw); font-weight: 800; letter-spacing: 0; color: var(--night); transition: scale 0.3s var(--ease-out); }
+.guide .pin b::before { content: ""; position: absolute; inset: 12%; z-index: -1; background: var(--accent); box-shadow: 0 0 0 0.35cqw color-mix(in srgb, var(--night) 70%, transparent); transform: rotate(45deg); }
+.guide .pin span { padding: 0.55cqw 1cqw 0.45cqw; background: color-mix(in srgb, var(--night) 86%, transparent); box-shadow: 0 0 0 1px var(--line-soft); transition: color 0.25s; }
+.guide .pin:is(:hover, :focus-visible) { outline: none; }
+.guide .pin:is(:hover, :focus-visible) b { scale: 1.18; }
+.guide .pin:is(:hover, :focus-visible) span { color: var(--accent); }
+.guide .at-menus { left: 52%; top: 3.25%; }
+.guide .at-scene-view { left: 62%; top: 43%; }
+.guide .at-bake-window { left: 20%; top: 25%; }
+.guide .at-components { left: 80.5%; top: 31%; }
+.guide .at-asset-types { left: 24%; top: 88%; }
+.guide .no-window .at-scene-view { left: 60%; top: 60%; }
+
+/* Names: the entry points of a place, each a link to its line, in columns. */
+.guide .names { columns: 230px; column-gap: clamp(24px, 3vw, 56px); font-size: 16px; line-height: 1.35; }
+.guide .names > li { break-inside: avoid; padding: 5px 0; color: var(--ink); }
+.guide .names a { color: var(--ink); transition: color 0.25s; }
+.guide .names a:hover { color: var(--accent); }
+.guide .names .keys { margin-left: 4px; white-space: nowrap; }
+.guide .part + .part { margin-top: 34px; }
+.guide .part > .label { padding-bottom: 10px; }
+.guide .part, .guide .menu { scroll-margin-top: calc(var(--bar) + 24px); }
+
+/* The menus that hold an item, each drawn as a menu under what the user does to open it: its items and
+   submenus as Unity lists them, with a rule where Unity draws one. */
+.guide .menus { columns: 300px 4; column-gap: clamp(20px, 2.2vw, 36px); }
+.guide .menu { break-inside: avoid; margin-bottom: clamp(20px, 2.2vw, 36px); padding: 18px 22px 14px; border: 1px solid var(--line); border-radius: 6px; background: linear-gradient(180deg, rgb(246 234 216 / 0.035), rgb(246 234 216 / 0.01)); }
+.guide .menu > .label { padding-bottom: 8px; font-size: 13px; }
+.guide .menu > .label a:hover { color: var(--ink); }
+.guide .tree { font-size: 15.5px; line-height: 1.35; }
+/* An item holds its keys, which float right and take a line of their own where the card is narrow. */
+.guide .tree li { display: flow-root; padding: 4px 0; }
+.guide .tree .tree { margin: 4px 0 2px 2px; padding-left: 14px; border-left: 1px solid var(--line-soft); }
+.guide .tree li.rule { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line-soft); }
+.guide .tree a { color: var(--ink); transition: color 0.25s; }
+.guide .tree a:hover { color: var(--accent); }
+.guide .tree .keys { float: right; margin-left: 12px; }
+.guide .sub { display: flex; align-items: center; gap: 10px; font-family: var(--label-face); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
+.guide .sub::after { content: ""; width: 5px; height: 5px; border: solid var(--ink-quiet); border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); }
+
+/* A place a menu opens from, on the Menus page: what the user does there, the menu as the editor draws it, and
+   beside it the lines of its items. The picture stays in view while its lines scroll, held by its foot where
+   it is taller than the window. Pointing at an item of the picture lights its lines, and a line its item. */
+.guide .place > .also { margin-top: 8px; font-size: 15.5px; color: var(--ink-quiet); }
+.guide .place > .beside { margin-top: 26px; }
+/* --own is the width of the place's picture, which sizes its column before the picture loads. A place with no
+   picture has none, and its lines take both columns. */
+.guide .beside { display: grid; grid-template-columns: min(var(--own, 0px) + 2px, 58%) minmax(0, 1fr); gap: 24px clamp(28px, 3.4vw, 64px); align-items: start; }
+/* A picture taller than the screen stays with its foot in view. Its height is its width, at most the column's,
+   times --ratio. */
+.guide .beside > .shot { position: sticky; top: min(var(--bar) + 24px, 100svh - min(var(--own), 58cqw) * var(--ratio) - 24px); }
+.guide .beside > .lines:only-child { grid-column: 1 / -1; max-width: 62em; }
+.guide .lines p.sub { margin: 22px 0 6px; }
+.guide .lines p.sub:first-child { margin-top: 0; }
+.guide .lines .entries > li { display: block; padding: 12px 0; transition: background 0.2s, box-shadow 0.2s; }
+.guide .lines .entries p { margin-top: 4px; }
+.guide .lines .name { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.guide .lines .entries > li.is-lit { background: linear-gradient(90deg, var(--gold-wash), transparent 70%); box-shadow: -14px 0 0 var(--gold-wash), inset 0 1px 0 var(--gold-line); }
+@container content (max-width: 1040px) {
+  .guide .beside { grid-template-columns: minmax(0, 1fr); }
+  .guide .beside > .shot { position: static; }
+}
+
+/* A place's facts, each a label beside its names. */
+.guide .facts { display: grid; grid-template-columns: auto minmax(0, 1fr); }
+.guide .facts :is(dt, dd) { padding: 10px 0; border-top: 1px solid var(--line); }
+.guide .facts dt { padding-right: 28px; font-family: var(--label-face); font-size: 11.5px; font-weight: 700; letter-spacing: 0.18em; line-height: 26px; text-transform: uppercase; color: var(--accent); }
+.guide .facts dd { font-size: 15px; }
+.guide .facts .names > li { padding: 2px 0; }
+.guide .facts + .shot, .guide :is(.facts, .lead) + .shots { margin-top: 30px; }
+
+/* A row of options in tracked capitals, the one in use gold over its diamond, as on the home page's pages. */
+.guide .choices { display: flex; flex-wrap: wrap; gap: 0 clamp(28px, 5vw, 72px); margin-bottom: 14px; }
+.guide .switch { display: flex; gap: 0 clamp(18px, 2vw, 30px); }
+.guide .switch button { position: relative; flex: none; padding: 12px 0; border: 0; background: none; cursor: pointer; font-family: var(--label-face); font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; color: var(--link); transition: color 0.25s; }
+.guide .switch button::before { content: ""; position: absolute; left: 50%; bottom: 0; width: 6px; height: 6px; margin-left: -3px; background: var(--accent); transform: rotate(45deg) scale(0); transition: transform 0.3s var(--ease-out); }
+.guide .switch button:hover { color: var(--ink); }
+.guide .switch button[aria-pressed="true"] { color: var(--accent); }
+.guide .switch button[aria-pressed="true"]::before { transform: rotate(45deg) scale(1); }
+
+/* A picture of the editor, never larger than it was captured, with a spot over each control or row, and the
+   card that says what the spot under the pointer is. The card is above the picture in a box of its own
+   height, which stays under the nav while the picture scrolls, so it covers no control the pointer can reach.
+   Where the page has room for both, it is beside the picture. Until the pointer is on a spot, the card is
+   only the line that says how to read the picture, with no box round it. */
+.guide .shots { container-type: inline-size; display: grid; gap: 14px clamp(20px, 2.4vw, 40px); }
+/* --own is the picture's width in its own pixels, which the canvas shows inside its 1px border. */
+.guide .shot { min-width: 0; max-width: calc(var(--own) + 2px); }
+.guide .canvas { box-sizing: content-box; isolation: isolate; position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #111; box-shadow: 0 50px 110px -40px rgb(0 0 0 / 0.9); }
+.guide .canvas img { display: block; width: 100%; height: 100%; }
+/* A picture with a copy for a phone is laid out as its img alone. */
+.guide picture { display: contents; }
+.guide .spot { position: absolute; z-index: 1; display: block; border: 1px solid transparent; border-radius: 2px; background: none; cursor: pointer; scroll-margin-top: calc(var(--bar) + 10em); transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+.guide span.spot { cursor: help; }
+.guide .canvas .spot:is(:hover, :focus-visible, .is-on) { outline: none; border-color: var(--accent); background: var(--gold-wash); box-shadow: 0 0 0 3px var(--gold-wash); }
+.guide .card { position: sticky; top: var(--bar); z-index: 2; height: 8.6em; overflow: auto; padding: 14px 0 12px; border-block: 1px solid var(--line);
+  background: color-mix(in srgb, var(--night) 94%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.guide .card .rest { font-size: 15px; color: var(--ink-quiet); }
+.guide .card .title { margin-bottom: 6px; font-family: "League Spartan", var(--script), sans-serif; font-size: 20px; font-weight: 700; line-height: 1.15; color: var(--ink); }
+.guide .card .tip { font-size: 15px; line-height: 1.5; white-space: pre-line; color: var(--ink-soft); }
+.guide .card.is-on .rest, .guide .card:not(.is-on) :is(.title, .tip), .guide .card .title:empty { display: none; }
+.guide .card:not(.is-on) { position: static; display: flex; flex-direction: column; justify-content: flex-start; border-color: transparent; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* The Scene view panel is narrow, so its card is beside it wherever the card shows. */
+.guide .shots.rows { grid-template-columns: max-content minmax(0, 26em); align-items: start; }
+.guide .shots.rows > .card { grid-column: 2; grid-row: 1; position: static; justify-content: flex-start; height: auto; min-height: 7em; border-bottom: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+@container (min-width: 1400px) {
+  .guide .shots > .shot { grid-column: 1; }
+  .guide .shots > .card { grid-column: 2; grid-row: 1; align-self: start; top: calc(var(--bar) + 24px); width: clamp(220px, 20cqw, 340px); height: auto; min-height: 7em; border-bottom: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* The credit of the model the Bake Window pictures show, once under them. */
+.guide .credit { margin-top: 12px; font-size: 13px; line-height: 1.45; color: var(--ink-quiet); }
+
+/* Entry points with their lines: each a name, where it is and its keys, and beside them what it does. */
+.guide .groups { margin-top: 40px; }
+.guide .entries > li { display: grid; grid-template-columns: minmax(150px, 30%) minmax(0, 1fr); gap: 4px 28px; padding: 14px 0; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--bar) + 24px); }
+.guide .entries.wide > li { grid-template-columns: minmax(180px, 34%) minmax(0, 1fr); }
+.guide .entries h3 { display: inline; font-family: "League Spartan", var(--script), sans-serif; font-size: 18.5px; font-weight: 700; line-height: 1.25; color: var(--ink); }
+.guide .entries h3 a { transition: color 0.25s; }
+.guide .entries h3 a:hover { color: var(--accent); }
+.guide .entries p { max-width: 46em; font-size: 15.5px; line-height: 1.5; }
+.guide .entries .covered { margin-top: 6px; font-size: 14px; }
+.guide .covered { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.guide .where { display: block; margin-top: 5px; font-family: var(--label-face); font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; line-height: 1.5; text-transform: uppercase; color: var(--ink-quiet); }
+.guide .name .keys { margin-left: 6px; white-space: nowrap; }
+.guide .chip { display: inline-block; margin-left: 10px; padding: 3px 6px 2px; border: 1px solid var(--line); border-radius: 2px; font-family: var(--label-face); font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em; line-height: 1; text-transform: uppercase; color: var(--ink-quiet); vertical-align: 0.2em; }
+.guide .entries > li:target, .guide :is(h1, h2):target { background: linear-gradient(90deg, var(--gold-wash), transparent 70%); box-shadow: -14px 0 0 var(--gold-wash), inset 0 1px 0 var(--gold-line); }
+.guide .entries.cols { columns: 2; column-gap: clamp(28px, 4vw, 72px); }
+.guide .entries.cols > li { display: block; break-inside: avoid; }
+.guide .entries.cols p { margin-top: 4px; }
+
+/* A sample's components and asset types: one group under the sample's name, closed until the reader opens it. */
+.guide .sample { margin-top: 34px; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--bar) + 24px); }
+.guide .sample > summary { display: flex; align-items: center; gap: 12px; padding: 16px 0; cursor: pointer; list-style: none; }
+.guide .sample > summary::-webkit-details-marker { display: none; }
+.guide .sample > summary::before { content: ""; flex: none; width: 6px; height: 6px; border: solid var(--accent); border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); transition: transform 0.25s; }
+.guide .sample[open] > summary::before { transform: rotate(135deg); }
+.guide .sample > summary .label { font-size: 13px; }
+.guide .sample > summary:hover .label { color: var(--ink); }
+.guide .sample > .part:first-of-type { margin-top: 10px; }
+
+/* A shipped page. */
+.guide .reading { max-width: 50em; padding-top: clamp(40px, 8svh, 96px); }
+.guide .doc { min-width: 0; font-size: 17px; line-height: 1.65; }
+.guide .doc h1 { margin-bottom: 0.5em; font-size: clamp(36px, 4vw, 60px); }
+.guide .doc h2 { margin: 2em 0 0.6em; padding-top: 1.1em; border-top: 1px solid var(--line); font-size: clamp(26px, 2.4vw, 36px); }
+.guide .doc h1 + h2 { margin-top: 1em; }
+.guide .doc h3 { margin: 1.8em 0 0.5em; font-family: "League Spartan", var(--script), sans-serif; font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--ink); }
+.guide .doc :is(h1, h2, h3) { scroll-margin-top: calc(var(--bar) + 24px); }
+.guide .doc :is(p, ul, ol, pre, .table) { margin: 0 0 1.1em; }
+.guide .doc :is(ul, ol) { padding-left: 1.3em; }
+.guide .doc ul > li { position: relative; }
+.guide .doc ul > li::before { content: ""; position: absolute; left: -1.1em; top: 0.68em; width: 5px; height: 5px; background: var(--accent); transform: rotate(45deg); }
+.guide .doc li + li { margin-top: 0.35em; }
+.guide .doc ol li::marker { font-family: var(--label-face); font-weight: 700; color: var(--accent); }
+.guide .doc strong { font-weight: 600; color: var(--ink); }
+.guide .doc code { overflow-wrap: anywhere; padding: 0.12em 0.36em; border-radius: 3px; background: rgb(246 234 216 / 0.08); font: 0.86em/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--ink); }
+.guide .doc pre { padding: 18px 20px; border: 1px solid var(--line-soft); border-radius: 6px; overflow: auto; background: rgb(246 234 216 / 0.04); }
+.guide .doc pre code { padding: 0; background: none; font-size: 14px; line-height: 1.55; }
+.guide .doc .table { overflow-x: auto; }
+.guide .doc table { width: 100%; border-collapse: collapse; font-size: 15.5px; line-height: 1.5; }
+.guide .doc th { padding: 0 20px 10px 0; font-family: var(--label-face); font-size: 11.5px; font-weight: 700; letter-spacing: 0.18em; text-align: left; text-transform: uppercase; color: var(--accent); }
+.guide .doc td { padding: 11px 20px 11px 0; border-top: 1px solid var(--line); vertical-align: top; }
+.guide .doc :is(th, td):last-child { padding-right: 0; }
+
+/* A narrow window: the home's map under its words, then the list of pages folded over the content, lines of
+   entries stacked, one column of text. */
+@media (max-width: 1280px) {
+  .guide .top.with-map { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) {
+  .guide .shell { display: block; }
+  .guide .side { position: static; height: auto; padding: 14px var(--pad) 0; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+  .guide .finder { margin-right: 0; }
+  .guide .side details { overflow: visible; padding: 0; }
+  .guide .side details[open] { padding-bottom: 20px; }
+  .guide .side summary { display: flex; align-items: center; gap: 10px; padding: 16px 0; cursor: pointer; list-style: none; font-family: var(--label-face); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .guide .side summary::-webkit-details-marker { display: none; }
+  .guide .side summary::before { content: ""; width: 6px; height: 6px; background: var(--accent); transform: rotate(45deg); }
+  .guide .search kbd { display: none; }
+  .guide .entries > li, .guide .entries.wide > li { display: block; }
+  .guide .entries p { margin-top: 4px; }
+  .guide .entries.cols { columns: 1; }
+  /* A phone has no room for the marks' names, and the places follow right under the lead. */
+  .guide .map { display: none; }
+  /* A row of the panel's picture is too small to tap there, and the list beside the picture links each row. */
+  .guide .canvas a.spot, .guide .shots.rows .card { display: none; }
+  .guide .facts { grid-template-columns: minmax(0, 1fr); }
+  .guide .facts dt { padding-bottom: 0; }
+  .guide .facts dd { border-top: 0; padding-top: 2px; }
+  .guide .found a { grid-template-columns: minmax(0, 1fr); }
+  .guide .found small { grid-row: auto; }
+}

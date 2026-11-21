@@ -1,0 +1,452 @@
+/* A document's pages, under the hero where it has one: each fills the screen and the document moves
+   one page at a time. No page has a ground of its own. All of them stand on the site's night: a game
+   frame fades into it on the side its words stand, and a sprite or a window stands on it. Behind
+   them, light falls in from the side that the page on the screen names (.nave, pager.js). This sheet
+   stands beside landing.css, whose tokens it reads: a url() in a token resolves against the sheet
+   that reads it. */
+html { scroll-snap-type: y mandatory; }
+html.is-paging { scroll-snap-type: none; }
+.hero { scroll-snap-align: start; scroll-snap-stop: always; }
+/* An item that a hash names inside a page stops where a page's words start (pager.js). */
+.page [id] { scroll-margin-top: var(--top); }
+
+.pages { --line: rgba(246, 234, 216, 0.14); --pad: var(--margin); --lead: clamp(16px, min(1.2vw, 2.2svh), 22px);
+  /* The nav's height, which a page's words stay below. */
+  --bar: var(--nav-height);
+  /* Where a page's words start below the screen's top. */
+  --top: calc(var(--bar) + 2svh);
+  /* The words' column beside a picture, and where a game frame beside it starts, across the page. */
+  --words: min(34%, calc(32 * var(--lead))); --frame-start: 37%;
+  /* How far into a game frame its fade into the night reaches, from its side by the words. */
+  --fade-near: 18%;
+  --light: 255 188 116;
+  /* How long a press takes to change a picture. */
+  --swap: 0.4s;
+  isolation: isolate; }
+
+/* The light behind the pages: shafts from a window high on one side, which stay on the screen while the pages pass. */
+.nave { position: sticky; top: 0; z-index: 0; height: 100vh; height: 100svh; margin-bottom: -100vh; margin-bottom: -100svh; overflow: clip; pointer-events: none; }
+.nave i { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s var(--ease-out);
+  background:
+    conic-gradient(from 98deg at -6% -16%, transparent 0deg, rgb(var(--light) / 0.085) 6deg, transparent 13deg, rgb(var(--light) / 0.05) 19deg, transparent 27deg,
+      rgb(var(--light) / 0.075) 34deg, transparent 44deg, rgb(var(--light) / 0.04) 52deg, transparent 62deg, transparent 360deg),
+    radial-gradient(60% 80% at 0% 8%, rgb(var(--light) / 0.09), transparent 72%);
+  -webkit-mask: radial-gradient(82% 118% at 0% 0%, #000 12%, transparent 76%); mask: radial-gradient(82% 118% at 0% 0%, #000 12%, transparent 76%); }
+.nave .right { transform: scaleX(-1); }
+.pages[data-light="left"] .nave .left, .pages[data-light="right"] .nave .right, .pages[data-light="both"] .nave i { opacity: 1; }
+
+.page {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: var(--top) var(--pad) 7svh;
+  overflow: clip;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  font-family: var(--text-face);
+  /* The browser styles, lays out and paints a page only near the screen, so a document's first paint lays out its
+     first screen and not every page under it. A page not yet drawn is as tall as the screen, by its min-height, and
+     one that was drawn keeps the height it had. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 0px;
+}
+.page[hidden] { display: none; }
+/* A picture a switch shows later is off the page until switches.js takes it, so the browser leaves its file. */
+.page img[data-late] { display: none; }
+/* A document's first screen has the connection to itself until the browser has shown it. Under a hero no picture
+   of a page loads before landing.js sets is-released. With no hero the first page's first picture, which the build
+   marks elementtiming, loads at once and every other picture once pager.js sets is-released. A browser that runs
+   no script holds none back. */
+@media (scripting: enabled) { body:has(.hero, img[elementtiming]):not(.is-released) .page img:not([elementtiming]) { display: none; } }
+
+/* A heading is sized by the column it stands in (cqw) and by the screen's height, so a short window shrinks its
+   type and keeps its column, and each half stays on a line of its own where the column holds it. */
+.words, .stack > .words > div { container-type: inline-size; }
+/* A document with no hero has its h1 on its first page, drawn as a page's heading. */
+.page :is(h1, h2) { margin: 0; font-family: "League Spartan", var(--script), sans-serif; font-size: clamp(28px, min(9.6cqw, 6.2svh), 64px); font-weight: 800; line-height: 1.04; letter-spacing: -0.005em; text-wrap: balance; }
+/* The heading's second half stands on its own lines, in FORGE's gold, on the same picture. */
+.page :is(h1, h2) em { display: block; font-style: normal; color: var(--wordmark); background: var(--forge-fill); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.page .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; font-family: var(--label-face); font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+.page .eyebrow::before { content: ""; width: 6px; height: 6px; background: var(--accent); transform: rotate(45deg); }
+/* An eyebrow's link ends in an arrowhead. */
+.page .eyebrow a { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: color 0.25s; }
+.page .eyebrow a::after { content: ""; width: 5px; height: 5px; border: solid currentColor; border-width: 2px 2px 0 0; transform: rotate(45deg); }
+.page .eyebrow a:is(:hover, :focus-visible) { color: var(--ink); }
+.page .eyebrow a:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+.lead { margin: clamp(14px, 2.4svh, 26px) 0 0; font-size: var(--lead); line-height: 1.55; letter-spacing: -0.006em; color: var(--ink-soft); max-width: 34em; }
+.fine { margin: 14px 0 0; font-size: clamp(13px, 0.9vw, 16px); line-height: 1.5; color: var(--ink-quiet); max-width: 38em; }
+/* Whose art a page shows, at its foot on the words' side. */
+.credit { margin: 0; font-size: clamp(12px, 0.7vw, 13px); line-height: 1.45; color: var(--ink-quiet); }
+.page > .credit { position: absolute; left: var(--pad); bottom: clamp(12px, 2.2svh, 26px); max-width: var(--words); }
+.flip > .credit { left: auto; right: calc(var(--pad) + 34px); text-align: right; }
+.page h3 { margin: 0 0 6px; font-family: "League Spartan", var(--script), sans-serif; font-size: clamp(19px, 1.35vw, 25px); font-weight: 700; line-height: 1.15; color: var(--ink); }
+.answers p { margin: 0; font-size: clamp(15px, 1vw, 18px); line-height: 1.5; color: var(--ink-soft); }
+.page ul { list-style: none; margin: 0; padding: 0; }
+.page b { font-weight: 600; color: var(--ink); }
+.page p a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.page p a:is(:hover, :focus-visible) { color: var(--ink); }
+
+/* A page's choices: each a row of options in tracked capitals, the one in use gold over its diamond. Their type and
+   the space between them follow the words' column, so a row stays on one line. */
+.choices { display: grid; justify-items: start; gap: 6px; margin-top: clamp(20px, 3.2svh, 34px); font-size: clamp(10px, 2.6cqw, 15px); }
+.switch { --switch-gap: min(2.5em, 2vw); display: flex; gap: 0 var(--switch-gap); max-width: 100%; }
+.switch button, .switch > span { flex: none; padding: 12px 0; font-family: var(--label-face); font-size: 1em; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
+.switch button { position: relative; border: 0; background: none; cursor: pointer; color: var(--link); transition: color 0.25s; }
+/* The name of a row whose options do not say what they switch. */
+.switch > span { color: var(--ink-quiet); }
+.switch button::before { content: ""; position: absolute; left: 50%; bottom: 0; width: 6px; height: 6px; margin-left: -3px; background: var(--accent); transform: rotate(45deg) scale(0); transition: transform 0.3s var(--ease-out); }
+/* A tap between two options takes the nearer one. The last option's area stops at its text, so the row's scrollWidth
+   stays its column's. */
+.switch button::after { content: ""; position: absolute; inset: 0 calc(var(--switch-gap) / -2); }
+.switch button:last-child::after { right: 0; }
+.switch button, .names button, .wipe, .ring canvas, .turn input { -webkit-tap-highlight-color: transparent; }
+.switch button:hover { color: var(--ink); }
+.switch button[aria-pressed="true"] { color: var(--accent); }
+.switch button[aria-pressed="true"]::before { transform: rotate(45deg) scale(1); }
+/* A switch another pick has locked: none of its buttons reads as chosen. */
+.switch button:disabled { color: var(--ink-quiet); opacity: 0.45; cursor: default; }
+.switch button:disabled::before { transform: rotate(45deg) scale(0); }
+.switch button:focus-visible, .names button:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+/* Faster's row has a name and six looks, so it is set closer to stay on one line in a window 1280 px wide. */
+#faster .switch { --switch-gap: min(1.3em, 1.2vw); }
+#faster .switch button, #faster .switch > span { letter-spacing: 0.08em; }
+
+/* What a page shows rises in as the page arrives. A game frame only brightens: it is as wide as the screen.
+   pager.js marks the pages is-paged and each page that arrives is-in, so without it every page shows. Only an
+   arrived page has the transition, so a page that waits hides at once (docs/website.md, The pages scroll by
+   offsetTop). */
+.page.is-in > * { transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+.is-paged .page:not(.is-in) > * { opacity: 0; transform: translateY(26px); }
+.is-paged .page:not(.is-in) > .scene { transform: none; }
+.page.is-in > :not(.words) { transition-delay: 0.12s; }
+
+/* A game frame beside the words. It runs under the nav to the screen's top, foot and edge, and fades into the night
+   only toward the words. On a press the picture coming in and the one going out fade over the same time and add
+   their light (plus-lighter), so together they are one picture at every moment: opaque where both are, and as
+   see-through as each where both are, in the island's waterfall. One drawn over the other would show both there,
+   and darker or brighter than either until the old one went. */
+.scene { --melt: linear-gradient(90deg, transparent, #000 var(--fade-near)); container-type: size; overflow: clip; -webkit-mask: var(--melt); mask: var(--melt); }
+.flip > .scene { --melt: linear-gradient(270deg, transparent, #000 var(--fade-near)); }
+/* A picture's place among its own, which stays under the page's words. */
+.scene, .pile { isolation: isolate; }
+.frame > .words { position: relative; width: var(--words); min-width: 300px; }
+.frame.flip > .words { justify-self: end; margin-right: 34px; }
+.frame > .scene { position: absolute; inset: 0 0 0 var(--frame-start); }
+.frame.flip > .scene { inset: 0 var(--frame-start) 0 0; }
+.scene img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity var(--swap) ease; mix-blend-mode: plus-lighter; }
+/* The picture on show keeps a layer of its own (will-change), as a fading one has: Chrome draws a layer from a whole
+   pixel, so a picture that gained a layer only while it fades would shift by a fraction of a pixel for that long. */
+.scene img.on { opacity: 1; will-change: opacity; }
+/* Where a frame's subject stands, so a screen narrower than the frame keeps it: in the hall seen whole, or in a view
+   near the knight. A frame says which on its .scene, so it is cut the same on every page that shows it. */
+.scene.hall img { object-position: 50% 38%; }
+.scene.near img { object-position: 50% 44%; }
+/* The platformer's Pixel frame shows more of the level than its other looks: --pixel-frame times their width, about
+   the same middle and the same foot. So the page draws it that much larger than the frame that covers the scene, from
+   the same foot, and what both show stands in one place through a change of style. */
+#platformer .scene img[data-style="pixel"] { --cover: max(100cqw, 150cqh); inset: auto; left: calc(50cqw - var(--cover) * var(--pixel-frame) / 2);
+  top: calc(50cqh + var(--cover) / 3 - var(--cover) / 1.5 * var(--pixel-frame)); width: calc(var(--cover) * var(--pixel-frame)); height: calc(var(--cover) / 1.5 * var(--pixel-frame));
+  max-width: none; object-fit: fill; }
+/* The island floats over the page whole, with no fade, clear of the nav above it and of the page's end. */
+.float > .scene { -webkit-mask: none; mask: none; }
+.float > .scene img { inset: calc(var(--bar) + 1svh) 0 auto; height: calc(100% - var(--bar) - 5svh); object-fit: contain; }
+
+/* The wipe: one picture left of the seam and another right of it, and a star on the seam to drag. Each is cut at
+   the seam, so no part of the frame draws both. The pictures melt toward the words and what lies over them does
+   not. */
+.wipe { --at: 50%; --by-seam: clamp(10px, 1.5cqw, 20px); --by-edge: clamp(14px, 3.2cqw, 44px); -webkit-mask: none; mask: none; }
+.wipe img { -webkit-mask: var(--melt); mask: var(--melt); }
+.wipe img.after { opacity: 1; clip-path: inset(0 0 0 var(--at)); }
+/* Where a switch picks the picture right of the seam, the others there are off. */
+.wipe:has(img.after.on) img.after:not(.on) { opacity: 0; }
+.wipe img.before { clip-path: inset(0 calc(100% - var(--at)) 0 0); }
+.wipe .seam { position: absolute; z-index: 3; top: 0; bottom: 0; left: var(--at); width: 2px; margin-left: -1px; pointer-events: none; background: var(--accent); }
+.wipe .seam::after { content: ""; position: absolute; left: 50%; top: 50%; width: min(96px, 20vw); aspect-ratio: 1; transform: translate(-50%, -50%); background: url(assets/mark-flat.svg) center / contain no-repeat; }
+/* The frame takes the pointer through a layer over the pictures, so a press neither drags a picture nor opens its menu.
+   A finger may scroll the page up and down and zoom it there, and a move across is left to switches.js, which moves
+   the seam. The slider under it takes the keys and names the wipe for a screen reader, and the star shows its
+   keyboard focus. */
+.wipe { cursor: ew-resize; touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.wipe::after { content: ""; position: absolute; z-index: 4; inset: 0; }
+.wipe input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
+.wipe:has(input:focus-visible) .seam::after { outline: 1px solid var(--accent); outline-offset: 4px; }
+/* What each side of the seam is: its name at the seam's top, on its own side, moving with the seam, the right one in
+   gold. On Faster the name stands over what the bench measured for its side (figures.tallies()). A name's box holds
+   its space from the seam and from the frame's edge. switches.js marks a name data-closed while its side is narrower
+   than its box, and the name fades out rather than leave the frame. */
+.side, .tally { position: absolute; z-index: 3; top: calc(var(--bar) + 3svh); isolation: isolate; pointer-events: none; white-space: nowrap; transition: opacity 0.2s;
+  font-family: var(--label-face); font-size: clamp(11px, 1.9cqw, 17px); text-shadow: 0 2px 16px rgb(0 0 0 / 0.9), 0 0 4px rgb(0 0 0 / 0.75); }
+:is(.side, .tally).left { right: calc(100% - var(--at)); padding: 0 var(--by-seam) 0 var(--by-edge); text-align: right; }
+:is(.side, .tally).right { left: var(--at); padding: 0 var(--by-edge) 0 var(--by-seam); }
+/* A shade behind a name, so it reads over a bright frame. */
+:is(.side, .tally)::before { content: ""; position: absolute; z-index: -1; inset: -90% 0; background: radial-gradient(closest-side, rgb(7 7 11 / 0.72) 35%, transparent); }
+.tally::before { inset: -30% 0; }
+:is(.side, .tally)[data-closed] { opacity: 0; }
+.side, .tally b { font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); }
+.side.right, .tally.right b, .tally.right strong { color: var(--accent); }
+/* A name is as large alone as over its figures. */
+.tally b { font-size: 1.25em; }
+.side { font-size: clamp(13px, 2.4cqw, 21px); }
+.tally { display: grid; gap: 0.5em; }
+.tally strong { font-family: "League Spartan", var(--script), sans-serif; font-size: 5.2em; font-weight: 800; line-height: 0.82; color: var(--ink); }
+.tally strong small { font-size: 0.36em; letter-spacing: 0.04em; }
+.tally span { font-family: var(--text-face); font-size: 0.92em; font-weight: 600; color: var(--ink); }
+
+/* The words beside something that stands on the night: the ring, a sprite, a window. */
+.figure, .editor { --beside: min(35%, calc(34 * var(--lead))); grid-template-columns: var(--beside) minmax(0, 1fr); gap: clamp(24px, 3.4vw, 72px); }
+.editor { --beside: min(30%, calc(30 * var(--lead))); }
+.figure.flip, .editor.flip { grid-template-columns: minmax(0, 1fr) var(--beside); }
+.figure.flip > .words, .editor.flip > .words { order: 2; margin-right: 34px; }
+.figure > .credit, .editor > .credit { max-width: var(--beside); }
+
+/* The words over something as wide as the page: the heading beside its lead, and the figure under both. */
+.stack { grid-template-rows: auto minmax(0, 1fr); align-items: start; gap: clamp(12px, 2.6svh, 30px); padding-bottom: 6svh; }
+.stack > .words { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: clamp(40px, 6vw, 110px); align-items: end; container-type: normal; }
+.stack :is(h1, h2) { font-size: clamp(26px, min(5.9cqw, 5.2svh), 54px); }
+.stack .eyebrow { margin-bottom: 14px; }
+.stack .lead { margin: 0; }
+.stack > :not(.words, .credit) { align-self: center; justify-self: center; }
+
+/* The ring of directions, and under it the slider that turns the model. */
+.ring { position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; justify-items: center; gap: 2svh; height: min(74svh, 37vw); }
+.ring canvas { width: 100%; height: 100%; min-height: 0; touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; transition: opacity 0.2s; }
+.ring[data-pending] canvas { opacity: 0.45; }
+.turn { display: flex; align-items: center; gap: 14px; width: min(100%, 420px); font-family: var(--label-face); font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
+.turn input { flex: 1; height: 24px; margin: 0; background: none; cursor: ew-resize; -webkit-appearance: none; appearance: none; }
+.turn input::-webkit-slider-runnable-track { height: 2px; background: var(--line); }
+.turn input::-moz-range-track { height: 2px; background: var(--line); }
+.turn input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -6px; border: 0; border-radius: 0; background: var(--accent); transform: rotate(45deg); }
+.turn input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 0; background: var(--accent); transform: rotate(45deg); }
+.turn input:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+/* One model at three cameras, each at the size it was baked while the row fits the page. The build gives a picture
+   its size as --w and --h, and the row its tallest picture and their widths together. */
+.views { --gap: clamp(16px, 3.4vw, 72px); --unit: min(1px, 52svh / var(--tallest), (100vw - 2 * var(--pad) - 2 * var(--gap)) / var(--across));
+  display: flex; justify-content: center; align-items: flex-end; gap: var(--gap); }
+.views figure { display: grid; justify-items: center; gap: clamp(10px, 1.8svh, 20px); margin: 0; }
+.views img { display: block; width: calc(var(--w) * var(--unit)); height: auto; }
+.views figcaption, .thirds figcaption { font-family: var(--label-face); font-size: clamp(11px, 0.8vw, 15px); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--link); }
+
+/* What a bake writes, one picture so that its boxes, names and frames keep their places. */
+.bundle img { display: block; width: auto; height: auto; max-width: 100%; max-height: 60svh; }
+
+/* The sprite and its textures: the sprite at its own size, and each texture's name in the words' column. */
+.pile { display: grid; justify-items: center; align-items: center; }
+.pile img { grid-area: 1 / 1; display: block; width: auto; height: auto; max-width: 100%; max-height: 78svh; opacity: 0; transition: opacity var(--swap) ease; mix-blend-mode: plus-lighter; }
+.pile img.on { opacity: 1; will-change: opacity; }
+.names { margin-top: clamp(14px, 2.6svh, 28px) !important; }
+.names button { display: block; width: 100%; padding: clamp(7px, 1.2svh, 13px) 0 clamp(7px, 1.2svh, 13px) 20px; border: 0; border-left: 2px solid var(--line); background: none; text-align: left; cursor: pointer; color: inherit; font: inherit; transition: border-color 0.3s; }
+.names b { display: block; font-family: var(--label-face); font-size: clamp(12px, 2.5cqw, 15px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--link); transition: color 0.3s; }
+.names span { display: block; margin-top: 5px; font-size: clamp(13px, 0.9vw, 16px); line-height: 1.4; color: var(--ink-quiet); }
+.names button:hover b { color: var(--ink); }
+.names button[aria-pressed="true"] { border-left-color: var(--accent); }
+.names button[aria-pressed="true"] b { color: var(--accent); }
+.names button[aria-pressed="true"] span { color: var(--ink-soft); }
+
+/* A frame that shows one scene in three bands, each named under it, with a hairline round it. */
+.thirds { width: fit-content; max-width: 100%; margin: 0; }
+.thirds img { display: block; width: auto; height: auto; max-width: 100%; max-height: 56svh; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
+.thirds figcaption { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 12px; margin-top: 12px; text-align: center; line-height: 1.4; }
+
+/* The Bake Window as the store shows it: its windows tilted on a floor that mirrors them, running off the page's
+   edge. A name stands over the part of the window it names. */
+.cards { position: relative; width: fit-content; max-width: calc(100% + var(--pad) * 0.7); margin: 0 calc(var(--pad) * -0.7) 0 0; justify-self: end; }
+.flip > .cards { margin: 0 0 0 calc(var(--pad) * -0.7); justify-self: start; }
+.cards img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100svh - var(--bar) - 9svh); }
+.cards .caption { position: absolute; translate: -50% -50%; font-family: "League Spartan", var(--script), sans-serif; font-size: clamp(11px, 1.15vw, 21px); font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; color: var(--ink);
+  text-shadow: 0 0 12px var(--night), 0 0 5px var(--night), 0 2px 3px var(--night); pointer-events: none; }
+
+/* A window of the editor standing on the night. */
+.window { display: grid; justify-items: center; margin: 0; }
+.window img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100svh - var(--bar) - 15svh); border-radius: 10px; box-shadow: 0 0 0 1px rgba(246, 234, 216, 0.12), 0 30px 80px rgb(0 0 0 / 0.55); }
+
+/* Where it runs: a desktop window, a browser and an Android phone, each showing a picture, in the windows' chrome,
+   and under them what runs on each. They overlap like a product shot, the browser in front of the desktop window
+   and the phone in front of the browser. A length is in cqw of the figure, so the three keep their places at every
+   width, and the figure's width keeps it, captions included, inside the screen's height: it is about 0.63 of the
+   width tall. The rules sit under .targets, since the targets' names are common words. */
+.targets { --frame: 0 0 0 1px rgba(246, 234, 216, 0.12), 0 30px 80px rgb(0 0 0 / 0.55); --bar-ground: #1d1a18;
+  container-type: inline-size; justify-self: center; align-self: center; margin: 0 34px 0 0;
+  width: min(100% - 34px, (100svh - var(--bar) - 16svh) / 0.63); }
+.targets .devices { position: relative; aspect-ratio: 100 / 48; }
+.targets .target { position: absolute; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #0b0a09; box-shadow: var(--frame); }
+/* Each screen shows a box of its picture, in the pixels of the capture the picture is made from: --x and --y its
+   corner, --cut-w and --cut-h its size, of a capture --from pixels wide. The Windows screen shows half its picture's
+   width, so its picture asks for a file twice the screen's width (its sizes in index.html). */
+.targets .screen { position: relative; display: block; overflow: hidden; aspect-ratio: var(--cut-w) / var(--cut-h); }
+.targets .screen img { position: absolute; max-width: none; height: auto; width: calc(100% * var(--from) / var(--cut-w));
+  left: calc(-100% * var(--x) / var(--cut-w)); top: calc(-100% * var(--y) / var(--cut-h)); }
+/* The battle in the Cinematic look, the whole hall at noon, and the hall's middle at night: the altar, the braziers
+   and the figures. */
+.targets .windows .screen { --from: 2560; --x: 300; --y: 230; --cut-w: 1280; --cut-h: 800; }
+.targets .web .screen { --from: 2400; --x: 0; --y: 100; --cut-w: 2400; --cut-h: 1500; }
+.targets .android .screen { --from: 2400; --x: 240; --y: 560; --cut-w: 1920; --cut-h: 864; }
+/* Each device in front casts its shadow on the one behind. */
+.targets .web { box-shadow: var(--frame), -1.4cqw 2cqw 4cqw rgb(0 0 0 / 0.5); }
+.targets .android { box-shadow: var(--frame), -1.6cqw 2.4cqw 4.5cqw rgb(0 0 0 / 0.6), inset 0 0 0 1px rgba(246, 234, 216, 0.07); }
+/* The windows' bars: the desktop window's title with its three buttons at the right, and the browser's dots before
+   its address field. */
+.targets .bar { display: flex; align-items: center; gap: 1.5cqw; height: 3cqw; padding: 0 1.3cqw; background: var(--bar-ground); box-shadow: inset 0 1px rgba(246, 234, 216, 0.06); }
+.targets .bar b { font-family: var(--text-face); font-size: max(10px, 1.05cqw); font-weight: 500; letter-spacing: 0.01em; color: var(--ink-quiet); }
+.targets .windows .bar b { margin-right: auto; }
+.targets .windows .bar i { --stroke: rgba(246, 234, 216, 0.34); width: 0.85cqw; height: 0.85cqw; }
+.targets .windows .bar i:nth-of-type(1) { background: linear-gradient(var(--stroke), var(--stroke)) center / 100% 1px no-repeat; }
+.targets .windows .bar i:nth-of-type(2) { border: 1px solid var(--stroke); }
+.targets .windows .bar i:nth-of-type(3) { background: linear-gradient(45deg, transparent calc(50% - 0.5px), var(--stroke) 0 calc(50% + 0.5px), transparent 0),
+    linear-gradient(-45deg, transparent calc(50% - 0.5px), var(--stroke) 0 calc(50% + 0.5px), transparent 0); }
+.targets .web .bar { gap: 0.7cqw; height: 2.8cqw; }
+.targets .web .bar i { width: 0.8cqw; height: 0.8cqw; border-radius: 50%; background: rgba(246, 234, 216, 0.2); }
+.targets .web .bar b { flex: 0 1 46%; height: 1.6cqw; margin-left: 1.1cqw; border-radius: 999px; background: rgba(246, 234, 216, 0.07); }
+.targets .windows { left: 0; top: 0; width: 60cqw; border-radius: 0.9cqw; }
+.targets .web { left: 25cqw; top: 15cqw; width: 48cqw; border-radius: 0.9cqw; }
+/* The phone on its side, as a game is played on it: a bezel round its screen, and the camera in the screen's left edge. */
+.targets .android { left: 58cqw; top: 26.5cqw; width: 42cqw; grid-template-rows: auto; padding: 1.2cqw; border-radius: 3.2cqw; }
+.targets .android .screen { border-radius: 2cqw; }
+.targets .android::before { content: ""; position: absolute; z-index: 1; left: 2.2cqw; top: 50%; width: 0.9cqw; height: 0.9cqw; translate: 0 -50%; border-radius: 50%; background: #050404; box-shadow: 0 0 0 1px rgba(246, 234, 216, 0.08); }
+/* Under the devices, what runs on each, at its device's place, in the type of the site's captions and switches. */
+.targets figcaption { display: grid; grid-template-columns: 23cqw 31cqw minmax(0, 1fr); gap: 0 2cqw; margin-top: 3.4cqw; }
+.targets .said { padding-top: 1.3cqw; border-top: 1px solid var(--line); }
+.targets strong { display: block; font-family: "League Spartan", var(--script), sans-serif; font-size: max(17px, 2.1cqw); font-weight: 700; line-height: 1.1; color: var(--ink); }
+/* Android's ARM64 beside its name: a build target, not a graphics API. */
+.targets strong small { margin-left: 0.4em; font-family: var(--label-face); font-size: max(11px, 0.9cqw); font-weight: 700; letter-spacing: 0.16em; color: var(--ink-quiet); }
+.targets .apis { display: grid; gap: 0.5cqw; margin: 1cqw 0 0; padding: 0; list-style: none; }
+.targets .apis li { display: flex; align-items: baseline; gap: max(6px, 0.7cqw); font-family: var(--label-face); font-size: max(12px, 1.02cqw); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.targets .apis li::before { content: ""; flex: none; align-self: center; width: 0.42cqw; min-width: 4px; aspect-ratio: 1; background: var(--accent); transform: rotate(45deg); }
+.targets .apis small { font-size: 1em; color: var(--ink-quiet); }
+.targets .tested { margin: 1cqw 0 0; font-family: var(--text-face); font-size: max(12.5px, 1.12cqw); line-height: 1.45; color: var(--ink-soft); text-wrap: pretty; }
+
+/* What the package holds and what it needs: a gold rule over each line. */
+.facts { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: center; align-items: start; gap: clamp(32px, 6vw, 112px); }
+.facts h2, .questions :is(h1, h2) { font-size: clamp(30px, min(3.15vw, 6.2svh), 64px); }
+.ticks { margin-top: clamp(20px, 3.4svh, 32px) !important; }
+.ticks li { position: relative; padding: 11px 0 11px 22px; border-top: 1px solid var(--line); font-size: clamp(15px, 1vw, 18px); line-height: 1.45; color: var(--ink-soft); }
+.ticks li::before { content: ""; position: absolute; left: 2px; top: 1.05em; width: 6px; height: 6px; background: var(--accent); transform: rotate(45deg); }
+.needs { display: grid; grid-template-columns: max-content 1fr; gap: 0 28px; margin: clamp(20px, 3.4svh, 32px) 0 0; }
+.needs dt, .needs dd { margin: 0; padding: 11px 0; border-top: 1px solid var(--line); }
+.needs dt { font-family: var(--label-face); font-size: 13px; font-weight: 700; letter-spacing: 0.14em; line-height: 1.7; text-transform: uppercase; color: var(--accent); }
+.needs dd { font-size: clamp(15px, 1vw, 18px); line-height: 1.45; color: var(--ink-soft); }
+/* A term with several sentences, as a translated page's Language, holds them under one rule. */
+.needs dd + dd { grid-column: 2; border-top: 0; padding-top: 0; }
+
+.questions { align-content: center; gap: clamp(26px, 5svh, 56px); }
+.questions > .words { container-type: normal; }
+.answers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(26px, 5svh, 52px) clamp(28px, 4vw, 80px); }
+.answers > div { padding-top: 18px; border-top: 1px solid var(--line); }
+
+.closing { grid-template-rows: 1fr auto; justify-items: center; text-align: center; padding-bottom: 4svh; }
+.closing .words { display: flex; flex-direction: column; align-items: center; container-type: normal; }
+.closing :is(h1, h2) { font-size: clamp(34px, min(4.2vw, 7.8svh), 84px); }
+.closing .lead { max-width: 36em; }
+.closing .row { display: flex; align-items: center; gap: 28px; margin-top: clamp(22px, 3.6svh, 34px); }
+.mail { font-size: 16px; color: var(--link); transition: color 0.25s; }
+.mail:hover { color: var(--ink); }
+
+/* The page's place: a diamond per page at the window's right edge, which names its page under the pointer. */
+.pager { position: fixed; right: 12px; top: 50%; z-index: 9; display: grid; transform: translateY(-50%); opacity: 0; transition: opacity 0.4s; }
+.pager.is-on { opacity: 1; }
+.pager a { position: relative; display: block; width: 20px; height: min(20px, 3.1svh); }
+.pager a::before { content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px; background: var(--ink-quiet); transform: rotate(45deg) scale(0.75); transition: background 0.3s, transform 0.3s var(--ease-out); }
+.pager a:hover::before, .pager a:focus-visible::before { background: var(--ink); }
+.pager a[aria-current="true"]::before { background: var(--accent); transform: rotate(45deg) scale(1.15); }
+.pager a::after { content: attr(data-name); position: absolute; right: 24px; top: 50%; translate: 6px -50%; padding: 6px 12px 5px; border-radius: 999px; background: color-mix(in srgb, var(--night) 86%, transparent); box-shadow: 0 0 0 1px var(--line);
+  font-family: var(--label-face); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: var(--ink); opacity: 0; pointer-events: none; transition: opacity 0.2s, translate 0.2s var(--ease-out); }
+.pager a:hover::after, .pager a:focus-visible::after { opacity: 1; translate: 0 -50%; }
+.pager a:focus-visible { outline: none; }
+
+/* One column: a page takes the height it needs and starts under the nav, so every heading stands at one height.
+   The screen settles on a page when it is near one, and a page reads down as its name, its picture, its choices
+   and its words. A frame is as wide as the screen and taller than it is wide where its subject allows. */
+@media (max-width: 899px), (max-aspect-ratio: 11/10) {
+  html { scroll-snap-type: y proximity; }
+  /* A page's words start at --bar + 18px, just below where --nav-shade-opaque (landing.css) ends: change both
+     together. */
+  .pages { --bar: max(56px, var(--nav-height) - 28px); --top: calc(var(--bar) + 18px); }
+  .page { grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: none; align-content: start; gap: 14px; padding: var(--top) var(--margin) 28px; }
+  .is-paged .page:not(.is-in) > * { transform: none; }
+  .words, .stack > .words, .stack > .words > div { display: contents; }
+  .page :is(h1, h2), .stack :is(h1, h2) { font-size: clamp(28px, 8.2vw, 44px); }
+  :is(.frame, .figure, .editor, .stack) :is(h1, h2) { order: 2; }
+  :is(.frame, .figure, .editor, .stack) .eyebrow { order: 1; margin: 0; }
+  .page > .scene, .ring, .views, .bundle, .pile, .window, .thirds, .cards, .targets { order: 3; }
+  /* The type follows the words' column. The widest row, six options, is about 32 em; the probe fails a row wider than
+     its column. */
+  .choices { order: 4; gap: 0; margin-top: 0; font-size: min(11px, (100vw - 2 * var(--margin)) / 32.4); }
+  .switch, #faster .switch { --switch-gap: 0.9em; }
+  .switch button, .switch > span { letter-spacing: 0.08em; }
+  /* On a phone Faster's six looks fit on one line only without the row's name. */
+  #faster .switch > span { display: none; }
+  /* A one-digit option is 24 px wide, the smallest target WCAG 2.5.8 allows. */
+  .switch button { min-width: 24px; }
+  .names { order: 4; margin-top: 0 !important; }
+  :is(.frame, .figure, .editor, .stack) .lead { order: 5; margin-top: 0; max-width: none; }
+  :is(.frame, .figure, .editor, .stack) .fine { order: 6; margin-top: 0; }
+  .page .credit, .flip > .credit { order: 7; position: static; max-width: none; margin: 0; text-align: left; }
+  /* A frame is as wide as the screen and 5/4 as tall, but at most 82% of the screen's height, so a phone held
+     sideways shows all of it. aspect-ratio with max-height would narrow the frame instead. */
+  .frame > .scene, .frame.flip > .scene { --melt: none; position: relative; inset: auto; height: min(125vw, 82svh); margin-inline: calc(-1 * var(--margin)); }
+  /* The knight stands left of the hall's middle. */
+  .scene.hall img { object-position: 28% 38%; }
+  /* The level is a wide strip, and the island is taller than it is wide: each keeps what its subject needs. */
+  #platformer > .scene { height: min(100vw, 82svh); }
+  .float > .scene { height: auto; aspect-ratio: 1816 / 2164; width: min(100vw, 76svh * 1816 / 2164); justify-self: center; margin-inline: 0; }
+  .float > .scene img { inset: 0; height: 100%; }
+  .side, .tally { top: 4%; }
+  .tally { font-size: 10px; }
+  .side, .tally b { font-size: 11.5px; letter-spacing: 0.08em; }
+  .tally strong { font-size: 4.4em; }
+  /* The memory each half takes, in mixed case over the picture. */
+  .tally span { font-size: 11px; }
+  .ring { height: auto; }
+  .ring canvas { height: min(62vw, 70svh); }
+  .views { --gap: 8px; --unit: calc((100vw - 2 * var(--margin) - 2 * var(--gap)) / var(--across)); }
+  .views figcaption, .thirds figcaption { font-size: 10px; letter-spacing: 0.08em; }
+  .bundle img { max-height: none; }
+  .pile img { max-height: 62svh; }
+  .names li { display: block; }
+  .names span { font-size: 14px; }
+  .thirds { margin-inline: calc(-1 * var(--margin)); max-width: none; }
+  .thirds img { max-height: none; max-width: 100%; border-radius: 0; }
+  .cards, .flip > .cards { justify-self: center; max-width: none; margin: 0 calc(-1 * var(--margin)); }
+  .cards img { max-height: none; }
+  .cards .caption { font-size: 11px; }
+  .window img { max-height: 70svh; }
+  /* The devices as wide as the column and stacked closer, and what runs on each in rows under them. */
+  .targets { width: 100%; margin: 0; }
+  .targets .devices { aspect-ratio: 100 / 91; }
+  .targets .bar { gap: 1.4cqw; height: 5.4cqw; padding: 0 2.4cqw; }
+  .targets .web .bar { height: 5cqw; }
+  .targets .bar b { font-size: max(10px, 2.4cqw); }
+  .targets .windows .bar i, .targets .web .bar i { width: 1.5cqw; height: 1.5cqw; }
+  .targets .web .bar b { height: 2.8cqw; margin-left: 1.8cqw; }
+  .targets .windows { width: 80cqw; border-radius: 1.8cqw; }
+  .targets .web { left: 20cqw; top: 26cqw; width: 62cqw; border-radius: 1.8cqw; }
+  .targets .android { left: 32cqw; top: 58cqw; width: 68cqw; padding: 2cqw; border-radius: 5.4cqw; }
+  .targets .android .screen { border-radius: 3.4cqw; }
+  .targets .android::before { left: 3.6cqw; width: 1.6cqw; height: 1.6cqw; }
+  .targets figcaption { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 5cqw; }
+  .targets .said { display: grid; grid-template-columns: 30% minmax(0, 1fr); gap: 0 4%; align-items: baseline; padding: 3.6cqw 0; }
+  .targets .said > :not(strong) { grid-column: 2; }
+  .targets strong small { display: block; margin: 0.6em 0 0; }
+  .targets .said .apis { margin-top: 0; }
+  .targets .apis li { letter-spacing: 0.1em; }
+  .targets .apis li::before { width: 1.1cqw; }
+  .facts { gap: 34px; }
+  .answers { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .needs { grid-template-columns: minmax(0, 1fr); }
+  .needs dt { padding-bottom: 0; }
+  .needs dd { border-top: 0; padding-top: 2px; }
+  .needs dd + dd { grid-column: 1; }
+  .closing { align-content: center; }
+  .questions > .words { display: block; }
+  .closing .words { display: flex; }
+  .closing .row { flex-direction: column; gap: 16px; }
+  .pager { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page.is-in > *, .nave i, .scene img, .pile img, .side, .tally { transition: none; }
+  .is-paged .page:not(.is-in) > * { opacity: 1; transform: none; }
+}
