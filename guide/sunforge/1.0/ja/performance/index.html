@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2D ライティングのパフォーマンス: 各設定の負荷 | Sun Forge ガイド</title>
+<meta name="description" content="ライティングの各設定がシーンにかける負荷と、その設定を変更する場所を確認します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/performance/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/performance/">
+<meta property="og:title" content="2D ライティングのパフォーマンス: 各設定の負荷 | Sun Forge ガイド">
+<meta property="og:description" content="ライティングの各設定がシーンにかける負荷と、その設定を変更する場所を確認します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "パフォーマンス", "item": "https://sunforgetools.com/guide/sunforge/ja/performance/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja" aria-current=page>パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/performance/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/performance/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/performance/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/performance/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-performance"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="performance">パフォーマンス</h1><p class="lead">ライティングの各設定がシーンにかける負荷と、その設定を変更する場所を確認します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#what-each-setting-costs">各設定の負荷</a></li><li><a href="#the-first-frame-in-a-web-player">Web プレイヤーの最初のフレーム</a></li></ul></details></nav><article class="doc"><p>フレーム時間に影響する設定には、名前の後ろにゲージが表示され、ツールチップに負荷の内容が表示されます。<strong>Lighting Setup</strong> の <strong>Performance</strong> (パフォーマンス) セクションには、開いているシーンで負荷がかかっている設定が、負荷の大きい順に一覧表示され、各行の横に <strong>Select</strong> (選択) があります。</p>
+<p>負荷の高い設定をまとめて設定するには、<strong>Performance</strong> を開いて <strong>Fastest</strong> (最速)、<strong>Balanced</strong> (バランス)、<strong>Full</strong> (フル) のいずれかをクリックしてください。その後、そこから個別の設定を調整できます。各ボタンが変更する内容は、そのボタンのツールチップに表示されます。</p>
+<h2 id="what-each-setting-costs">各設定の<wbr>負荷</h2>
+<p>次の表は、テストシーンで各設定を使った場合と使わなかった場合を比べて計測した負荷です。デスクトップは RTX 4060、スマートフォンは Pixel 8a です。範囲は、複数の計測値の幅を示します。デスクトップで約 0.8 ms 未満の計測値は、実行ごとのばらつきの範囲内です。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>設定</th>
+<th>設定する場所</th>
+<th>負荷</th>
+<th>計測値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Render Scale</strong></td>
+<td>各品質レベルの URP アセット</td>
+<td>大</td>
+<td>デスクトップ、1920 × 1080、2026-11: 0.5 にすると GPU で 1.3 から 1.5 ms 短縮</td>
+</tr>
+<tr>
+<td><strong>Mist Enabled</strong> (霧有効)</td>
+<td>Lighting Setup、またはスタイルの <strong>Default Lighting Values</strong> (デフォルトのライティング値)</td>
+<td>大</td>
+<td>スマートフォン、2026-10: 約 40 ms。デスクトップ、2560 × 1440、2026-11: 1.0 から 1.7 ms</td>
+</tr>
+<tr>
+<td><strong>Pixels Per Unit</strong> (単位毎のピクセル数)</td>
+<td>Cast Shadow Field</td>
+<td>大</td>
+<td>スマートフォン、2026-10: 128 に対して 64 では、GPU の 83 ms のうち約 30 ms 短縮。デスクトップ、2026-11: 64 に対して 16 でも、ばらつきの範囲内</td>
+</tr>
+<tr>
+<td><strong>Style</strong> (スタイル)</td>
+<td>Lighting Setup</td>
+<td>中</td>
+<td>スマートフォン、2026-10: Cinematic は Regular より大きく、Flat は小さい。デスクトップ、2026-11: Regular と比べて、Cinematic は 0.3 から 3 ms、Flat は 0.2 から 1.1 ms 大きい</td>
+</tr>
+<tr>
+<td><strong>Mode</strong> (モード)</td>
+<td>Cast Shadow Field</td>
+<td>中</td>
+<td>デスクトップ、アニメーションするキャラクター 1,000 体、2026-11: And Sprites (とスプライト) のモードは、対応する Only (のみ) のモードと比べて、GPU で 0.7 から 1 ms、メインスレッドで 0.5 から 1.3 ms 大きい</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong> (キャストシャドウの引き伸ばし有効)</td>
+<td>Lighting Setup、またはスタイルの <strong>Default Lighting Values</strong> と <strong>Hours</strong> (時間帯)</td>
+<td>中</td>
+<td>デスクトップ、2026-11: 4 回の計測のうち 3 回で約 1 ms。Regular の夜明けと夕暮れでは約 0.6 ms (この 2 つの時刻のキーがこの設定をオンにします)</td>
+</tr>
+<tr>
+<td><strong>Post Processing Enabled</strong> (ポストプロセス有効)</td>
+<td>Lighting Setup</td>
+<td>中</td>
+<td>スマートフォン、2026-10: 約 1 ms。デスクトップ、2026-11: 最大 1.6 ms</td>
+</tr>
+<tr>
+<td><strong>Light From Lit Ground</strong> (照らされた地面からの光)</td>
+<td>スタイルの <strong>Quality</strong> (品質)</td>
+<td>中</td>
+<td>デスクトップ、Cinematic、2026-10: 0.7 から 1.4 ms。2026-11: 0.2 から 1.1 ms</td>
+</tr>
+<tr>
+<td><strong>Exact Shadows On Sprites</strong> (スプライト上の正確な影)</td>
+<td>スタイルの <strong>Quality</strong></td>
+<td>中</td>
+<td>デスクトップ、2026-11: 4 回の計測のうち 3 回で 0.5 から 2.2 ms</td>
+</tr>
+<tr>
+<td><strong>Mist Height</strong> (霧の高さ)</td>
+<td>Lighting Setup、またはスタイルの <strong>Default Lighting Values</strong></td>
+<td>小</td>
+<td>高さに応じて増加。単独では未計測</td>
+</tr>
+<tr>
+<td><strong>Ground Radius</strong> (地面での半径)</td>
+<td>Light Source、および Scene Lights の <strong>Intensity</strong> (強さ)</td>
+<td>小</td>
+<td>デスクトップ、2026-11: テストシーンのライトでは、ばらつきの範囲内</td>
+</tr>
+<tr>
+<td><strong>Sorted Ground Cover</strong></td>
+<td>草のシートに付けたこのコンポーネント</td>
+<td>小</td>
+<td>デスクトップ、2560 × 1440、キャラクター 1,000 体、2026-11: 0.3 から 0.5 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>デスクトップ (2026-11) では、<strong>Cloud Strength</strong> (雲の強さ)、<strong>Canopy Shade Strength</strong> (Canopy Shade の強さ)、Lighting Setup の <strong>Sprite Emission Enabled</strong> (スプライトのエミッション有効)、<strong>Ambient Occlusion Enabled</strong> (アンビエントオクルージョン有効)、<strong>Self Shadow Enabled</strong> (セルフシャドウ有効) の負荷は、計測できるほどではありませんでした。スマートフォン (2026-10) では、雲、樹冠の日陰、アンビエントオクルージョンの負荷は、それぞれ 1 ms 以下でした。</p>
+<h2 id="the-first-frame-in-a-web-player">Web プレイヤーの<wbr>最初の<wbr>フレーム</h2>
+<p>Web プレイヤーでは、ライティングスタイル、またはスタイルで使うマテリアルを初めて描画するフレームに、ブラウザーがシェーダーを準備するため、数秒かかることがあります。Windows の Chrome では、WebGPU で約 2 から 3 秒、WebGL 2 で約 7 から 13 秒です。この時間をロード画面の裏で済ませるには、次のようにしてください。</p>
+<ol>
+<li>ゲームで使う各スタイルに切り替え、そのスタイルで使うすべてのマテリアルについて、そのマテリアルを使うスプライトを 1 つずつ描画します。非アクティブなオブジェクトのマテリアルと、後で生成するプレハブのマテリアルも含めます。</li>
+<li>Sprite Skin でアニメーションするキャラクターがいて、<strong>Project Settings &gt; Player</strong> (プロジェクト設定 &gt; プレイヤー) の <strong>GPU Skinning</strong> が <strong>CPU</strong> に設定されていない場合は、この手順を、そうしたキャラクターがどれもアクティブでない状態で 1 回、アクティブな状態でもう 1 回実行します。</li>
+<li>スタイルの <strong>Quality</strong> (品質) セクションで、あるオプションを一部の品質レベルでは描画し、ほかのレベルでは描画しないようにしていて、ゲームが実行中に品質レベルを切り替える場合は、そのスタイルを、オプションを描画するレベルと描画しないレベルのそれぞれでも描画します。</li>
+</ol>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

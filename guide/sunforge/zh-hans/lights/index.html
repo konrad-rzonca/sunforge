@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 中的 2D 光源：点光源、聚光灯、线光源和矩形光源 | Sun Forge 指南</title>
+<meta name="description" content="添加 Light Source，调整光的形状，并继续使用已有的 Light 2D 光源。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/lights/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/lights/">
+<meta property="og:title" content="Unity 中的 2D 光源：点光源、聚光灯、线光源和矩形光源 | Sun Forge 指南">
+<meta property="og:description" content="添加 Light Source，调整光的形状，并继续使用已有的 Light 2D 光源。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "光源", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/lights/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/lights/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/lights/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/lights/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/lights/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/lights/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans" aria-current=page>光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/lights/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/lights/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/lights/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/lights/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lights"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="light-source">光源</h1><p class="lead">添加 Light Source，调整光的形状，并继续使用已有的 Light 2D 光源。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#add-a-light">添加光源</a></li><li><a href="#shape-a-light">设置光源形状</a></li><li><a href="#use-your-light-2d-lights">使用现有的 Light 2D 光源</a></li><li><a href="#how-many-lights-a-camera-lights">摄像机可照亮的光源数量</a></li><li><a href="#a-sprite-s-own-glow-light">精灵自身的发光光源</a></li></ul></details></nav><article class="doc"><p>Light Source 在两种 URP 渲染器下都能照亮风格材质。光斑落在光源下方的地面上。</p>
+<h2 id="add-a-light">添加光源</h2>
+<ol>
+<li>选择 <strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Light</strong>（游戏对象 &gt; Sun Forge &gt; Light Source &gt; Light）。在同一子菜单中，<strong>Spot Light</strong>、<strong>Line Light</strong> 和 <strong>Rectangle Light</strong> 分别照亮锥形、线形和矩形区域，<strong>Fire</strong>、<strong>Lamps</strong>、<strong>Magic</strong> 和 <strong>Windows and Doors</strong> 中则是现成的初始外观，例如火把、路灯或窗户。</li>
+<li>把光源移到发光处，例如灯的火焰上。</li>
+<li>选中光源后，在 Scene 视图中拖拽光源上方的圆点即可设置 <strong>Height Above Ground</strong>（离地高度）：光源随之升高或降低，光斑留在原处。其他手柄用于设置 <strong>Ground Radius</strong>（地面半径）、<strong>Inner Radius</strong>（内半径）、尺寸和各个聚光角度。将鼠标悬停在手柄上，即可查看其名称和数值。</li>
+</ol>
+<p>要把现有对象（例如灯的预制件）变成光源，请使用 <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Light Source</strong>（添加组件 &gt; Sun Forge &gt; Lighting &gt; Light Source）。</p>
+<p>3D 点光源或聚光灯不会照亮使用风格材质的精灵。要为这样的光源添加 Light Source，请选择该光源，然后单击其 Inspector 窗口顶部的 <strong>Add a Sun Forge Light Here</strong>（在此位置添加 Sun Forge 光源）。</p>
+<h2 id="shape-a-light">设置光<wbr>源<wbr>形状</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>要实现</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>聚光灯</td>
+<td>调低 <strong>Outer Spot Angle</strong>（外聚光角度），然后拖拽 <strong>Aim</strong>（照射方向）手柄（光斑边缘外带弧线的圆点）调整照射方向</td>
+</tr>
+<tr>
+<td>照得更远的光斑</td>
+<td>调高 <strong>Intensity</strong>（强度）。<strong>Ground Radius</strong>（地面半径）决定光照到哪里为止</td>
+</tr>
+<tr>
+<td>线形或矩形的光，例如灯管或发光面板</td>
+<td>设置 <strong>Shape</strong>（形状）</td>
+</tr>
+<tr>
+<td>像火一样闪烁的光</td>
+<td>将 <strong>Kind</strong>（种类）设为 <strong>Flame</strong>（火焰）。光源在播放模式下闪烁。要让自己的火焰精灵随之闪烁，将该精灵的渲染器添加到 <strong>Glow Renderers</strong>（发光渲染器）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="use-your-light-2d-lights">使用<wbr>现有<wbr>的 L<wbr>ight 2D 光源</h2>
+<p>现有的 Light 2D 光源会继续照亮 Unity Lights 材质。要让这些光源也照亮使用风格材质的精灵：</p>
+<ol>
+<li>选择 <strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong>（游戏对象 &gt; Sun Forge &gt; Set Up for Lighting），然后单击 <strong>Apply</strong>（应用）。每个以所有排序图层为目标的 Light 2D 都会获得一个由其驱动的 Light Source，因此脚本和动画对 Light 2D 所做的修改会同步到 Light Source。要只设置某一个光源，或设置之后添加的光源，选择该光源，然后单击其 Inspector 窗口顶部的 <strong>Use This Light with Sun Forge</strong>（在 Sun Forge 中使用此光源）。</li>
+<li>如果某个 Light 2D 未以某个排序图层为目标，选择 Lighting Setup，然后在列出该光源的问题旁单击 <strong>Fix</strong>（修复）。</li>
+<li>将每个 Light Source 的 <strong>Height Above Ground</strong>（离地高度）设为对应 Light 2D 离地面的高度。光源仍位于 Light 2D 处；在使用风格材质的精灵上，光斑落在光源下方的地面上，因此光斑看起来是压扁的，就像美术中的地面一样。在侧视美术上，改为设置较小的 <strong>Height Above Ground</strong>（参见 <a href="/guide/sunforge/zh-hans/side-view/#side-views" hreflang="zh-Hans">侧视</a>）。</li>
+</ol>
+<h2 id="how-many-lights-a-camera-lights">摄像<wbr>机可<wbr>照亮<wbr>的<wbr>光源<wbr>数量</h2>
+<p>每个摄像机最多让 512 个光源生效，在 WebGL 2 Player 中最多 128 个。主摄像机能看到却未生效的光源，在 Scene 视图中显示为灰色灯泡。要让这样的光源继续生效，请启用其 <strong>Special Cases</strong>（特殊情况）下的 <strong>Is Prioritized</strong>（优先照亮）。</p>
+<h2 id="a-sprite-s-own-glow-light">精灵<wbr>自身<wbr>的<wbr>发光<wbr>光源</h2>
+<p>发光光源是 Sun Forge 为精灵的发光部分创建的 Light Source。由 Sun Forge 写入纹理的精灵，可在其 Lighting Style Renderer 的 <strong>Glow, Surfaces and Edges</strong>（发光、表面和边缘）下单击 <strong>Glow Light</strong>（发光光源）行中的 <strong>Add</strong>（添加）来添加发光光源。Lighting Setup 上 <strong>Values</strong>（值）下的两个 <strong>Glow</strong>（发光）值决定发光光源如何照亮其所属的精灵，发光光源 <strong>Special Cases</strong>（特殊情况）下的 <strong>Light On Its Object Shift</strong>（对所属对象的光照偏移）和 <strong>Glow Parts Light Scale</strong>（发光部分光照缩放）则只为某个精灵更改这一点。</p>
+<p>精灵材质所属的风格与场景的风格不同时（例如 Regular 场景中的 Flat 材质），由材质所属的风格决定精灵的发光光源如何照亮精灵，Lighting Setup 的两个 <strong>Glow</strong> 值不会改变这一点。在这一点上，Realistic 视为 Regular，自己的风格视为其所基于的风格。发光光源的 <strong>Light On Its Object Shift</strong> 和 <strong>Glow Parts Light Scale</strong> 仍会改变这类精灵。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity の 2D キャストシャドウと樹冠の日陰 | Sun Forge ガイド</title>
+<meta name="description" content="スプライトがキャストシャドウを落とす仕組みと、樹冠がその下にあるものを日陰にする仕組みを説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/shadows/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/shadows/">
+<meta property="og:title" content="Unity の 2D キャストシャドウと樹冠の日陰 | Sun Forge ガイド">
+<meta property="og:description" content="スプライトがキャストシャドウを落とす仕組みと、樹冠がその下にあるものを日陰にする仕組みを説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "影", "item": "https://sunforgetools.com/guide/sunforge/ja/shadows/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/shadows/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/shadows/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/shadows/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/shadows/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/shadows/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja" aria-current=page>影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/shadows/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/shadows/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/shadows/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/shadows/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-shadows"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>影</h1><p class="lead">スプライトがキャストシャドウを落とす仕組みと、樹冠がその下にあるものを日陰にする仕組みを説明します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#cast-shadows">キャストシャドウ</a></li><li><a href="#canopy-shade">Canopy Shade</a></li></ul></details></nav><article class="doc"><h2 id="cast-shadows">キャストシャドウ</h2>
+<p>アートが上から見て描かれている場合、<strong>Set Up for Lighting</strong> (ライティング用にセットアップ) は、立っているスプライトがキャストシャドウを落とすようにセットアップし、その影を描画する Cast Shadow Field を追加します。影が落ちる場所は、Cast Shadow Field の <strong>Mode</strong> (モード) で決まります。</p>
+<h3 id="how-dark-a-shadow-is">影の<wbr>濃さ</h3>
+<p>雲のかかっていない Regular スタイルの日中の光の下では、影スプライトは描いたとおりの濃さになります。Realistic スタイルのように、空の光に比べて太陽の光が強いときは濃くなります。空の光に比べて太陽や月の光が弱まったとき、雲がかかっているとき、太陽が低いときには薄くなります。Light Source の光の中でも薄くなりますが、Flat の見た目とサイドビューでは薄くなりません。すべての影を濃くするには、Lighting Setup の <strong>Ground Shadow Strength</strong> (地面の影の強さ) を上げてください。</p>
+<h3 id="cameras-and-scripts">カメラと<wbr>スクリプト</h3>
+<ul>
+<li>Cast Shadow Field は 1 台のカメラに追従するため、画面分割では、両方のビューが、追従しているカメラの影を共有します。</li>
+<li>Cast Shadow Field は、1 フレームに 1 回、最初のカメラより前に描画されます。キャプチャのように、スクリプトが 1 フレーム内の 2 回のレンダリングの間でカメラやスプライトを動かす場合は、後のレンダリングの前に Cast Shadow Field の <code>Redraw</code> を呼び出してください。</li>
+<li>影がカメラの視界から遠く離れているキャスターの処理負荷は、ほとんどありません。Sprite Renderer がオフになっているキャスターでは、それぞれの Sprite Renderer を毎フレーム確認する処理負荷がかかります。</li>
+</ul>
+<h3 id="flipped-sprites-and-other-shaders">反転した<wbr>スプライトと<wbr>ほかの<wbr>シェーダー</h3>
+<ul>
+<li>キャラクターを左に向けるために親の Scale X を -1 にしても、ペアになった影は反転しないため、太陽と反対の方向に落ちたままです。</li>
+<li>Cast Shadow Field の外では、シェーダーが <strong>Sun Forge/Hand-Drawn Shadow</strong> ではない影スプライトは親と一緒に反転し、描いたとおりの濃さのままです。</li>
+<li>霧は、パーティクル、シェーダーが <strong>Sun Forge/Hand-Drawn Shadow</strong> ではない影スプライト、霧を描画しない自作のシェーダーを覆いません (<a href="/guide/sunforge/ja/custom-shaders/#shader-graph" hreflang="ja">カスタムシェーダー › Shader Graph</a>を参照)。</li>
+</ul>
+<h2 id="canopy-shade">Canopy Shade</h2>
+<p>Canopy Shade は、樹冠の下にある地面とスプライトから空の光を取り除きます。セットアップするには、次のようにしてください。</p>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Canopy Shade</strong> を選択します。</li>
+<li>木だけを 1 つのオブジェクトの下に置き、Canopy Shade の <strong>Trees</strong> (木) にそのオブジェクトを設定します。オブジェクトの中でグループに分けてもかまいません。</li>
+<li><strong>Rect</strong> (矩形) を、木が立っている地面の範囲に設定します。</li>
+<li><strong>Draw Map</strong> (マップを描画) をクリックします。マップがシーンと同じ場所に保存され、<strong>Map</strong> (マップ) と <strong>Canopy Height</strong> (樹冠の高さ) が設定されます。</li>
+</ol>
+<p>木を移動、追加、削除したら、もう一度 <strong>Draw Map</strong> をクリックしてください。日陰をどの程度表示するかは、Lighting Setup の <strong>Canopy Shade Strength</strong> (Canopy Shade の強さ) で設定してください。</p>
+<h3 id="paint-the-map-yourself">マップの<wbr>自作</h3>
+<p>マップが <strong>Rect</strong> (矩形) 全体を覆うようにしてください。白は開けた空、黒は閉じた樹冠の下を表します。各樹冠の日陰は、奥行きの 1 / sin e 倍の幅で描いてください。e は Lighting Setup の <strong>Art View</strong> (アートの視点) の角度で、その角度が 3° より小さい場合は 3° です。樹冠の日陰が表示される場所では、Art View は常に <strong>From Above</strong> (見下ろし) です。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

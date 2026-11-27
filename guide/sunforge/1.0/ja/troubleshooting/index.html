@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクやライティング済みのシーンのトラブルシューティング | Sun Forge ガイド</title>
+<meta name="description" content="ベイクやライティング済みのシーンがうまくいかないときに確認することを説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/troubleshooting/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/troubleshooting/">
+<meta property="og:title" content="ベイクやライティング済みのシーンのトラブルシューティング | Sun Forge ガイド">
+<meta property="og:description" content="ベイクやライティング済みのシーンがうまくいかないときに確認することを説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "トラブルシューティング", "item": "https://sunforgetools.com/guide/sunforge/ja/troubleshooting/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja" aria-current=page>トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/troubleshooting/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/troubleshooting/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/troubleshooting/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-troubleshooting"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>トラブルシューティング</h1><p class="lead">ベイクやライティング済みのシーンがうまくいかないときに確認することを説明します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#a-bake">ベイク</a></li><li><a href="#a-lit-scene">ライティング済みのシーン</a></li></ul></details></nav><article class="doc"><p>以下の表から当てはまる症状を探し、その行に書かれた場所を確認してください。どの行にも原因が見つからない場合は、レンダーパイプライン、色空間、カメラの回転、および Windows ではプロジェクトのパスの長さが、<a href="/guide/sunforge/1.0/ja/requirements/#requirements" hreflang="ja">動作環境</a>に合っているか確認してください。</p>
+<h2 id="a-bake">ベイク</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>確認する場所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ベイクが止まる、または実行できない</td>
+<td>Bake (ベイク) タブのメッセージと、Console ウィンドウの <code>[Sun Forge]</code> で始まる行。それぞれに対処方法が書かれています。</td>
+</tr>
+<tr>
+<td>ベイクしたスプライトが、シーンで平坦に見える、明るすぎる、またはモデルと違って見える</td>
+<td><a href="/guide/sunforge/1.0/ja/baked-sprites/#in-a-scene" hreflang="ja">シーン内のベイクしたスプライト</a>を参照してください。</td>
+</tr>
+<tr>
+<td>ベイクしたスプライトの前後関係が正しく描画されない</td>
+<td><a href="/guide/sunforge/1.0/ja/first-bake/#first-bake" hreflang="ja">最初のベイク</a>の手順 5 を参照してください。茂みの中のキャラクターについては、<a href="/guide/sunforge/1.0/ja/characters-in-props/#characters-in-props" hreflang="ja">小道具の中のキャラクター</a>を参照してください。</td>
+</tr>
+<tr>
+<td>再ベイクしてもファイルが変わらない、または編集したファイルが変わった</td>
+<td><a href="/guide/sunforge/1.0/ja/rebaking/#rebaking" hreflang="ja">再ベイク</a>を参照してください。</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="a-lit-scene">ライティング済みの<wbr>シーン</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>確認する場所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スプライトがライティングされない、暗い、または正しくライティングされない</td>
+<td>シーンの <strong>Lighting Setup</strong> を選択し、<strong>Check Setup</strong> (セットアップを確認) をクリックしてください。それぞれの指摘に対処方法が書かれていて、<strong>Fix All</strong> (すべて修正する) で修正が適用されます。</td>
+</tr>
+<tr>
+<td>ライト、その照射範囲、または発光の見え方がおかしい</td>
+<td><a href="/guide/sunforge/1.0/ja/lights/#light-source" hreflang="ja">ライト</a>を参照してください。</td>
+</tr>
+<tr>
+<td>キャストシャドウが表示されない、または正しくない</td>
+<td><a href="/guide/sunforge/1.0/ja/shadows/#cast-shadows" hreflang="ja">影 › キャストシャドウ</a>を参照してください。</td>
+</tr>
+<tr>
+<td>Look の行があるスタイルでは効くのに別のスタイルでは効かない、またはポストプロセスが表示されない</td>
+<td><a href="/guide/sunforge/1.0/ja/tune-a-style/#tuning-a-style" hreflang="ja">スタイルの調整</a>を参照してください。</td>
+</tr>
+<tr>
+<td>1 フレームあたりの負荷が高すぎる</td>
+<td><a href="/guide/sunforge/1.0/ja/performance/#performance" hreflang="ja">パフォーマンス</a>を参照してください。</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

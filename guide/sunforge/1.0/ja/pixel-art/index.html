@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D モデルから作り、2D でライティングするドット絵 | Sun Forge ガイド</title>
+<meta name="description" content="シーンのライティングで照らされるドット絵をベイクし、Pixel Perfect Camera で描画します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/pixel-art/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/pixel-art/">
+<meta property="og:title" content="3D モデルから作り、2D でライティングするドット絵 | Sun Forge ガイド">
+<meta property="og:description" content="シーンのライティングで照らされるドット絵をベイクし、Pixel Perfect Camera で描画します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ドット絵", "item": "https://sunforgetools.com/guide/sunforge/ja/pixel-art/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja" aria-current=page>ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/pixel-art/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/pixel-art/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/pixel-art/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-pixel-art"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="pixel-art">ドット絵</h1><p class="lead">シーンのライティングで照らされるドット絵をベイクし、Pixel Perfect Camera で描画します。</p></div><article class="doc"><p>シーンのライティングで照らされるドット絵をベイクする手順は次のとおりです。</p>
+<ol>
+<li>アーキタイプの <strong>CAMERA</strong> (カメラ) セクションで、<strong>Pixels Per Unit</strong> (単位毎のピクセル数) を 32 など、アートの密度に合わせて設定します。地面タイルも含め、シーンで使うすべてのアーキタイプで同じ値を使います。</li>
+<li>Advanced (上級者向け) 表示で、アーキタイプの <strong>QUALITY</strong> (品質) セクションの <strong>Supersampling</strong> (スーパーサンプリング) をオフにし、<strong>Animation Frame Rate</strong> (アニメーションのフレームレート) を 12 などの低いレートに設定します。</li>
+<li>アーキタイプの <strong>OUTPUT</strong> (出力) セクション (Advanced 表示) で、<strong>Filter Mode</strong> (フィルターモード) を Point (ポイント) に設定し、<strong>Generate Mip Maps</strong> (ミップマップの生成) をオフにします。</li>
+<li>アーキタイプの <strong>SHADOW</strong> (影) セクション (Advanced 表示) で、<strong>Softness</strong> (ぼかし) を 0 に設定し、<strong>Ground-Projected</strong> (地面投影) の下にある <strong>Resolution Scale</strong> (解像度スケール) を 1 にして、影の 1 ピクセルがスプライトの 1 ピクセルと一致するようにします。</li>
+<li>アウトラインを付けるには、ベイクの <strong>Prefab Material</strong> (プレハブマテリアル、Advanced 表示) を <strong>Regular with Pixel Outline</strong> (Regular (Pixel Outline 付き)) または <strong>Cinematic with Pixel Outline</strong> (Cinematic (Pixel Outline 付き)) に設定します。スタイルのすべてのスプライトにアウトラインを付けるには、代わりにスタイルの Sprite マテリアルで <strong>Pixel Outline</strong> をオンにします (<a href="/guide/sunforge/1.0/ja/tune-a-style/#tuning-a-style" hreflang="ja">スタイルの調整</a>を参照)。</li>
+<li>ベイクし、シーンのカメラに Pixel Perfect Camera を追加します (<a href="/guide/sunforge/1.0/ja/pixel-art/#pixel-perfect-camera" hreflang="ja">ドット絵 › Pixel Perfect Camera</a>を参照)。</li>
+<li>ブルームでピクセルがぼやけるため、Lighting Setup の <strong>Post Processing Enabled</strong> (ポストプロセス有効) のチェックを外します。これにより、スタイルのポストプロセス全体がオフになります。</li>
+</ol>
+<h2 id="pixel-perfect-camera">Pixel Perfect Camera</h2>
+<p>URP の Pixel Perfect Camera は、スプライトの各ピクセルを、画面の整数個のピクセルからなるブロックとして描画します。カメラの <strong>Assets Pixels Per Unit</strong> を、スプライトの Pixels Per Unit に設定してください。Pixels Per Unit が異なるスプライトや、スケールを変更したスプライトは、ピクセルのサイズが変わって描画されます。</p>
+<p>このカメラは、2D レンダラーとユニバーサルレンダラーのどちらでも動作します。<strong>Grid Snapping</strong> を <strong>Upscale Render Texture</strong> に設定した場合は、2D レンダラーでのみ動作します。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Grid Snapping</th>
+<th>スプライトが動く単位</th>
+<th>光、霧、キャストシャドウの変化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong> (なし)</td>
+<td>画面の 1 ピクセル</td>
+<td>画面の 1 ピクセルごとに変わるため、スプライトの 1 ピクセルの中でもなめらかに変化</td>
+</tr>
+<tr>
+<td><strong>Pixel Snapping</strong></td>
+<td>スプライトの 1 ピクセル</td>
+<td>画面の 1 ピクセルごとに変わるため、スプライトの 1 ピクセルの中でもなめらかに変化</td>
+</tr>
+<tr>
+<td><strong>Upscale Render Texture</strong></td>
+<td>スプライトの 1 ピクセル</td>
+<td>シーンがカメラの <strong>Reference Resolution</strong> (参照解像度) でレンダリングされてから拡大されるため、アートと同じように、スプライトの 1 ピクセルごとに 1 回変化</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

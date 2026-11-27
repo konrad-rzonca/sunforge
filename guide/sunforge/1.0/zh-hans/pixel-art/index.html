@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>由 3D 模型生成、以 2D 光照照亮的像素画 | Sun Forge 指南</title>
+<meta name="description" content="烘焙能被场景光照照亮的像素画，并用 Pixel Perfect Camera 绘制。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/pixel-art/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/pixel-art/">
+<meta property="og:title" content="由 3D 模型生成、以 2D 光照照亮的像素画 | Sun Forge 指南">
+<meta property="og:description" content="烘焙能被场景光照照亮的像素画，并用 Pixel Perfect Camera 绘制。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "像素画", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/pixel-art/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/1.0/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/1.0/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/1.0/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/1.0/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/1.0/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/1.0/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" hreflang="zh-Hans" aria-current=page>像素画</a></li><li><a href="/guide/sunforge/1.0/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/1.0/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/1.0/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/1.0/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/1.0/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/1.0/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/1.0/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/1.0/en/pixel-art/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/pixel-art/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/pixel-art/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-pixel-art"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="pixel-art">像<wbr>素画</h1><p class="lead">烘焙能被场景光照照亮的像素画，并用 Pixel Perfect Camera 绘制。</p></div><article class="doc"><p>要烘焙由场景光照照亮的像素画：</p>
+<ol>
+<li>在类型模板的 <strong>CAMERA</strong>（摄像机）部分，将 <strong>Pixels Per Unit</strong>（每单位像素数）设为美术资源的像素密度，例如 32。为场景使用的每个类型模板设置相同的值，地面瓦片也不例外。</li>
+<li>在 Advanced（高级）视图中，在类型模板的 <strong>QUALITY</strong>（质量）部分禁用 <strong>Supersampling</strong>（超采样），并将 <strong>Animation Frame Rate</strong>（动画帧速率）设为较低的帧速率，例如 12。</li>
+<li>在类型模板的 <strong>OUTPUT</strong>（输出）部分（Advanced 视图）中，将 <strong>Filter Mode</strong>（过滤模式）设为 Point（点），并禁用 <strong>Generate Mip Maps</strong>（生成 Mip 贴图）。</li>
+<li>在类型模板的 <strong>SHADOW</strong>（阴影）部分（Advanced 视图）中，将 <strong>Softness</strong>（柔和度）设为 0，并将 <strong>Ground-Projected</strong>（地面投影）下的 <strong>Resolution Scale</strong>（分辨率缩放）设为 1，使每个阴影像素对应一个精灵像素。</li>
+<li>如需描边，将烘焙的 <strong>Prefab Material</strong>（预制件材质，Advanced 视图）设为 <strong>Regular with Pixel Outline</strong> 或 <strong>Cinematic with Pixel Outline</strong>。要为某个风格中的所有精灵描边，改为在该风格的精灵材质上启用 <strong>Pixel Outline</strong>（参见 <a href="/guide/sunforge/1.0/zh-hans/tune-a-style/#tuning-a-style" hreflang="zh-Hans">调整风格</a>）。</li>
+<li>烘焙，然后为场景的摄像机添加 Pixel Perfect Camera（参见 <a href="/guide/sunforge/1.0/zh-hans/pixel-art/#pixel-perfect-camera" hreflang="zh-Hans">像素画 › Pixel Perfect Camera</a>）。</li>
+<li>取消勾选 Lighting Setup 上的 <strong>Post Processing Enabled</strong>（启用后处理），因为泛光会让像素变模糊。这会关闭风格的全部后处理。</li>
+</ol>
+<h2 id="pixel-perfect-camera">Pixel Perfect Camera</h2>
+<p>URP 的 Pixel Perfect Camera 把每个精灵像素绘制成由整数个屏幕像素组成的方块。请将其 <strong>Assets Pixels Per Unit</strong> 设为精灵的每单位像素数。每单位像素数与此不同的精灵，或经过缩放的精灵，绘制出的像素大小也不同。</p>
+<p>该摄像机在 2D Renderer 和 Universal Renderer 下都可使用。<strong>Grid Snapping</strong>（网格吸附）的 <strong>Upscale Render Texture</strong> 仅在 2D Renderer 下有效。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Grid Snapping</th>
+<th>精灵移动的步长</th>
+<th>光、薄雾和投射阴影的变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong>（无）</td>
+<td>屏幕像素</td>
+<td>逐个屏幕像素变化，因此在一个精灵像素内平滑过渡</td>
+</tr>
+<tr>
+<td><strong>Pixel Snapping</strong></td>
+<td>整个精灵像素</td>
+<td>逐个屏幕像素变化，因此在一个精灵像素内平滑过渡</td>
+</tr>
+<tr>
+<td><strong>Upscale Render Texture</strong></td>
+<td>整个精灵像素</td>
+<td>与美术一样，每个精灵像素只变化一次，因为场景以摄像机的 <strong>Reference Resolution</strong>（参考分辨率）渲染后再放大</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/zh-hans/search.js"></script>
+</body>
+</html>

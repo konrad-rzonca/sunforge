@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>손으로 그린 2D 스프라이트의 노멀 맵, 발광, 금속 | Sun Forge 가이드</title>
+<meta name="description" content="직접 그린 스프라이트에 노멀 맵, 발광, 금속을 지정하고, 똑바로 서 있지 않은 스프라이트에는 지오메트리 텍스처를 그립니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/your-sprites/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/your-sprites/">
+<meta property="og:title" content="손으로 그린 2D 스프라이트의 노멀 맵, 발광, 금속 | Sun Forge 가이드">
+<meta property="og:description" content="직접 그린 스프라이트에 노멀 맵, 발광, 금속을 지정하고, 똑바로 서 있지 않은 스프라이트에는 지오메트리 텍스처를 그립니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "직접 그린 스프라이트", "item": "https://sunforgetools.com/guide/sunforge/ko/your-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/your-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/your-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/your-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/your-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/your-sprites/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko" aria-current=page>직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/your-sprites/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/your-sprites/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/your-sprites/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/your-sprites/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-your-sprites"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>직접 그린 스프라이트</h1><p class="lead">직접 그린 스프라이트에 노멀 맵, 발광, 금속을 지정하고, 똑바로 서 있지 않은 스프라이트에는 지오메트리 텍스처를 그립니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#sprite-textures">스프라이트 텍스처</a></li><li><a href="#painting-a-geometry-texture">지오메트리 텍스처 그리기</a></li></ul></details></nav><article class="doc"><h2 id="sprite-textures">스프라이트 텍스처</h2>
+<p>직접 그린 스프라이트에 텍스처를 주는 방법은 두 가지입니다.</p>
+<h3 id="have-sun-forge-write-them">Sun Forge가 작성하게 하기</h3>
+<ol>
+<li><strong>Set Up for Lighting</strong> 메뉴로 스프라이트를 설정한 뒤, 스프라이트의 오브젝트를 선택하고 Lighting Style Renderer 컴포넌트에서 <strong>Glow, Surfaces and Edges</strong>(발광, 표면, 가장자리) 섹션을 엽니다.</li>
+<li>발광할 색마다 <strong>Add Glow Color</strong>(발광 컬러 추가) 버튼을 클릭한 다음, 스프라이트에서 그 색을 클릭합니다.</li>
+<li>금속처럼 빛날 색마다 <strong>Add Surface Color</strong>(표면 컬러 추가) 버튼을 클릭한 다음, 스프라이트에서 그 색을 클릭합니다.</li>
+<li><strong>Glows</strong>(발광 부분) 그림과 <strong>Shines</strong>(광택 부분) 그림을 확인합니다. 두 그림은 고른 색과 일치하는 부분을 보여 주고 나머지는 회색으로 표시합니다. 더 넓은 부분이 일치하게 하려면 그 색의 <strong>Tolerance</strong>(허용치) 슬라이더 값을 높입니다.</li>
+<li>가장자리를 둥글게 하려면 <strong>Round Edges</strong>(둥근 가장자리) 토글을 켭니다.</li>
+<li><strong>Write Textures</strong>(텍스처 작성) 버튼을 클릭합니다.</li>
+<li>발광 부분이 그 둘레의 스프라이트와 지면을 비추게 하려면 <strong>Glow Light</strong>(발광 광원) 행의 <strong>Add</strong>(추가) 버튼을 클릭합니다.</li>
+</ol>
+<h3 id="bring-your-own">직접 만든 텍스처 가져오기</h3>
+<ol>
+<li>각 텍스처를 스프라이트의 텍스처 옆에 PNG로 저장하고, 이름은 아래 표와 같이 짓습니다. 여기서 <code>&lt;sheet&gt;</code> 부분은 그 텍스처의 확장자를 뺀 파일 이름입니다.</li>
+<li><strong>Set Up for Lighting</strong> 메뉴를 실행하거나, 스프라이트의 Lighting Style Renderer 컴포넌트에서 <strong>Change Setup</strong>(설정 변경) 버튼을 클릭합니다.</li>
+<li><strong>Sprites</strong>(스프라이트) 섹션에서 그 스프라이트의 행에 찾은 파일의 이름이 각각 나옵니다. <strong>Apply</strong>(적용) 버튼을 클릭해 그 파일을 스프라이트에 지정합니다. 그 종류의 텍스처가 이미 있는 스프라이트는 기존 텍스처를 유지합니다.</li>
+</ol>
+<p>Unity의 Sprite Editor(스프라이트 에디터) 창에 있는 <strong>Secondary Textures</strong>(보조 텍스처) 모듈에서 직접 연결할 수도 있습니다.</p>
+<h3 id="what-each-texture-holds">각 텍스처의 내용</h3>
+<p>스타일 머티리얼은 스프라이트에 다음 텍스처가 있으면 읽습니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>머티리얼 슬롯</th>
+<th>파일</th>
+<th>보조 텍스처 이름</th>
+<th>채널</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal Map</strong></td>
+<td><code>&lt;sheet&gt;_Normal.png</code></td>
+<td><code>_NormalMap</code></td>
+<td>위에서 본 모습으로 그린 씬의 Ground 역할에서는 탑다운으로 그린 노멀 맵. 그 밖에는 서 있는 스프라이트와 같은 각도에서 그린 노멀 맵. 스프라이트 바깥의 텍셀은 평평한 노멀인 128, 128, 255로 채우세요. 그렇지 않으면 스프라이트 가장자리가 어둡게 표시됩니다. <code>SunForgeNormalDecode.hlsl</code> 파일의 <code>SFUnpackNormal</code> 함수나 셰이더 그래프의 <strong>Sun Forge Sample Normal Map</strong> 노드로 읽으세요. 둘 다 128을 기울기 없는 값으로 읽습니다</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td><code>&lt;sheet&gt;_MaskTex.png</code></td>
+<td><code>_MaskTex</code></td>
+<td>R 메탈릭, G 평활도, B 앰비언트 오클루전. Sun Forge가 렌더링한 스프라이트에서는 A 태양 빛이 닿는 정도. 선형</td>
+</tr>
+<tr>
+<td><strong>Emission</strong></td>
+<td><code>&lt;sheet&gt;_Emission.png</code></td>
+<td><code>_EmissionTex</code></td>
+<td>강도 1에서의 발광 컬러, sRGB. Sun Forge가 렌더링하거나 작성한 텍스처의 A는 스프라이트가 자체 발광에서 받는 빛의 양</td>
+</tr>
+<tr>
+<td><strong>Geometry Texture</strong></td>
+<td><code>&lt;sheet&gt;_Geometry.png</code></td>
+<td><code>_GeometryTex</code></td>
+<td>R 피벗 위의 높이. 피벗에서 검은색이고 밝을수록 높습니다. A는 선택 사항입니다(<a href="/guide/sunforge/ko/geometry-texture-format/#geometry-textures" hreflang="ko">지오메트리 텍스처 포맷</a> 참조). 선형이며 크런치 압축을 쓰지 않습니다</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>_MaskTex</code> 텍스처에 채널 배치가 다른 마스크가 있는 스프라이트는 조명이 잘못 표시됩니다.</p>
+<h3 id="see-the-textures-in-the-scene-view">씬 뷰에서 텍스처 보기</h3>
+<p>씬 뷰의 <strong>Sun Forge Gizmos</strong>(Sun Forge 기즈모) 패널 맨 아래에 있는 <strong>Texture View</strong>(텍스처 보기) 행을 켜고 텍스처 하나를 고르세요.</p>
+<ul>
+<li>뷰에는 릿 또는 언릿 URP 머티리얼이 그리는 것만 표시되므로, <code>Sprites/Default</code> 셰이더를 쓰는 스프라이트, 드리운 그림자, 선, 텍스트는 보이지 않습니다.</li>
+<li><strong>Geometry</strong>(지오메트리) 옵션에서는 높이가 없는 텍셀이, <strong>Emission</strong>(이미션) 옵션에서는 이미션이 없는 스프라이트가 어두운 회색으로 표시됩니다.</li>
+</ul>
+<h2 id="painting-a-geometry-texture">지오메트리 텍스처 그리기</h2>
+<p>똑바로 서 있는 스프라이트에는 지오메트리 텍스처가 필요 없습니다. 탁자 상판, 수레, 누워 있는 인물처럼 똑바로 선 카드가 아닌 스프라이트에 그리세요.</p>
+<ol>
+<li>스프라이트가 덮는 모든 픽셀을 회색으로 칠합니다. 지면에서는 검은색이고, 높이 서 있을수록 밝습니다. 시트에서 어떤 스프라이트를 똑바로 선 카드로 두려면 그 스프라이트를 투명하게 남겨 둡니다.</li>
+<li>스프라이트의 피벗을 수레의 앞바퀴처럼 앞쪽 가장자리가 지면과 만나는 곳에 둡니다. 풀은 피벗보다 앞쪽에서만 스프라이트를 덮어 그립니다. 탁자 위의 램프처럼 다른 스프라이트 위에 서 있는 스프라이트는 피벗을 탁자와 만나는 곳에 두고, 그 스프라이트의 Lighting Style Renderer 컴포넌트에서 <strong>Height Above Ground</strong>(지면 위 높이) 필드를 탁자의 높이로 설정합니다.</li>
+<li>PNG를 시트 옆에 <code>&lt;sheet&gt;_Geometry.png</code> 이름으로 내보냅니다.</li>
+<li><strong>Set Up for Lighting</strong> 메뉴를 실행합니다. 스프라이트의 행에 그 텍스처의 이름이 나오고, <strong>Apply</strong>(적용) 버튼이 텍스처를 임포트해 스프라이트에 지정합니다.</li>
+</ol>
+<ul>
+<li>픽셀 단위로 작업하려면 회색 값을 <code>height in pixels * 255 / (Pixels Per Unit * range)</code> 식으로 구하세요. 여기서 range 값은 머티리얼의 <strong>Height Range (World Units)</strong> 프로퍼티 값입니다. Pixels Per Unit 32와 기본 범위 8에서는 회색 한 단계가 약 1픽셀입니다.</li>
+<li>굴뚝처럼 수직으로 서 있는 부분이 그림에서 N픽셀 높이라면 실제 높이는 <code>N / cos(elevation)</code> 픽셀입니다. 여기서 elevation 값은 Lighting Setup 컴포넌트의 <strong>Art View</strong>(아트 시점) 행에 설정한 고도각입니다.</li>
+<li>Point 필터링에서는 스프라이트 주변에 무엇이 있든 상관없습니다. 필터링하는 시트는 내보낸 파일의 배경이 투명해야 합니다. 투명하게 남겨 둔 부분이 있으면 알파가 있는 PNG가 필요합니다.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

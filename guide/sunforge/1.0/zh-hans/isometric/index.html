@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>由烘焙精灵构成的等距场景和 Tilemap | Sun Forge 指南</title>
+<meta name="description" content="用烘焙出的方块搭建阶梯状的 2:1 等距场景，并为 Tilemap 上的地面瓦片打光。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/isometric/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/isometric/">
+<meta property="og:title" content="由烘焙精灵构成的等距场景和 Tilemap | Sun Forge 指南">
+<meta property="og:description" content="用烘焙出的方块搭建阶梯状的 2:1 等距场景，并为 Tilemap 上的地面瓦片打光。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "等距", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/isometric/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/1.0/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/1.0/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/1.0/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/1.0/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/1.0/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/1.0/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/1.0/zh-hans/isometric/" hreflang="zh-Hans" aria-current=page>等距</a></li><li><a href="/guide/sunforge/1.0/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/1.0/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/1.0/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/1.0/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/1.0/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/1.0/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/1.0/en/isometric/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/isometric/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/isometric/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/isometric/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-isometric"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="isometric-scenes">等距</h1><p class="lead">用烘焙出的方块搭建阶梯状的 2:1 等距场景，并为 Tilemap 上的地面瓦片打光。</p></div><article class="doc"><p>要用烘焙出的方块搭建阶梯状的 2:1 等距场景：</p>
+<ol>
+<li>将每个类型模板的 <strong>Elevation Angle</strong>（俯角，<strong>CAMERA</strong>（摄像机）部分）保持为 30，这样一块方形地面会绘制成 2:1 的菱形；并为所有类型模板设置同一个 <strong>Pixels Per Unit</strong>（每单位像素数）。</li>
+<li>添加 <strong>Grid</strong>，将 <strong>Cell Layout</strong>（单元格布局）设为 <strong>Isometric</strong>（等距），将 <strong>Cell Size</strong>（单元格大小）设为菱形的宽度、该宽度的一半和 1。</li>
+<li>为每个地形方块建模，让一个角朝向摄像机。将其作为道具烘焙，<strong>Directions</strong>（方向）设为 1 并禁用 <strong>SHADOW</strong>（阴影），然后禁用其 <strong>Cast Shadow Caster</strong>，并将其放置在 <code>Grid.GetCellCenterWorld</code> 处。</li>
+<li>要让预制件站在架高的方块上，在其每个 <strong>Baked Renderer Binding</strong> 组件上将 <strong>Height Above Ground</strong>（离地高度）设为方块的高度，然后调用 <code>SunForgeBakedShadowSync.PlaceAtHeight</code>，该方法会将预制件及其阴影向上移动。没有 <strong>Baked Shadow Sync</strong> 的预制件（例如粒子烘焙的产物），以及启用 <strong>Leaves The Ground</strong>（可离地）烘焙的预制件，改为手动上移：将方块的高度乘以 <strong>Elevation Angle</strong> 的余弦（30 时为 0.866），加到其 y 坐标上。<code>Body</code> 子对象的 <strong>Height Above Ground</strong> 仍为其高出方块的高度。</li>
+<li>将每个方块的 <strong>Order in Layer</strong>（图层顺序）设为其单元格的 (x + y) 乘以 -10，使较近的单元格绘制在上面。为该单元格上的其他内容设置一个高于其方块、低于下一排的值。</li>
+<li>将 Light Source 所在的高度加到其 <strong>Height Above Ground</strong> 上。其光斑在方块上保持 <strong>Ground Radius</strong>（地面半径），Scene 视图中的轮廓则保持在地面高度。</li>
+<li>将 Cast Shadow Field 的 <strong>Mode</strong>（模式）设为 <strong>Ground Material And Sprites</strong>（地面材质和精灵），使阴影落在方块以及站在方块上的内容上。</li>
+<li>要绘制最低一层而不是用方块搭建，在由地面瓦片组成的 Tilemap 上绘制（参见 <a href="/guide/sunforge/1.0/zh-hans/isometric/#ground-tiles-on-a-tilemap" hreflang="zh-Hans">等距 › Tilemap 上的地面瓦片</a>），并将 Tilemap 的 <strong>Order in Layer</strong> 设为低于所有方块。其瓦片受光的方式与方块顶面相同。</li>
+</ol>
+<h2 id="ground-tiles-on-a-tilemap">Tilemap 上<wbr>的<wbr>地面<wbr>瓦片</h2>
+<ul>
+<li>使用风格的 Ground 材质 <code>SunForge_&lt;Style&gt;_Ground</code> 绘制 Tilemap。</li>
+<li>Tilemap 需要 <strong>Baked Renderer Binding</strong>，才能像瓦片所属的预制件那样照亮其瓦片。<strong>Check Setup</strong>（检查设置）会添加该组件，并报告瓦片来自不同烘焙的 Tilemap。把来自不同烘焙的瓦片放到不同的 Tilemap 上。</li>
+<li><strong>Tile View</strong>（瓦片视角，Archetypes（类型模板）选项卡 OUTPUT（输出）部分）设为 <strong>Isometric</strong>（等距）的瓦片带有菱形的精灵网格，Tilemap 需要这种网格才能贴合其单元格。每次烘焙都会写入该网格，因此 <strong>Mesh Type</strong>（网格类型）不会保留其他值。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/zh-hans/search.js"></script>
+</body>
+</html>

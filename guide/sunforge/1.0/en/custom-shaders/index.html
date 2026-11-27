@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Light your own sprite shader or Shader Graph in 2D | Sun Forge Guide</title>
+<meta name="description" content="Start a Shader Graph from a Sun Forge template, or light a graph or hand-written sprite shader of your own with the scene&#x27;s style, lights, shadows and mist.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/custom-shaders/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/custom-shaders/">
+<meta property="og:title" content="Light your own sprite shader or Shader Graph in 2D | Sun Forge Guide">
+<meta property="og:description" content="Start a Shader Graph from a Sun Forge template, or light a graph or hand-written sprite shader of your own with the scene&#x27;s style, lights, shadows and mist.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Custom shaders", "item": "https://sunforgetools.com/guide/sunforge/en/custom-shaders/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/1.0/en/">Overview</a></li><li><a href="/guide/sunforge/1.0/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/1.0/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/1.0/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/1.0/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/1.0/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/1.0/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/1.0/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/1.0/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/1.0/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/1.0/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/1.0/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/1.0/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/1.0/en/lights/">Lights</a></li><li><a href="/guide/sunforge/1.0/en/styles/">Styles</a></li><li><a href="/guide/sunforge/1.0/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/1.0/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/1.0/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/1.0/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/1.0/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/1.0/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/1.0/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/1.0/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/1.0/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/1.0/en/menus/">Menus</a></li><li><a href="/guide/sunforge/1.0/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/1.0/en/components/">Components</a></li><li><a href="/guide/sunforge/1.0/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/1.0/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/1.0/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/1.0/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/1.0/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/1.0/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/1.0/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/1.0/en/custom-shaders/" aria-current=page>Custom shaders</a></li><li><a href="/guide/sunforge/1.0/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/1.0/en/custom-shaders/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/1.0/ja/custom-shaders/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/custom-shaders/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-custom-shaders"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1>Custom shaders</h1><p class="lead">Start a Shader Graph from a Sun Forge template, or light a graph or hand-written sprite shader of your own with the scene&#x27;s style, lights, shadows and mist.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#shader-graph">Shader Graph</a></li><li><a href="#hand-written-shaders">Hand-Written Shaders</a></li><li><a href="#a-sprite-without-a-texture">A Sprite Without A Texture</a></li><li><a href="#a-shader-of-your-own">A Shader Of Your Own</a></li></ul></details></nav><article class="doc"><h2 id="shader-graph">Shader Graph</h2>
+<p>To start from a ready graph, choose <strong>Assets &gt; Create &gt; Shader Graph &gt; From Template</strong>, pick <strong>Sun Forge Sprite Lit</strong> or <strong>Sun Forge Dissolve</strong> under <strong>Sun Forge</strong>, and do step 5 below. To build one yourself:</p>
+<ol>
+<li>In a <strong>Sprite Unlit</strong> graph, add <strong>Sun Forge &gt; Sun Forge Sprite Lit</strong>.</li>
+<li>Connect its <strong>Color</strong> to <strong>Base Color</strong> and its <strong>Alpha</strong> to <strong>Alpha</strong>.</li>
+<li>In the <strong>Graph Settings</strong>, turn on <strong>Disable Color Tint</strong>. With it off, a sprite whose Sprite Renderer <strong>Color</strong> is black loses its glow, rim, mist and hit flash.</li>
+<li>Also in the <strong>Graph Settings</strong>, set <strong>Custom Editor GUI</strong> to <code>KonradRzonca.SunForge.Editor.Inspector.SunForgeStyledMaterialEditor</code>, so its material's Inspector shows the same preview and tooltips as a Sun Forge material's.</li>
+<li>Right-click the graph in the Project window and choose <strong>Create &gt; Material</strong>. On each renderer that uses the material, choose <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer</strong>, and set its <strong>Material</strong> to your material. On a Mesh, Skinned Mesh, Line or Trail Renderer, set your textures on the material, not through a property block of your own, which can make the graph draw nothing.</li>
+</ol>
+<p>The material then has the sprite's five texture slots and the material properties the lighting reads, as the Sun Forge materials have them. Set <strong>Role</strong> on the material to <strong>Sprite</strong>, <strong>Ground</strong> or <strong>Ground Clutter</strong>: the sprite takes that role's look, and its Lighting Style Renderer and the Cast Shadow Field take the role from the material.</p>
+<p>To change the sprite before it is lit, such as a dissolve or a scrolling texture, use <strong>Sun Forge Sprite Textures</strong> and <strong>Sun Forge Lit Color</strong> in place of <strong>Sun Forge Sprite Lit</strong>. Connect each output of <strong>Sun Forge Sprite Textures</strong> to the <strong>Sun Forge Lit Color</strong> port of the same name, with your effect between them, and connect <strong>Sun Forge Lit Color</strong> as in step 2. Connect a coordinate to <strong>UV</strong> to sample the textures there.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th><strong>Sun Forge Lit Color</strong> port</th>
+<th>Takes</th>
+<th>Left unconnected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Albedo</strong></td>
+<td>The sprite's color and alpha</td>
+<td>White</td>
+</tr>
+<tr>
+<td><strong>Normal</strong></td>
+<td>The sprite's normal, such as from <strong>Sun Forge Sample Normal Map</strong></td>
+<td>Level ground on <strong>Ground</strong> with a <strong>Bake Camera Elevation (Degrees)</strong> above 0, else a surface facing the camera</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td>Metallic, smoothness and occlusion in red, green and blue: keep the alpha <strong>Sun Forge Sprite Textures</strong> gives</td>
+<td>No metal, half smoothness, no occlusion</td>
+</tr>
+<tr>
+<td><strong>Emission</strong></td>
+<td>The glow color, and in alpha the light the sprite's own glow sends it: keep the alpha <strong>Sun Forge Sprite Textures</strong> gives, or set 1 for a color of your own</td>
+<td>No glow</td>
+</tr>
+<tr>
+<td><strong>Geometry</strong></td>
+<td>The Geometry texture's sample (Geometry Textures, below)</td>
+<td>A standing sprite is a flat upright card</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ground cover, Flat's outlines, rims kept to the outline, a Point-filtered sprite's hard highlights and smooth light from a close Light Source under Regular and Cinematic read the sprite's own textures around each pixel. Where the graph draws a shape other than the sprite's own picture, set <strong>Shape From</strong> on <strong>Sun Forge Lit Color</strong> to <strong>This Graph</strong>, so they do not read the sprite's textures.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Gives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sun Forge Sample Normal Map</strong></td>
+<td>A normal map of your own, read as the Sun Forge materials read theirs, for the <strong>Normal</strong> port</td>
+</tr>
+<tr>
+<td><strong>Sun Forge Mist</strong></td>
+<td>The scene's mist over a color, for an effect the Sun Forge nodes do not light</td>
+</tr>
+<tr>
+<td><strong>Sun Forge Scene Light</strong></td>
+<td>The sun or moon's direction and color, the sky and ground colors the Lighting Setup publishes, and the time in seconds the Sun Forge materials animate by</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>A graph with a texture property of its own whose <strong>Reference</strong> is <code>_MainTex</code>, <code>_NormalMap</code>, <code>_MaskTex</code>, <code>_EmissionTex</code> or <code>_GeometryTex</code> shows an error once a Sun Forge node adds a slot of that <strong>Reference</strong>. Delete the property and take its sample from <strong>Sun Forge Sprite Textures</strong>.</li>
+<li>A mesh that draws many small sprites at once, such as a shower of coins, lights each one at its own pivot and height through <code>SunForgeBatchSprites</code>. The node reads UV channel <code>SunForgeBatchSprites.UvChannel</code> for it, so keep your own data out of that channel.</li>
+<li>A <strong>Sample Texture 2D</strong>, <strong>DDX</strong>, <strong>DDY</strong> or <strong>DDXY</strong> node between <strong>Color</strong> and <strong>Base Color</strong> can draw wrong colors along the sprite's edges on OpenGL and Vulkan. Sample such a texture with <strong>Sample Texture 2D LOD</strong>, or feed it to one of the <strong>Sun Forge Lit Color</strong> node's ports.</li>
+<li>On a Sprite Skin, run the position plus the <strong>Tangent Vector</strong> through a second <strong>Sprite Skinning</strong> node, and connect that result minus the skinned position to the <strong>Tangent</strong> block, so the relief turns with the bone.</li>
+<li>On WebGL 2 and OpenGL ES 3.0 a shader can sample 16 textures. The lighting samples 10 of its own, so a graph that uses <strong>Sun Forge Sprite Lit</strong> or <strong>Sun Forge Sprite Textures</strong>, which sample the sprite's five textures, can sample one more there.</li>
+<li>On Direct3D a shader can use 16 sampler states. The lighting uses 6 of its own, so a graph that uses <strong>Sun Forge Sprite Lit</strong> or <strong>Sun Forge Sprite Textures</strong> can use five more. Textures sampled through one <strong>Sampler State</strong> node take one state between them.</li>
+</ul>
+<h2 id="hand-written-shaders">Hand-Written Shaders</h2>
+<p>Each include is under <code>Packages/com.konradrzonca.sunforge.lighting/Runtime/Shaders/</code>, and its header says how to use it.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Include</th>
+<th>Use it to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SunForgeLitColor.hlsl</code></td>
+<td>Light a shader as the <strong>Sun Forge Lit Color</strong> node does.</td>
+</tr>
+<tr>
+<td><code>SunForgeStyleKeywords.hlsl</code></td>
+<td>Give the shader a variant for each style, and a variant for each option of a style's <strong>Quality</strong> section (<a href="/guide/sunforge/1.0/en/styles/#style-quality">Styles › Style Quality</a>). Include it with <code>#include_with_pragmas</code> beside the pass's pragmas.</td>
+</tr>
+<tr>
+<td><code>SunForgeNormalDecode.hlsl</code></td>
+<td>Read a normal map sample as the shipped materials do, to light with it or to show or measure a normal yourself.</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightDecode.hlsl</code></td>
+<td>Declare a Geometry texture, and read the height and front edge of its sample, or the height of a cast height texture's, as the shipped materials do.</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightRamp.hlsl</code></td>
+<td>Color a height as the Texture View does under <strong>Geometry</strong>.</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightRampBar.hlsl</code></td>
+<td>Draw the legend's bar for that ramp in a pass named Height Ramp, which <code>SunForgeHeightRamp.DrawBar</code> runs.</td>
+</tr>
+<tr>
+<td><code>SunForgeMist.hlsl</code></td>
+<td>Draw the scene's mist, such as in a full-screen fog.</td>
+</tr>
+<tr>
+<td><code>SunForgeHitFlash.hlsl</code></td>
+<td>Draw the hit flash.</td>
+</tr>
+<tr>
+<td><code>SunForgeBakedLight.hlsl</code></td>
+<td>Read, from an emission texture's alpha, the light a sprite's own glow sends it.</td>
+</tr>
+<tr>
+<td><code>SunForgeWalkBands.hlsl</code></td>
+<td>Draw only your shader's piece of a prop that Sun Forge splits around a character.</td>
+</tr>
+<tr>
+<td><code>SunForgeRendererBakeValues.hlsl</code></td>
+<td>Read the angle and the other projection values a sprite draws with, and how high it stands above the ground.</td>
+</tr>
+<tr>
+<td><code>SunForgeLightingGlobals.hlsl</code></td>
+<td>Read what the Lighting Setup publishes.</td>
+</tr>
+</tbody>
+</table></div>
+<p>To publish lighting of your own from a script, use <code>SunForgeLightingPublisher</code>.</p>
+<p>On WebGPU, Chrome on Windows loads a shader slowly when it reads a <code>static const</code> array at an index computed at run time, or picks a vector's component that way, such as <code>v[i]</code>. With a large array, loading can take minutes, and the player can then lose the GPU device and stop drawing. Compute the value instead, read the array at constant indices, or pick a component with a comparison, such as <code>dot(v, float4(i == uint4(0, 1, 2, 3)))</code>. The same holds for HLSL in a <strong>Custom Function</strong> node.</p>
+<p>On WebGL 2 in Chrome on Windows, a constant buffer that holds only one array of 50 or more elements counts as a texture. If a shader's textures and such buffers come to more than 16, the page stops drawing when that shader first draws. Add a second value after the array. Nothing has to read it.</p>
+<h2 id="a-sprite-without-a-texture">A Sprite Without A Texture</h2>
+<p>Where a sprite has no normal map, mask, emission or Geometry texture, your shader samples the material's texture in that slot, or the property's default if the material has none. The slots <strong>Sun Forge Sprite Textures</strong> adds already have the right defaults. In a hand-written shader, Unity's defaults draw such a sprite wrong, so set each slot:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Texture</th>
+<th>Property</th>
+<th>Set</th>
+<th>Otherwise the sprite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal map</td>
+<td><code>_NormalMap</code></td>
+<td><code>SunForge_FlatNormal.png</code> as its default</td>
+<td>Lights as if tilted</td>
+</tr>
+<tr>
+<td>Mask</td>
+<td><code>_MaskTex</code></td>
+<td><code>SunForge_NeutralMask.png</code> as its default</td>
+<td>Lights as polished metal, or with the wrong metal, smoothness or occlusion</td>
+</tr>
+<tr>
+<td>Emission</td>
+<td><code>_EmissionTex</code></td>
+<td><code>&quot;black&quot;</code></td>
+<td>Glows white</td>
+</tr>
+<tr>
+<td>Geometry</td>
+<td><code>_GeometryTex</code></td>
+<td><code>&quot;black&quot;</code></td>
+<td>Takes the full height range</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Normal map and mask: both textures are in the <code>Runtime/Materials</code> folder of the Sun Forge 2D Lighting package. Select the shader and set them under <strong>Default Maps</strong> in the Inspector.</li>
+<li>Emission and Geometry: declare the property as <code>&quot;black&quot;</code>, such as <code>_GeometryTex (&quot;Geometry Texture&quot;, 2D) = &quot;black&quot; {}</code>.</li>
+</ul>
+<p><strong>Check Setup</strong> reports a material with no texture on <code>_NormalMap</code> or <code>_MaskTex</code>, and its fix binds the matching texture. It also reports a material whose <code>_GeometryTex</code> holds a height.</p>
+<h2 id="a-shader-of-your-own">A Shader Of Your Own</h2>
+<p>Build the graph on the <strong>Sun Forge Sprite Lit</strong> node, or on <strong>Sun Forge Sprite Textures</strong> and <strong>Sun Forge Lit Color</strong> (<a href="/guide/sunforge/1.0/en/custom-shaders/#shader-graph">Custom shaders › Shader Graph</a>). Then use it one of two ways:</p>
+<ul>
+<li><strong>On a baked sprite.</strong> Add a Lighting Style Renderer beside its <strong>Baked Renderer Binding</strong> (<strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer</strong>) and set its <strong>Material</strong> to your material. The sprite keeps its bake's values.</li>
+<li><strong>As the bake's material.</strong> Pick the material as the bake's <strong>Prefab Material</strong> (Advanced view). The bake sets the sprite's bake values, such as its <strong>Bake Camera Elevation (Degrees)</strong>, and the prefab needs no Lighting Style Renderer.</li>
+</ul>
+<p>A baked effect's particles add their light to what is behind them whatever their alpha:</p>
+<ul>
+<li>A graph whose <strong>Blending Mode</strong> is <strong>Premultiply</strong>, with <strong>Premultiplied</strong> connected to <strong>Base Color</strong>, draws that light from the effect's emission texture. With another <strong>Blending Mode</strong>, the light bakes into the effect's color.</li>
+<li>Under a style whose Sprite material cannot draw it, a baked effect's Particles child keeps the material it was baked with.</li>
+<li>A hand-written shader draws that light if it declares <code>_SFEmissionScale</code> and <code>_SFEmissionOutsideAlpha</code> and blends <code>One OneMinusSrcAlpha</code>. The header of <code>SunForgeLitColor.hlsl</code> shows how.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/en/search.js"></script>
+</body>
+</html>

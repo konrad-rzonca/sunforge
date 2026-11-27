@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>茂みの中に立っているキャラクター: 2D スプライトのピクセル単位のソート | Sun Forge ガイド</title>
+<meta name="description" content="キャラクターを茂みの中に立たせ、茂みのうち足元より手前にある部分をキャラクターの上に描画します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/characters-in-props/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/characters-in-props/">
+<meta property="og:title" content="茂みの中に立っているキャラクター: 2D スプライトのピクセル単位のソート | Sun Forge ガイド">
+<meta property="og:description" content="キャラクターを茂みの中に立たせ、茂みのうち足元より手前にある部分をキャラクターの上に描画します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "小道具の中のキャラクター", "item": "https://sunforgetools.com/guide/sunforge/ja/characters-in-props/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja" aria-current=page>小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/characters-in-props/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/characters-in-props/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/characters-in-props/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-characters-in-props"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="characters-in-props">小道具の<wbr>中の<wbr>キャラクター</h1><p class="lead">キャラクターを茂みの中に立たせ、茂みのうち足元より手前にある部分をキャラクターの上に描画します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#correcting-one-prefab">個々のプレハブの修正</a></li><li><a href="#props-that-stay-whole">分割されない小道具</a></li><li><a href="#splitting-with-your-own-shader">自作のシェーダーでの分割</a></li></ul></details></nav><article class="doc"><p>茂みの中に立っているキャラクターは、茂みの部分と部分の間に描画できます。茂みのうち、キャラクターの足元より手前の部分はキャラクターの上に、残りは後ろに描画されます。これをオンにする手順は次のとおりです。</p>
+<ol>
+<li><strong>Project Settings &gt; Sun Forge</strong> (プロジェクト設定 &gt; Sun Forge) で、ビルドで小道具を分割するプラットフォームごとに <strong>Per-Pixel Prop Sorting</strong> (ピクセル単位の小道具ソート) にチェックを入れます。小道具は再生モードとビルドで分割され、再生モードではアクティブなプラットフォームの値が使われます。</li>
+<li>ベイクします。どのプレハブがキャラクターで、どのプレハブが小道具になるかは、アーキタイプの <strong>Pixel Sort</strong> (ピクセルソート、Archetypes (アーキタイプ) タブの GAMEPLAY (ゲームプレイ)、Advanced (上級者向け) 表示) で決まります。<strong>Automatic</strong> (自動) では、プレハブは、アニメーションを再生するか、自身を動かすビヘイビアを持つ場合はキャラクター、それ以外は小道具になります。</li>
+</ol>
+<p>キャラクターには <strong>Pixel Sort Character</strong> が付き、小道具の本体スプライトでは、<strong>Baked Renderer Binding</strong> の <strong>Split Around Characters</strong> (キャラクターの周りで分割) にチェックが入ります。オプションメニューなどのスクリプトからは、<code>SunForgePixelSort.Enabled</code> で、実行が終わるまでの間、分割のオンとオフを切り替えられます。</p>
+<h2 id="correcting-one-prefab">個々の<wbr>プレハブの<wbr>修正</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小道具を分割せずに描画する</td>
+<td>その本体スプライトの <strong>Split Around Characters</strong> (キャラクターの周りで分割) のチェックを外してください。再ベイクしてもその選択は保たれます</td>
+</tr>
+<tr>
+<td>風に揺れるシダのように、その場で揺れるだけのプレハブをキャラクターの周りで分割する</td>
+<td>その <strong>Pixel Sort Character</strong> のチェックを外してください。削除するのではなく、チェックを外してください。再ベイクしてもチェックは外れたままですが、削除した場合は再ベイクで追加し直されます</td>
+</tr>
+<tr>
+<td>キャラクターのコライダーの前端より上または下で小道具を分割する</td>
+<td>Pixel Sort Character の <strong>Automatic Depth</strong> (奥行きを自動設定) をオフにし、<strong>Depth</strong> (奥行き) を入力してください</td>
+</tr>
+<tr>
+<td>自分で組み立てたキャラクターや、自作のスクリプトで動かすベイクした小道具の周りで、小道具を分割する</td>
+<td><strong>Add Component &gt; Sun Forge &gt; Pixel Sort Character</strong> (コンポーネントを追加 &gt; Sun Forge &gt; Pixel Sort Character) で Pixel Sort Character を追加してください</td>
+</tr>
+<tr>
+<td>z や独自のソートポイントによって小道具の手前に描画しているキャラクターの周りで、小道具を分割せずに描画する</td>
+<td>その Pixel Sort Character のチェックを外してください</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="props-that-stay-whole">分割されない<wbr>小道具</h2>
+<p>小道具は、透視投影のカメラがそのレイヤーを描画している間は、どのカメラでも分割されずに描画されます。キャラクターとは別のソートレイヤー、順序、レンダーキューでソートされる場合も同じです。同時に分割される小道具は数個だけです。ほかの理由で分割されない小道具では、その <strong>Baked Renderer Binding</strong> に理由が表示されます。</p>
+<p>Lighting Setup の <strong>Check Setup</strong> (セットアップを確認) は、透視投影のカメラと、分割された部分をソートできないソート軸、つまり y と z の符号が逆の <strong>Custom Axis</strong> (カスタム軸) を報告します。</p>
+<h2 id="splitting-with-your-own-shader">自作の<wbr>シェーダーでの<wbr>分割</h2>
+<p>自作のシェーダーで描画される小道具は、そのシェーダーが、分割された部分のうち自身が受け持つ部分を描画する場合にだけ分割されます。</p>
+<ul>
+<li>Shader Graph: グラフの <strong>Alpha</strong> を <strong>Sun Forge Sprite Lit</strong> または <strong>Sun Forge Lit Color</strong> ノードからつなぎ、小道具の本体スプライトの <strong>Split Around Characters</strong> (キャラクターの周りで分割) にチェックを入れてください。マテリアルのグラフにこのどちらかのノードがある小道具では、ベイクはチェックを入れないままにします。Alpha がそのノードを通らないグラフは、キャラクターが小道具の中に立っている箇所で、小道具を二重に描画するためです。</li>
+<li>HLSL シェーダー: <code>SunForgeWalkBands.hlsl</code> のヘッダーに従ってください (<a href="/guide/sunforge/1.0/ja/custom-shaders/#hand-written-shaders" hreflang="ja">カスタムシェーダー › HLSL シェーダー</a>を参照)。シェーダーが分割に対応していない小道具は、分割されずに描画されます。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

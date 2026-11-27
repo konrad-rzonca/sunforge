@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity의 2D 광원: 점 광원, 스폿 광원, 선 광원, 사각형 광원 | Sun Forge 가이드</title>
+<meta name="description" content="Light Source 컴포넌트를 추가해 빛의 모양을 잡고, 기존 Light 2D 광원도 계속 사용합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/lights/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/lights/">
+<meta property="og:title" content="Unity의 2D 광원: 점 광원, 스폿 광원, 선 광원, 사각형 광원 | Sun Forge 가이드">
+<meta property="og:description" content="Light Source 컴포넌트를 추가해 빛의 모양을 잡고, 기존 Light 2D 광원도 계속 사용합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "광원", "item": "https://sunforgetools.com/guide/sunforge/ko/lights/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/1.0/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/1.0/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/1.0/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/1.0/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/1.0/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/1.0/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/1.0/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/1.0/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/1.0/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/1.0/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/1.0/ko/lights/" hreflang="ko" aria-current=page>광원</a></li><li><a href="/guide/sunforge/1.0/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/1.0/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/1.0/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/1.0/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/1.0/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/1.0/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/1.0/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/1.0/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/1.0/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/1.0/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/1.0/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/1.0/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/1.0/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/1.0/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/1.0/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/1.0/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/1.0/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/1.0/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/1.0/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/1.0/en/lights/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/lights/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/lights/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/1.0/zh-hans/lights/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lights"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="light-source">광원</h1><p class="lead">Light Source 컴포넌트를 추가해 빛의 모양을 잡고, 기존 Light 2D 광원도 계속 사용합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#add-a-light">광원 추가</a></li><li><a href="#shape-a-light">광원 모양 잡기</a></li><li><a href="#use-your-light-2d-lights">프로젝트의 Light 2D 광원 사용</a></li><li><a href="#how-many-lights-a-camera-lights">카메라마다 비추는 광원 수</a></li><li><a href="#a-sprite-s-own-glow-light">스프라이트 자체의 발광 광원</a></li></ul></details></nav><article class="doc"><p>Light Source 컴포넌트는 URP의 두 렌더러 모두에서 스타일 머티리얼을 비춥니다. 빛이 닿는 영역은 광원 아래의 지면에 생깁니다.</p>
+<h2 id="add-a-light">광원 추가</h2>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Light</strong>(게임 오브젝트 &gt; Sun Forge &gt; Light Source &gt; Light) 메뉴를 선택합니다. 같은 하위 메뉴의 <strong>Spot Light</strong>, <strong>Line Light</strong>, <strong>Rectangle Light</strong> 메뉴는 각각 원뿔, 선, 직사각형 모양으로 비추는 광원을 만들고, <strong>Fire</strong>, <strong>Lamps</strong>, <strong>Magic</strong>, <strong>Windows and Doors</strong> 메뉴에는 횃불, 가로등, 창문처럼 미리 설정된 모습이 들어 있습니다.</li>
+<li>램프의 불꽃처럼 빛이 나는 곳으로 광원을 옮깁니다.</li>
+<li>광원을 선택한 상태에서 씬 뷰에 보이는 광원 위의 점을 드래그해 <strong>Height Above Ground</strong>(지면 위 높이) 필드를 설정합니다. 드래그하면 광원이 올라가거나 내려가고, 빛이 닿는 영역은 제자리에 그대로 있습니다. 나머지 핸들로는 <strong>Ground Radius</strong>(지면 반지름), <strong>Inner Radius</strong>(내부 반지름), 크기, 안쪽 및 바깥쪽 스폿 각도를 설정합니다. 핸들의 이름과 값을 보려면 핸들 위에 포인터를 올립니다.</li>
+</ol>
+<p>램프 프리팹처럼 이미 있는 오브젝트를 광원으로 만들려면 <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Light Source</strong>(컴포넌트 추가 &gt; Sun Forge &gt; Lighting &gt; Light Source) 메뉴를 사용하세요.</p>
+<p>3D 점 광원이나 스폿 광원은 스타일 머티리얼을 쓰는 스프라이트를 비추지 않습니다. 이런 광원에 Light Source 컴포넌트를 추가하려면 그 광원을 선택하고 인스펙터 맨 위에 있는 <strong>Add a Sun Forge Light Here</strong>(이 오브젝트에 Sun Forge 광원 추가) 버튼을 클릭하세요.</p>
+<h2 id="shape-a-light">광원 모양 잡기</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>원하는 결과</th>
+<th>방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>스폿 광원</td>
+<td><strong>Outer Spot Angle</strong>(외부 스폿 각도) 필드 값을 낮춘 다음, <strong>Aim</strong>(조준) 핸들을 드래그해 방향을 정하세요. 이 핸들은 빛이 닿는 영역의 가장자리 바깥에 있는, 호가 달린 점입니다</td>
+</tr>
+<tr>
+<td>빛이 더 멀리까지 닿는 영역</td>
+<td><strong>Intensity</strong>(강도) 필드 값을 높이세요. 빛이 끝나는 곳은 <strong>Ground Radius</strong>(지면 반지름) 필드가 정합니다</td>
+</tr>
+<tr>
+<td>형광등이나 발광 패널 같은 선 모양 또는 직사각형 모양의 빛</td>
+<td><strong>Shape</strong>(모양) 필드를 설정하세요</td>
+</tr>
+<tr>
+<td>불처럼 깜박이는 광원</td>
+<td><strong>Kind</strong>(종류) 필드를 <strong>Flame</strong>(불꽃) 옵션으로 설정하세요. 광원은 플레이 모드에서 깜박입니다. 직접 만든 불꽃 스프라이트도 함께 깜박이게 하려면 그 스프라이트의 렌더러를 <strong>Glow Renderers</strong>(발광 렌더러) 필드에 추가하세요</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="use-your-light-2d-lights">프로젝트의 Light 2D 광원 사용</h2>
+<p>프로젝트의 Light 2D 광원은 계속 Unity Lights 머티리얼을 비춥니다. 스타일 머티리얼을 쓰는 스프라이트도 이 광원으로 비추려면 다음과 같이 합니다.</p>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong>(게임 오브젝트 &gt; Sun Forge &gt; Set Up for Lighting) 메뉴를 선택하고 <strong>Apply</strong>(적용) 버튼을 클릭합니다. 모든 정렬 레이어를 대상으로 하는 Light 2D 광원마다 그 광원이 제어하는 Light Source 컴포넌트가 생기므로, Light 2D 컴포넌트를 바꾸는 스크립트와 애니메이션이 Light Source도 함께 바꿉니다. 광원 하나만 설정하거나 나중에 추가한 광원을 설정하려면, 그 광원을 선택하고 인스펙터 맨 위에 있는 <strong>Use This Light with Sun Forge</strong>(이 광원을 Sun Forge 조명에 사용) 버튼을 클릭합니다.</li>
+<li>일부 정렬 레이어를 제외하는 Light 2D 광원이 있으면 Lighting Setup 컴포넌트를 선택하고, 그 광원 이름이 표시된 문제 항목 옆의 <strong>Fix</strong>(수정) 버튼을 클릭합니다.</li>
+<li>각 Light Source의 <strong>Height Above Ground</strong>(지면 위 높이) 필드를 해당 Light 2D 광원이 지면에서 떠 있는 높이로 설정합니다. 광원은 Light 2D의 위치에 그대로 있습니다. 스타일 머티리얼을 쓰는 스프라이트에서는 빛이 닿는 영역이 광원 아래의 지면에 생기므로, 아트에 그린 지면처럼 빛이 닿는 영역도 납작해 보입니다. 사이드 뷰 아트에서는 대신 <strong>Height Above Ground</strong> 필드 값을 작게 설정합니다(<a href="/guide/sunforge/1.0/ko/side-view/#side-views" hreflang="ko">사이드 뷰</a> 참조).</li>
+</ol>
+<h2 id="how-many-lights-a-camera-lights">카메라마다 비추는 광원 수</h2>
+<p>카메라마다 최대 512개, WebGL 2 플레이어에서는 최대 128개의 광원이 씬을 비춥니다. 메인 카메라의 시야 안에 있지만 제외된 광원은 씬 뷰에 회색 전구로 표시됩니다. 그런 광원이 계속 비추게 하려면 <strong>Special Cases</strong>(특수한 경우) 섹션에서 그 광원의 <strong>Is Prioritized</strong>(우선 처리) 체크박스를 켜세요.</p>
+<h2 id="a-sprite-s-own-glow-light">스프라이트 자체의 발광 광원</h2>
+<p>발광 광원은 Sun Forge가 스프라이트의 발광 부분을 위해 만든 Light Source 컴포넌트입니다. Sun Forge가 텍스처를 작성한 스프라이트에는 <strong>Glow Light</strong>(발광 광원) 행(스프라이트의 Lighting Style Renderer 컴포넌트에 있는 <strong>Glow, Surfaces and Edges</strong>(발광, 표면, 가장자리) 섹션)의 <strong>Add</strong>(추가) 버튼으로 발광 광원을 추가합니다. 발광 광원이 속한 스프라이트를 비추는 방식은 Lighting Setup 컴포넌트의 <strong>Values</strong>(값) 섹션에 있는 <strong>Glow</strong>(발광) 값 두 개가 정하며, 발광 광원의 <strong>Special Cases</strong>(특수한 경우) 섹션에 있는 <strong>Light On Its Object Shift</strong>(소속 오브젝트 조명 보정) 필드와 <strong>Glow Parts Light Scale</strong>(발광 부분 조명 스케일) 필드는 그 방식을 스프라이트 하나에서만 바꿉니다.</p>
+<p>스프라이트의 머티리얼이 씬의 스타일과 다른 스타일의 머티리얼이면(예: Regular 씬의 Flat 머티리얼), 발광 광원이 그 스프라이트를 비추는 방식은 머티리얼의 스타일이 정하며, Lighting Setup 컴포넌트의 <strong>Glow</strong> 값 두 개는 이 방식을 바꾸지 않습니다. 여기서 Realistic 스타일은 Regular 스타일로 보고, 직접 만든 스타일은 그 스타일의 바탕이 된 스타일로 봅니다. 발광 광원의 <strong>Light On Its Object Shift</strong> 필드와 <strong>Glow Parts Light Scale</strong> 필드는 이런 스프라이트에서도 그 방식을 바꿉니다.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ko/search.js"></script>
+</body>
+</html>

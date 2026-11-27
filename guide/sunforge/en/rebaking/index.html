@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a rebake keeps and what it replaces | Sun Forge Guide</title>
+<meta name="description" content="What a rebake keeps, what it replaces, and how your references keep working.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/rebaking/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/rebaking/">
+<meta property="og:title" content="What a rebake keeps and what it replaces | Sun Forge Guide">
+<meta property="og:description" content="What a rebake keeps, what it replaces, and how your references keep working.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Rebaking", "item": "https://sunforgetools.com/guide/sunforge/en/rebaking/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/rebaking/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/rebaking/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/rebaking/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/rebaking/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/rebaking/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/en/rebaking/" aria-current=page>Rebaking</a></li><li><a href="/guide/sunforge/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/en/lights/">Lights</a></li><li><a href="/guide/sunforge/en/styles/">Styles</a></li><li><a href="/guide/sunforge/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/en/rebaking/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/ja/rebaking/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/rebaking/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/rebaking/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-rebaking"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1 id="rebaking">Rebaking</h1><p class="lead">What a rebake keeps, what it replaces, and how your references keep working.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#what-a-rebake-keeps">What A Rebake Keeps</a></li><li><a href="#what-a-rebake-writes-over">What A Rebake Writes Over</a></li><li><a href="#moving-or-deleting-the-output-folder">Moving Or Deleting The Output Folder</a></li><li><a href="#turning-leaves-the-ground-on-or-off">Turning Leaves The Ground On Or Off</a></li></ul></details></nav><article class="doc"><p>Every file keeps its GUID across a rebake, so scenes and scripts that reference the prefab or its baked data keep working.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>A reference to</th>
+<th>Keeps working while</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A sprite or a clip</td>
+<td>Its animation entry keeps its output name and direction count, and its direction stays on</td>
+</tr>
+<tr>
+<td>An Animator state</td>
+<td>Its animation entry keeps its output name</td>
+</tr>
+<tr>
+<td>A rest pose sprite</td>
+<td>No animation entry's <strong>Mode</strong> is <strong>Idle</strong>, the rest pose keeps its direction count and the sprite's direction stays on</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="what-a-rebake-keeps">What A Rebake Keeps</h2>
+<ul>
+<li>A child or component you add to the prefab, a value you change on it, an import setting you change on a texture or atlas, and a platform override, apart from the values listed under What A Rebake Writes Over. To have a value on the prefab follow the bake again, right-click its row in the prefab's Inspector and choose <strong>Use the bake's value</strong>.</li>
+<li>A child the bake added, such as <code>Shadow</code>, <code>Glow</code> or <code>Body</code>, with the name you give it and the place you move it to under the prefab. The bake keeps updating it there. A child the bake no longer needs stays while it holds something you added.</li>
+<li>A file in the output folder that you changed, and anything else you add to the folder. To take the bake's file again, delete yours and bake.</li>
+<li>Your Animator edits, if you put your own controller, or an Animator Override Controller built on the generated one, on the prefab's Animator.</li>
+</ul>
+<h2 id="what-a-rebake-writes-over">What A Rebake Writes Over</h2>
+<ul>
+<li>Files an earlier bake of the same output wrote, while they are as that bake left them. It deletes the ones it no longer makes.</li>
+<li>What the shaders and the packer read, such as <strong>Texture Type</strong>, <strong>sRGB (Color Texture)</strong>, each sprite's rect and pivot, and an atlas's <strong>Padding</strong>, <strong>Allow Rotation</strong> and <strong>Tight Packing</strong>.</li>
+<li>The prefab's sprites and the links between its body, shadows and glow, except a <strong>Glow Renderers</strong> list you changed on its Glow light.</li>
+<li><strong>Filter Mode</strong>, <strong>Compression</strong>, <strong>Generate Mip Maps</strong> and, for the atlases, <strong>Atlas Max Size</strong>. Set them in the archetype's <strong>OUTPUT</strong> section (Advanced view). An extra texture always takes its sheet's Max Size.</li>
+<li>The bake's controllers. Switching <strong>Animation Player</strong> (Advanced view) to <strong>Flipbook Player</strong>, or removing the last animation entry under <strong>Auto</strong>, deletes them unless you changed them. Switching back makes them again, and a reference to one works again unless the output folder was renamed or moved after its first bake.</li>
+</ul>
+<h2 id="moving-or-deleting-the-output-folder">Moving Or Deleting The Output Folder</h2>
+<ul>
+<li>Once you have baked a saved preset, changing its archetype, that archetype's <strong>Output Root</strong>, or the Sun Forge Folder while that <strong>Output Root</strong> is blank makes the next bake move the output folder, so scenes keep the prefab. To bake a separate copy instead, use <strong>Save As…</strong> first. Until you have baked the saved preset, the same change makes a new folder and leaves the old one.</li>
+<li>Under another <strong>Output Name</strong>, or after you moved the output folder yourself, the bake makes a new folder and leaves the old one. Once you have baked the saved preset, the Bake tab says before you bake whether it moves the folder or makes a new one.</li>
+<li>If you delete an output folder and bake again, the new files take the place of the old ones: a scene keeps each prefab you placed, with the changes you made to it there. Any bake into that folder does this, so another model baked there appears wherever the old one was placed. This works for a folder first baked at that place in this project, and not for one that was renamed or moved there.</li>
+<li>A file already in the output folder that is named like one of the bake's files, such as an older version's output, stops the bake. Press <strong>Replace them</strong> on the Bake tab to bake over those files in place.</li>
+<li>If Unity closes during a bake, a folder whose name starts with <code>__SFS_</code> can stay in the output root. Do not use its assets. The next bake into that root deletes it.</li>
+</ul>
+<h2 id="turning-leaves-the-ground-on-or-off">Turning Leaves The Ground On Or Off</h2>
+<p>Turning <strong>Leaves The Ground</strong> (Archetypes tab, PHYSICS, Advanced view) on or off moves the components that draw and play the body to or from the <code>Body</code> child, with the values you set on them. The Console lists what to set again. Other children you added stay where they are: move those that ride the body under the <code>Body</code> child.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/en/search.js"></script>
+</body>
+</html>

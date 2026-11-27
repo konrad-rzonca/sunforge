@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクしたプレハブ用のゲームプレイビヘイビアの作成 | Sun Forge ガイド</title>
+<meta name="description" content="Bake Window で追加できるビヘイビアを作成し、アニメーションイベントを受け取ります。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/behaviors/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/behaviors/">
+<meta property="og:title" content="ベイクしたプレハブ用のゲームプレイビヘイビアの作成 | Sun Forge ガイド">
+<meta property="og:description" content="Bake Window で追加できるビヘイビアを作成し、アニメーションイベントを受け取ります。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ビヘイビア", "item": "https://sunforgetools.com/guide/sunforge/ja/behaviors/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja" aria-current=page>ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/behaviors/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/behaviors/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/behaviors/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/behaviors/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-behaviors"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>ビヘイビア</h1><p class="lead">Bake Window で追加できるビヘイビアを作成し、アニメーションイベントを受け取ります。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#writing-a-behavior">ビヘイビアの作成</a></li><li><a href="#animation-events">アニメーションイベント</a></li></ul></details></nav><article class="doc"><h2 id="writing-a-behavior">ビヘイビアの<wbr>作成</h2>
+<p>ビヘイビアは <strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong> (アセット &gt; 作成 &gt; Sun Forge &gt; Behavior Script) で作成してください。Unity がコンパイルすると、<strong>+ Add Behavior</strong> (+ ビヘイビアを追加) のピッカー (GAMEPLAY (ゲームプレイ)、Advanced (上級者向け) 表示) の <strong>Your Project</strong> (プロジェクト) の下に、<code>[AddComponentMenu]</code> で指定した名前で表示されます。指定がなければクラス名で表示されます。</p>
+<ul>
+<li><code>SunForgeBakedPrefab.Of(this)</code> が返す <code>SunForgeBakedPrefab</code> を保持し、その <code>Data</code> は必要になったときに読んでください。そうすれば、あとから <code>SetData</code> で設定したデータもスクリプトに届きます。</li>
+<li>自作の弾では、<code>SunForgeHitSweep.TryFirstHit</code> が、その移動で最初に当たる <code>SunForgeHealth</code> または <code>SunForgeProjectileBlocker</code> を返します。</li>
+</ul>
+<h3 id="moving-the-actor">アクターの<wbr>移動</h3>
+<ul>
+<li>アクターを動かすスクリプトでは、その <code>[SunForgeBehavior]</code> に <code>movesActor: true</code> を追加してください。追加しないと、ベイクが移動可能なプレハブに線形減衰を設定するため、アクターが減速します。</li>
+<li>自作の移動ビヘイビアでは、<code>SunForgeLocomotion</code> がアクターを歩かせ、歩く方向にアクターの向きを変え、歩行アニメーションを再生します。<code>OnEnable</code> からその <code>ClearCachedAnimator</code> を呼ぶと、見た目を差し替えたアクターが新しい見た目のアニメーションを再生します。</li>
+<li>Movement はキーボード入力だけを読み取ります。タッチ操作でアクターを歩かせるときや、アクターをある地点まで歩かせるときは、その <code>ReadsInput</code> をオフにし、<code>SunForgeMovement.Walk</code> または <code>SunForgeMovement.WalkTowards</code> を毎フレーム呼んでください。</li>
+<li>Movement、Wander、Melee Attacker または Shooter を持つアクターの見た目を差し替えたら、アクターを無効にしてから有効にしてください。これらのビヘイビアが新しい見た目のアニメーションを再生するようになります。</li>
+</ul>
+<h3 id="playing-animations">アニメーションの<wbr>再生</h3>
+<ul>
+<li>アニメーションは <code>SunForgeActorAnimation.Of(this)</code> を通して再生してください。そのトリガー、bool、Speed、リスタートは、ベイクの <strong>Animation Player</strong> (アニメーションプレイヤー、Advanced (上級者向け) 表示) がどちらのプレイヤーを選んでも動作します。</li>
+<li><code>SunForgeActorAnimation.BakedParticlesOf(this)</code> は、アクターのパーティクルを再生するものを返します。その <code>Play(SunForgeAnimatorParameters.BakedParticlesState, t)</code> に 0 から 1 の <code>t</code> を渡すと、パーティクルを開始するか、再生し直します。プールしたエフェクトは、再生する前にアクティブにしてください。</li>
+<li>アニメーションの終了を知るには、<code>PlayTracked</code> または <code>SetTriggerTracked</code> で開始してください。どちらも <code>SunForgeAnimationWait</code> を返すので、その <code>IsDone</code> を読むか、コルーチンで <code>yield return</code> してください。</li>
+<li>アニメーションの特定の時点でメソッドを実行するには、そのクリップにアニメーションイベントを追加してください (<a href="/guide/sunforge/1.0/ja/behaviors/#animation-events" hreflang="ja">ビヘイビア › アニメーションイベント</a>を参照)。</li>
+</ul>
+<h2 id="animation-events">アニメーションイベント</h2>
+<p>ベイク元のクリップにあるアニメーションイベントは、<strong>Animation Player</strong> (アニメーションプレイヤー、Advanced (上級者向け) 表示) がどちらのプレイヤーを選んでも、イベントの時点のポーズを写したフレームが表示されたときに、ベイクしたアニメーションで発火します。イベントは、プレハブのルートにある各スクリプトの、イベントと同じ名前のメソッドを呼び出します。そのメソッドを持つスクリプトをプレハブのルートに追加するか、GAMEPLAY (ゲームプレイ) セクション (Advanced 表示) に登録してください。</p>
+<ul>
+<li>エントリーの <strong>Range</strong> (範囲) の外にあるイベントは含まれません。</li>
+<li>2 つのフレームの間にあるイベントは近いほうのフレームで発火するため、<strong>Frame Rate</strong> (フレームレート) が低いと、ベイク元で 1 フレーム離れた 2 つのイベントが同時に発火することがあります。</li>
+<li>ループするアニメーションでは、最後の半フレームにあるイベントは最初のフレームで発火するため、最初のループを含め、各ループの開始時に発火します。</li>
+<li>アニメーションにイベントがある場合、コントローラー内のそのステートの <strong>Speed</strong> (速度) は 2 になり、コントローラーには値が 1 の <code>SunForge:Events</code> パラメーターがあります。どちらもそのままにしてください。この 2 つの設定によって、アニメーションがベイクしたレートでイベントとともに再生されます。</li>
+<li><strong>Flipbook Player</strong> (フリップブックプレイヤー) のときと、<strong>Leaves The Ground</strong> (地面から離れる、Archetypes (アーキタイプ) タブの PHYSICS (物理)、Advanced 表示) でベイクしたプレハブでは、<code>AnimationEvent</code> を受け取るメソッドに、関数名、パラメーター、時間が渡されます。受け取ったイベントから Animator のクリップ情報やステート情報を読むとエラーがログに出力されるため、先に <code>isFiredByAnimator</code> を確認してください。どちらの場合も、<code>AnimationEventInfo</code> を受け取るメソッドは呼び出されません。<strong>Leaves The Ground</strong> でベイクしたプレハブを Animator で再生する場合、自作のクリップのイベントは <code>Body</code> 子オブジェクトで発火します。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

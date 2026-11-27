@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크가 만드는 파일, Addressables, 버전 관리 | Sun Forge 가이드</title>
+<meta name="description" content="베이크가 만드는 모든 파일과 그 위치, Addressables 패키지로 출력을 로드하는 방법, 커밋할 파일.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/bake-output/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/bake-output/">
+<meta property="og:title" content="베이크가 만드는 파일, Addressables, 버전 관리 | Sun Forge 가이드">
+<meta property="og:description" content="베이크가 만드는 모든 파일과 그 위치, Addressables 패키지로 출력을 로드하는 방법, 커밋할 파일.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "베이크가 만드는 파일", "item": "https://sunforgetools.com/guide/sunforge/ko/bake-output/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/bake-output/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/bake-output/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/bake-output/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/bake-output/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/bake-output/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko" aria-current=page>베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/bake-output/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/bake-output/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/bake-output/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/bake-output/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-bake-output"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>베이크가 만드는 파일</h1><p class="lead">베이크가 만드는 모든 파일과 그 위치, Addressables 패키지로 출력을 로드하는 방법, 커밋할 파일.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#files">파일</a></li><li><a href="#addressables">Addressables</a></li><li><a href="#version-control">버전 관리</a></li></ul></details></nav><article class="doc"><h2 id="files">파일</h2>
+<p>베이크는 <code>&lt;Output Root&gt;/&lt;Output Name&gt;/</code> 폴더에 파일을 씁니다. <strong>Output Root</strong>(출력 루트) 필드가 비어 있는 아키타입은 Sun Forge 폴더의 <code>Output/&lt;archetype&gt;</code> 폴더에 베이크합니다. Sun Forge 폴더는 <strong>Project Settings &gt; Sun Forge</strong>(프로젝트 설정 &gt; Sun Forge) 창에서 바꾸지 않으면 <code>Assets/SunForge</code> 폴더입니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>파일</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;Name&gt;.prefab</code></td>
+<td>씬에 배치할 프리팹</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_BakedData.asset</code></td>
+<td>베이크가 측정한 모든 값. 스크립트가 읽는 데이터</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Controller.controller</code></td>
+<td>베이크에 애니메이션이 있고 <strong>Animation Player</strong>(애니메이션 플레이어) 필드(Advanced(고급) 보기)가 <strong>Auto</strong>(자동) 옵션이나 <strong>Animator</strong>(애니메이터) 옵션일 때의 애니메이터 컨트롤러</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Dnn.png</code></td>
+<td>기본 자세. 방향마다 시트 1장. 베이크는 <strong>Mode</strong>(모드) 필드가 <strong>Idle</strong>(대기) 옵션인 애니메이션 항목이 없을 때만 이 시트와 그 그림자를 씁니다</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_&lt;Clip&gt;_Dnn.png</code></td>
+<td>애니메이션과 방향마다 시트 1장. <code>&lt;Clip&gt;</code> 부분은 애니메이션 항목의 출력 이름이며, 점은 모두 <code>_</code> 문자로 바뀝니다. 그 항목의 Animator 상태 이름도 이 이름입니다</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Shadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_Shadow_Dnn.png</code></td>
+<td>지면 투영 그림자</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_EllipseShadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_EllipseShadow_Dnn.png</code></td>
+<td>타원형 그림자</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Particles_Dnn.png</code>, <code>&lt;Name&gt;_Particles_Controller.controller</code></td>
+<td>파티클 플립북과, Animator 컴포넌트가 플립북을 재생할 때(<strong>Animator</strong> 옵션일 때, 또는 애니메이션이 있는 베이크에서 <strong>Auto</strong> 옵션일 때) 쓰는 컨트롤러</td>
+</tr>
+<tr>
+<td><code>&lt;sheet&gt;_Normal.png</code>, <code>_MaskTex.png</code>, <code>_Emission.png</code>, <code>_Geometry.png</code>, <code>_CastHeight.png</code></td>
+<td>시트 옆의 추가 텍스처</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas.spriteatlasv2</code>, <code>_Shadow_Atlas</code>, <code>_Particles_Atlas</code></td>
+<td>스프라이트 아틀라스. <strong>Bake Cast Height Texture</strong>(그림자 하이트 맵 베이크) 체크박스(Advanced 보기)가 켜져 있으면 타원형 그림자는 <code>_EllipseShadow_Atlas</code> 아틀라스에 패킹됩니다</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas_2.spriteatlasv2</code>, <code>_Atlas_3</code> 등(위의 각 아틀라스도 같음)</td>
+<td>아틀라스 하나를 패킹하는 데 16GB 컴퓨터의 여유 메모리보다 많은 메모리가 필요할 때 추가로 만드는 같은 종류의 아틀라스. 다시 베이크할 때 필요한 아틀라스가 줄면 남는 아틀라스를 삭제합니다. 단, 직접 스프라이트를 추가한 아틀라스는 삭제하지 않고 직접 추가한 스프라이트만 남깁니다</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><code>Dnn</code> 부분은 방향의 번호입니다. <code>D00</code> 방향은 모델의 뒷면을 보여 주며, 번호는 시계 방향으로 커집니다. 애니메이션이 베이크하지 않는 방향은 파일을 쓰지 않으므로 그 번호는 건너뜁니다.</li>
+<li>각 시트에는 프레임이 그리는 부분만 들어가므로, 시트 크기는 애니메이션마다 다릅니다.</li>
+<li>베이크는 두 종류의 그림자를 모두 쓸 수 있습니다. 그러면 프리팹은 지면 투영 그림자를 표시하고 타원형 그림자는 비활성화해 둡니다. 그림자는 베이크되므로 씬의 태양을 움직여도 움직이지 않습니다.</li>
+</ul>
+<h3 id="a-body-that-leaves-the-ground">지면을 떠나는 본체</h3>
+<p><strong>Leaves The Ground</strong>(지면 이탈) 토글(Archetypes(아키타입) 탭, PHYSICS(물리) 섹션, Advanced(고급) 보기)이 켜져 있으면 프리팹의 <code>Body</code> 자식이 본체를 그리며, 루트는 콜라이더, 이동 비헤이비어, 그림자를 지면에 유지합니다.</p>
+<ul>
+<li>본체가 정렬되는 위치를 바꾸려면 <code>Body</code> 자식의 부모인 <code>GroundSort</code> 자식에서 Sorting Group 컴포넌트의 <strong>Order in Layer</strong>(레이어 순서) 필드를 설정하세요.</li>
+<li>게임이 실행되는 동안 본체의 높이를 바꾸려면 스크립트를 사용하세요(<a href="/guide/sunforge/ko/scripting/#reading-baked-data" hreflang="ko">스크립팅 › 베이크 데이터 읽기</a> 참조).</li>
+</ul>
+<h2 id="addressables">Addressables</h2>
+<p><strong>Mark Addressable</strong>(Addressable로 표시) 체크박스(Advanced(고급) 보기)가 켜져 있으면 베이크는 프리팹과 스프라이트 아틀라스를 등록하며, 각각의 주소는 그 경로입니다. 레이블로 로드하면 프리팹과 함께 아틀라스도 반환되므로, 로드할 때 <code>GameObject</code> 타입을 지정하세요.</p>
+<ul>
+<li>다시 베이크해도 각 항목의 주소와 그룹, 직접 추가한 레이블은 모두 유지됩니다. 지난 베이크가 추가한 레이블은 이번 베이크의 레이블로 바뀌고, 직접 제거한 항목은 다시 추가됩니다.</li>
+<li>아키타입의 <strong>Addressables Group</strong>(Addressables 그룹) 필드(Advanced 보기)를 바꿔도 이미 등록된 항목은 그대로 있습니다. 프리팹과 그 아틀라스는 Addressables Groups 창에서 함께 옮기세요.</li>
+<li>베이크가 옮겼든 직접 옮겼든 출력 폴더를 옮긴 뒤에는, 직접 바꾸기 전까지 그 항목의 주소는 이전 경로로 남습니다.</li>
+<li>아틀라스가 패킹되지 않는 동안 다른 Addressables 콘텐츠가 베이크된 스프라이트를 사용한다면, 그 스프라이트의 시트와 추가 텍스처를 Addressable로 표시하세요. 그래야 빌드에 각각 사본이 하나만 들어갑니다.</li>
+</ul>
+<h2 id="version-control">버전 관리</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>커밋 대상</th>
+<th>커밋하는 경우</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>베이크 프리셋과, <code>Output</code> 폴더를 뺀 Sun Forge 폴더. 이 폴더에는 아키타입 라이브러리, 편집한 머티리얼, 조명 스타일이 들어 있습니다</td>
+<td>항상</td>
+</tr>
+<tr>
+<td>Sun Forge 폴더의 <code>Output</code> 폴더를 포함한 베이크 출력</td>
+<td>씬이나 프리팹이 베이크된 에셋을 참조하거나, 플랫폼 오버라이드나 Addressables 항목처럼 베이크된 파일의 설정을 바꾼 경우</td>
+</tr>
+</tbody>
+</table></div>
+<p>베이크는 프리셋으로 출력을 다시 만들 수 있으므로, 베이크된 콘텐츠를 Addressables 패키지로만 로드한다면 출력은 커밋하지 않아도 됩니다. 첫 베이크 뒤에 출력 폴더의 이름을 바꾸거나 폴더를 옮겼다면 다시 만든 파일을 가리키는 참조가 깨집니다.</p>
+<p>Unity의 버전 관리 통합 기능이 켜져 있으면 베이크는 변경하는 출력 파일을 각각 체크아웃합니다.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

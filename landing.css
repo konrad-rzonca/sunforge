@@ -1,0 +1,728 @@
+/* The faces, cut to Latin (LATIN in tools/web_faces.py), whose range each names, so a line in another
+   script draws in the system's face at once and never waits on them. The labels' face is League
+   Spartan with its ascent and descent set so its capitals center in the line box. The text face is
+   Inter 4 with its optical-size axis. */
+@font-face { font-family: "League Spartan"; font-weight: 100 900; font-display: block; src: url(assets/fonts/league-spartan.woff2) format("woff2"); unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201E, U+2022, U+2026, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "League Spartan Caps"; font-weight: 100 900; font-display: block; ascent-override: 82%; descent-override: 16%; line-gap-override: 0%; src: url(assets/fonts/league-spartan.woff2) format("woff2"); unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201E, U+2022, U+2026, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Inter Text"; font-weight: 100 900; font-display: block; src: url(assets/fonts/inter.woff2) format("woff2"); unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201E, U+2022, U+2026, U+2039-203A, U+20AC, U+2122; }
+
+/* The colors: FORGE brushed gold, lit evenly along the word. No gold lies at part opacity
+   over the scene: over a blue wall a see-through gold mixes to olive. The page's night comes from
+   the scene's floor, and this --night is its value before landing.js sets it. --wordmark, --accent and
+   --soon are written for #e8b43c, and build.py site carries them to brand.json's gold
+   (GOLD_TOKENS in tools/web.py). */
+:root {
+  --night: #07070b;
+  --ink: #f6ead8;
+  --ink-soft: #e6d8c2;
+  --ink-quiet: rgba(226, 214, 196, 0.66);
+  --link: rgba(246, 234, 216, 0.8);
+  --forge-fill: url(assets/face-gold.png) 0 0 / 100% 100% no-repeat;
+  --wordmark: #f4bf46;
+  --accent: #f4bf46;
+  --soon: #f9cb5e;
+  --nav-solid: rgba(8, 10, 18, 0.78);
+  --nav-line: rgba(246, 234, 216, 0.08);
+  /* The shade a nav off the hero has from the top. */
+  --nav-shade: linear-gradient(180deg, color-mix(in srgb, var(--night) 90%, transparent), color-mix(in srgb, var(--night) 55%, transparent) 55%, transparent);
+  /* Night behind the nav's labels, faded out before a page's first words (pages.css, --bar). */
+  --nav-shade-opaque: linear-gradient(180deg, var(--night) calc(50% + 6px), color-mix(in srgb, var(--night) 55%, transparent) calc(50% + 17px), transparent calc(50% + 30px));
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* What the nav's and the cue's sizes scale by, as a length a use multiplies: 1px, and on a page with the hero
+     the screen's height divided by 1080, at least 1px (below). A length divided by a length is not
+     valid in every browser the site serves. */
+  --ui: 1px;
+  /* The page's margin. On a page with the hero it is the hero's band's (below). */
+  --margin: clamp(20px, 3.4vw, 56px);
+  /* The nav's height: shorter on a short screen, so the copy has room under it, and on an even
+     number of pixels, so the mark in it lands on the pixel grid. The hero keeps a band as tall at
+     its foot. */
+  --nav-height: round(clamp(60px, 11svh, 84 * var(--ui)), 2px);
+  /* The name's size F, set by landing.js. */
+  --title: 120px;
+  /* 1 where the browser cannot trim a line to its capitals and baseline with text-box. */
+  --untrimmed: 0;
+  /* The faces that draw what the page's own faces lack, by the page's language below. */
+  --script: system-ui;
+  --name-face: "League Spartan Caps", "League Spartan", var(--script), sans-serif;
+  --label-face: var(--name-face);
+  --text-face: "Inter Text", var(--script), sans-serif;
+  color-scheme: dark;
+}
+/* The band the nav and the hero share, stated here so the nav has its place before any script runs:
+   --edge is how far the band stands in from each side of the hero, where the hero is wider than 16
+   by 9, and --margin the page's margin inside it. At an aspect ratio of 11/10 or less the hero
+   stacks, as landing.js's narrowQuery asks, and the band is the hero's width. The width is the
+   hero's, which leaves out a classic scrollbar where 100vw takes it in: the root is a container,
+   and body resolves 100cqw against it. Both are registered lengths, so body computes them to
+   pixels once and every element inherits those pixels, inside a container too. landing.js reads
+   them from body. A page with no hero keeps the margin above. */
+@property --edge { syntax: "<length>"; inherits: true; initial-value: 0px; }
+@property --margin { syntax: "<length>"; inherits: true; initial-value: 20px; }
+:root:has(.hero) { container-type: inline-size; --ui: max(1px, 100svh / 1080); }
+body:has(.hero) {
+  --edge: max(0px, (100cqw - 100svh * 16 / 9) / 2);
+  --margin: clamp(20px, 0.034 * min(100cqw, 100svh * 16 / 9), 56px);
+}
+@media (max-aspect-ratio: 11/10) {
+  body:has(.hero) { --edge: 0px; --margin: clamp(20px, 6cqw, 40px); }
+}
+
+/* Japanese, Korean and Chinese take their characters from the reader's system faces, since a web face
+   for one of them is megabytes. Each names its language's faces first: system-ui alone is the face of
+   the reader's own system language. The switch draws each language's name in that language's faces,
+   whatever the page's language. Their labels drop the capitals' face, whose line box fits Latin
+   capitals alone, and every line drops the spacing English capitals take, over any rule that sets it.
+   The wordmark sets its own face and spacing, so it keeps both. A line breaks between words in Korean
+   and between phrases in a Japanese or Chinese heading, at the <wbr> the build puts there
+   (tools/web_phrases.py), and never before a small kana or a long vowel mark. */
+:lang(ja) { --script: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans JP", "Noto Sans CJK JP", system-ui; }
+:lang(ko) { --script: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", system-ui; }
+:lang(zh-Hans) { --script: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", system-ui; }
+html:is(:lang(ja), :lang(ko), :lang(zh-Hans)) { --label-face: "League Spartan", var(--script), sans-serif; }
+.languages :is(:lang(ja), :lang(ko), :lang(zh-Hans)) { font-family: "League Spartan", var(--script), sans-serif; }
+html:is(:lang(ja), :lang(ko), :lang(zh-Hans)) :not([translate="no"], [translate="no"] *) { letter-spacing: 0 !important; }
+html:lang(ja) { line-break: strict; }
+html:is(:lang(ja), :lang(zh-Hans)) :is(h1, h2, h3) { word-break: keep-all; }
+html:lang(ko) { word-break: keep-all; }
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; background: var(--night); color: var(--ink); }
+
+body {
+  font-family: "League Spartan", var(--script), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Every line of text in the nav and the hero is trimmed to its capitals and its baseline, so a box
+   holds its ink: centering a label centers its capitals, and a gap between two lines is the gap
+   between their ink. Where text-box is missing, each element trims itself with negative margins
+   from its face's metrics, in a line box it sets itself: League Spartan's capitals start
+   (L - 0.92) / 2 + 0.04 em below the line box's top and its baseline stands (L - 0.92) / 2 + 0.22 em
+   above its foot; Inter's stand (L - 1.21) / 2 + 0.242 em in at both ends. */
+.wordmark, .nav nav :is(a, button), .button > span, .hero h1, .slogan, .soon > *, .meta { text-box: trim-both cap alphabetic; }
+
+@supports not (text-box: trim-both cap alphabetic) {
+  :root { --untrimmed: 1; }
+}
+
+/* A one-line label in a line box 1 em tall. The labels' face centers its capitals in the line box,
+   so its trim is the same at both ends. */
+.wordmark, .nav nav :is(a, button), .button > span, .soon > strong {
+  line-height: 1;
+  margin-block: calc(var(--untrimmed) * -0.17em);
+}
+
+/* Nav: the brand at the band's left margin and the links at its right one. Every item centers on
+   the nav's middle line, so the mark's middle, the wordmark's capitals and the links' capitals
+   share one line. The nav has no bar: over the hero nothing crosses the star, and once the page
+   scrolls (is-solid), or on a page with no hero, the nav has a shade from the top, which a frame
+   of the pages runs under. The hero keeps its band on a screen wider than 16 by 9 (--edge). A page's margins come from the
+   screen's width alone, and the nav moves to them. */
+
+.nav {
+  position: fixed;
+  /* The nav's box is the room between its margins, which its steps ask about (below). Firefox asks
+     again when the box's width changes, and not when its padding does. */
+  inset: 0 calc(var(--edge) + var(--margin)) auto;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  container: nav / inline-size;
+  font-size: calc(16 * var(--ui));
+  /* Firefox needs this slide, however short: after a resize that moves the band it asks the steps
+     again only on a later frame, which the slide draws. */
+  transition: left 0.4s var(--ease-out), right 0.4s var(--ease-out);
+}
+/* The shade, as wide as the screen whatever the nav's box. */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 -100vw;
+  z-index: -1;
+  transition: background 0.4s;
+}
+
+.nav.is-solid { inset-inline: var(--margin); }
+.nav.is-solid::before { background: var(--nav-shade); }
+/* A page with no hero has the same shade from its top. In a rule of its own: a browser that does not read :has() drops
+   the whole rule it is in. */
+body:not(:has(.hero)) .nav::before { background: var(--nav-shade); }
+@media (max-width: 899px), (max-aspect-ratio: 11/10) {
+  /* Two rules, so a browser that does not read :has() keeps the first. */
+  :root.name-gone { --nav-shade: var(--nav-shade-opaque); }
+  body:not(:has(.hero)) { --nav-shade: var(--nav-shade-opaque); }
+  /* A page's eyebrow stands under the nav's lower band, which passes a tap through. */
+  .nav { pointer-events: none; }
+  .nav > * { pointer-events: auto; }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: calc(7 * var(--ui));
+  font-size: round(down, 16 * var(--ui), 1px / 16);
+  font-weight: 800;
+  white-space: nowrap;
+}
+.wordmark { font-family: var(--name-face); letter-spacing: 0.14em; color: var(--wordmark); transition: opacity 0.5s var(--ease-out); }
+.wordmark b { font-weight: 800; color: var(--ink); }
+
+/* Centered, the hero's name sits under the nav: the nav shows the mark alone until the name has
+   scrolled away (landing.js sets name-gone). */
+.is-stacked:not(.name-gone) .wordmark { opacity: 0; }
+
+/* The mark is drawn round its middle, so its box's middle is its visual center. Hinted at 16
+   pixels, the wordmark's capitals' middle lies on a row's middle; the mark rises half a pixel to
+   share it, and landing.js (snapMark) puts its middle on a device pixel's middle at any ratio. */
+.mark {
+  display: block;
+  flex: none;
+  width: round(32 * var(--ui), 2px);
+  height: round(32 * var(--ui), 2px);
+  translate: -0.5px -0.5px;
+  background: url(assets/mark-flat.svg) center / contain no-repeat;
+}
+
+.nav nav {
+  display: flex;
+  /* --gap is the least room between the brand and the first link, and the room between two links. */
+  gap: var(--gap);
+  margin-left: auto;
+  padding-left: var(--gap);
+  font-family: var(--label-face);
+  font-size: round(down, 13 * var(--ui), 1px / 16);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.nav nav :is(a, button) { position: relative; padding: 12px 0; color: var(--link); transition: color 0.25s; }
+.nav nav button { border: 0; background: none; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+/* The switch to the page in another language, shown once the site serves one: its links as the nav's. */
+.nav .languages, .foot .languages { display: flex; align-items: baseline; gap: inherit; }
+.nav nav :is(a, button)::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  background: var(--accent);
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.3s var(--ease-out);
+}
+.nav nav :is(a, button):is(:hover, :focus-visible) { outline: none; color: var(--ink); }
+.nav nav :is(a, button):is(:hover, :focus-visible)::before { transform: rotate(45deg) scale(1); }
+
+/* Features opens a menu: all the features, which the home page has, then the page of each part of
+   them, with the page the reader is on in gold. A pointer over Features shows the menu where it is
+   written, under the button. A press or a tap opens it as a popover, which Escape or a press
+   elsewhere closes, and which the browser draws over the page, so it is placed by its anchor. */
+.nav .parts { position: relative; display: flex; align-items: center; anchor-name: --features; }
+.nav .parts > button::after {
+  content: "";
+  display: inline-block;
+  width: 0.38em;
+  height: 0.38em;
+  margin-left: 0.6em;
+  border: solid currentColor;
+  border-width: 0 0.13em 0.13em 0;
+  translate: 0 -0.3em;
+  rotate: 45deg;
+}
+.nav .menu {
+  position: absolute;
+  inset: calc(100% + 6px) auto auto calc(-26 * var(--ui));
+  display: grid;
+  width: max-content;
+  margin: 0;
+  padding: calc(4 * var(--ui)) calc(26 * var(--ui)) calc(8 * var(--ui));
+  overflow: visible;
+  white-space: nowrap;
+  color: inherit;
+  background: var(--nav-solid);
+  border: 1px solid var(--nav-line);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -6px;
+  transition: opacity 0.2s, translate 0.3s var(--ease-out), visibility 0s 0.2s;
+}
+/* The pointer crosses from the link to the menu without leaving either. */
+.nav .menu::before { content: ""; position: absolute; inset: -8px 0 100%; }
+.nav .menu:popover-open {
+  position: fixed;
+  position-anchor: --features;
+  inset: calc(anchor(bottom) + 6px) auto auto calc(anchor(left) - 26 * var(--ui));
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition-delay: 0s;
+}
+/* A browser that places nothing by an anchor opens the menu under the nav's links. */
+@supports not (anchor-name: --features) {
+  .nav .menu:popover-open { inset: calc(var(--nav-height) / 2 + 24px) calc(var(--edge) + var(--margin)) auto auto; }
+}
+@media (hover: hover) {
+  .nav .parts:hover .menu { opacity: 1; visibility: visible; translate: 0 0; transition-delay: 0s; }
+}
+.nav .menu a { padding: calc(11 * var(--ui)) 0; }
+.nav .menu a::before { left: calc(-13 * var(--ui)); bottom: calc(50% - 2.5px); margin-left: 0; }
+.nav .menu a:focus-visible { outline: 1px solid var(--accent); outline-offset: 5px; }
+.nav .menu a[aria-current] { color: var(--accent); }
+/* A line sets all the features off from the pages of their parts. */
+.nav .menu a:first-child { margin-bottom: calc(4 * var(--ui)); border-bottom: 1px solid rgba(246, 234, 216, 0.14); }
+
+/* Support opens a panel with the support address. A press inside it selects the address and leaves the panel
+   open: only Escape or a press elsewhere closes it. It has its own anchor, because .parts, which holds Features'
+   anchor, is hidden on a phone. */
+.nav .support { anchor-name: --support; }
+.nav .address:popover-open {
+  position: fixed;
+  position-anchor: --support;
+  inset: calc(anchor(bottom) + 6px) max(8px, calc(anchor(right) - 26 * var(--ui))) auto auto;
+  margin: 0;
+  padding: calc(15 * var(--ui)) calc(26 * var(--ui)) calc(16 * var(--ui));
+  color: var(--ink);
+  background: var(--nav-solid);
+  border: 1px solid var(--nav-line);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition: opacity 0.2s, translate 0.3s var(--ease-out);
+}
+@starting-style {
+  .nav .address:popover-open { opacity: 0; translate: 0 -6px; }
+}
+@supports not (anchor-name: --support) {
+  .nav .address:popover-open { inset: calc(var(--nav-height) / 2 + 24px) calc(var(--edge) + var(--margin)) auto auto; }
+}
+/* The support address, in the panel and in the footer: written in lower case, since a browser copies the
+   capitals a sheet makes, and selected whole by a click, ready to copy. Firefox 159 clears that selection on a
+   double-click, so the markup's ondblclick selects the address again. */
+.address { font-family: var(--text-face); font-size: 15px; font-weight: 400; letter-spacing: 0; text-transform: none; white-space: nowrap; -webkit-user-select: all; user-select: all; }
+
+/* The nav shows the widest row of links it has room for. .nav is a container, as wide as the room
+   between its margins, and each step asks for the width of its row and a pixel more. A row's width
+   counts the wordmark, which shows once the hero's name scrolls away. A step's em is .nav's
+   font-size, 16px times --ui, so a step holds on every page, at any --ui, inside the hero's band and
+   beside a scrollbar, none of which the screen's width tells.
+   From the narrowest row, Guide and Support, the gaps open, then the features' link shows, then the
+   languages' switch. Those two also ask for a least width of screen, whatever room the nav has: on
+   a narrow one the wordmark's link home and the hero's cue give what the features' link does. A
+   browser that reads no container query keeps the narrowest row. */
+.nav nav { --gap: 10px; }
+.nav .parts, .nav .languages { display: none; }
+@container nav (min-width: 18.75em) {
+  .nav nav:not(.sells) { --gap: 22px; }
+}
+@container nav (min-width: 21em) {
+  .nav nav:not(.sells) { --gap: calc(40 * var(--ui)); }
+}
+@container nav (min-width: 28.8125em) {
+  @media (min-width: 624px) { .nav nav:not(.sells) .parts { display: flex; } }
+}
+@container nav (min-width: 52em) {
+  @media (min-width: 980px) { .nav nav:not(.sells) .languages { display: flex; } }
+}
+/* Buy is one link more, so each step asks for more room, and the narrowest row is Guide and Buy.
+   Support asks for a least width of screen too. */
+.nav nav.sells { --gap: 22px; }
+.nav nav.sells .support { display: none; }
+@container nav (min-width: 20.1875em) {
+  @media (min-width: 368px) {
+    .nav nav.sells { --gap: 13px; }
+    .nav nav.sells .support { display: block; }
+  }
+}
+@container nav (min-width: 21.875em) {
+  .nav nav.sells { --gap: 22px; }
+}
+@container nav (min-width: 25.25em) {
+  .nav nav.sells { --gap: calc(40 * var(--ui)); }
+}
+@container nav (min-width: 33.0625em) {
+  @media (min-width: 700px) { .nav nav.sells .parts { display: flex; } }
+}
+@container nav (min-width: 56.25em) {
+  @media (min-width: 980px) { .nav nav.sells .languages { display: flex; } }
+}
+
+/* The plate: tracked capitals on FORGE's own gold, cut at its corners a sixth of its height, its
+   bevel in gradients, drawn under the link so the focus frame that stands off it is not cut away
+   with it. A sliced picture would show lines between its slices on gold at fractional scales such
+   as 125%. Beside the hero's subject the plate grows with the name (below). Each label gives back the letter
+   space after its last letter, which would push it left of its plate's middle. On a row at a
+   fractional height a label's baseline rounds away from its plate's edges, and a layer of its own
+   keeps the two together at whole scales. */
+@property --plate-h { syntax: "<length>"; inherits: true; initial-value: 54px; }
+@property --cut { syntax: "<length>"; inherits: true; initial-value: 9px; }
+.button {
+  --plate-h: 54px;
+  --cut: calc(var(--plate-h) / 6);
+  --diagonal: calc(var(--cut) * 0.7071 + 1.5px);
+  --track: 0.15em;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: var(--plate-h);
+  padding: 0 30px;
+  font-family: var(--label-face);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: none;
+  color: #20130a;
+  will-change: transform;
+}
+.button > span { margin-inline-end: calc(-1 * var(--track)); }
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+  background:
+    linear-gradient(135deg, #fff0b0 var(--diagonal), transparent 0),
+    linear-gradient(225deg, #f6bb4c var(--diagonal), transparent 0),
+    linear-gradient(45deg, #f6bb4c var(--diagonal), transparent 0),
+    linear-gradient(315deg, #94590f var(--diagonal), transparent 0),
+    linear-gradient(180deg, #fff0b0 1.5px, transparent 0),
+    linear-gradient(90deg, #fff0b0 1.5px, transparent 0),
+    linear-gradient(0deg, #94590f 1.5px, transparent 0),
+    linear-gradient(270deg, #94590f 1.5px, transparent 0),
+    #f6bb4c url(assets/face-gold.png) center / cover;
+  transition: filter 0.3s;
+}
+.button:hover::before { filter: brightness(1.1); }
+.button:active { translate: 0 1px; }
+/* Focus follows the plate's cut: plates.js draws a frame standing off it, its corners cut as the
+   plate's. */
+.button:focus-visible { outline: none; }
+.button .frame { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.frame path { fill: none; stroke: var(--accent); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity 0.3s; }
+.button:focus-visible .frame path { opacity: 1; }
+
+/* The product's status, where a buyer looks for the way to buy it: plain type, no plate, so it
+   reads as a line to note and not as a link. It is one sentence, whose bold part is a label on a
+   line of its own and whose rest the build puts in a <span> (data-spans). */
+.soon {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.soon > strong {
+  font-family: var(--label-face);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--soon);
+}
+.soon > span {
+  margin-block: calc(var(--untrimmed) * -0.257em);
+  font-family: var(--text-face);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -0.006em;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+/* Hero */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--night);
+}
+
+/* The scene comes up from a third of its light, so the page never opens on black. */
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  filter: brightness(0.32);
+  transition: filter 1.4s var(--ease-out);
+}
+.is-ready .stage { filter: none; }
+/* While the plate of another frame decodes (landing.js): the embers go on over the night. */
+.stage.is-swapping > :not(.embers) { visibility: hidden; }
+
+.layer { position: absolute; inset: 0; }
+img.layer { display: block; width: 100%; height: 100%; }
+canvas.layer { width: 100%; height: 100%; pointer-events: none; }
+
+/* The nearest embers, in front of the copy's layer in the hero's own pixels: embers.js draws none
+   on the copy itself. */
+canvas.over { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+
+/* The shade, in the page's night: a band under the nav so its links read, the foot band fading
+   into the page below, a fade in from the night where the plate's top or sides stand inside the
+   screen (--plate-top, --plate-left, --plate-right), and beside the subject a darkening behind the
+   copy, shaped to its lines and as dark as the wall under each line needs (landing.js draws it on
+   the canvas and sets its blur), so the copy reads over any wall without a box round it.
+
+   Centered, the scene fades into the night from the stand's lit edge (landing.js sets
+   --fade-start), easing in to 75% by the name's capitals (--fade-mid), so the fade's start draws
+   no line, and then over a fifth of the screen to --trace, leaving a trace of the floor under the
+   copy, and is fully night where the plate ends (--plate-foot). The sides darken a little, so the
+   eye stays on the axis. */
+.shade {
+  --n: var(--night);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--n) var(--plate-left, -1px), transparent calc(var(--plate-left, -1px) + max(10svh, 14vw))),
+    linear-gradient(270deg, var(--n) var(--plate-right, -1px), transparent calc(var(--plate-right, -1px) + max(10svh, 14vw))),
+    linear-gradient(180deg, var(--n) var(--plate-top, -1px), transparent calc(var(--plate-top, -1px) + 10svh)),
+    linear-gradient(180deg, color-mix(in srgb, var(--n) 50%, transparent) 0%, transparent calc(var(--nav-height) * 1.6)),
+    linear-gradient(180deg, transparent calc(100% - var(--nav-height) * 1.6), var(--n) 100%);
+}
+.shade canvas { position: absolute; inset: 0; width: 100%; height: 100%; filter: blur(var(--shade-blur, 40px)); }
+.is-stacked .shade canvas { display: none; }
+
+.is-stacked .shade {
+  background:
+    linear-gradient(90deg, var(--n) var(--plate-left, -1px), transparent calc(var(--plate-left, -1px) + max(10svh, 14vw))),
+    linear-gradient(270deg, var(--n) var(--plate-right, -1px), transparent calc(var(--plate-right, -1px) + max(10svh, 14vw))),
+    linear-gradient(180deg, var(--n) var(--plate-top, -1px), transparent calc(var(--plate-top, -1px) + 10svh)),
+    linear-gradient(180deg, color-mix(in srgb, var(--n) 50%, transparent) 0%, transparent calc(var(--nav-height) * 1.6)),
+    linear-gradient(180deg, transparent var(--fade-start, 60%),
+      color-mix(in srgb, var(--n) 10%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.25),
+      color-mix(in srgb, var(--n) 33%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.5),
+      color-mix(in srgb, var(--n) 58%, transparent) calc(var(--fade-start, 60%) + (var(--fade-mid, 66%) - var(--fade-start, 60%)) * 0.75),
+      color-mix(in srgb, var(--n) 75%, transparent) var(--fade-mid, 66%), color-mix(in srgb, var(--n) var(--trace, 88%), transparent) var(--fade-end, 80%), color-mix(in srgb, var(--n) var(--trace, 88%), transparent) calc(var(--plate-foot, 100%) - 6svh), var(--n) var(--plate-foot, 100%)),
+    radial-gradient(ellipse 80% 70% at 50% 35%, transparent 55%, color-mix(in srgb, var(--n) 40%, transparent) 100%);
+}
+/* The phone's upright frame runs its pier and floor on under the copy, and keeps more of them. */
+.is-upright .shade { --trace: 60%; }
+
+/* The copy. landing.js places its ink box: --copy-x is the left edge every line's ink starts on
+   (the F's stem, the slogan's first stems, the status's capitals), --copy-y its top. Each line
+   hangs by its own first letter's side bearing, in em of its own face and weight, so its ink and
+   not its box meets the edge. The name hangs by its straight stems' 0.042em at 800: the face draws
+   a round S 0.032em further out, so an S first overhangs the edge as a round letter should. Every
+   size and gap follows --title, the name's size F. The copy shows once it is placed (is-placed). */
+.copy {
+  visibility: hidden;
+  position: absolute;
+  z-index: 2;
+  left: var(--copy-x, 50%);
+  top: var(--copy-y, 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: max-content;
+  text-shadow: 0 2px 28px color-mix(in srgb, var(--night) 55%, transparent);
+}
+.is-placed .copy { visibility: visible; }
+
+.hero h1 {
+  margin: calc(var(--untrimmed) * -0.01em) 0 calc(var(--untrimmed) * -0.19em) -0.042em;
+  font-weight: 800;
+  font-size: round(down, var(--title), 1px / 16);
+  line-height: 0.86;
+  letter-spacing: -0.016em;
+  white-space: nowrap;
+}
+
+/* The name rises into place out of a slot at its foot, at full strength: faded, FORGE's gold would
+   mix with the wall behind it. The clip's foot follows the word down, so the slot holds still on
+   the screen; at rest the clip stands clear of SUN's shadow. */
+.word {
+  display: inline-block;
+  position: relative;
+  transform: translateY(100%);
+  clip-path: inset(-20% -5% 120% -5%);
+  transition: transform 1.05s var(--ease-out), clip-path 1.05s var(--ease-out);
+}
+.sun { color: var(--ink); transition-delay: 0.05s; }
+/* FORGE's box is its word, so the picture of its gold face spans the letters. */
+.forge {
+  color: var(--wordmark);
+  background: var(--forge-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  transition-delay: 0.15s;
+}
+.is-ready .word { transform: none; clip-path: inset(-40% -10% -40% -10%); }
+
+/* The name on two lines beside the subject, and on one centered. On one line the face's word
+   space leaves 0.35em of air between the N and the F, over three times the air between two
+   letters; a display line closes it to 0.26em, so the two words read as one name. */
+.is-wide .word { display: block; width: max-content; }
+.is-stacked h1 { word-spacing: -0.09em; }
+
+/* The slogan in Inter at its regular weight, which holds its own under the heavy name. Inter's B
+   and L stand 0.06em into their boxes. */
+.slogan {
+  margin: calc(var(--title) * 0.3 - var(--untrimmed) * 0.257em) 0 calc(var(--untrimmed) * -0.257em) -0.06em;
+  font-family: var(--text-face);
+  font-weight: 400;
+  font-size: round(down, max(16px, var(--title) * 0.19), 1px / 16);
+  line-height: 1.24;
+  letter-spacing: -0.014em;
+  color: var(--ink-soft);
+}
+
+.slogan span { display: block; }
+
+/* The actions' row holds the status, or Buy once the listing is live. Beside the subject it runs at
+   least to FORGE's E (landing.js sets --row), so the shade under it is as wide as the name. It
+   widens to fit the status or Buy, so the layout spaces and shades all of it. */
+.actions {
+  display: flex;
+  align-items: center;
+  min-width: var(--row);
+  margin-top: calc(var(--title) * 0.3);
+  text-shadow: none;
+}
+.actions .buy { flex: none; }
+/* Every line under the name is sized from it. The status and the note keep a phone's sizes as floors;
+   Buy's floors (40 px plate, 11.5 px label, 16.28 px padding) are the Buy the owner approved. A stacked
+   hero keeps its own Buy (below). */
+.copy .soon { gap: max(6px, var(--title) * 0.062); }
+.copy .soon > strong { font-size: round(down, max(14px, var(--title) * 0.116), 1px / 16); }
+.copy .soon > span { font-size: round(down, max(16px, var(--title) * 0.14), 1px / 16); }
+.is-wide .actions .buy {
+  --plate-h: max(40px, var(--title) * 0.417);
+  padding: 0 max(16.28px, var(--title) * 0.17);
+  font-size: round(down, max(11.5px, var(--title) * 0.1082), 1px / 16);
+}
+
+/* The hero's cue that the pages follow, which grows with the screen as the nav does. At left: 50% the
+   box would wrap at half the hero's width, so nowrap holds the label on one line. */
+.cue { position: absolute; z-index: 4; left: 50%; bottom: clamp(12px, 2.6svh, 28px); translate: -50% 0; display: grid; justify-items: center;
+  gap: calc(11 * var(--ui)); min-width: 44px; min-height: 44px; padding: calc(8 * var(--ui)) calc(14 * var(--ui));
+  font-family: var(--label-face); font-size: round(down, 14 * var(--ui), 1px / 16); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  white-space: nowrap; color: var(--ink-soft); text-shadow: 0 1px 12px color-mix(in srgb, var(--night) 70%, transparent); transition: color 0.25s; }
+.cue:hover { color: var(--ink); }
+.cue:focus-visible { outline: 1px solid var(--accent); outline-offset: 5px; color: var(--ink); }
+.cue::after { content: ""; width: calc(14 * var(--ui)); height: calc(14 * var(--ui)); margin-top: calc(-4 * var(--ui));
+  border: solid var(--accent); border-width: 0 calc(2.5 * var(--ui)) calc(2.5 * var(--ui)) 0; transform: rotate(45deg); transition: translate 0.3s var(--ease-out); }
+.cue:hover::after, .cue:focus-visible::after { translate: 0 calc(4 * var(--ui)); }
+/* landing.js sets is-terse where the copy would reach the label, and is-crowded where it would reach
+   the chevron alone. At size 0 the label stays the link's name. */
+.cue.is-terse { font-size: 0; gap: 0; }
+.cue.is-crowded { visibility: hidden; }
+/* Once the hero has risen in, the chevron dips twice toward the pages. */
+@keyframes cue-nudge { 50% { transform: rotate(45deg) translate(calc(5 * var(--ui)), calc(5 * var(--ui))); } }
+@media (prefers-reduced-motion: no-preference) {
+  .is-ready .cue::after { animation: cue-nudge 1.1s ease-in-out 1.6s 2; }
+}
+
+/* The note under the actions, in Inter, sentence case and muted, so it reads as a note. */
+.meta {
+  margin: calc(var(--title) * 0.17 - var(--untrimmed) * 0.137em) 0 calc(var(--untrimmed) * -0.137em);
+  font-family: var(--text-face);
+  font-size: round(down, max(15px, var(--title) * 0.116), 1px / 16);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink-quiet);
+}
+
+/* The nav and the actions are in place from the first frame, so the page works at once; the
+   slogan and the note rise in over 0.4 s. */
+.slogan, .meta { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out); }
+.is-ready .slogan, .is-ready .meta { opacity: 1; transform: none; }
+
+/* Centered, on narrow screens: the copy on the page's middle axis under the stand. A line's ink is
+   centered where its box would be: SUN's S and N stand 0.010em and 0.052em into its box (the N's
+   side bearing less the tracking), so SUN FORGE moves 0.021em right. */
+.is-stacked .copy {
+  transform: translateX(-50%);
+  align-items: center;
+  text-align: center;
+  max-width: calc(100% - 2 * var(--margin));
+}
+.is-stacked h1 { position: relative; left: 0.021em; margin-left: 0; }
+.is-stacked .slogan { margin: calc(max(20px, var(--title) * 0.3) - var(--untrimmed) * 0.257em) 0 calc(var(--untrimmed) * -0.257em); font-size: round(down, max(17px, var(--title) * 0.2), 1px / 16); }
+/* Each sentence stays beside the other where both fit, and takes a line of its own where they do not. */
+.is-stacked .slogan span { display: inline-block; }
+.is-stacked .actions { margin-top: max(22px, calc(var(--title) * 0.42)); }
+.is-stacked .actions .buy { --plate-h: 46px; --track: 0.13em; padding: 0 22px; font-size: 13px; }
+.is-stacked .soon { align-items: center; }
+.is-stacked .soon > strong { letter-spacing: 0.13em; }
+.is-stacked .meta { margin-top: clamp(14px, 2.4svh, 22px); }
+
+/* On a phone Buy's plate is smaller. Under 360 pixels the slogan's two sentences take two lines. */
+@media (max-width: 560px) {
+  .is-stacked .actions .buy { --plate-h: 44px; --track: 0.1em; padding: 0 16px; font-size: 12px; }
+}
+@media (max-width: 359px) {
+  .is-stacked .slogan span { display: block; }
+}
+
+/* A page with no hero, such as the not-found page: its words on the screen's middle under the nav,
+   and the footer at the screen's foot. */
+
+.lost { display: flex; flex-direction: column; min-height: 100svh; padding: var(--nav-height) var(--margin) 28px; }
+.next {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 0;
+  text-align: center;
+}
+
+.eyebrow { margin: 0 0 14px; font-family: var(--label-face); font-size: 15px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+/* A link's tap area is taller than its line, without moving anything. */
+.eyebrow a { position: relative; }
+.eyebrow a::before { content: ""; position: absolute; inset: -12px 0; }
+.next .lead { margin: 0; font-family: var(--text-face); font-size: round(down, clamp(18px, 1.5vw, 23px), 1px / 16); line-height: 1.5; letter-spacing: -0.006em; color: var(--ink-soft); font-weight: 400; max-width: 680px; text-wrap: balance; }
+.ways { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 32px; margin: 32px 0 0; padding: 0; list-style: none; font-family: var(--text-face); font-size: 16px; }
+.ways a { color: var(--accent); }
+.ways a:is(:hover, :focus-visible) { color: var(--ink); }
+
+/* The footer, which a page's last screen holds. */
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; align-self: end; width: 100%; padding-top: 22px; border-top: 1px solid rgba(246, 234, 216, 0.14); }
+.foot nav { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 12px 32px; font-family: var(--label-face); font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--link); }
+.foot nav a:is(:hover, :focus-visible), .foot .address:hover { color: var(--ink); }
+.foot nav a { position: relative; }
+.foot nav a::after { content: ""; position: absolute; inset: -6px -8px; }
+@media (max-width: 899px), (max-aspect-ratio: 11/10) {
+  .foot { flex-direction: column; }
+  .foot nav { justify-content: center; }
+}
+
+/* Where the copy would not fit, landing.js sets is-short and the note goes. */
+.is-short .meta { display: none; }
+
+/* On a short screen the name is small, and Buy's plate narrows with it. */
+@media (max-height: 520px) {
+  .is-wide .actions .buy { padding: 0 10px; --track: 0.08em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav, .nav::before, .nav :is(.menu, .address), .stage, .word, .slogan, .meta, .wordmark { transition-duration: 0.01s; transition-delay: 0s; }
+}

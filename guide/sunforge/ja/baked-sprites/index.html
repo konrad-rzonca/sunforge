@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクしたスプライトが描画に使うライティング用マテリアル | Sun Forge ガイド</title>
+<meta name="description" content="ベイクしたプレハブが描画に使うマテリアル、シーンのスタイルに従う仕組み、パーティクルがソートされる位置を説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/baked-sprites/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/baked-sprites/">
+<meta property="og:title" content="ベイクしたスプライトが描画に使うライティング用マテリアル | Sun Forge ガイド">
+<meta property="og:description" content="ベイクしたプレハブが描画に使うマテリアル、シーンのスタイルに従う仕組み、パーティクルがソートされる位置を説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "シーン内のベイクしたスプライト", "item": "https://sunforgetools.com/guide/sunforge/ja/baked-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/baked-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/baked-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/baked-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/baked-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/baked-sprites/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja" aria-current=page>シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/baked-sprites/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/baked-sprites/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/baked-sprites/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/baked-sprites/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-baked-sprites"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="in-a-scene">シーン内の<wbr>ベイクした<wbr>スプライト</h1><p class="lead">ベイクしたプレハブが描画に使うマテリアル、シーンのスタイルに従う仕組み、パーティクルがソートされる位置を説明します。</p></div><article class="doc"><p>新しくベイクしたスプライトは、シーンの Lighting Setup が使うスタイルのマテリアルで描画されます。どのシーンでも同じマテリアルで描画するには、ベイクの <strong>Prefab Material</strong> (プレハブマテリアル、Bake (ベイク) タブ、Advanced (上級者向け) 表示) でそのマテリアルを選択して、もう一度ベイクしてください。その行のメニューの <strong>Make a Material for This Bake</strong> (このベイク用にマテリアルを作成) は、調整できる自作のマテリアルを作成します。</p>
+<ul>
+<li>Baked Renderer Binding を有効にしたスプライトは、ベイク時の俯角と高さの範囲を保持します。スタイルのマテリアルにあるこれらの行が効くのは、Baked Renderer Binding を有効にしていないスプライトだけです。スプライトの発光は、ベイク時の発光にマテリアルの <strong>Emission Scale</strong> を掛けた強さになります。ベイクが <strong>Glow Light</strong> (発光ライト) 用に追加するライトは、スタイルのマテリアルでは <strong>Emission Scale</strong> に合わせて明るくなり、自作のマテリアルでは次のベイクで明るくなります (<a href="/guide/sunforge/ja/tune-a-style/#tuning-a-style" hreflang="ja">スタイルの調整</a>を参照)。</li>
+<li>ベイクしたスプライトを描画する自作のレンダラーには Baked Renderer Binding が必要です。これがない場合、そのレンダラーはスプライトの高さをマテリアルの範囲で読み取ります。この状態は Check Setup (セットアップを確認) で報告されます。</li>
+<li>Unity 標準のスプライトマテリアルを使う本体には、ヒットフラッシュが表示されません。</li>
+<li>Unity の 2D ライトを使う場合は、ベイクしたプレハブのルートに <strong>Shadow Caster 2D</strong> を追加してください。その影は Unity Lights マテリアルの上に落ちます。</li>
+<li>マーカーの発光やトレイル、および <strong>Material</strong> (マテリアル、Archetypes (アーキタイプ) タブの SHADOW (影)、Advanced 表示) で <strong>Sun Forge/Hand-Drawn Shadow</strong> 以外のシェーダーを使う影スプライトは、霧に覆われません。</li>
+<li>ベイクした影は、本体より 1 小さい <strong>Order in Layer</strong> (レイヤーの順序) で描画されます。その下の地面には、どちらよりも小さい値を設定してください。</li>
+<li>親の Scale X を -1 にしても、ベイクした影は反転しないため、太陽と反対の方向に落ちたままです。Cast Shadow Field の外では、<strong>Material</strong> (Archetypes タブの SHADOW、Advanced 表示) で別のシェーダーを使う影は親と一緒に反転します。</li>
+</ul>
+<h2 id="baked-particles-in-a-scene">シーン内の<wbr>ベイクした<wbr>パーティクル</h2>
+<p>プレハブのパーティクルは、モデルのうちパーティクルより手前にある部分 (ランタンの炎を囲む格子など) も含めて、本体全体の上に描画されます。</p>
+<ul>
+<li>パーティクルを本体の後ろに描画するには、プレハブの Particles 子オブジェクトを上に動かしてください。パーティクルは、この子オブジェクトの位置でソートされます。</li>
+<li>焚き火の炎など、パーティクルだけからベイクしたプレハブは、キャラクターと同じく、立っている位置でソートされます。炎を焚き火の上に描画するには、炎を焚き火と同じ位置か、そのすぐ手前に置いてください。</li>
+<li>たいまつのような背の高い小道具の上の火は、小道具と一緒にベイクしてください。こうすると、火が小道具も照らし、その光には小道具自身の形による陰影が付きます。または、<strong>Origin Below Ground</strong> (原点の地面からの深さ、Advanced (上級者向け) 表示) を小道具の高さにマイナスを付けた値に設定し、火を小道具の根元に置いてください。</li>
+<li>単独でベイクした、ループする炎には専用の発光ライトが付きます。代わりに小道具のライトを使うには、炎の <strong>Glow Light</strong> (発光ライト) をオフにし、炎の Particles 子オブジェクトを、小道具の Glow 子オブジェクトの Light Source にある <strong>Glow Renderers</strong> (発光レンダラー) に追加してください。</li>
+<li>キャラクターの胸に出るヒット時の火花など、スクリプトが空中に生成するエフェクトは、出現した位置でソートされるため、そのキャラクターの後ろに描画されます。手前に描画するには、エフェクトの Particles 子オブジェクトの <strong>Order in Layer</strong> (レイヤーの順序) をキャラクターの値より大きくしてください。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

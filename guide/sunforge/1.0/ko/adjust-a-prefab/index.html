@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크된 프리팹의 히트박스, 콜라이더, 앵커 조정 | Sun Forge 가이드</title>
+<meta name="description" content="씬 뷰에서 베이크된 프리팹의 히트박스, 콜라이더, 체력 바, 발광 지점, 바라보는 방향을 옮깁니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/adjust-a-prefab/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/adjust-a-prefab/">
+<meta property="og:title" content="베이크된 프리팹의 히트박스, 콜라이더, 앵커 조정 | Sun Forge 가이드">
+<meta property="og:description" content="씬 뷰에서 베이크된 프리팹의 히트박스, 콜라이더, 체력 바, 발광 지점, 바라보는 방향을 옮깁니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "프리팹 조정", "item": "https://sunforgetools.com/guide/sunforge/ko/adjust-a-prefab/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/1.0/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/1.0/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/1.0/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/1.0/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/1.0/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/1.0/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" hreflang="ko" aria-current=page>프리팹 조정</a></li><li><a href="/guide/sunforge/1.0/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/1.0/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/1.0/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/1.0/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/1.0/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/1.0/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/1.0/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/1.0/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/1.0/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/1.0/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/1.0/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/1.0/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/1.0/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/1.0/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/1.0/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/1.0/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/1.0/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/1.0/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/1.0/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/1.0/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/1.0/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/1.0/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/1.0/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/1.0/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/1.0/en/adjust-a-prefab/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-adjust-a-prefab"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="adjusting-a-prefab">프리팹 조정</h1><p class="lead">씬 뷰에서 베이크된 프리팹의 히트박스, 콜라이더, 체력 바, 발광 지점, 바라보는 방향을 옮깁니다.</p></div><article class="doc"><p>씬 뷰에서 히트박스, 콜라이더, 체력 바, VFX 박스, 머리 위 앵커, 발광 지점, 바라보는 방향을 조정하려면 베이크된 프리팹이나 씬에 있는 그 인스턴스를 선택하고 다음과 같이 합니다.</p>
+<ol>
+<li>씬 뷰의 <strong>Sun Forge Gizmos</strong>(Sun Forge 기즈모) 패널에서 행의 이름을 클릭해 그 행을 켭니다. 행은 <strong>Collider</strong>(콜라이더), <strong>Hitbox</strong>(히트박스), <strong>Attach Points</strong>(부착 지점), <strong>Glow Point</strong>(발광 지점), <strong>Facing</strong>(바라보는 방향)이며, 체력 바, VFX 박스, 머리 위 앵커는 <strong>Attach Points</strong> 행에 있습니다. 인스펙터에서 항목 옆의 <strong>Edit</strong>(편집) 버튼도 같은 역할을 합니다. 이 버튼은 Baked Prefab 컴포넌트의 <strong>Anchors</strong>(앵커) 섹션 아래나 <strong>Facing</strong> 컴포넌트에 있습니다.</li>
+<li>핸들을 드래그합니다. 값을 입력하거나 되돌리려면 Baked Prefab의 <strong>Anchors</strong> 섹션 아래에서 항목을 펼치고 그 필드나 <strong>Reset</strong>(초기화) 버튼을 사용합니다. 바라보는 방향은 <strong>Facing</strong>의 <strong>Angle</strong>(각도) 필드를 사용합니다.</li>
+</ol>
+<p>다시 베이크해도 조정은 유지됩니다.</p>
+<p>행의 오른쪽 끝에 있는 작은 아이콘을 클릭해 행을 <strong>All in View</strong>(뷰 안의 모든 대상) 옵션으로 설정하면, 히트박스나 체력 바를 사용하는 모든 프리팹과 직접 조정한 모든 프리팹의 히트박스나 체력 바가 씬 뷰에 표시됩니다. 프리팹을 선택하면 그 프리팹의 히트박스와 체력 바를 보고 드래그할 수 있습니다.</p>
+<h2 id="moving-a-marker">마커 옮기기</h2>
+<p>마커는 베이크가 정하므로 씬 뷰에 핸들이 없습니다. 대신 다음과 같이 합니다.</p>
+<ol>
+<li>프리팹의 인스펙터에서 <strong>Open in Bake Window</strong> 버튼을 클릭합니다. 그러면 그 프리팹을 만든 베이크가 열립니다.</li>
+<li>마커를 옮기려면 미리보기의 <strong>Gizmos</strong>(기즈모) 메뉴에서 <strong>Markers</strong>(마커) 행을 켜고 마커를 드래그합니다. 마커를 추가하려면 <strong>MARKERS</strong>(마커) 섹션(Bake(베이크) 탭, Advanced(고급) 보기)에서 추가하고 <strong>Bone</strong>(뼈대) 필드에서 마커의 뼈대를 선택합니다.</li>
+<li>다시 베이크합니다.</li>
+</ol>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ko/search.js"></script>
+</body>
+</html>

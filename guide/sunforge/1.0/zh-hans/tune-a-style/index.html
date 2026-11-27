@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>调整 2D 光照风格：描边、颜色和后处理 | Sun Forge 指南</title>
+<meta name="description" content="将风格另存为自己的风格，设置其外观，并更改其后处理。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/tune-a-style/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/tune-a-style/">
+<meta property="og:title" content="调整 2D 光照风格：描边、颜色和后处理 | Sun Forge 指南">
+<meta property="og:description" content="将风格另存为自己的风格，设置其外观，并更改其后处理。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "调整风格", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/tune-a-style/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/1.0/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/1.0/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/1.0/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/1.0/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" hreflang="zh-Hans" aria-current=page>调整风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/1.0/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/1.0/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/1.0/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/1.0/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/1.0/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/1.0/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/1.0/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/1.0/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/1.0/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/1.0/en/tune-a-style/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/tune-a-style/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/tune-a-style/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-tune-a-style"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="tuning-a-style">调整风格</h1><p class="lead">将风格另存为自己的风格，设置其外观，并更改其后处理。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#look-rows">Look 中的行</a></li><li><a href="#post-processing">后处理</a></li></ul></details></nav><article class="doc"><p>要调整外观，请先将其另存为自己的风格：</p>
+<ol>
+<li>选择 <strong>Lighting Setup</strong>，然后展开 <strong>Values</strong>（值）下方以其风格命名的部分。如果使用的是 Sun Forge 的风格，单击该部分标题上的 <strong>Edit A Copy</strong>（创建副本并编辑）。自己的风格可以直接编辑，该部分标题上的 <strong>Save As New Style</strong>（另存为新风格）则会把风格的副本保存到所选位置。</li>
+<li>在 <strong>Name</strong>（名称）中为副本输入名称，然后按 Enter。副本的材质和后处理也会采用该名称。</li>
+<li>在 <strong>Look</strong>（外观）中设置各行。每一行同时设置风格的 Sprite、Ground 和 Ground Clutter 材质。</li>
+<li>要调整后处理，展开 <strong>Post Processing</strong>（后处理效果），然后编辑 <strong>Post Processing Profile</strong>（后处理配置文件）下的覆盖项。</li>
+</ol>
+<h2 id="look-rows">Look 中<wbr>的<wbr>行</h2>
+<p>每一行的工具提示都会说明该行的作用。下表中的行还需注意以下几点。Realistic 的材质就是取值不同的 Regular 材质，因此下表中列出适用于 Regular 的行同样适用于 Realistic。Realistic 没有像素描边材质。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>风格</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Night Vision Strength</strong></td>
+<td>全部</td>
+<td>使用 Flat 时，从 0.5 开始调整</td>
+</tr>
+<tr>
+<td><strong>Highlight Ceiling</strong></td>
+<td>Regular、Cinematic</td>
+<td>红、绿、蓝三个通道各自达到上限，因此火光照亮的明亮高光会从橙色变为金色，再变为黄色。没有色调映射时（例如在 Regular 下），高于 1 的高光会变成一片纯色</td>
+</tr>
+<tr>
+<td><strong>Pixel Outline</strong>、<strong>Pixel Outline Color</strong></td>
+<td>Regular、Cinematic</td>
+<td>像素描边只绘制在精灵的矩形范围内，因此请在美术四周留出一个透明像素，并在 <strong>Mesh Type</strong>（网格类型）为 Tight（紧密）的精灵上将 <strong>Extrude Edges</strong>（挤出边缘）保持为 1 或更高。要只为部分精灵描边，请将其 Lighting Style Renderer 的 <strong>Material</strong>（材质）设为 <code>SunForge_Regular_SpriteLit_PixelOutline</code> 或 <code>SunForge_Cinematic_SpriteLit_PixelOutline</code>，即启用了 <strong>Pixel Outline</strong> 的自带精灵材质</td>
+</tr>
+<tr>
+<td><strong>Outline Width (World Units)</strong></td>
+<td>Flat</td>
+<td>默认值在每单位像素数为 64 时绘制一个精灵像素宽的描边，为 96 时则为一个半精灵像素宽。缩小的精灵保持该宽度，因此较小的副本看起来描边更粗。折痕线始终为一个精灵像素宽</td>
+</tr>
+<tr>
+<td><strong>Light And Shade Color</strong></td>
+<td>Flat</td>
+<td>从 0.5 开始调整</td>
+</tr>
+<tr>
+<td><strong>Receives Cast Shadows</strong>、<strong>Bake Camera Elevation (Degrees)</strong>、<strong>Height Range (World Units)</strong>、<strong>Shadow Sun Elevation (Degrees)</strong>、<strong>Shadow Sun Direction (Degrees)</strong></td>
+<td>全部</td>
+<td>不在 <strong>Look</strong>（外观）中：选择自己的风格，单击材质旁的 <strong>Open</strong>（打开），在该材质上设置</td>
+</tr>
+<tr>
+<td><strong>Emission Scale</strong></td>
+<td>全部</td>
+<td>不在 <strong>Look</strong> 中：按上述方法在每个材质上设置。该值还会让精灵的发光光源变亮（参见 <a href="/guide/sunforge/1.0/zh-hans/lights/#a-sprite-s-own-glow-light" hreflang="zh-Hans">光源 › 精灵自身的发光光源</a>）</td>
+</tr>
+</tbody>
+</table></div>
+<p>请在每个精灵四周留出两个透明像素，这样同一纹理中的两个精灵相距四个像素。某条边缘外的透明像素少于两个时，Flat 的描边以及 Regular 和 Cinematic 的边缘光会在这条边缘上缺失。</p>
+<h2 id="post-processing">后<wbr>处理</h2>
+<p>风格的后处理就是其 Volume 配置文件 <code>SunForge_&lt;Style&gt;_PostProcessing</code>，Lighting Setup 以优先级 0.5 应用该配置文件。</p>
+<ul>
+<li>自己的 Volume 如果优先级低于 0.5，可以设置该配置文件未设置的项，例如 Flat 上的晕影。优先级为 1 或更高的 Volume 会覆盖风格。</li>
+<li>Regular 和 Flat 会禁用色调映射，因此为整个项目设置的色调映射在这两种风格下不会显示。请改为在优先级为 1 或更高的 Volume 上设置。</li>
+<li>各风格是在 URP 资产的 <strong>Grading Mode</strong>（分级模式）为默认的 <strong>Low Dynamic Range</strong> 时调校的。设为 <strong>High Dynamic Range</strong> 时（启用 HDR 显示输出也会设为该值），这些风格的夜晚会更暗，在 Cinematic 下，火焰明亮的核心会变成一片单调的黄色。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/zh-hans/search.js"></script>
+</body>
+</html>

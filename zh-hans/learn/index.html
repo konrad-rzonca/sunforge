@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D 精灵与光照教程 | Sun Forge</title>
+<meta name="description" content="在 Unity 中制作 2D 精灵并打光：用 3D 模型生成精灵、多方向、法线贴图、阴影、昼夜、雾，以及 2D 光源不生效的问题。">
+<link rel="canonical" href="https://sunforgetools.com/zh-hans/learn/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/zh-hans/learn/">
+<meta property="og:title" content="Unity 2D 精灵与光照教程 | Sun Forge">
+<meta property="og:description" content="在 Unity 中制作 2D 精灵并打光：用 3D 模型生成精灵、多方向、法线贴图、阴影、昼夜、雾，以及 2D 光源不生效的问题。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="大教堂中，一颗金色星星悬浮在铁砧上方">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/zh-hans/"}, {"@type": "ListItem", "position": 2, "name": "学习", "item": "https://sunforgetools.com/zh-hans/learn/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="语言"><a href="/learn/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<div class="list">
+<header>
+<p class="eyebrow">学习</p>
+<h1>Unity 2D 精灵<wbr>与<wbr>光照教程</h1>
+<p class="lead">每篇文章用 Unity 自带的工具回答一个问题，指出其中的陷阱，最后介绍 Sun Forge 的做法。</p>
+</header>
+<ul class="articles">
+<li><a href="/zh-hans/learn/3d-models-to-2d-sprites/"><h2>在 Unity 中<wbr>把 3D 模型<wbr>转为 2D 精灵</h2><p>在 Blender 或 Unity 中渲染帧，切分成精灵，制作动画剪辑并打包纹理。</p></a></li>
+      <li><a href="/zh-hans/learn/8-directional-sprites/"><h2>Unity 八方向<wbr>精灵：<wbr>4、<wbr>8 还是 16 个<wbr>方向？</h2><p>每种方向数量的代价、每种视角背后的摄像机角度，以及选择精灵的代码。</p></a></li>
+      <li><a href="/zh-hans/learn/2d-sprite-normal-maps/"><h2>用 Unity 法线<wbr>贴图<wbr>让 2D 精灵<wbr>有<wbr>立体<wbr>感</h2><p>为精灵添加法线贴图和遮罩、从哪里获取，以及单靠它们做不到什么。</p></a></li>
+      <li><a href="/zh-hans/learn/2d-shadows-top-down/"><h2>Unity 中 2D 与<wbr>俯视角<wbr>精灵<wbr>的<wbr>阴影</h2><p>Shadow Caster 2D、斑点阴影、倾斜副本或 3D 模型的渲染，以及各自适合哪类游戏世界。</p></a></li>
+      <li><a href="/zh-hans/learn/2d-day-night-cycle/"><h2>Unity 2D 昼夜循环<wbr>与<wbr>云阴影</h2><p>随 Gradient 变色的 Global Light 2D、用于夜晚的 Volume、逐渐亮起的灯，以及在地面投下阴影的云。</p></a></li>
+      <li><a href="/zh-hans/learn/2d-fog-and-mist/"><h2>Unity 2D 场景<wbr>中<wbr>的<wbr>雾效<wbr>与<wbr>地面<wbr>薄雾</h2><p>Unity 的雾为何对精灵无效，以及用精灵、粒子或全屏通道制作雾的四种方法。</p></a></li>
+      <li><a href="/zh-hans/learn/2d-lights-not-working/"><h2>Unity 2D 光照不<wbr>生效：<wbr>排查要<wbr>点</h2><p>Light 2D 呈灰色不可用、照不亮任何精灵、忽略法线贴图或在构建中消失。</p></a></li>
+</ul>
+</div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="语言"><a href="/learn/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

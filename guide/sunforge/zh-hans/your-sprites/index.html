@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手绘 2D 精灵的法线贴图、发光和金属 | Sun Forge 指南</title>
+<meta name="description" content="为手绘的精灵添加法线贴图、发光和金属，并为不直立的精灵绘制几何信息纹理。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/your-sprites/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/your-sprites/">
+<meta property="og:title" content="手绘 2D 精灵的法线贴图、发光和金属 | Sun Forge 指南">
+<meta property="og:description" content="为手绘的精灵添加法线贴图、发光和金属，并为不直立的精灵绘制几何信息纹理。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "手绘的精灵", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/your-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/your-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/your-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/your-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/your-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/your-sprites/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans" aria-current=page>手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/your-sprites/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/your-sprites/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/your-sprites/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/your-sprites/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-your-sprites"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1>手绘<wbr>的<wbr>精灵</h1><p class="lead">为手绘的精灵添加法线贴图、发光和金属，并为不直立的精灵绘制几何信息纹理。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#sprite-textures">精灵纹理</a></li><li><a href="#painting-a-geometry-texture">绘制几何信息纹理</a></li></ul></details></nav><article class="doc"><h2 id="sprite-textures">精灵<wbr>纹理</h2>
+<p>自己绘制的精灵可以通过以下两种方式之一获得纹理。</p>
+<h3 id="have-sun-forge-write-them">让 Sun Forge 写入纹理</h3>
+<ol>
+<li><strong>Set Up for Lighting</strong>（设置光照）设置好精灵后，选择精灵所在的对象，在其 Lighting Style Renderer 上展开 <strong>Glow, Surfaces and Edges</strong>（发光、表面和边缘）。</li>
+<li>为每种会发光的颜色单击一次 <strong>Add Glow Color</strong>（添加发光颜色），然后在精灵上单击该颜色。</li>
+<li>为每种像金属一样反光的颜色单击一次 <strong>Add Surface Color</strong>（添加表面颜色），然后在精灵上单击该颜色。</li>
+<li>查看 <strong>Glows</strong>（发光区域）和 <strong>Shines</strong>（反光区域）两张图片：图片显示所选颜色匹配到的部分，其余部分变灰。要匹配更多部分，调高该颜色的 <strong>Tolerance</strong>（容差）。</li>
+<li>要使边缘圆滑，启用 <strong>Round Edges</strong>（圆滑边缘）。</li>
+<li>单击 <strong>Write Textures</strong>（写入纹理）。</li>
+<li>要让发光照亮地面和精灵上发光部位的周围，单击 <strong>Glow Light</strong>（发光光源）行中的 <strong>Add</strong>（添加）。</li>
+</ol>
+<h3 id="bring-your-own">自备<wbr>纹理</h3>
+<ol>
+<li>将每张纹理保存为 PNG，放在精灵所用纹理的旁边，并按下表的方式命名，其中 <code>&lt;sheet&gt;</code> 是该纹理不含扩展名的文件名。</li>
+<li>运行 <strong>Set Up for Lighting</strong>（设置光照），或在精灵的 Lighting Style Renderer 上单击 <strong>Change Setup</strong>（更改设置）。</li>
+<li>在 <strong>Sprites</strong>（精灵）下，精灵所在的行会列出找到的每个文件。单击 <strong>Apply</strong>（应用），将这些文件应用到精灵。已有同类纹理的精灵会保留原有纹理。</li>
+</ol>
+<p>也可以在 Unity 的 Sprite Editor 窗口中的 <strong>Secondary Textures</strong>（辅助纹理）下绑定这些纹理。</p>
+<h3 id="what-each-texture-holds">各纹<wbr>理<wbr>包含<wbr>的<wbr>内容</h3>
+<p>只要精灵带有这些纹理，风格材质就会读取：</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>材质槽位</th>
+<th>文件</th>
+<th>辅助纹理名称</th>
+<th>通道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal Map</strong></td>
+<td><code>&lt;sheet&gt;_Normal.png</code></td>
+<td><code>_NormalMap</code></td>
+<td>用途为 Ground 且场景的美术从上方绘制时，为按俯视角绘制的法线贴图。其他情况下为按与站立精灵相同的角度绘制的法线贴图。请用平坦法线（128, 128, 255）填充精灵以外的纹素，否则精灵边缘会绘制成暗色。请用 <code>SunForgeNormalDecode.hlsl</code> 中的 <code>SFUnpackNormal</code> 读取，或在 Shader Graph 中使用 <strong>Sun Forge Sample Normal Map</strong> 节点。两者都把 128 视为无倾斜</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td><code>&lt;sheet&gt;_MaskTex.png</code></td>
+<td><code>_MaskTex</code></td>
+<td>R 为金属度，G 为平滑度，B 为环境光遮蔽；在 Sun Forge 渲染的精灵上，A 表示照到精灵的太阳光多少。线性</td>
+</tr>
+<tr>
+<td><strong>Emission</strong></td>
+<td><code>&lt;sheet&gt;_Emission.png</code></td>
+<td><code>_EmissionTex</code></td>
+<td>强度为 1 时的发光颜色，sRGB；在 Sun Forge 渲染或写入的纹理上，A 表示精灵从自身发光中受到多少光</td>
+</tr>
+<tr>
+<td><strong>Geometry Texture</strong></td>
+<td><code>&lt;sheet&gt;_Geometry.png</code></td>
+<td><code>_GeometryTex</code></td>
+<td>R 为轴心以上的高度：轴心处为黑色，越亮越高。A 可选（参见 <a href="/guide/sunforge/zh-hans/geometry-texture-format/#geometry-textures" hreflang="zh-Hans">几何信息纹理格式</a>）。线性，且不使用 Crunch 压缩</td>
+</tr>
+</tbody>
+</table></div>
+<p>如果精灵的 <code>_MaskTex</code> 中是其他布局的遮罩，精灵的受光会出错。</p>
+<h3 id="see-the-textures-in-the-scene-view">在 Scene 视图<wbr>中<wbr>查看纹理</h3>
+<p>在 Scene 视图中启用 <strong>Sun Forge Gizmos</strong> 面板底部的 <strong>Texture View</strong>（纹理视图），然后选择一种纹理。</p>
+<ul>
+<li>视图只显示有光照或无光照的 URP 材质所绘制的内容，因此使用 <code>Sprites/Default</code> 的精灵、投射阴影、线条和文字会隐藏。</li>
+<li>在 <strong>Geometry</strong>（几何信息）下，没有高度的纹素显示为暗灰色；在 <strong>Emission</strong>（自发光）下，没有自发光的精灵显示为暗灰色。</li>
+</ul>
+<h2 id="painting-a-geometry-texture">绘制<wbr>几何<wbr>信息<wbr>纹理</h2>
+<p>直立的精灵不需要几何信息纹理。请为不是直立面片的精灵绘制几何信息纹理，例如桌面、手推车或躺着的人物。</p>
+<ol>
+<li>在精灵覆盖的每个像素上涂灰色：地面处为黑色，越高越亮。在精灵表上，让某个精灵保持透明，即可使其保持为直立面片。</li>
+<li>将精灵的轴心放在其前缘与地面相接处，例如手推车的前轮。只有在轴心前方，草才会绘制在精灵之上。精灵立在另一个精灵上时（例如桌上的灯），将轴心放在它与桌子相接处，并将其 Lighting Style Renderer 上的 <strong>Height Above Ground</strong>（离地高度）设为桌子的高度。</li>
+<li>在精灵表旁边导出名为 <code>&lt;sheet&gt;_Geometry.png</code> 的 PNG。</li>
+<li>运行 <strong>Set Up for Lighting</strong>（设置光照）。精灵所在的行会列出该纹理，<strong>Apply</strong>（应用）会导入该纹理并将其应用到精灵。</li>
+</ol>
+<ul>
+<li>要以像素为单位绘制，灰度值为 <code>height in pixels * 255 / (Pixels Per Unit * range)</code>，其中 range 是材质的 <strong>Height Range (World Units)</strong>。在每单位像素数为 32、范围为默认值 8 时，灰度每差一级约等于一个像素。</li>
+<li>竖直立起的部分（例如烟囱）在图中高 N 像素时，实际高度为 <code>N / cos(elevation)</code> 像素，其中 elevation 是 Lighting Setup 的 <strong>Art View</strong>（美术绘制视角）的角度。</li>
+<li>使用 Point 过滤时，精灵周围的内容无关紧要。精灵表使用过滤时，导出的背景必须透明。凡是要留为透明的地方，都需要导出带 Alpha 的 PNG。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

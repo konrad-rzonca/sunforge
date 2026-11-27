@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adapters, extensions and project defaults for a bake | Sun Forge Guide</title>
+<meta name="description" content="Change every baked prefab from code, run your own step inside a bake, and set your project&#x27;s defaults.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<meta property="og:title" content="Adapters, extensions and project defaults for a bake | Sun Forge Guide">
+<meta property="og:description" content="Change every baked prefab from code, run your own step inside a bake, and set your project&#x27;s defaults.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Extending a bake", "item": "https://sunforgetools.com/guide/sunforge/en/extending-a-bake/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/extending-a-bake/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/en/lights/">Lights</a></li><li><a href="/guide/sunforge/en/styles/">Styles</a></li><li><a href="/guide/sunforge/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/en/extending-a-bake/" aria-current=page>Extending a bake</a></li><li><a href="/guide/sunforge/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/en/extending-a-bake/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/ja/extending-a-bake/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/extending-a-bake/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/extending-a-bake/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-extending-a-bake"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1>Extending a bake</h1><p class="lead">Change every baked prefab from code, run your own step inside a bake, and set your project&#x27;s defaults.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#adapters">Adapters</a></li><li><a href="#extensions">Extensions</a></li><li><a href="#project-defaults">Project Defaults</a></li></ul></details></nav><article class="doc"><h2 id="adapters">Adapters</h2>
+<p>An adapter changes what goes on every baked prefab it supports, after the bake builds it and before the bake saves it. Implement <code>ISunForgeBakeAdapter</code> in any editor or runtime assembly. Sun Forge finds it with no registration.</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using UnityEngine;
+
+public sealed class SortingLayerAdapter : ISunForgeBakeAdapter
+{
+    public string AdapterId =&gt; &quot;com.example.adapters.sorting-layer&quot;;
+
+    public bool Supports(SunForgeBakedData data) =&gt; data.ArchetypeName == &quot;Character&quot;;
+
+    public void Apply(GameObject prefabRoot, SunForgeBakedData data, SunForgeBakeReporter reporter)
+    {
+        if (!prefabRoot.TryGetComponent(out SpriteRenderer renderer))
+            throw new SunForgeBakeStopException(&quot;Add a SpriteRenderer to the prefab root, then bake again.&quot;);
+
+        renderer.sortingLayerName = &quot;Actors&quot;;
+    }
+}
+</code></pre>
+<h2 id="extensions">Extensions</h2>
+<p>An extension runs inside the bake: it can split the model into separately published parts, and add its own data to the baked data. Implement <code>ISunForgeBakeExtension</code> in an editor assembly. Sun Forge finds it with no registration. This one has its own section on the Bake tab and publishes one value. The data it publishes goes in a runtime assembly, so the game can read it:</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using UnityEngine;
+
+[Serializable]
+public sealed class WorldHeightData : SunForgeBakedExtensionData
+{
+    [SerializeField] float worldHeight;
+
+    public WorldHeightData(float worldHeight) =&gt; this.worldHeight = worldHeight;
+
+    public float WorldHeight =&gt; worldHeight;
+}
+</code></pre>
+<p>The extension and its settings go in an editor assembly:</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+
+[Serializable]
+public sealed class WorldHeightSettings : SunForgeBakeExtensionSettings
+{
+}
+
+public sealed class WorldHeightBakeExtension : ISunForgeBakeExtension
+{
+    public string ExtensionId =&gt; &quot;com.example.extensions.worldheight&quot;;
+
+    public SunForgeBakeExtensionSection SettingsSection { get; } = new(
+        typeof(WorldHeightSettings), &quot;WORLD HEIGHT&quot;,
+        &quot;Publishes the model's world height beside its sprites.&quot;,
+        &quot;Publishes the world height on the bake's data.&quot;);
+
+    public bool Supports(SunForgeBakeExtensionContext context) =&gt; true;
+
+    public SunForgeBakedExtensionData Execute(SunForgeBakeExtensionExecuteContext context) =&gt;
+        new WorldHeightData(context.Config.ModelWorldHeight);
+}
+</code></pre>
+<p>A game reads it with <code>data.Extension&lt;WorldHeightData&gt;()?.WorldHeight</code>.</p>
+<p>Under a Pixel Perfect Camera, parts of a prefab that an extension publishes separately stay on whole pixels with <strong>Grid Snapping</strong> set to <strong>Upscale Render Texture</strong>. Under <strong>Pixel Snapping</strong> each part can sit a fraction of a pixel off the body (<a href="/guide/sunforge/en/pixel-art/#pixel-perfect-camera">Pixel art › Pixel Perfect Camera</a>).</p>
+<h2 id="project-defaults">Project Defaults</h2>
+<p>An editor script can set the Addressables group and label new archetypes start with, and pin the camera and sun your game draws with:</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+
+[InitializeOnLoad]
+static class MyGameSunForgeDefaults
+{
+    static MyGameSunForgeDefaults() =&gt; SunForgeBakeGameDefaults.SetCurrent(new SunForgeBakeGameDefaults(
+        addressablesGroupName: &quot;Baked&quot;,
+        addressablesLabel: &quot;Baked&quot;,
+        archetypeOverrides: new SunForgeBakeGameConstants(
+            cameraElevation: 30f,
+            shadowSun: new SunForgeSunAngles(35f, 215f),
+            setBy: &quot;MyGame rendering constants&quot;)));
+}
+</code></pre>
+<p>Every other value a new bake starts with, such as its direction count and its output folder, is the Default archetype's. Change it on the <strong>Archetypes</strong> tab, or once from an editor script such as a menu item:</p>
+<pre><code class="language-csharp">SunForgeBakeArchetype archetype = SunForgeBakeArchetypeLibraryLocator.FindOrCreate().Default;
+archetype.Camera.DirectionCount = 16;
+archetype.OutputRoot = &quot;Assets/Baked&quot;;
+archetype.Addressables.Enabled = true; // Registers each bake with Addressables.
+EditorUtility.SetDirty(archetype);
+</code></pre>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/en/search.js"></script>
+</body>
+</html>

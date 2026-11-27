@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A character standing in a bush: per-pixel sorting for 2D sprites | Sun Forge Guide</title>
+<meta name="description" content="Let a character stand in a bush, with the part in front of its feet drawn over it.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/characters-in-props/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/characters-in-props/">
+<meta property="og:title" content="A character standing in a bush: per-pixel sorting for 2D sprites | Sun Forge Guide">
+<meta property="og:description" content="Let a character stand in a bush, with the part in front of its feet drawn over it.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Characters in props", "item": "https://sunforgetools.com/guide/sunforge/en/characters-in-props/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/characters-in-props/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/characters-in-props/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/characters-in-props/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/characters-in-props/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/characters-in-props/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/en/characters-in-props/" aria-current=page>Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/en/lights/">Lights</a></li><li><a href="/guide/sunforge/en/styles/">Styles</a></li><li><a href="/guide/sunforge/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/en/characters-in-props/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/ja/characters-in-props/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/characters-in-props/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/characters-in-props/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-characters-in-props"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1 id="characters-in-props">Characters in props</h1><p class="lead">Let a character stand in a bush, with the part in front of its feet drawn over it.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#correcting-one-prefab">Correcting One Prefab</a></li><li><a href="#props-that-stay-whole">Props That Stay Whole</a></li><li><a href="#splitting-with-your-own-shader">Splitting With Your Own Shader</a></li></ul></details></nav><article class="doc"><p>A character that stands in a bush can draw between the bush's parts: the part in front of the character's feet draws over it, and the rest behind it. To turn this on:</p>
+<ol>
+<li>Under <strong>Project Settings &gt; Sun Forge</strong>, tick <strong>Per-Pixel Prop Sorting</strong> for each platform whose builds should split props. Props split in Play mode and in builds, and Play mode follows the active platform's value.</li>
+<li>Bake. The archetype's <strong>Pixel Sort</strong> (Archetypes tab, GAMEPLAY, Advanced view) says which prefabs are characters and which are props. On <strong>Automatic</strong>, a prefab is a character when it plays an animation or has a behavior that moves it, and a prop otherwise.</li>
+</ol>
+<p>A character gets a <strong>Pixel Sort Character</strong>, and a prop's body sprite has <strong>Split Around Characters</strong> ticked on its <strong>Baked Renderer Binding</strong>. A script, such as an options menu, turns the split on or off for the rest of the run with <code>SunForgePixelSort.Enabled</code>.</p>
+<h2 id="correcting-one-prefab">Correcting One Prefab</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>To</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keep a prop whole</td>
+<td>Untick <strong>Split Around Characters</strong> on its body sprite. A rebake keeps your choice</td>
+</tr>
+<tr>
+<td>Split a prefab that only sways in place, such as a fern in the wind, around characters</td>
+<td>Untick its <strong>Pixel Sort Character</strong>. Untick it rather than remove it: a rebake keeps it unticked, and adds back one you removed</td>
+</tr>
+<tr>
+<td>Split props higher or lower than the front edge of the character's collider</td>
+<td>Turn off <strong>Automatic Depth</strong> on the Pixel Sort Character and type a <strong>Depth</strong></td>
+</tr>
+<tr>
+<td>Split props around a character you built yourself, or around a baked prop your own script moves</td>
+<td>Add a Pixel Sort Character to it: <strong>Add Component &gt; Sun Forge &gt; Pixel Sort Character</strong></td>
+</tr>
+<tr>
+<td>Keep props whole around a character that you draw in front of them through its z or its own sort point</td>
+<td>Untick its Pixel Sort Character</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="props-that-stay-whole">Props That Stay Whole</h2>
+<p>A prop draws whole in every camera while a perspective camera draws its layer, and where it sorts on another sorting layer, order or render queue than the character. Only a few props split at a time. A prop that stays whole for another reason says why on its <strong>Baked Renderer Binding</strong>.</p>
+<p><strong>Check Setup</strong> on the Lighting Setup reports a perspective camera, and a sort axis the parts cannot sort along: a <strong>Custom Axis</strong> whose y and z have opposite signs.</p>
+<h2 id="splitting-with-your-own-shader">Splitting With Your Own Shader</h2>
+<p>A prop drawn with a shader of your own splits only when the shader draws its share of the pieces:</p>
+<ul>
+<li>A Shader Graph: wire the graph's <strong>Alpha</strong> from the <strong>Sun Forge Sprite Lit</strong> or <strong>Sun Forge Lit Color</strong> node, then tick <strong>Split Around Characters</strong> on the prop's body sprite. A bake leaves it unticked on a prop whose material is a graph with either node, because a graph whose Alpha skips the node draws the prop twice where a character stands in it.</li>
+<li>A hand-written shader: follow the header of <code>SunForgeWalkBands.hlsl</code> (<a href="/guide/sunforge/en/custom-shaders/#hand-written-shaders">Custom shaders › Hand-Written Shaders</a>). A prop whose shader does not take part draws whole.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/en/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadows for 2D and top-down sprites in Unity | Sun Forge</title>
+<meta name="description" content="Four ways to give a 2D sprite a shadow in Unity: Shadow Caster 2D, a blob, a skewed copy or a render of the 3D model. What each one suits, and the traps.">
+<link rel="canonical" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<meta property="og:title" content="Shadows for 2D and top-down sprites in Unity | Sun Forge">
+<meta property="og:description" content="Four ways to give a 2D sprite a shadow in Unity: Shadow Caster 2D, a blob, a skewed copy or a render of the 3D model. What each one suits, and the traps.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A scene of baked sprites: a broken column&#x27;s shadow crosses the paving and falls across the knight standing in it">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Shadows for 2D and top-down sprites in Unity", "description": "Four ways to give a 2D sprite a shadow in Unity: Shadow Caster 2D, a blob, a skewed copy or a render of the 3D model. What each one suits, and the traps.", "image": "https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/learn/2d-shadows-top-down/"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Learn", "item": "https://sunforgetools.com/learn/"}, {"@type": "ListItem", "position": 3, "name": "Shadows for 2D sprites", "item": "https://sunforgetools.com/learn/2d-shadows-top-down/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="Language"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/learn/">Learn</a></p>
+<h1>Shadows for 2D and top-down sprites in Unity</h1>
+<p class="lead">A 2D sprite in Unity gets a shadow in one of four ways: URP's Shadow Caster 2D, a blob sprite under the feet, a skewed dark copy of the sprite, or a shadow rendered from the 3D model the sprite came from. To pick one, first decide where your shadows lie: in the plane of the screen, or on a ground your characters stand on.</p>
+</header>
+<h2 id="two-kinds-of-2d-shadows">Two kinds of 2D shadows</h2>
+<p>A side-on platformer is a flat world, and so is a dungeon seen from straight above. A wall blocks a torch's light, and what lies behind the wall is dark.</p>
+<p>In a top-down or 2.5D world, the camera looks down at an angle and characters stand upright on a ground. A shadow there lies on the ground at the character's feet and points away from the sun.</p>
+<figure>
+<img src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.1024w.webp 1024w, /features/ruins-shadows-flat.1440w.webp 1440w, /features/ruins-shadows-flat.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="A knight, a broken column and a stone block on a paved floor, seen from above at an angle, each with a soft shadow lying on the ground beside it. The scene is made of sprites baked with Sun Forge">
+<figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+</figure>
+<p>Shadow Caster 2D makes the first kind. The other three methods make the second.</p>
+<h2 id="unity-s-shadow-caster-2d-and-light-2d">Unity's Shadow Caster 2D and Light 2D</h2>
+<p>Shadow Caster 2D is a URP component that sets the shape a 2D light uses to cast shadows. Your project needs URP with the 2D Renderer, and the sprites need a material that 2D lights light, such as the default, Sprite-Lit-Default.</p>
+<ol>
+<li>Right-click in the Hierarchy, select <strong>Light</strong>, and pick a Spot, Freeform or Sprite light.</li>
+<li>On the Light 2D, turn on <strong>Shadows</strong>. <strong>Strength</strong> sets how much of the light a caster blocks, from 0 to 1, and <strong>Softness</strong> softens the shadow's edge.</li>
+<li>Select the sprite that should cast a shadow, click <strong>Add Component</strong>, and add <strong>Shadow Caster 2D</strong>. Its shape is the sprite's Custom Outline from the Sprite Editor, which the Scene view draws in white.</li>
+<li>To use another shape, set <strong>Casting Source</strong> to a collider on the same GameObject, such as Polygon Collider 2D, or to <strong>Shape Editor</strong> and click <strong>Edit Shape</strong>.</li>
+<li>To merge the shadows of several sprites, make them children of a GameObject that has a <strong>Composite Shadow Caster 2D</strong>.</li>
+</ol>
+<p><strong>Casting Option</strong> sets whether a caster shadows other sprites, itself or both, and <strong>Target Sorting Layers</strong> which sorting layers the shadow falls on.</p>
+<p>This does not give a top-down character a shadow on the ground:</p>
+<ul>
+<li>A caster is an outline that blocks light. It has no setting for how tall the sprite is or how long its shadow is.</li>
+<li>A Global light, the type that lights every sprite evenly as daylight does, has no <strong>Shadows</strong> settings. The other types cast from where the light is, so a shadow falls on the far side of the caster.</li>
+</ul>
+<p>Unity's guide to its top-down sample, Happy Harvest, says these shadows project without end and look wrong for general daylight. The sample casts them only near lamps and fires, from casters on a character's feet. Its trees and bushes get blob shadows.</p>
+<h2 id="a-blob-shadow-under-a-2d-sprite">A blob shadow under a 2D sprite</h2>
+<p>A blob shadow is a soft dark ellipse, drawn as a child sprite at the character's feet. It works with any sprite and any animation and costs one more sprite to draw. It shows where the character touches the ground, and neither its shape nor the sun's direction. Set the Sprite Renderer's <strong>Color</strong> to black with some transparency, so one texture works on any ground.</p>
+<h2 id="a-skewed-copy-as-a-sprite-cast-shadow">A skewed copy as a sprite cast shadow</h2>
+<p>For a shadow in the character's shape, draw the character's sprite a second time: tinted black, partly transparent, flattened, and leaned over so that it lies on the ground.</p>
+<ul>
+<li>The copy is a second Sprite Renderer on a child whose pivot is at the feet. For an animated character, a script copies the body's current sprite and flip to it each frame, in <code>LateUpdate</code>, which Unity calls after every <code>Update</code>.</li>
+<li>A Transform has no skew setting. A child that is rotated under a parent with a non-uniform scale can appear skewed, which gives the lean. The other way is a shadow shader that moves each vertex sideways by its height above the pivot.</li>
+</ul>
+<p>The copy shows the character as the camera sees it, not as the sun does. The farther the sun is from the camera's direction, the less the outline matches.</p>
+<h2 id="a-shadow-rendered-from-the-3d-model">A shadow rendered from the 3D model</h2>
+<p>If your sprites are renders of 3D models, render each shadow from the model too. In Blender's Cycles, an object's <strong>Shadow Catcher</strong> option (<strong>Object Properties &gt; Visibility</strong>) makes a ground plane receive only shadow rays, so a render of the plane holds the shadow alone. Render the shadow as a sheet of its own, frame for frame with the body, and show it in a second Sprite Renderer under the character.</p>
+<p>This shadow has the outline the sun sees. It doubles the number of sheets, and its direction is fixed when you render. For a character with several facing directions, keep the sun fixed in the world while the model turns, or the shadow swings around each time the character turns.</p>
+<h2 id="traps-with-2d-sprite-shadows">Traps with 2D sprite shadows</h2>
+<ul>
+<li><strong>Sorting.</strong> A top-down scene usually sorts sprites by y: <strong>Transparency Sort Mode</strong> set to <strong>Custom Axis</strong> with an axis of (0, 1, 0), on the 2D Renderer asset. A shadow on the characters' Sorting Layer then draws over the feet of whoever stands behind its owner. Give shadows a Sorting Layer of their own, listed after the ground's and before the characters' in <strong>Project Settings &gt; Tags and Layers</strong>. Unity draws the layers in list order.</li>
+<li><strong>Overlap.</strong> Where two partly transparent shadows overlap, the ground is darkened twice. The fix needs a shadow shader of your own: ShaderLab's <code>Stencil</code> command, which URP supports, lets the first shadow mark each pixel it draws so that later shadows skip it.</li>
+<li><strong>Direction.</strong> Every shadow in the scene has to point the same way and agree with the light painted or rendered into the sprites. Drive every skewed copy from one angle, and render every model under one sun.</li>
+<li><strong>Other sprites.</strong> A blob, a copy and a rendered sheet darken only the ground. A character who walks into a tree's shadow stays fully lit, because the shadow is drawn under every character and neither sprite stores a height. A Shadow Caster 2D's shadow falls on every sprite in its <strong>Target Sorting Layers</strong>, the ground and other characters alike.</li>
+</ul>
+<h2 id="how-sun-forge-does-it">How Sun Forge does it</h2>
+<p>Sun Forge is a Unity editor tool that takes the fourth route. A bake turns a 3D model into a 2D sprite prefab, and it also writes the sprite's shadow: a soft shadow projected on the ground, or an ellipse.</p>
+<p>The shadow moves with its sprite and fades as the sun sets. It keeps the sun direction it was baked with and does not turn when the scene's sun moves, so it does not suit a game whose shadows must turn through the day.</p>
+<p>Beside its color, each baked sheet has a Geometry texture, which holds each texel's height above the sprite's pivot. That height lets baked sprites <a href="/guide/sunforge/en/components/#sunforgecastshadowfield">cast shadows on each other</a>. A cast shadow climbs a sprite standing in it, as high as what casts it.</p>
+<figure class="bare">
+<img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="The Geometry texture of a baked knight sprite: black at the feet and brighter toward the head">
+<figcaption>The Forgotten Knight by dark_igorek, CC BY 4.0, modified.</figcaption>
+</figure>
+<figure>
+<img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.1024w.webp 1024w, /features/ruins-shadows.1440w.webp 1440w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="The same scene of baked sprites with the broken column&#x27;s shadow falling across the knight">
+<figcaption>The Forgotten Knight by dark_igorek and the skeleton by LasquetiSpice, CC BY 4.0, modified.</figcaption>
+</figure>
+<p>Sun Forge needs Unity 6.3 LTS (6000.3.29f1 or newer) through Unity 6.6, and URP with the 2D Renderer or the Universal Renderer. <a href="/2d-lighting/#shadows">The lighting's page</a> shows the same scene with the cast shadows off and on.</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">Read next</h2>
+<ul>
+<li><a href="/learn/2d-sprite-normal-maps/">Make 2D sprites look 3D with Unity normal maps</a></li>
+<li><a href="/learn/2d-day-night-cycle/">Unity 2D day and night cycle and cloud shadows</a></li>
+<li><a href="/2d-lighting/#shadows">Sun Forge 2D Lighting: cast shadows</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="Language"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no" aria-current=true>English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

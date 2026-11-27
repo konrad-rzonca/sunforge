@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크가 만드는 텍스처와 그 임포트 설정 | Sun Forge 가이드</title>
+<meta name="description" content="베이크가 스프라이트 시트 옆에 추가하는 텍스처, 그리고 시트가 패킹되고 임포트되는 방식.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/baked-textures/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/baked-textures/">
+<meta property="og:title" content="베이크가 만드는 텍스처와 그 임포트 설정 | Sun Forge 가이드">
+<meta property="og:description" content="베이크가 스프라이트 시트 옆에 추가하는 텍스처, 그리고 시트가 패킹되고 임포트되는 방식.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "베이크된 텍스처", "item": "https://sunforgetools.com/guide/sunforge/ko/baked-textures/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/baked-textures/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/baked-textures/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/baked-textures/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/baked-textures/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/baked-textures/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko" aria-current=page>베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/baked-textures/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/baked-textures/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/baked-textures/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/baked-textures/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-baked-textures"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>베이크된 텍스처</h1><p class="lead">베이크가 스프라이트 시트 옆에 추가하는 텍스처, 그리고 시트가 패킹되고 임포트되는 방식.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#extra-textures">추가 텍스처</a></li><li><a href="#texture-settings">텍스처 설정</a></li></ul></details></nav><article class="doc"><h2 id="extra-textures">추가 텍스처</h2>
+<p>각 추가 텍스처는 스프라이트 보조 텍스처로 시트에 연결됩니다. 노멀, 마스크, 이미션, 지오메트리 텍스처의 이름과 채널은 조명 패키지의 페이지에 있습니다(<a href="/guide/sunforge/ko/your-sprites/#sprite-textures" hreflang="ko">직접 그린 스프라이트 › 스프라이트 텍스처</a> 참조). 베이크는 다음 텍스처를 추가합니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>텍스처</th>
+<th>보조 텍스처 이름</th>
+<th>채널</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>마스크</td>
+<td><code>_MaskTex</code></td>
+<td>베이크의 태양이 텍셀을 비춘 곳은 A가 1, 모델 자체의 그림자 안은 0</td>
+</tr>
+<tr>
+<td>그림자 하이트 맵</td>
+<td><code>_CastHeightTex</code></td>
+<td><strong>Bake Cast Height Texture</strong>(그림자 하이트 맵 베이크) 체크박스(Advanced(고급) 보기)가 켜져 있을 때 지면 투영 그림자 시트에 생깁니다. 각 텍셀의 R × range 값은 그 텍셀에 그림자를 드리우는 점 중 가장 높은 점의 높이이며, 그 점이 속한 스프라이트의 피벗에서 잰 값입니다. 본체의 피벗은 지면에 있습니다. 그림자가 덮지 않는 텍셀의 값은 0입니다. 커버리지는 그림자 시트의 알파입니다. 선형</td>
+</tr>
+</tbody>
+</table></div>
+<p>스프라이트의 노멀 맵은 베이크 카메라 각도에서 그린 것이고, 지면 타일의 노멀 맵은 탑다운으로 그린 것입니다. <code>range</code> 값은 베이크의 높이 범위입니다.</p>
+<p>이 이름 중 하나로 시트에 직접 연결한 텍스처는 베이크가 그 텍스처를 쓰는 경우 베이크의 텍스처로 바뀝니다.</p>
+<h3 id="urp-s-shader-graph-templates">URP의 셰이더 그래프 템플릿</h3>
+<p>URP의 2D Sprite Lit 템플릿이나 2D Sprite Custom Lit 템플릿으로 만든 셰이더 그래프는 마스크의 이름이 <code>_MaskMap</code>입니다. 베이크된 마스크를 읽으려면 그 프로퍼티의 Reference 필드를 <code>_MaskTex</code> 값으로 설정하세요. Custom Lit 템플릿은 노멀 맵의 이름도 <code>_Normal_Map</code>입니다. 그 Reference 필드를 <code>_NormalMap</code> 값으로 설정하세요.</p>
+<h3 id="unity-s-2d-lights">Unity의 2D 광원</h3>
+<p>2D 렌더러에서 Unity Lights 머티리얼을 쓰면 채널로 마스킹한 Light 2D 블렌드 스타일은 마스크의 그 채널 값에 따라 텍셀을 비춥니다. Unity 기본 블렌드 스타일인 Multiply with Mask와 Additive with Mask는 빨간색 채널을 읽으므로, 베이크된 스프라이트에서 금속인 부분만 비춥니다. 이 블렌드 스타일이 파란색이나 알파 채널을 읽게 하거나, 마스크를 쓰지 않는 블렌드 스타일을 사용하세요. 알파 채널로 마스킹한 블렌드 스타일은 마스크에 베이크된 자체 그림자도 적용합니다. 그 밖의 경우에는 Unity Lights 머티리얼이 이 그림자를 적용하지 않습니다.</p>
+<h3 id="grass-over-a-baked-sprite">베이크된 스프라이트 위의 풀</h3>
+<p>베이크가 쓰는 지오메트리 텍스처에서 알파는 프레임의 앞쪽 가장자리입니다(<a href="/guide/sunforge/ko/geometry-texture-format/#geometry-textures" hreflang="ko">지오메트리 텍스처 포맷</a> 참조). Sorted Ground Cover 컴포넌트는 풀잎의 뿌리가 그 가장자리보다 앞에 있는 곳에서만 풀잎을 스프라이트 위에 그립니다.</p>
+<p>이 가장자리는 지면에서 0.25 월드 단위 안에 있는 부분의 앞쪽입니다. 그래서 무기를 낮게 들고 있으면 풀이 무기 앞에서 멈춥니다. 애니메이션이 더 높이 들어 올리는 부분 위에 풀이 그려지게 하려면 <strong>Measure Sizes From</strong>(크기 측정 기준) 필드(Bake(베이크) 탭, ANIMATION(애니메이션) 섹션, Advanced(고급) 보기)에서 그 애니메이션을 체크하세요.</p>
+<h2 id="texture-settings">텍스처 설정</h2>
+<p><strong>Filter Mode</strong>(필터 모드), <strong>Compression</strong>(압축), <strong>Use Crunch Compression</strong>(크런치 압축 사용), <strong>Generate Mip Maps</strong>(밉맵 생성), <strong>Atlas Max Size</strong>(아틀라스 최대 크기) 필드는 아키타입의 <strong>OUTPUT</strong>(출력) 섹션(Advanced(고급) 보기)에서 설정하세요. 베이크는 이 값에 따라 플랫폼마다 각 텍스처의 포맷을 고릅니다.</p>
+<ul>
+<li><strong>Project Settings &gt; Editor</strong>(프로젝트 설정 &gt; 에디터) 창의 <strong>Sprite Packer Mode</strong>(스프라이트 패커 모드) 필드가 <strong>Sprite Atlas V2 - Enabled</strong> 옵션이나 <strong>Sprite Atlas V2 - Enabled for Builds</strong> 옵션이면 아틀라스가 패킹됩니다. 그 밖의 모드에서는 각 시트가 별도의 텍스처로 빌드에 포함되며, Bake(베이크) 탭에 <strong>Use Sprite Atlas V2</strong>(Sprite Atlas V2 사용) 버튼이 나타납니다. 프로젝트의 <strong>Sprite Packer Mode</strong> 필드를 바꾼 뒤에는 이전에 베이크한 것을 다시 베이크하세요.</li>
+<li>베이크된 아틀라스의 Default(기본) 탭이나 플랫폼 탭에서 <strong>Format</strong>(포맷) 필드에 직접 지정한 값, 또는 <strong>Compression</strong>(압축) 필드가 None인 상태에서 켠 <strong>Override</strong>(오버라이드) 체크박스는 그 플랫폼에서 베이크의 포맷을 대신합니다. <strong>Format</strong> 필드를 <strong>Automatic</strong>(자동) 옵션으로 되돌리면 다음 베이크가 자체 포맷을 다시 씁니다. 지오메트리 텍스처나 그림자 하이트 맵에 직접 설정한 <strong>Format</strong> 필드는 유지됩니다.</li>
+<li>베이크는 지오메트리 텍스처나 그림자 하이트 맵을 잘못 그리게 되는 포맷을, 직접 설정한 탭을 포함해 어느 탭에서든 다른 포맷으로 바꾸고 콘솔에 알립니다.</li>
+<li><strong>Generate Mip Maps</strong> 체크박스(Advanced 보기)가 켜져 있으면, 원래 크기의 4분의 1 이하로 그려지는 스프라이트는 가장 바깥 픽셀이 빛을 더 평평하게 받고 지면에 더 가깝게 정렬됩니다.</li>
+<li>아틀라스의 <strong>Max Texture Size</strong>(최대 텍스처 크기) 필드를 더 작게 설정하면 아틀라스가 더 많은 페이지로 나뉠 뿐 용량은 줄지 않습니다.</li>
+</ul>
+<h3 id="a-web-build-for-phones">휴대폰용 Web 빌드</h3>
+<p>Web에서 베이크는 <strong>File &gt; Build Profiles</strong>(파일 &gt; 빌드 프로파일) 창에 있는 Web 플랫폼의 <strong>Texture Compression</strong>(텍스처 압축) 필드를 따릅니다. 기본값인 <strong>Use Player Settings</strong>(플레이어 설정 사용) 옵션에서는 <strong>Player Settings &gt; Web</strong>(플레이어 설정 &gt; Web) 창의 <strong>Texture compression format</strong>(텍스처 압축 포맷) 필드를 따릅니다. DXT에서는 DXT와 BC7 포맷을 지원하지 않는 브라우저가 압축된 베이크 텍스처를 각각 원래 메모리의 4배 크기로 풉니다. 대부분의 휴대폰 브라우저가 여기에 해당합니다. 휴대폰에서 실행할 빌드는 다음과 같이 합니다.</p>
+<ol>
+<li><strong>Texture Compression</strong> 필드를 ASTC로 설정합니다. ETC2도 쓸 수 있지만, ETC2에서는 키가 큰 스프라이트 가까이에 있는 광원의 빛이 스프라이트에 띠 모양으로 나타날 수 있습니다.</li>
+<li>다시 베이크합니다.</li>
+</ol>
+<p>Unity 6000.6에서는 <strong>Use Player Settings</strong> 옵션으로 빌드하거나, 포맷을 지정하지 않는 빌드 스크립트로 빌드하면 스프라이트 아틀라스의 페이지가 이전 포맷으로 들어갈 수 있습니다. <strong>Texture compression format</strong> 필드를 바꾼 뒤에는 <strong>Texture Compression</strong> 필드가 <strong>Use Player Settings</strong> 옵션인 상태에서 스프라이트 아틀라스를 선택하고 우클릭한 다음 <strong>Reimport</strong>(다시 임포트) 메뉴를 선택하세요.</p>
+<h3 id="crunching-one-platform">한 플랫폼만 크런치 압축하기</h3>
+<ol>
+<li>출력 폴더의 베이크된 아틀라스마다 그 플랫폼의 탭을 열고, <strong>Override</strong>(오버라이드) 체크박스와 <strong>Use Crunch Compression</strong>(크런치 압축 사용) 체크박스를 켠 뒤 <strong>Format</strong>(포맷) 필드는 <strong>Automatic</strong>(자동) 옵션으로 둡니다. 아틀라스가 패킹되지 않는 동안에는 베이크된 스프라이트 시트에서도 같은 방법으로 설정합니다. 시트의 노멀 맵과 지오메트리 텍스처는 제외합니다.</li>
+<li>다시 베이크합니다. 베이크는 그 플랫폼에서 아틀라스의 노멀 맵, 지오메트리 텍스처, 그림자 하이트 맵을 크런치 압축하지 않은 상태로 유지합니다.</li>
+</ol>
+<p>다시 베이크해도 직접 설정한 오버라이드는 유지됩니다.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

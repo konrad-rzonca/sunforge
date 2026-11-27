@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity에서 3D 모델을 2D 스프라이트로 베이크하는 방법 | Sun Forge 가이드</title>
+<meta name="description" content="모델부터 씬에 놓인 베이크된 프리팹까지의 과정.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/first-bake/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/first-bake/">
+<meta property="og:title" content="Unity에서 3D 모델을 2D 스프라이트로 베이크하는 방법 | Sun Forge 가이드">
+<meta property="og:description" content="모델부터 씬에 놓인 베이크된 프리팹까지의 과정.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "첫 베이크", "item": "https://sunforgetools.com/guide/sunforge/ko/first-bake/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/first-bake/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/first-bake/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/first-bake/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/first-bake/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/first-bake/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko" aria-current=page>첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/first-bake/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/first-bake/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/first-bake/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/first-bake/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-first-bake"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="first-bake">첫 베이크</h1><p class="lead">모델부터 씬에 놓인 베이크된 프리팹까지의 과정.</p></div><article class="doc"><ol>
+<li><strong>Tools &gt; Sun Forge &gt; Bake Window</strong>(도구 &gt; Sun Forge &gt; Bake Window) 메뉴를 선택하고, 열린 창으로 모델이나 프리팹을 드래그합니다. 또는 프로젝트 창에서 모델이나 프리팹을 마우스 오른쪽 버튼으로 클릭하고 <strong>Sun Forge &gt; Open in Bake Window</strong> 메뉴를 선택합니다.</li>
+<li><strong>Archetype</strong>(아키타입) 필드에서 모델에 맞는 아키타입을 고릅니다. 예를 들어 직접 플레이하는 캐릭터라면 <strong>Hero</strong> 아키타입을 고릅니다.</li>
+<li>미리보기에서 모델 옆에 표시되는 스프라이트를 확인합니다. 드래그하면 모델 주위를 돌며 볼 수 있습니다.</li>
+<li><strong>Bake</strong>(베이크) 버튼을 클릭합니다. 베이크가 끝나면 <strong>Show</strong>(표시) 버튼을 클릭하고, 강조 표시된 프리팹을 씬으로 드래그합니다.</li>
+<li><strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong>(게임 오브젝트 &gt; Sun Forge &gt; Set Up for Lighting) 메뉴를 선택하고 <strong>Apply</strong>(적용) 버튼을 클릭합니다. 그러면 <strong>Position</strong>(포지션) 필드의 Y 값이 더 낮은 베이크된 프리팹이 앞에 그려지고, 블룸과 드리운 그림자가 나타납니다.</li>
+<li>Play 버튼을 누릅니다. <strong>Hero</strong> 아키타입으로 베이크한 프리팹은 WASD 키나 화살표 키로 걷고, 클릭하거나 Space 키를 누르면 포인터 쪽으로 쏩니다. 메인 카메라가 이 프리팹을 따라갑니다.</li>
+</ol>
+<h2 id="showcase">쇼케이스</h2>
+<p>베이크 출력으로 만든 플레이 가능한 씬과, 그 출력을 만드는 데 쓴 3D 모델과 프리셋을 보려면 <strong>Tools &gt; Sun Forge &gt; Open Showcase</strong>(도구 &gt; Sun Forge &gt; Open Showcase) 메뉴를 선택하세요. 프로젝트에 아직 쇼케이스가 없으면 Open Showcase 메뉴가 먼저 다운로드하고 임포트합니다.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

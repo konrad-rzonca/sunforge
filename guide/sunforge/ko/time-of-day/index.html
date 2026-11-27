@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D 낮과 밤 사이클 | Sun Forge 가이드</title>
+<meta name="description" content="씬의 시각 설정, 그리고 새벽부터 밤까지 그 시각에 따라 바뀌는 것.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/time-of-day/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/time-of-day/">
+<meta property="og:title" content="Unity 2D 낮과 밤 사이클 | Sun Forge 가이드">
+<meta property="og:description" content="씬의 시각 설정, 그리고 새벽부터 밤까지 그 시각에 따라 바뀌는 것.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "하루 중 시각", "item": "https://sunforgetools.com/guide/sunforge/ko/time-of-day/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/time-of-day/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/time-of-day/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/time-of-day/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/time-of-day/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/time-of-day/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko" aria-current=page>하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/time-of-day/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/time-of-day/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/time-of-day/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/time-of-day/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-time-of-day"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="time-of-day">하루 중 시각</h1><p class="lead">씬의 시각 설정, 그리고 새벽부터 밤까지 그 시각에 따라 바뀌는 것.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#values-you-changed">직접 바꾼 값</a></li><li><a href="#change-a-style-s-hours">스타일의 시각 변경</a></li><li><a href="#run-a-day-from-a-script">스크립트로 시간 흐르게 하기</a></li></ul></details></nav><article class="doc"><p>Lighting Setup 컴포넌트의 <strong>Style</strong>(스타일) 필드 아래에 있는 <strong>Time Of Day</strong>(하루 중 시각) 슬라이더는 0~24 사이의 시각을 설정합니다. 각 값은 그 시각의 스타일을 따릅니다. 기본 제공 스타일에는 모두 새벽, 아침, 오후, 해 질 녘, 그리고 20:00부터 04:00까지 이어지는 밤이 있습니다. Indoor 스타일에서는 창문으로 들어오는 빛이 새벽과 해 질 녘에 따뜻한 색을 띠며 약해지고, 밤에는 달과 씬의 Light Source 광원이 방을 비춥니다.</p>
+<p>기본 제공 스타일이 시각에 따라 바꾸는 값은 다음과 같습니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>값</th>
+<th>바뀌는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sun Elevation</strong>(태양 고도각)</td>
+<td>태양이 어느 면을 비추는지와 평평한 지면의 밝기</td>
+</tr>
+<tr>
+<td><strong>Sun Color</strong>(태양 컬러), <strong>Sun Intensity</strong>(태양 강도), <strong>Sun Warmth</strong>(태양 따뜻함)</td>
+<td>햇빛의 색과 밝기</td>
+</tr>
+<tr>
+<td><strong>Ambient Sky Color</strong>(주변광(하늘 색상)), <strong>Ambient Sky Intensity</strong>(주변광(하늘 강도))</td>
+<td>그늘과 모든 면에 닿는 하늘의 빛</td>
+</tr>
+<tr>
+<td><strong>Night</strong>(밤)</td>
+<td>태양이 서서히 달로 바뀌는 것과 머티리얼의 야간 시야 전환</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong>(드리운 그림자 늘이기 활성화), <strong>Cast Shadow Stretch Sun Angle Offset</strong>(드리운 그림자 늘이기 태양 각도 오프셋)</td>
+<td>Regular 스타일에서 새벽과 해 질 녘에 지면에 길게 늘어지는 그림자</td>
+</tr>
+<tr>
+<td><strong>Ground Shadow Strength</strong>(지면 그림자 강도)</td>
+<td>그림자 스프라이트와 Cast Shadow Field 컴포넌트의 지면 오버레이가 진한 정도</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="values-you-changed">직접 바꾼 값</h2>
+<p>Lighting Setup 컴포넌트에서 직접 바꾼 값은 모든 시각에 그대로 유지됩니다. 시각에 따라 바뀌는 값은 그 시각에 스타일이 이미 주는 값과 같게 설정해도 계속 시각에 따라 바뀝니다. 값의 행에 있는 되돌리기 버튼이나 <strong>Global Light</strong>(씬 전체 조명) 섹션 또는 <strong>Values</strong>(값) 섹션 헤더의 <strong>Revert All</strong>(모두 되돌리기) 버튼을 클릭하면 값이 다시 시각에 따라 바뀝니다. 값이 계속 시각에 따라 바뀌게 두면서 씬을 더 밝게 하거나 어둡게 하려면 대신 <strong>Global Light</strong> 섹션의 <strong>Sun And Moon Brightness</strong>(태양과 달 밝기) 필드와 <strong>Sky Brightness</strong>(하늘 밝기) 필드를 설정하세요.</p>
+<p>시각에 따라 바뀌는 값을 애니메이션화하려면 Animation(애니메이션) 창에서 그 값의 커브를 추가하거나, 에디터 스크립트에서 <code>AnimationUtility.SetEditorCurve</code> 메서드로 추가하세요. <code>AnimationClip.SetCurve</code> 메서드로 만든 클립은 Lighting Setup 컴포넌트에서 값을 직접 바꾸거나 그 값을 대상으로 <code>SunForgeLightingSetup.KeepValue</code> 메서드를 호출한 뒤에야 그 값에 적용됩니다.</p>
+<h2 id="change-a-style-s-hours">스타일의 시각 변경</h2>
+<ol>
+<li><strong>Lighting Setup</strong> 컴포넌트를 선택하고, <strong>Values</strong>(값) 섹션 아래에 있는 스타일 이름이 붙은 섹션을 엽니다. Sun Forge의 스타일을 쓰고 있으면 그 섹션의 헤더에 있는 <strong>Edit A Copy</strong>(사본 편집) 버튼을 클릭합니다.</li>
+<li>그 섹션 안에서 <strong>Hours</strong>(시간대) 섹션을 엽니다. 이 섹션에는 먼저 12:00 행이 나오며, 이 행은 스타일의 <strong>Default Lighting Values</strong>(기본 조명 값) 섹션을 엽니다. 그 뒤로 스타일이 설정하는 나머지 시각마다 키가 하나씩 나옵니다. 키에서 그 키의 시각에 설정할 값마다 체크박스를 선택합니다.</li>
+<li>새 키를 추가하려면 <strong>Add Hour</strong>(시각 추가) 버튼을 클릭합니다. 여러 시간 동안 값을 유지할 키에서는 <strong>Held</strong>(유지) 토글을 켭니다.</li>
+</ol>
+<h2 id="run-a-day-from-a-script">스크립트로 시간 흐르게 하기</h2>
+<p>스크립트로 하루의 시간이 흐르게 하려면 <code>Update</code> 메서드에서 <code>SunForgeLightingSetup.TimeOfDay</code> 프로퍼티를 설정하세요.</p>
+<p>스크립트가 그 시각에 스타일이 이미 주는 값과 같게 값을 설정한다면, <code>setup.KeepValue(nameof(SunForgeLightingValues.MistEnabled))</code> 호출처럼 <code>SunForgeLightingSetup.KeepValue</code> 메서드를 호출해 그 값을 모든 시각에 유지하세요.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

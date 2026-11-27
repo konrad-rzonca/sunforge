@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プラットフォーマーでのベイクしたキャラクターの移動と、物理ワールドでのプレハブのシミュレーション | Sun Forge ガイド</title>
+<meta name="description" content="自作のスクリプトで、ベイクしたアクターをサイドビューで歩かせてジャンプさせ、ベイクしたプレハブを低レベル 2D 物理ワールドで動かします。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/platformers-and-physics/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/platformers-and-physics/">
+<meta property="og:title" content="プラットフォーマーでのベイクしたキャラクターの移動と、物理ワールドでのプレハブのシミュレーション | Sun Forge ガイド">
+<meta property="og:description" content="自作のスクリプトで、ベイクしたアクターをサイドビューで歩かせてジャンプさせ、ベイクしたプレハブを低レベル 2D 物理ワールドで動かします。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "プラットフォーマーと物理", "item": "https://sunforgetools.com/guide/sunforge/ja/platformers-and-physics/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/platformers-and-physics/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/platformers-and-physics/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/platformers-and-physics/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/platformers-and-physics/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/platformers-and-physics/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja" aria-current=page>プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/platformers-and-physics/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/platformers-and-physics/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/platformers-and-physics/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/platformers-and-physics/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-platformers-and-physics"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>プラットフォーマーと<wbr>物理</h1><p class="lead">自作のスクリプトで、ベイクしたアクターをサイドビューで歩かせてジャンプさせ、ベイクしたプレハブを低レベル 2D 物理ワールドで動かします。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#side-view-games">サイドビューのゲーム</a></li><li><a href="#physics-world">物理ワールド</a></li></ul></details></nav><article class="doc"><h2 id="side-view-games">サイドビューの<wbr>ゲーム</h2>
+<p>Movement、Wander、Melee Attacker は、空を飛ぶものや泳ぐもののように、重力なしで、アクターを画面の左右だけでなく上下にも動かします。Movement を持つアクターを左右だけに歩かせるには、その <code>ReadsInput</code> をオフにし、y が 0 の方向を渡して <code>SunForgeMovement.Walk(direction, Time.deltaTime)</code> を毎フレーム呼んでください。</p>
+<p>プラットフォーマーのベイク設定は、<a href="/guide/sunforge/ja/side-view/#side-view-bakes" hreflang="ja">サイドビュー › サイドビューのベイク</a>を参照してください。プラットフォーマーのアクターと、床の上にとどまるアクターは、次のように自作のスクリプトで動かしてください。</p>
+<ol>
+<li>スクリプトは <strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong> (アセット &gt; 作成 &gt; Sun Forge &gt; Behavior Script) で作成し、その <code>[SunForgeBehavior]</code> に <code>movesActor: true</code> を追加して、Movement、Wander、Melee Attacker の代わりに GAMEPLAY (ゲームプレイ、Advanced (上級者向け) 表示) に登録します。こうすると、ベイクが Rigidbody 2D の <strong>Linear Damping</strong> (線形減衰) を 0 に設定します。自分でプレハブに追加するスクリプトの場合は、<strong>Linear Damping</strong> を 0 にしておく必要があります。</li>
+<li>アクターに重力を与えるために、Rigidbody 2D の <strong>Gravity Scale</strong> (重力スケール) を上げます。この値は再ベイクしても保持されます。Physics World を使う場合は、そのワールドの定義で重力を設定します。</li>
+<li>スクリプトでは、Rigidbody 2D の水平方向の速度を入力から設定し、垂直方向の速度はジャンプするときにだけ設定します。Physics World を使う場合は、アクターの <code>SunForgePhysicsBody</code> の <code>Velocity</code> に書き込みます。</li>
+<li>立ち止まっている間も含めて毎フレーム、アクターが歩く方向と <code>Time.deltaTime</code> を渡して <code>SunForgeFacing.FaceUnlessHeld</code> を呼びます。また、<code>SunForgeActorAnimation.Of(this).SetMoveSpeed</code> を、歩いている間は 1、止まっている間は 0 を渡して呼びます。<strong>While Walking</strong> (歩行中) が Keep Walking (歩行を継続) の Shooter には、この両方が必要です。<code>SetMoveSpeed</code> がないと発射のたびに Attack を再生し、<code>FaceUnlessHeld</code> がないと、アクターがある方向に撃ちながら反対の方向に歩いても、歩行アニメーションが逆再生されません。</li>
+<li>ジャンプを再生するには、同じ <code>SunForgeActorAnimation</code> の <code>SetBool(Animator.StringToHash(&quot;Jump&quot;), true)</code> を呼びます。false に設定するまで、Jump という名前の <strong>Loop While Bool</strong> (Bool が true の間ループ) エントリーが再生されます。</li>
+<li>Shooter は Space キーでも発射します。スクリプトが Space キーでジャンプする場合は、Shooter の <strong>Reads Input</strong> (入力で操作) をオフにし、<code>AimAt</code> または <code>AimDirection</code> で狙いを付けて、スクリプトから <code>Fire</code> を呼びます。</li>
+</ol>
+<h2 id="physics-world">物理ワールド</h2>
+<p>ベイクしたプレハブを Unity の低レベル 2D 物理ワールドで動かすには、<strong>Assets &gt; Create &gt; Sun Forge &gt; Physics World</strong> (アセット &gt; 作成 &gt; Sun Forge &gt; Physics World) でアセットを作成し、その Inspector でワールド、物理ボディ、シェイプの定義を設定して、アーキタイプの <strong>PHYSICS</strong> (物理) セクション (Advanced (上級者向け) 表示) で指定してください。すると、<strong>Collider Shape</strong> (コライダーの形状) を持つ各プレハブに <code>SunForgePhysicsBody</code> が付きます。</p>
+<p>ベイクデータから独自の物理シェイプを組む場合は、<code>SunForgeBakedPrefab.Anchors</code> を読み、<code>SunForgeBakedPrefab.AnchorsChanged</code> が発生するたびにもう一度読んでください。コライダーの <strong>Follows Facing</strong> (向きに追従、Archetypes (アーキタイプ) タブの PHYSICS、Advanced 表示) がオンのアクターは、向きを変えるとコライダーが変わります。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

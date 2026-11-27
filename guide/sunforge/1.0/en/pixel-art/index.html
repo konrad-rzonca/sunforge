@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pixel art from 3D models, lit in 2D | Sun Forge Guide</title>
+<meta name="description" content="Bake pixel art that the scene&#x27;s lighting lights, and draw it with the Pixel Perfect Camera.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/pixel-art/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/pixel-art/">
+<meta property="og:title" content="Pixel art from 3D models, lit in 2D | Sun Forge Guide">
+<meta property="og:description" content="Bake pixel art that the scene&#x27;s lighting lights, and draw it with the Pixel Perfect Camera.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Pixel art", "item": "https://sunforgetools.com/guide/sunforge/en/pixel-art/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/1.0/en/">Overview</a></li><li><a href="/guide/sunforge/1.0/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/1.0/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/1.0/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/1.0/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/1.0/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/1.0/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/1.0/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/1.0/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/1.0/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/1.0/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/1.0/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/1.0/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/1.0/en/lights/">Lights</a></li><li><a href="/guide/sunforge/1.0/en/styles/">Styles</a></li><li><a href="/guide/sunforge/1.0/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/1.0/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/1.0/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/1.0/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/1.0/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/1.0/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/1.0/en/pixel-art/" aria-current=page>Pixel art</a></li><li><a href="/guide/sunforge/1.0/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/1.0/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/1.0/en/menus/">Menus</a></li><li><a href="/guide/sunforge/1.0/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/1.0/en/components/">Components</a></li><li><a href="/guide/sunforge/1.0/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/1.0/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/1.0/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/1.0/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/1.0/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/1.0/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/1.0/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/1.0/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/1.0/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/1.0/en/pixel-art/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/1.0/ja/pixel-art/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/pixel-art/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-pixel-art"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1 id="pixel-art">Pixel art</h1><p class="lead">Bake pixel art that the scene&#x27;s lighting lights, and draw it with the Pixel Perfect Camera.</p></div><article class="doc"><p>To bake pixel art that the scene's lighting lights:</p>
+<ol>
+<li>In the archetype's <strong>CAMERA</strong> section, set <strong>Pixels Per Unit</strong> to your art's density, such as 32. Use the same value on every archetype the scene uses, ground tiles included.</li>
+<li>In the Advanced view, in the archetype's <strong>QUALITY</strong> section, turn off <strong>Supersampling</strong> and set <strong>Animation Frame Rate</strong> to a low rate, such as 12.</li>
+<li>In the archetype's <strong>OUTPUT</strong> section (Advanced view), set <strong>Filter Mode</strong> to Point and turn off <strong>Generate Mip Maps</strong>.</li>
+<li>In the archetype's <strong>SHADOW</strong> section (Advanced view), set <strong>Softness</strong> to 0, and under <strong>Ground-Projected</strong> set <strong>Resolution Scale</strong> to 1, so each shadow pixel is a sprite pixel.</li>
+<li>For an outline, set the bake's <strong>Prefab Material</strong> (Advanced view) to <strong>Regular with Pixel Outline</strong> or <strong>Cinematic with Pixel Outline</strong>. To outline every sprite in a style, turn on <strong>Pixel Outline</strong> on the style's Sprite material instead (<a href="/guide/sunforge/1.0/en/tune-a-style/#tuning-a-style">Tune a style</a>).</li>
+<li>Bake, and add a Pixel Perfect Camera to the scene's camera (<a href="/guide/sunforge/1.0/en/pixel-art/#pixel-perfect-camera">Pixel art › Pixel Perfect Camera</a>).</li>
+<li>Clear <strong>Post Processing Enabled</strong> on the Lighting Setup, because bloom blurs the pixels. This turns off the style's whole post-processing.</li>
+</ol>
+<h2 id="pixel-perfect-camera">Pixel Perfect Camera</h2>
+<p>URP's Pixel Perfect Camera draws each sprite pixel as a block of whole screen pixels. Set its <strong>Assets Pixels Per Unit</strong> to your sprites' Pixels Per Unit. A sprite at another Pixels Per Unit, or a scaled one, draws pixels of another size.</p>
+<p>The camera works under the 2D Renderer and the Universal Renderer. <strong>Grid Snapping</strong> set to <strong>Upscale Render Texture</strong> works under the 2D Renderer only.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Grid Snapping</th>
+<th>Sprites move in steps of</th>
+<th>Lights, mist and cast shadows change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong></td>
+<td>Screen pixels</td>
+<td>From one screen pixel to the next, so they fall smoothly across a sprite pixel</td>
+</tr>
+<tr>
+<td><strong>Pixel Snapping</strong></td>
+<td>Whole sprite pixels</td>
+<td>From one screen pixel to the next, so they fall smoothly across a sprite pixel</td>
+</tr>
+<tr>
+<td><strong>Upscale Render Texture</strong></td>
+<td>Whole sprite pixels</td>
+<td>Once per sprite pixel, like the art, because the scene renders at the camera's <strong>Reference Resolution</strong> and is scaled up</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/en/search.js"></script>
+</body>
+</html>

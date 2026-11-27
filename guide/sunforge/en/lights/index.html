@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2D lights in Unity: point, spot, line and rectangle lights | Sun Forge Guide</title>
+<meta name="description" content="Add a Light Source, shape its light, and keep using your Light 2D lights.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/lights/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/lights/">
+<meta property="og:title" content="2D lights in Unity: point, spot, line and rectangle lights | Sun Forge Guide">
+<meta property="og:description" content="Add a Light Source, shape its light, and keep using your Light 2D lights.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Lights", "item": "https://sunforgetools.com/guide/sunforge/en/lights/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/lights/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/lights/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/lights/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/lights/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/lights/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/en/lights/" aria-current=page>Lights</a></li><li><a href="/guide/sunforge/en/styles/">Styles</a></li><li><a href="/guide/sunforge/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/en/lights/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/ja/lights/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/lights/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/lights/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lights"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1 id="light-source">Lights</h1><p class="lead">Add a Light Source, shape its light, and keep using your Light 2D lights.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#add-a-light">Add A Light</a></li><li><a href="#shape-a-light">Shape A Light</a></li><li><a href="#use-your-light-2d-lights">Use Your Light 2D Lights</a></li><li><a href="#how-many-lights-a-camera-lights">How Many Lights A Camera Lights</a></li><li><a href="#a-sprite-s-own-glow-light">A Sprite&#x27;s Own Glow Light</a></li></ul></details></nav><article class="doc"><p>A Light Source lights the styled materials under both URP renderers. Its pool lies on the ground below it.</p>
+<h2 id="add-a-light">Add A Light</h2>
+<ol>
+<li>Choose <strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Light</strong>. In the same submenu, <strong>Spot Light</strong>, <strong>Line Light</strong> and <strong>Rectangle Light</strong> light a cone, a line and a rectangle, and <strong>Fire</strong>, <strong>Lamps</strong>, <strong>Magic</strong> and <strong>Windows and Doors</strong> hold starting looks, such as a torch, a street lamp or a window.</li>
+<li>Move it to where the light shows, such as onto a lamp's flame.</li>
+<li>With the light selected, drag the dot above it in the Scene view to set <strong>Height Above Ground</strong>: the light rises or sinks and its pool stays where it is. The other handles set <strong>Ground Radius</strong>, <strong>Inner Radius</strong>, the size and the spot angles. Point at a handle to see its name and value.</li>
+</ol>
+<p>To make an object you already have into a light, such as a lamp prefab, use <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Light Source</strong>.</p>
+<p>A 3D Point or Spot Light does not light styled sprites. To give one a Light Source, select it and click <strong>Add a Sun Forge Light Here</strong> at the top of its Inspector.</p>
+<h2 id="shape-a-light">Shape A Light</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>To get</th>
+<th>Do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A spot</td>
+<td>Lower <strong>Outer Spot Angle</strong>, then drag the <strong>Aim</strong> handle, the dot with an arc past the pool's edge, to aim it</td>
+</tr>
+<tr>
+<td>A pool that reaches farther</td>
+<td>Raise <strong>Intensity</strong>. <strong>Ground Radius</strong> sets where the light ends</td>
+</tr>
+<tr>
+<td>A line or a rectangle of light, such as a tube lamp or a glowing panel</td>
+<td>Set <strong>Shape</strong></td>
+</tr>
+<tr>
+<td>A light that flickers like fire</td>
+<td>Set <strong>Kind</strong> to <strong>Flame</strong>. It flickers in Play mode. For a flame sprite of your own to flicker with it, add the sprite's renderer to <strong>Glow Renderers</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="use-your-light-2d-lights">Use Your Light 2D Lights</h2>
+<p>Your Light 2D lights keep lighting the Unity Lights material. To light your styled sprites with them too:</p>
+<ol>
+<li>Choose <strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong> and click <strong>Apply</strong>. Each Light 2D that targets every sorting layer gets a Light Source that it drives, so scripts and animations that change the Light 2D change the Light Source too. For one light, or one you add later, select it and click <strong>Use This Light with Sun Forge</strong> at the top of its Inspector.</li>
+<li>For a Light 2D that leaves a sorting layer out, select the Lighting Setup and click <strong>Fix</strong> beside the finding that names the light.</li>
+<li>Set each Light Source's <strong>Height Above Ground</strong> to how high its Light 2D hangs above the ground. The light stays at the Light 2D, and on styled sprites its pool lies on the ground below it, so the pool looks flattened, like the ground in your art. On side-view art, set a small <strong>Height Above Ground</strong> instead (<a href="/guide/sunforge/en/side-view/#side-views">Side view</a>).</li>
+</ol>
+<h2 id="how-many-lights-a-camera-lights">How Many Lights A Camera Lights</h2>
+<p>A camera lights up to 512 lights, or 128 in a WebGL 2 player. A light the main camera sees and leaves out shows a gray bulb in the Scene view. To keep one lit, turn on its <strong>Is Prioritized</strong> under <strong>Special Cases</strong>.</p>
+<h2 id="a-sprite-s-own-glow-light">A Sprite's Own Glow Light</h2>
+<p>A Glow light is a Light Source that Sun Forge made for a sprite's glowing parts. A sprite Sun Forge wrote textures for gets one from <strong>Add</strong> in the <strong>Glow Light</strong> row (<strong>Glow, Surfaces and Edges</strong>, on its Lighting Style Renderer). The two <strong>Glow</strong> values under <strong>Values</strong> on the Lighting Setup set how it lights its own sprite, and the light's <strong>Light On Its Object Shift</strong> and <strong>Glow Parts Light Scale</strong>, under <strong>Special Cases</strong>, change that for one sprite.</p>
+<p>Where a sprite's material is of another style than the scene's, such as a Flat material in a Regular scene, the material's style sets how its Glow light lights it, and the Lighting Setup's two <strong>Glow</strong> values do not change it. Realistic counts as Regular here, and a style of your own as the style you made it from. The light's <strong>Light On Its Object Shift</strong> and <strong>Glow Parts Light Scale</strong> still change such a sprite.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/en/search.js"></script>
+</body>
+</html>

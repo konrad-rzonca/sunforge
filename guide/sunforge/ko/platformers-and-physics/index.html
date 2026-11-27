@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>플랫포머에서 베이크된 캐릭터 이동, 물리 월드에서 프리팹 실행 | Sun Forge 가이드</title>
+<meta name="description" content="직접 만든 스크립트로 사이드 뷰에서 베이크된 액터를 걷고 점프하게 하고, 베이크된 프리팹을 로우레벨 2D 물리 월드에서 실행합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/platformers-and-physics/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/platformers-and-physics/">
+<meta property="og:title" content="플랫포머에서 베이크된 캐릭터 이동, 물리 월드에서 프리팹 실행 | Sun Forge 가이드">
+<meta property="og:description" content="직접 만든 스크립트로 사이드 뷰에서 베이크된 액터를 걷고 점프하게 하고, 베이크된 프리팹을 로우레벨 2D 물리 월드에서 실행합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "플랫포머와 물리", "item": "https://sunforgetools.com/guide/sunforge/ko/platformers-and-physics/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/platformers-and-physics/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/platformers-and-physics/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/platformers-and-physics/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/platformers-and-physics/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/platformers-and-physics/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko" aria-current=page>플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/platformers-and-physics/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/platformers-and-physics/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/platformers-and-physics/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/platformers-and-physics/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-platformers-and-physics"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>플랫포머와 물리</h1><p class="lead">직접 만든 스크립트로 사이드 뷰에서 베이크된 액터를 걷고 점프하게 하고, 베이크된 프리팹을 로우레벨 2D 물리 월드에서 실행합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#side-view-games">사이드 뷰 게임</a></li><li><a href="#physics-world">물리 월드</a></li></ul></details></nav><article class="doc"><h2 id="side-view-games">사이드 뷰 게임</h2>
+<p>Movement, Wander, Melee Attacker 비헤이비어는 날거나 헤엄치는 것처럼 중력 없이 액터를 화면의 좌우뿐 아니라 위아래로도 움직입니다. Movement 비헤이비어가 있는 액터를 좌우로만 걷게 하려면 <code>ReadsInput</code> 프로퍼티를 끄고, y 값이 0인 방향으로 매 프레임 <code>SunForgeMovement.Walk(direction, Time.deltaTime)</code> 메서드를 호출하세요.</p>
+<p>플랫포머의 베이크 설정은 <a href="/guide/sunforge/ko/side-view/#side-view-bakes" hreflang="ko">사이드 뷰 › 사이드 뷰 베이크</a>을 참조하세요. 플랫포머의 액터와 바닥에 붙어 있어야 하는 액터는 직접 만든 스크립트로 움직이세요.</p>
+<ol>
+<li><strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong>(에셋 &gt; 생성 &gt; Sun Forge &gt; Behavior Script) 메뉴로 스크립트를 만들고, <code>[SunForgeBehavior]</code> 특성에 <code>movesActor: true</code> 인수를 추가한 뒤, GAMEPLAY(게임플레이) 섹션(Advanced(고급) 보기)에 Movement, Wander, Melee Attacker 비헤이비어 대신 이 스크립트를 넣습니다. 그러면 베이크가 Rigidbody 2D 컴포넌트의 <strong>Linear Damping</strong>(선형 댐핑) 필드를 0으로 설정합니다. 프리팹에 직접 추가하는 스크립트라면 <strong>Linear Damping</strong> 필드를 0으로 설정해야 합니다.</li>
+<li>액터에 중력을 줍니다. Rigidbody 2D의 <strong>Gravity Scale</strong>(중력 스케일) 필드 값을 올리면 되며, 이 값은 다시 베이크해도 유지됩니다. Physics World 에셋을 쓸 때는 그 월드 정의에서 중력을 설정합니다.</li>
+<li>스크립트에서는 입력에 따라 Rigidbody 2D의 수평 속도를 설정하고, 수직 속도는 점프할 때만 설정합니다. Physics World 에셋을 쓸 때는 액터의 <code>SunForgePhysicsBody</code> 컴포넌트의 <code>Velocity</code> 프로퍼티에 값을 씁니다.</li>
+<li>가만히 서 있을 때를 포함해 매 프레임, 액터가 걷는 방향과 <code>Time.deltaTime</code> 값을 넘겨 <code>SunForgeFacing.FaceUnlessHeld</code> 메서드를 호출합니다. <code>SunForgeActorAnimation.Of(this).SetMoveSpeed</code> 메서드도 걷는 동안에는 1, 멈춰 있을 때는 0을 넘겨 호출합니다. <strong>While Walking</strong>(걷는 동안) 필드를 Keep Walking(걷기 유지) 옵션으로 설정한 Shooter 비헤이비어에는 두 호출이 모두 필요합니다. <code>SetMoveSpeed</code> 호출이 없으면 쏠 때마다 Attack 애니메이션을 재생하고, <code>FaceUnlessHeld</code> 호출이 없으면 액터가 한쪽으로 쏘면서 반대쪽으로 걸을 때 걷기 애니메이션이 거꾸로 재생되지 않습니다.</li>
+<li>점프 애니메이션을 재생하려면 같은 <code>SunForgeActorAnimation</code> 객체에서 <code>SetBool(Animator.StringToHash(&quot;Jump&quot;), true)</code> 메서드를 호출합니다. 이 호출은 false로 설정할 때까지 이름이 Jump인 <strong>Loop While Bool</strong>(부울 참일 때 반복) 항목을 재생합니다.</li>
+<li>Shooter 비헤이비어는 Space 키로도 발사합니다. 스크립트가 Space 키로 점프한다면 Shooter의 <strong>Reads Input</strong>(입력 사용) 토글을 끄고, <code>AimAt</code> 메서드나 <code>AimDirection</code> 프로퍼티로 조준한 뒤, 스크립트에서 <code>Fire</code> 메서드를 호출합니다.</li>
+</ol>
+<h2 id="physics-world">물리 월드</h2>
+<p>베이크된 프리팹을 Unity의 로우레벨 2D 물리 월드에서 실행하려면 <strong>Assets &gt; Create &gt; Sun Forge &gt; Physics World</strong>(에셋 &gt; 생성 &gt; Sun Forge &gt; Physics World) 메뉴로 Physics World 에셋을 만들고, 인스펙터에서 월드, 바디, 모양 정의를 설정한 뒤, 아키타입의 <strong>PHYSICS</strong>(물리) 섹션(Advanced(고급) 보기)에서 이 에셋을 지정하세요. 그러면 <strong>Collider Shape</strong>(콜라이더 모양) 필드가 설정된 각 프리팹에 <code>SunForgePhysicsBody</code> 컴포넌트가 생깁니다.</p>
+<p>베이크 데이터로 물리 모양을 직접 만들려면 <code>SunForgeBakedPrefab.Anchors</code> 프로퍼티를 읽고, <code>SunForgeBakedPrefab.AnchorsChanged</code> 이벤트가 발생할 때마다 다시 읽으세요. 콜라이더의 <strong>Follows Facing</strong>(바라보는 방향 연동) 토글(Archetypes(아키타입) 탭, PHYSICS 섹션, Advanced 보기)이 켜진 액터는 다른 방향으로 돌 때 콜라이더가 바뀝니다.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

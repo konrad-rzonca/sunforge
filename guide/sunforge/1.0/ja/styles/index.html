@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2D スプライトのライティングスタイル: Regular、Cinematic、Flat、Realistic | Sun Forge ガイド</title>
+<meta name="description" content="シーンで 4 つのスタイルを切り替え、各品質レベルで何を描画するかを選びます。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/styles/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/styles/">
+<meta property="og:title" content="2D スプライトのライティングスタイル: Regular、Cinematic、Flat、Realistic | Sun Forge ガイド">
+<meta property="og:description" content="シーンで 4 つのスタイルを切り替え、各品質レベルで何を描画するかを選びます。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "スタイル", "item": "https://sunforgetools.com/guide/sunforge/ja/styles/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja" aria-current=page>スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/styles/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/styles/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/styles/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/styles/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-styles"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>スタイル</h1><p class="lead">シーンで 4 つのスタイルを切り替え、各品質レベルで何を描画するかを選びます。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#materials">マテリアル</a></li><li><a href="#style-quality">スタイルの品質</a></li></ul></details></nav><article class="doc"><h2 id="materials">マテリアル</h2>
+<p>このパッケージには、Regular、Cinematic、Flat、Realistic の 4 つのスタイルがあります。シーンのスタイルを変更するには、シーンの <strong>Lighting Setup</strong> を選択し、<strong>Style</strong> (スタイル) の下でスタイルをクリックしてください。</p>
+<h3 id="light-a-room">部屋の<wbr>ライティング</h3>
+<p>各スタイルには、室内用の Indoor バリアントがあります。</p>
+<ol>
+<li>シーンの <strong>Lighting Setup</strong> を選択します。<strong>Style</strong> (スタイル) の下で <strong>Indoor</strong> をクリックしてから、使いたいスタイルをクリックします。</li>
+<li>ランプ、火、窓ごとに、<strong>GameObject &gt; Sun Forge &gt; Light Source</strong> から、<strong>Lamps &gt; Lantern</strong>、<strong>Fire &gt; Fireplace</strong>、<strong>Windows and Doors &gt; Window</strong> など、見た目があらかじめ設定されたライトを選択します。</li>
+<li>部屋を明るく、または暗くするには、<strong>Global Light</strong> (グローバルライト) の下にある <strong>Sun And Moon Brightness</strong> (太陽と月の明るさ) で窓から差し込む光を、<strong>Sky Brightness</strong> (空の明るさ) で日陰の光を設定します。その場合も、部屋は <strong>Time Of Day</strong> (時刻) に応じて変化します。</li>
+<li>Regular、Cinematic、Realistic で金属に部屋を映り込ませるには、部屋のパノラマ画像を、<strong>Texture Shape</strong> (テクスチャ形状) を <strong>Cube</strong> に設定してインポートし、Lighting Setup の <strong>Environment</strong> (環境) に割り当てます。Flat では、金属には画像も空も映り込みません。</li>
+</ol>
+<h3 id="roles">役割</h3>
+<p>各スタイルには、役割ごとに 1 つのマテリアルがあります。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>役割</th>
+<th>用途</th>
+<th>マテリアル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sprite</strong> (スプライト)</td>
+<td>立っているアクター、小道具、エフェクト</td>
+<td><code>SunForge_&lt;Style&gt;_SpriteLit</code></td>
+</tr>
+<tr>
+<td><strong>Ground</strong> (地面)</td>
+<td>地形、道、デカールなど、見下ろし視点で描かれた平らなアートと、サイドビューの床と壁</td>
+<td><code>SunForge_&lt;Style&gt;_Ground</code></td>
+</tr>
+<tr>
+<td><strong>Ground Clutter</strong> (地面の小物)</td>
+<td>石、草の房、草など、地面に置かれ、立っているスプライトと同じ角度から描かれた小さな立体物</td>
+<td><code>SunForge_&lt;Style&gt;_GroundClutter</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>スプライトは、Lighting Setup のスタイルが持つ、そのスプライトの <strong>Role</strong> (役割) 用のマテリアルで描画されるため、スタイルを変えるとマテリアルも変わります。<strong>Lighting Style Renderer</strong> の <strong>Material</strong> (マテリアル) にマテリアルを指定したスプライトは、どのスタイルでもそのマテリアルで描画されます。その場合も、太陽、空、天候、ライト、キャストシャドウ、霧、ポストプロセスは、シーンの Lighting Setup から受けます。</p>
+<h3 id="the-unity-lights-material">Unity Lights マテリアル</h3>
+<p>Unity Lights マテリアル <code>SunForge_UnityLights_SpriteLit</code> は、どのスタイルにも属しません。2D レンダラーでは Unity の 2D ライトで照らされ、ユニバーサルレンダラーでは、サイドビューや 3D シーンのように上方向が +Y のシーンにある直立したスプライトとして、URP のライトで照らされます。スプライトの法線、マスク、エミッションテクスチャを読み込み、Lighting Setup の霧、キャストシャドウ、グラウンドカバーは受けません。</p>
+<h2 id="style-quality">スタイルの<wbr>品質</h2>
+<p>スタイルの <strong>Quality</strong> (品質) セクションでは、負荷の高いオプションである <strong>Light From Lit Ground</strong> (照らされた地面からの光、Flat にはありません) と <strong>Exact Shadows On Sprites</strong> (スプライト上の正確な影) をどの品質レベルで描画するかを設定します。オプションを変更するには、次のようにしてください。</p>
+<ol>
+<li><strong>Lighting Setup</strong> を選択し、<strong>Values</strong> (値) の下にある、スタイルの名前が付いたセクションを開きます。Sun Forge のスタイルを使っている場合は、セクションのヘッダーにある <strong>Edit A Copy</strong> (コピーして編集) をクリックします。</li>
+<li>そのセクションで <strong>Quality</strong> を開きます。</li>
+<li>オプションの横で、<strong>Every Level</strong> (すべてのレベル)、<strong>Never</strong> (なし)、または <strong>From</strong> (から) とレベルを選びます。たとえば <strong>From High</strong> (High から) では、High と、<strong>Project Settings &gt; Quality</strong> (プロジェクト設定 &gt; 品質) で High より後に並ぶ各レベルでそのオプションが描画されます。</li>
+</ol>
+<p>Addressables またはアセットバンドルをビルドしている場合は、スタイルの <strong>Quality</strong> を変更した後に、そのビルドキャッシュをクリアしてください。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

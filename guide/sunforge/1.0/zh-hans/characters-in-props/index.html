@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>站在灌木丛中的角色：2D 精灵的逐像素排序 | Sun Forge 指南</title>
+<meta name="description" content="让角色站在灌木丛中，灌木丛位于角色脚底前方的部分绘制在角色之上。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/characters-in-props/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/characters-in-props/">
+<meta property="og:title" content="站在灌木丛中的角色：2D 精灵的逐像素排序 | Sun Forge 指南">
+<meta property="og:description" content="让角色站在灌木丛中，灌木丛位于角色脚底前方的部分绘制在角色之上。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "道具中的角色", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/characters-in-props/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/1.0/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/1.0/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/1.0/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" hreflang="zh-Hans" aria-current=page>道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/1.0/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/1.0/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/1.0/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/1.0/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/1.0/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/1.0/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/1.0/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/1.0/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/1.0/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/1.0/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/1.0/en/characters-in-props/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/characters-in-props/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/characters-in-props/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-characters-in-props"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="characters-in-props">道<wbr>具<wbr>中<wbr>的<wbr>角色</h1><p class="lead">让角色站在灌木丛中，灌木丛位于角色脚底前方的部分绘制在角色之上。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#correcting-one-prefab">修正单个预制件</a></li><li><a href="#props-that-stay-whole">保持完整的道具</a></li><li><a href="#splitting-with-your-own-shader">用自己的着色器拆分</a></li></ul></details></nav><article class="doc"><p>站在灌木丛中的角色可以绘制在灌木丛的各部分之间：位于角色脚底前方的部分绘制在角色之上，其余部分绘制在角色后面。要启用此功能：</p>
+<ol>
+<li>在 <strong>Project Settings &gt; Sun Forge</strong>（项目设置 &gt; Sun Forge）中，为每个需要在构建中拆分道具的平台勾选 <strong>Per-Pixel Prop Sorting</strong>（逐像素道具排序）。道具在播放模式下和构建中都会拆分，播放模式采用当前活动平台的设置。</li>
+<li>烘焙。类型模板的 <strong>Pixel Sort</strong>（像素排序，Archetypes（类型模板）选项卡 GAMEPLAY（玩法）部分，Advanced（高级）视图）决定哪些预制件是角色、哪些是道具。设为 <strong>Automatic</strong>（自动）时，预制件在播放动画或带有让其移动的行为时为角色，否则为道具。</li>
+</ol>
+<p>角色会获得 <strong>Pixel Sort Character</strong> 组件，道具的主体精灵则会在其 <strong>Baked Renderer Binding</strong> 上勾选 <strong>Split Around Characters</strong>（围绕角色拆分）。脚本（例如选项菜单）可以用 <code>SunForgePixelSort.Enabled</code> 在本次运行的剩余时间内启用或禁用拆分。</p>
+<h2 id="correcting-one-prefab">修正<wbr>单个<wbr>预制<wbr>件</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>让道具保持完整</td>
+<td>在其主体精灵上取消勾选 <strong>Split Around Characters</strong>（围绕角色拆分）。重新烘焙会保留这一选择</td>
+</tr>
+<tr>
+<td>让只在原地摆动的预制件（例如风中的蕨类）围绕角色拆分</td>
+<td>取消勾选其 <strong>Pixel Sort Character</strong>。应取消勾选而不是移除：重新烘焙会让其保持未勾选，并会加回已移除的组件</td>
+</tr>
+<tr>
+<td>让道具在高于或低于角色碰撞器前缘的位置拆分</td>
+<td>在 Pixel Sort Character 上禁用 <strong>Automatic Depth</strong>（自动深度），然后输入 <strong>Depth</strong>（深度）</td>
+</tr>
+<tr>
+<td>让道具围绕自己搭建的角色，或围绕由自己的脚本移动的烘焙道具拆分</td>
+<td>为其添加 Pixel Sort Character：<strong>Add Component &gt; Sun Forge &gt; Pixel Sort Character</strong>（添加组件 &gt; Sun Forge &gt; Pixel Sort Character）</td>
+</tr>
+<tr>
+<td>在通过 z 坐标或自身排序点绘制在道具前方的角色周围，让道具保持完整</td>
+<td>取消勾选其 Pixel Sort Character</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="props-that-stay-whole">保持<wbr>完整<wbr>的<wbr>道具</h2>
+<p>只要有透视摄像机绘制道具所在的图层，道具在所有摄像机中都完整绘制；道具与角色的排序图层、顺序或渲染队列不同时，道具也完整绘制。同一时间只有少数道具会拆分。因其他原因保持完整的道具，会在其 <strong>Baked Renderer Binding</strong> 上说明原因。</p>
+<p>Lighting Setup 上的 <strong>Check Setup</strong>（检查设置）会报告透视摄像机，以及各部分无法沿其排序的排序轴：y 和 z 符号相反的 <strong>Custom Axis</strong>（自定义轴）。</p>
+<h2 id="splitting-with-your-own-shader">用<wbr>自己<wbr>的<wbr>着色<wbr>器<wbr>拆分</h2>
+<p>用自己的着色器绘制的道具，只有着色器绘制了自己负责的那部分时才会拆分：</p>
+<ul>
+<li>Shader Graph：将 <strong>Sun Forge Sprite Lit</strong> 或 <strong>Sun Forge Lit Color</strong> 节点连接到 Shader Graph 的 <strong>Alpha</strong>，然后在道具的主体精灵上勾选 <strong>Split Around Characters</strong>（围绕角色拆分）。如果道具的材质是带有其中任一节点的 Shader Graph，烘焙不会勾选该选项，因为 Alpha 未经过该节点的 Shader Graph 会在角色站立处把道具绘制两次。</li>
+<li>手写着色器：按照 <code>SunForgeWalkBands.hlsl</code> 文件头的说明操作（参见 <a href="/guide/sunforge/1.0/zh-hans/custom-shaders/#hand-written-shaders" hreflang="zh-Hans">自定义着色器 › 手写着色器</a>）。着色器不参与拆分的道具会完整绘制。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/zh-hans/search.js"></script>
+</body>
+</html>

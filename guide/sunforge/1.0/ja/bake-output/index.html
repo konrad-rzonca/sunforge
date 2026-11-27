@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクが書き出すファイル、Addressables、バージョン管理 | Sun Forge ガイド</title>
+<meta name="description" content="ベイクが書き出すすべてのファイルとその場所、Addressables を通した出力の読み込み方、コミットするものを説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/bake-output/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/bake-output/">
+<meta property="og:title" content="ベイクが書き出すファイル、Addressables、バージョン管理 | Sun Forge ガイド">
+<meta property="og:description" content="ベイクが書き出すすべてのファイルとその場所、Addressables を通した出力の読み込み方、コミットするものを説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ベイクが書き出すもの", "item": "https://sunforgetools.com/guide/sunforge/ja/bake-output/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja" aria-current=page>ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/bake-output/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/bake-output/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/bake-output/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/bake-output/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-bake-output"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>ベイクが<wbr>書き出すもの</h1><p class="lead">ベイクが書き出すすべてのファイルとその場所、Addressables を通した出力の読み込み方、コミットするものを説明します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#files">ファイル</a></li><li><a href="#addressables">Addressables</a></li><li><a href="#version-control">バージョン管理</a></li></ul></details></nav><article class="doc"><h2 id="files">ファイル</h2>
+<p>ベイクは <code>&lt;Output Root&gt;/&lt;Output Name&gt;/</code> に書き出されます。<strong>Output Root</strong> (出力ルート) が空のアーキタイプは、Sun Forge フォルダー内の <code>Output/&lt;archetype&gt;</code> にベイクします。Sun Forge フォルダーは、<strong>Project Settings &gt; Sun Forge</strong> (プロジェクト設定 &gt; Sun Forge) で変更しない限り <code>Assets/SunForge</code> です。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>ファイル</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;Name&gt;.prefab</code></td>
+<td>シーンに配置するプレハブ</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_BakedData.asset</code></td>
+<td>スクリプトが読み取る、ベイクで計測したすべての情報</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Controller.controller</code></td>
+<td>ベイクにアニメーションがあり、<strong>Animation Player</strong> (アニメーションプレイヤー、Advanced (上級者向け) 表示) が <strong>Auto</strong> (自動) または <strong>Animator</strong> (アニメーター) のときのアニメーターコントローラー</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Dnn.png</code></td>
+<td>レストポーズ。方向ごとに 1 枚のシート。ベイクがこれらのシートとその影を書き出すのは、<strong>Mode</strong> (モード) が <strong>Idle</strong> (待機) のアニメーションエントリーがないときだけです</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_&lt;Clip&gt;_Dnn.png</code></td>
+<td>アニメーションと方向ごとに 1 枚のシート。<code>&lt;Clip&gt;</code> はアニメーションエントリーの出力名で、ドットはそれぞれ <code>_</code> になります。エントリーの Animator のステートもこの名前になります</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Shadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_Shadow_Dnn.png</code></td>
+<td>地面に投影した影</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_EllipseShadow_Dnn.png</code>, <code>&lt;Name&gt;_&lt;Clip&gt;_EllipseShadow_Dnn.png</code></td>
+<td>丸影</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Particles_Dnn.png</code>, <code>&lt;Name&gt;_Particles_Controller.controller</code></td>
+<td>パーティクルのフリップブックと、Animator で再生する場合のコントローラー (<strong>Animator</strong> のとき、またはアニメーションのあるベイクで <strong>Auto</strong> のとき)</td>
+</tr>
+<tr>
+<td><code>&lt;sheet&gt;_Normal.png</code>, <code>_MaskTex.png</code>, <code>_Emission.png</code>, <code>_Geometry.png</code>, <code>_CastHeight.png</code></td>
+<td>シートと並ぶ追加テクスチャ</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas.spriteatlasv2</code>, <code>_Shadow_Atlas</code>, <code>_Particles_Atlas</code></td>
+<td>スプライトアトラス。<strong>Bake Cast Height Texture</strong> (キャストハイトテクスチャをベイク、Advanced 表示) がオンのときは、丸影が <code>_EllipseShadow_Atlas</code> にパックされます</td>
+</tr>
+<tr>
+<td><code>&lt;Name&gt;_Atlas_2.spriteatlasv2</code>, <code>_Atlas_3</code> など (上の各アトラスも同様)</td>
+<td>1 つのアトラスにまとめると、パックに必要なメモリが 16 GB のコンピューターの空きメモリを超える場合に作られる、同じ種類の追加のアトラス。必要な数が減った再ベイクでは残りのアトラスが削除されますが、自作のスプライトを追加したアトラスは削除されず、追加したスプライトだけが残ります</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><code>Dnn</code> は方向の番号です。<code>D00</code> はモデルの背面を写し、番号は時計回りに進みます。アニメーションがベイクしない方向はファイルを書き出さないため、その番号は飛ばされます。</li>
+<li>各シートにはそのフレームが描画する内容だけが入るため、シートのサイズはアニメーションごとに異なります。</li>
+<li>ベイクでは両方の種類の影を書き出せます。その場合、プレハブは地面に投影した影を表示し、丸影は無効にしたまま残します。影はベイクされているため、シーンの太陽を動かしても影は動きません。</li>
+</ul>
+<h3 id="a-body-that-leaves-the-ground">地面から<wbr>離れる<wbr>本体</h3>
+<p><strong>Leaves The Ground</strong> (地面から離れる、Archetypes (アーキタイプ) タブの PHYSICS (物理)、Advanced (上級者向け) 表示) がオンのとき、プレハブは本体を <code>Body</code> 子オブジェクトで描画し、コライダー、移動ビヘイビア、影はルートに残って地面にとどまります。</p>
+<ul>
+<li>本体のソート順を変えるには、<code>Body</code> の親にあたる <code>GroundSort</code> 子オブジェクトの Sorting Group で、<strong>Order in Layer</strong> (レイヤーの順序) を設定してください。</li>
+<li>ゲームの実行中に本体の高さを変えるには、スクリプトを使ってください (<a href="/guide/sunforge/1.0/ja/scripting/#reading-baked-data" hreflang="ja">スクリプティング › ベイクデータの読み取り</a>を参照)。</li>
+</ul>
+<h2 id="addressables">Addressables</h2>
+<p><strong>Mark Addressable</strong> (Addressable にする、Advanced (上級者向け) 表示) がオンのとき、ベイクはプレハブとスプライトアトラスを登録し、それぞれのパスをアドレスにします。ラベルで読み込むとプレハブと一緒にアトラスも返るため、読み込みには <code>GameObject</code> 型を指定してください。</p>
+<ul>
+<li>再ベイクしても、各エントリーのアドレスとグループ、自分で追加したすべてのラベルは保たれます。再ベイクは、前回のベイクが追加したラベルを今回のベイクのラベルに置き換え、削除したエントリーを追加し直します。</li>
+<li>アーキタイプの <strong>Addressables Group</strong> (Addressables グループ、Advanced 表示) を変更しても、登録済みのエントリーは移動しません。プレハブとそのアトラスは、Addressables Groups ウィンドウでまとめて移動してください。</li>
+<li>出力フォルダーが移動したあとは、ベイクで移動したか自分で移動したかにかかわらず、そのエントリーのアドレスは変更するまで古いパスのままです。</li>
+<li>アトラスがパックされないとき、ほかの Addressables コンテンツがベイクしたスプライトを使う場合は、そのスプライトのシートと追加テクスチャを Addressable にしてください。そうすれば、ビルドにはそれぞれのコピーが 1 つだけ含まれます。</li>
+</ul>
+<h2 id="version-control">バージョン管理</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>コミットするもの</th>
+<th>コミットする場合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ベイクプリセットと、<code>Output</code> フォルダーを除く Sun Forge フォルダー。Sun Forge フォルダーには、アーキタイプライブラリ、編集したマテリアル、ライティングスタイルが入っています</td>
+<td>常に</td>
+</tr>
+<tr>
+<td>ベイクの出力 (Sun Forge フォルダーの <code>Output</code> フォルダーを含む)</td>
+<td>シーンやプレハブがベイクしたアセットを参照している場合、またはプラットフォームオーバーライドや Addressables のエントリーなど、ベイクしたファイルの設定を変更した場合</td>
+</tr>
+</tbody>
+</table></div>
+<p>ベイクはプリセットから出力を作り直せるため、ベイクしたコンテンツを Addressables だけで読み込む場合は、出力をコミットしなくてもかまいません。最初のベイクのあとで出力フォルダーの名前を変更したか移動した場合は、作り直したファイルへの参照が切れます。</p>
+<p>Unity のバージョン管理との連携がオンのとき、ベイクは、変更する各出力ファイルをチェックアウトします。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

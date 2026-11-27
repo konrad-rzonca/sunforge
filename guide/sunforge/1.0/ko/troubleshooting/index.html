@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크나 조명이 설정된 씬의 문제 해결 | Sun Forge 가이드</title>
+<meta name="description" content="베이크나 조명이 설정된 씬에 문제가 생겼을 때 확인할 것.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/troubleshooting/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/troubleshooting/">
+<meta property="og:title" content="베이크나 조명이 설정된 씬의 문제 해결 | Sun Forge 가이드">
+<meta property="og:description" content="베이크나 조명이 설정된 씬에 문제가 생겼을 때 확인할 것.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "문제 해결", "item": "https://sunforgetools.com/guide/sunforge/ko/troubleshooting/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/1.0/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/1.0/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/1.0/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/1.0/ko/troubleshooting/" hreflang="ko" aria-current=page>문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/1.0/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/1.0/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/1.0/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/1.0/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/1.0/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/1.0/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/1.0/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/1.0/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/1.0/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/1.0/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/1.0/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/1.0/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/1.0/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/1.0/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/1.0/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/1.0/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/1.0/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/1.0/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/1.0/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/1.0/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/1.0/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/1.0/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/1.0/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/1.0/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/1.0/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/1.0/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/1.0/en/troubleshooting/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/troubleshooting/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/troubleshooting/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-troubleshooting"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>문제 해결</h1><p class="lead">베이크나 조명이 설정된 씬에 문제가 생겼을 때 확인할 것.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#a-bake">베이크</a></li><li><a href="#a-lit-scene">조명이 설정된 씬</a></li></ul></details></nav><article class="doc"><p>아래에서 해당하는 증상을 찾아 그 행에 나온 곳을 확인하세요. 어느 행에도 원인이 없으면 렌더 파이프라인, 색 공간, 카메라의 회전, 그리고 Windows에서는 프로젝트 경로의 길이가 <a href="/guide/sunforge/1.0/ko/requirements/#requirements" hreflang="ko">요구 사항</a>에 맞는지 확인하세요.</p>
+<h2 id="a-bake">베이크</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>증상</th>
+<th>확인할 곳</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>베이크가 멈추거나 거부됨</td>
+<td>Bake(베이크) 탭에 나오는 메시지와 콘솔에서 <code>[Sun Forge]</code> 접두사로 시작하는 줄. 각각 해야 할 일을 알려 줍니다.</td>
+</tr>
+<tr>
+<td>씬에서 베이크된 스프라이트가 평평해 보이거나, 너무 밝거나, 모델과 다르게 보임</td>
+<td><a href="/guide/sunforge/1.0/ko/baked-sprites/#in-a-scene" hreflang="ko">씬의 베이크된 스프라이트</a>.</td>
+</tr>
+<tr>
+<td>베이크된 스프라이트가 다른 것의 앞이나 뒤에 잘못 그려짐</td>
+<td><a href="/guide/sunforge/1.0/ko/first-bake/#first-bake" hreflang="ko">첫 베이크</a> 5단계. 덤불 속의 캐릭터는 <a href="/guide/sunforge/1.0/ko/characters-in-props/#characters-in-props" hreflang="ko">프롭 속의 캐릭터</a>을 참조하세요.</td>
+</tr>
+<tr>
+<td>다시 베이크해도 파일이 바뀌지 않거나, 직접 편집한 파일이 바뀜</td>
+<td><a href="/guide/sunforge/1.0/ko/rebaking/#rebaking" hreflang="ko">다시 베이크</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="a-lit-scene">조명이 설정된 씬</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>증상</th>
+<th>확인할 곳</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>스프라이트가 빛을 받지 않거나, 어둡거나, 빛을 잘못 받음</td>
+<td>씬의 <strong>Lighting Setup</strong> 컴포넌트를 선택하고 <strong>Check Setup</strong>(설정 검사) 버튼을 클릭하세요. 문제 항목마다 해야 할 일이 나와 있으며, <strong>Fix All</strong>(모두 수정) 버튼은 수정을 적용합니다.</td>
+</tr>
+<tr>
+<td>광원이나 그 빛이 닿는 영역, 발광이 이상하게 보임</td>
+<td><a href="/guide/sunforge/1.0/ko/lights/#light-source" hreflang="ko">광원</a>.</td>
+</tr>
+<tr>
+<td>드리운 그림자가 없거나 잘못됨</td>
+<td><a href="/guide/sunforge/1.0/ko/shadows/#cast-shadows" hreflang="ko">그림자 › 드리운 그림자</a>.</td>
+</tr>
+<tr>
+<td>Look(모습) 섹션의 행이 한 스타일에서는 적용되고 다른 스타일에서는 적용되지 않거나, 포스트 프로세싱이 나타나지 않음</td>
+<td><a href="/guide/sunforge/1.0/ko/tune-a-style/#tuning-a-style" hreflang="ko">스타일 조정</a>.</td>
+</tr>
+<tr>
+<td>프레임 비용이 너무 큼</td>
+<td><a href="/guide/sunforge/1.0/ko/performance/#performance" hreflang="ko">성능</a>.</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ko/search.js"></script>
+</body>
+</html>

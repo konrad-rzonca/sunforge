@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2D 스프라이트용 조명 스타일: Regular, Cinematic, Flat, Realistic | Sun Forge 가이드</title>
+<meta name="description" content="씬의 스타일을 4개 스타일 중에서 바꾸고, 품질 레벨마다 무엇을 그릴지 선택합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/styles/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/styles/">
+<meta property="og:title" content="2D 스프라이트용 조명 스타일: Regular, Cinematic, Flat, Realistic | Sun Forge 가이드">
+<meta property="og:description" content="씬의 스타일을 4개 스타일 중에서 바꾸고, 품질 레벨마다 무엇을 그릴지 선택합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "스타일", "item": "https://sunforgetools.com/guide/sunforge/ko/styles/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/1.0/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/1.0/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/1.0/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/1.0/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/1.0/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/1.0/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/1.0/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/1.0/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/1.0/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/1.0/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/1.0/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/1.0/ko/styles/" hreflang="ko" aria-current=page>스타일</a></li><li><a href="/guide/sunforge/1.0/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/1.0/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/1.0/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/1.0/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/1.0/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/1.0/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/1.0/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/1.0/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/1.0/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/1.0/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/1.0/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/1.0/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/1.0/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/1.0/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/1.0/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/1.0/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/1.0/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/1.0/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/1.0/en/styles/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/styles/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/styles/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/1.0/zh-hans/styles/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-styles"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>스타일</h1><p class="lead">씬의 스타일을 4개 스타일 중에서 바꾸고, 품질 레벨마다 무엇을 그릴지 선택합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#materials">머티리얼</a></li><li><a href="#style-quality">스타일 품질</a></li></ul></details></nav><article class="doc"><h2 id="materials">머티리얼</h2>
+<p>이 패키지에는 Regular, Cinematic, Flat, Realistic의 네 가지 스타일이 있습니다. 씬의 스타일을 바꾸려면 씬의 <strong>Lighting Setup</strong> 컴포넌트를 선택하고 <strong>Style</strong>(스타일) 필드 아래에서 스타일을 클릭하세요.</p>
+<h3 id="light-a-room">방 비추기</h3>
+<p>스타일마다 방 안에 쓰는 Indoor 배리언트가 있습니다.</p>
+<ol>
+<li>씬의 <strong>Lighting Setup</strong> 컴포넌트를 선택합니다. <strong>Style</strong>(스타일) 필드 아래에서 <strong>Indoor</strong> 버튼을 클릭한 다음, 원하는 스타일을 클릭합니다.</li>
+<li>램프, 불, 창문마다 <strong>GameObject &gt; Sun Forge &gt; Light Source</strong>(게임 오브젝트 &gt; Sun Forge &gt; Light Source) 메뉴 아래에서 <strong>Lamps &gt; Lantern</strong>, <strong>Fire &gt; Fireplace</strong>, <strong>Windows and Doors &gt; Window</strong> 같은 미리 설정된 모습을 선택합니다.</li>
+<li>방을 더 밝게 하거나 어둡게 하려면 <strong>Global Light</strong>(씬 전체 조명) 섹션에서 창문으로 들어오는 빛인 <strong>Sun And Moon Brightness</strong>(태양과 달 밝기) 필드와 그늘의 빛인 <strong>Sky Brightness</strong>(하늘 밝기) 필드를 설정합니다. 방은 여전히 <strong>Time Of Day</strong>(하루 중 시각) 슬라이더에 따라 바뀝니다.</li>
+<li>Regular, Cinematic, Realistic 스타일에서 금속에 방이 비치게 하려면, 방의 파노라마 이미지를 임포트할 때 <strong>Texture Shape</strong>(텍스처 모양) 필드를 <strong>Cube</strong>(큐브) 옵션으로 설정하고, 그 이미지를 Lighting Setup 컴포넌트의 <strong>Environment</strong>(환경) 필드에 지정합니다. Flat 스타일에서는 금속에 이미지도 하늘도 비치지 않습니다.</li>
+</ol>
+<h3 id="roles">역할</h3>
+<p>스타일마다 역할별로 머티리얼이 하나씩 있습니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>역할</th>
+<th>용도</th>
+<th>머티리얼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sprite</strong>(스프라이트)</td>
+<td>서 있는 액터, 프롭, 이펙트</td>
+<td><code>SunForge_&lt;Style&gt;_SpriteLit</code></td>
+</tr>
+<tr>
+<td><strong>Ground</strong>(지면)</td>
+<td>탑다운으로 그린 지형, 길, 데칼 같은 평평한 아트와 사이드 뷰의 바닥, 벽</td>
+<td><code>SunForge_&lt;Style&gt;_Ground</code></td>
+</tr>
+<tr>
+<td><strong>Ground Clutter</strong>(지면 디테일)</td>
+<td>지면에 놓인 돌, 풀 무더기, 풀 등 서 있는 스프라이트와 같은 각도에서 그린 작은 입체물</td>
+<td><code>SunForge_&lt;Style&gt;_GroundClutter</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>스프라이트는 Lighting Setup 컴포넌트의 스타일에서 <strong>Role</strong>(역할) 필드의 역할에 해당하는 머티리얼을 쓰므로, 스타일이 바뀌면 머티리얼도 바뀝니다. <strong>Lighting Style Renderer</strong> 컴포넌트의 <strong>Material</strong>(머티리얼) 필드에 머티리얼을 지정한 스프라이트는 어느 스타일에서나 그 머티리얼을 씁니다. 이런 스프라이트도 태양, 하늘, 날씨, 광원, 드리운 그림자, 안개, 포스트 프로세싱은 씬의 Lighting Setup에서 받습니다.</p>
+<h3 id="the-unity-lights-material">Unity Lights 머티리얼</h3>
+<p>Unity Lights 머티리얼(<code>SunForge_UnityLights_SpriteLit</code>)은 어느 스타일에도 속하지 않습니다. 2D 렌더러에서는 Unity의 2D 광원이 이 머티리얼을 비춥니다. 유니버설 렌더러에서는 URP의 광원이 이 머티리얼을 비춥니다. 이때 URP는 이 머티리얼을 쓰는 스프라이트를 사이드 뷰나 3D 씬처럼 위쪽이 +Y인 씬에 똑바로 선 스프라이트로 봅니다. 이 머티리얼은 스프라이트의 노멀 텍스처, 마스크 텍스처, 이미션 텍스처를 읽으며, Lighting Setup 컴포넌트의 안개, 드리운 그림자, 그라운드 커버는 받지 않습니다.</p>
+<h2 id="style-quality">스타일 품질</h2>
+<p>스타일의 <strong>Quality</strong>(품질) 섹션은 스타일이 비용이 큰 옵션을 어느 품질 레벨에서 그릴지 정합니다. 비용이 큰 옵션은 <strong>Light From Lit Ground</strong>(빛 받은 지면에서 오는 빛) 필드와 <strong>Exact Shadows On Sprites</strong>(스프라이트 위 정확한 그림자) 필드이며, 그중 <strong>Light From Lit Ground</strong> 필드는 Flat 스타일에 없습니다. 옵션을 바꾸려면 다음과 같이 합니다.</p>
+<ol>
+<li><strong>Lighting Setup</strong> 컴포넌트를 선택하고, <strong>Values</strong>(값) 섹션 아래에 있는 스타일 이름이 붙은 섹션을 엽니다. Sun Forge의 스타일을 쓰고 있으면 그 섹션의 헤더에 있는 <strong>Edit A Copy</strong>(사본 편집) 버튼을 클릭합니다.</li>
+<li>그 섹션 안에서 <strong>Quality</strong> 섹션을 엽니다.</li>
+<li>바꿀 필드에서 <strong>Every Level</strong>(모든 레벨) 옵션이나 <strong>Never</strong>(사용 안 함) 옵션을 선택하거나, <strong>From</strong> 옵션과 레벨 하나를 선택합니다. 예를 들어 <strong>From High</strong>(High부터) 설정은 High 레벨과 <strong>Project Settings &gt; Quality</strong>(프로젝트 설정 &gt; 품질) 창에서 그 뒤에 나열된 각 레벨에서 옵션을 그립니다.</li>
+</ol>
+<p>Addressables 또는 에셋 번들을 빌드한다면 스타일의 <strong>Quality</strong> 섹션을 바꾼 뒤에 빌드 캐시를 지우세요.</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ko/search.js"></script>
+</body>
+</html>

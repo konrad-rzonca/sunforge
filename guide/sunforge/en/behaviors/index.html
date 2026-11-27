@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Write gameplay behaviors for baked prefabs | Sun Forge Guide</title>
+<meta name="description" content="Write a behavior the Bake Window can add, and receive animation events.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/behaviors/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/behaviors/">
+<meta property="og:title" content="Write gameplay behaviors for baked prefabs | Sun Forge Guide">
+<meta property="og:description" content="Write a behavior the Bake Window can add, and receive animation events.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Behaviors", "item": "https://sunforgetools.com/guide/sunforge/en/behaviors/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/behaviors/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/behaviors/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/behaviors/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/behaviors/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/behaviors/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/en/">Overview</a></li><li><a href="/guide/sunforge/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/en/lights/">Lights</a></li><li><a href="/guide/sunforge/en/styles/">Styles</a></li><li><a href="/guide/sunforge/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/en/menus/">Menus</a></li><li><a href="/guide/sunforge/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/en/components/">Components</a></li><li><a href="/guide/sunforge/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/en/behaviors/" aria-current=page>Behaviors</a></li><li><a href="/guide/sunforge/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/en/behaviors/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/ja/behaviors/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/behaviors/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/behaviors/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-behaviors"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1>Behaviors</h1><p class="lead">Write a behavior the Bake Window can add, and receive animation events.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#writing-a-behavior">Writing A Behavior</a></li><li><a href="#animation-events">Animation Events</a></li></ul></details></nav><article class="doc"><h2 id="writing-a-behavior">Writing A Behavior</h2>
+<p>Start a behavior with <strong>Assets &gt; Create &gt; Sun Forge &gt; Behavior Script</strong>. Once Unity compiles it, the <strong>+ Add Behavior</strong> picker (GAMEPLAY, Advanced view) lists it under <strong>Your Project</strong>, named as its <code>[AddComponentMenu]</code> names it, else by its class name.</p>
+<ul>
+<li>Keep the <code>SunForgeBakedPrefab</code> that <code>SunForgeBakedPrefab.Of(this)</code> returns and read its <code>Data</code> when you need it, so a later <code>SetData</code> reaches your script.</li>
+<li>For a projectile of your own, <code>SunForgeHitSweep.TryFirstHit</code> returns the first <code>SunForgeHealth</code> or <code>SunForgeProjectileBlocker</code> that its move hits.</li>
+</ul>
+<h3 id="moving-the-actor">Moving The Actor</h3>
+<ul>
+<li>A script that moves the actor adds <code>movesActor: true</code> to its <code>[SunForgeBehavior]</code>. Without it, the bake gives a movable prefab Linear Damping, which slows the actor.</li>
+<li><code>SunForgeLocomotion</code> walks the actor for a mover of your own, turns it the way it walks and plays its walk animation. Call its <code>ClearCachedAnimator</code> from <code>OnEnable</code>, so an actor whose visual you swapped plays the new one.</li>
+<li>Movement reads only the keyboard. To walk its actor from a touch control, or to a point, turn its <code>ReadsInput</code> off and each frame call <code>SunForgeMovement.Walk</code> or <code>SunForgeMovement.WalkTowards</code>.</li>
+<li>After you swap the visual of an actor that has Movement, Wander, the Melee Attacker or the Shooter, disable and enable the actor, so they play the new one.</li>
+</ul>
+<h3 id="playing-animations">Playing Animations</h3>
+<ul>
+<li>Play animations through <code>SunForgeActorAnimation.Of(this)</code>, whose triggers, bools, Speed and restart work under whichever player the bake's <strong>Animation Player</strong> (Advanced view) picks.</li>
+<li><code>SunForgeActorAnimation.BakedParticlesOf(this)</code> returns what plays the actor's particles: its <code>Play(SunForgeAnimatorParameters.BakedParticlesState, t)</code>, with <code>t</code> from 0 to 1, starts or replays them. Activate a pooled effect before you play it.</li>
+<li>To learn when an animation has finished, start it with <code>PlayTracked</code> or <code>SetTriggerTracked</code>. Each returns a <code>SunForgeAnimationWait</code>: read its <code>IsDone</code>, or <code>yield return</code> it in a coroutine.</li>
+<li>To run a method at a point of an animation, give its clip an Animation Event (<a href="/guide/sunforge/en/behaviors/#animation-events">Behaviors › Animation Events</a>).</li>
+</ul>
+<h2 id="animation-events">Animation Events</h2>
+<p>An Animation Event in a source clip fires in the baked animation as the frame that shows its pose appears, whichever player <strong>Animation Player</strong> (Advanced view) picks. It calls the method of that name on each script on the prefab's root. Add a script with that method to the prefab's root, or list one under GAMEPLAY (Advanced view).</p>
+<ul>
+<li>An event outside the entry's <strong>Range</strong> is left out.</li>
+<li>An event between two frames fires on the nearer one, so at a lower <strong>Frame Rate</strong> two events one source frame apart can fire together.</li>
+<li>In a looping animation, an event in the last half-frame fires on the first frame, so it fires as each loop starts, the first one included.</li>
+<li>When an animation has events, its state in the controller has a <strong>Speed</strong> of 2, and the controller has a <code>SunForge:Events</code> parameter at 1. Leave both: they play the animation at its baked rate, with its events.</li>
+<li>Under <strong>Flipbook Player</strong>, and on a prefab baked with <strong>Leaves The Ground</strong> (Archetypes tab, PHYSICS, Advanced view), a method that takes an <code>AnimationEvent</code> gets its function name, parameters and time. Reading its Animator clip or state info logs an error, so check <code>isFiredByAnimator</code> first. Under either, a method that takes an <code>AnimationEventInfo</code> is not called. On a prefab baked with <strong>Leaves The Ground</strong> under an Animator, the events of a clip of your own fire on the <code>Body</code> child.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/en/search.js"></script>
+</body>
+</html>

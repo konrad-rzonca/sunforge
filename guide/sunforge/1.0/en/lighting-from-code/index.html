@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up 2D lighting from an editor script | Sun Forge Guide</title>
+<meta name="description" content="Light a scene and set up its sprites from an editor script.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<meta property="og:title" content="Set up 2D lighting from an editor script | Sun Forge Guide">
+<meta property="og:description" content="Light a scene and set up its sprites from an editor script.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}, {"@type": "ListItem", "position": 3, "name": "Lighting from code", "item": "https://sunforgetools.com/guide/sunforge/en/lighting-from-code/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/1.0/en/">Overview</a></li><li><a href="/guide/sunforge/1.0/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/1.0/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/1.0/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/1.0/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/1.0/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/1.0/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/1.0/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/1.0/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/1.0/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/1.0/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/1.0/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/1.0/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/1.0/en/lights/">Lights</a></li><li><a href="/guide/sunforge/1.0/en/styles/">Styles</a></li><li><a href="/guide/sunforge/1.0/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/1.0/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/1.0/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/1.0/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/1.0/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/1.0/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/1.0/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/1.0/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/1.0/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/1.0/en/menus/">Menus</a></li><li><a href="/guide/sunforge/1.0/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/1.0/en/components/">Components</a></li><li><a href="/guide/sunforge/1.0/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/1.0/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/1.0/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/1.0/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/1.0/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/1.0/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/1.0/en/lighting-from-code/" aria-current=page>Lighting from code</a></li><li><a href="/guide/sunforge/1.0/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/1.0/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/1.0/en/lighting-from-code/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/1.0/ja/lighting-from-code/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/lighting-from-code/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lighting-from-code"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><div class="reading"><div class="head"><h1 id="setting-up-from-a-script">Lighting from code</h1><p class="lead">Light a scene and set up its sprites from an editor script.</p></div><nav class="onpage" aria-label="On this page"><details open><summary>On this page</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#preview-a-setup">Preview A Setup</a></li><li><a href="#give-sprites-a-role">Give Sprites A Role</a></li><li><a href="#press-a-performance-button">Press A Performance Button</a></li><li><a href="#save-and-tune-a-style">Save And Tune A Style</a></li></ul></details></nav><article class="doc"><p>An editor script can light a scene in a style, set your sprites up as <strong>Set Up for Lighting</strong> does, and do what <strong>Fix All</strong> does:</p>
+<pre><code class="language-csharp">using System.Collections.Generic;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+SunForgeSceneLighting.SetUp(SunForgeShippedLightingStyle.Regular);
+
+Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.SetUpSprites(art))
+    Debug.Log(line);
+
+SunForgeSceneLighting.FixAll();
+
+// On the Universal Renderer, the sort that Fix All skips. A Custom Axis is a choice of yours, so keep it.
+if (GraphicsSettings.transparencySortMode != TransparencySortMode.CustomAxis)
+{
+    GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+    GraphicsSettings.transparencySortAxis = new Vector3(0f, 1f, 0f);
+}
+
+IReadOnlyList&lt;string&gt; left = SunForgeSceneLighting.Check();
+foreach (string message in left)
+    Debug.LogWarning(message);
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SetUp(SunForgeShippedLightingStyle.Regular, SunForgeLightingStyleVariant.Indoor)</code> sets the scene up in Regular's Indoor variant.</li>
+<li>For art drawn from the side, as a platformer's is, set <code>ViewElevationDegrees</code> of the Lighting Setup that <code>SetUp</code> returns to 0 before you set the sprites up.</li>
+<li><code>SetUpSprites</code> does what <strong>Set Up for Lighting</strong> does when you click <strong>Apply</strong>, and returns lines to show or log: what it changes and saves, what each sprite is set up as, the sprites it leaves alone and the pivots it moves. A folder brings every sprite texture and prefab under it, a GameObject every sprite under it, and a sprite every renderer that shows it. It saves at once the sprites whose pivots move, the prefabs, the scenes that are not open and each open scene whose placed art a pivot move corrects, and Undo cannot take these saves back. It adds no Lighting Setup and sets no <strong>Art View</strong>, so call it after <code>SetUp</code> and the view: the view decides how each sprite is set up, and a side view moves no pivot.</li>
+<li><code>FixAll</code> applies every fix that <strong>Fix All</strong> applies and opens no window. It leaves each fix that opens <strong>Set Up for Lighting</strong>: set those sprites up with <code>SetUpSprites</code>. It returns what is left: what only you can fix, each fix Fix All skips because it changes a choice of yours, and each finding to fix with <code>SetUpSprites</code>. Call it once the scene has its sprites, and again after you add more: it adds what they need, such as a Cast Shadow Field for a sprite that casts a shadow. <code>Check</code> returns what is left and changes nothing.</li>
+<li>A camera that is already loaded keeps its own sort until its scene loads again, and a Scene view keeps its sort until you open it again. To sort them now, also set <code>transparencySortMode</code> and <code>transparencySortAxis</code> on each loaded camera and on each camera <code>SceneView.GetAllSceneCameras()</code> returns.</li>
+<li>The other changes are in the open scenes and the project's assets in memory. Save both before the script ends, as the last two lines do.</li>
+</ul>
+<h2 id="preview-a-setup">Preview A Setup</h2>
+<p>To show what a setup changes before it saves anything, preview it with the arguments you apply it with. <code>PreviewSpriteSetup</code> returns the lines <code>SetUpSprites</code> returns, and changes nothing:</p>
+<pre><code class="language-csharp">Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.PreviewSpriteSetup(art))
+    Debug.Log(line);
+
+if (EditorUtility.DisplayDialog(&quot;Set Up for Lighting&quot;, &quot;Set up the sprites the Console lists?&quot;, &quot;Set Up&quot;, &quot;Cancel&quot;))
+{
+    SunForgeSceneLighting.SetUpSprites(art);
+    EditorSceneManager.SaveOpenScenes();
+}
+</code></pre>
+<ul>
+<li>To keep the pivots where they are, as <strong>Keep these pivots</strong> does, pass <code>keepPivots: true</code> to both calls. Later runs keep the choice.</li>
+</ul>
+<h2 id="give-sprites-a-role">Give Sprites A Role</h2>
+<p>To give sprites a role, as the dropdown beside each sprite does, pass it. Set up the floor first, so the other sprites are set up around it:</p>
+<pre><code class="language-csharp">var floor = AssetDatabase.LoadAssetAtPath&lt;Sprite&gt;(&quot;Assets/Art/Floor.png&quot;);
+SunForgeSceneLighting.SetUpSprites(new Object[] { floor }, SunForgeSpriteRole.Ground);
+SunForgeSceneLighting.SetUpSprites(new Object[] { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) });
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<ul>
+<li>The role goes to each Sprite Renderer you name, the Sprite Renderer on each GameObject you name, every renderer that shows a sprite or sprite texture you name, and for a folder, each sprite texture under it and the Sprite Renderer at the root of each prefab under it. A placed copy of a prefab takes it in its prefab. Where the window would ask about a sprite, such as one that may be ground, the call sets it up on the role the window first shows for it, and the lines it returns ask the question. To answer before anything saves, preview first, then set that sprite up with the role you choose, as the code above does for the floor.</li>
+<li>Where the window would ask you to save a prefab open in Prefab Mode, or a scene that has no file, or where Set Up for Lighting cannot run, such as in Play mode, or where version control or a read-only file stops it, the call throws <code>InvalidOperationException</code> and nothing changes. Where a file does not save or Unity throws once the setup has started, it throws <code>IOException</code>, whose message says what is not set up.</li>
+</ul>
+<h2 id="press-a-performance-button">Press A Performance Button</h2>
+<p>A script presses a <strong>Performance</strong> button with <code>ApplyPerformance</code>, which returns each setting it changed:</p>
+<pre><code class="language-csharp">var lit = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeSceneLighting.ApplyPerformance(lit, SunForgeLightingPerformanceButton.Balanced);
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<h2 id="save-and-tune-a-style">Save And Tune A Style</h2>
+<p>A script can save a style of your own and tune it as <strong>Look</strong> does (<a href="/guide/sunforge/1.0/en/tune-a-style/#tuning-a-style">Tune a style</a>). This one saves the scene's look and turns <strong>Pixel Outline</strong> on:</p>
+<pre><code class="language-csharp">var setup = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeLightingStyle style = SunForgeSceneLighting.SaveAsNewStyle(setup, &quot;Assets/Lighting/My Style.asset&quot;);
+IReadOnlyList&lt;Material&gt; materials = SunForgeLightingStyleEditing.EnsureOwnMaterials(style);
+
+SunForgeLightingStyleSetting row = SunForgeLightingStyleSettings.Find(&quot;_SFPixelOutline&quot;);
+foreach (Material material in materials)
+{
+    if (!material.HasProperty(row.Name))
+        continue;
+
+    Undo.RecordObject(material, &quot;Set Pixel Outline&quot;);
+    material.SetFloat(row.Name, 1f);
+    if (row.Keyword != null)
+        material.EnableKeyword(row.Keyword);
+}
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SaveAsNewStyle</code> throws where a file is at the path, unless you pass <code>overwrite: true</code> and the file is a lighting style. To tune a style you saved before, load it with <code>AssetDatabase.LoadAssetAtPath&lt;SunForgeLightingStyle&gt;</code> instead.</li>
+<li>For the post-processing, <code>EnsureOwnProfile</code> gives the style its own copy of its profile and returns it.</li>
+<li><code>SunForgeLightingStyleSettings.MaterialProperties</code> lists every row with the <code>Name</code> of its property, its <code>Tooltip</code> and its <code>Group</code>. A row's label in <strong>Look</strong> is the property's description in the material's shader: <code>shader.GetPropertyDescription(shader.FindPropertyIndex(row.Name))</code>.</li>
+<li>A slider's limits are the shader's, from <code>shader.GetPropertyRangeLimits</code>. <code>SetFloat</code> does not keep a value inside them.</li>
+<li>A row with a <code>Keyword</code> needs both: set the property, and turn the keyword on with <code>EnableKeyword</code> or off with <code>DisableKeyword</code>. A row with a <code>Switch</code> shows only while the row that name gives is on, as <strong>Pixel Outline Color</strong> does under <strong>Pixel Outline</strong>.</li>
+<li><code>Undo.RecordObject</code> before each change makes the scene draw it at once. Without it, call <code>Publish</code> on the Lighting Setup.</li>
+<li>The <code>BakedArt</code> rows are not in <strong>Look</strong>: set one on the material it is for. Leave the <code>Orientation</code> rows as they are.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/1.0/en/">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/en/search.js"></script>
+</body>
+</html>

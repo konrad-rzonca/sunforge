@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>エディタースクリプトからの 2D ライティングのセットアップ | Sun Forge ガイド</title>
+<meta name="description" content="エディタースクリプトから、シーンをライティングし、そのスプライトをセットアップします。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/lighting-from-code/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/lighting-from-code/">
+<meta property="og:title" content="エディタースクリプトからの 2D ライティングのセットアップ | Sun Forge ガイド">
+<meta property="og:description" content="エディタースクリプトから、シーンをライティングし、そのスプライトをセットアップします。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "コードからのライティング", "item": "https://sunforgetools.com/guide/sunforge/ja/lighting-from-code/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/lighting-from-code/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/lighting-from-code/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/lighting-from-code/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja" aria-current=page>コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/lighting-from-code/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/lighting-from-code/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/lighting-from-code/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/lighting-from-code/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lighting-from-code"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="setting-up-from-a-script">コードからの<wbr>ライティング</h1><p class="lead">エディタースクリプトから、シーンをライティングし、そのスプライトをセットアップします。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#preview-a-setup">セットアップのプレビュー</a></li><li><a href="#give-sprites-a-role">スプライトへの役割の指定</a></li><li><a href="#press-a-performance-button">Performance のボタンの適用</a></li><li><a href="#save-and-tune-a-style">スタイルの保存と調整</a></li></ul></details></nav><article class="doc"><p>エディタースクリプトから、スタイルを指定してシーンをライティングし、<strong>Set Up for Lighting</strong> (ライティング用にセットアップ) と同じようにスプライトをセットアップし、<strong>Fix All</strong> (すべて修正する) と同じ処理を実行できます。</p>
+<pre><code class="language-csharp">using System.Collections.Generic;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+SunForgeSceneLighting.SetUp(SunForgeShippedLightingStyle.Regular);
+
+Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.SetUpSprites(art))
+    Debug.Log(line);
+
+SunForgeSceneLighting.FixAll();
+
+// On the Universal Renderer, the sort that Fix All skips. A Custom Axis is a choice of yours, so keep it.
+if (GraphicsSettings.transparencySortMode != TransparencySortMode.CustomAxis)
+{
+    GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+    GraphicsSettings.transparencySortAxis = new Vector3(0f, 1f, 0f);
+}
+
+IReadOnlyList&lt;string&gt; left = SunForgeSceneLighting.Check();
+foreach (string message in left)
+    Debug.LogWarning(message);
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SetUp(SunForgeShippedLightingStyle.Regular, SunForgeLightingStyleVariant.Indoor)</code> は、Regular の Indoor バリアントでシーンをセットアップします。</li>
+<li>プラットフォーマーのアートのように、横から見て描かれたアートの場合は、スプライトをセットアップする前に、<code>SetUp</code> が返す Lighting Setup の <code>ViewElevationDegrees</code> を 0 に設定してください。</li>
+<li><code>SetUpSprites</code> は、<strong>Set Up for Lighting</strong> で <strong>Apply</strong> (適用する) をクリックしたときと同じ処理を実行し、表示またはログ出力するための行を返します。行には、変更して保存するもの、各スプライトが何としてセットアップされるか、変更されないスプライト、移動するピボットが示されます。フォルダーを渡すとその中のすべてのスプライトテクスチャとプレハブが、ゲームオブジェクトを渡すとその下のすべてのスプライトが、スプライトを渡すとそれを表示するすべてのレンダラーが対象になります。ピボットが移動するスプライト、プレハブ、開いていないシーン、ピボットの移動に合わせて配置済みのアートが補正される開いているシーンは、その場で保存されます。この保存は Undo では元に戻せません。Lighting Setup は追加せず、<strong>Art View</strong> (アートの視点) も設定しないため、<code>SetUp</code> を呼び出して視点を設定した後に呼び出してください。各スプライトのセットアップ方法は視点で決まり、サイドビューではピボットは移動しません。</li>
+<li><code>FixAll</code> は、<strong>Fix All</strong> が適用する修正をすべて適用します。ウィンドウは開きません。<strong>Set Up for Lighting</strong> を開く修正は適用しないため、その対象のスプライトは <code>SetUpSprites</code> でセットアップしてください。戻り値は残っている問題です。残るのは、自分で修正するしかない問題、Fix All がスキップした修正、<code>SetUpSprites</code> で修正する指摘です。Fix All は、自分で選んだ設定を変更する修正をスキップします。シーンにスプライトを置いてから呼び出し、スプライトを追加したらもう一度呼び出してください。影を落とすスプライトのための Cast Shadow Field のように、スプライトに必要なものが追加されます。<code>Check</code> は残っている問題を返し、何も変更しません。</li>
+<li>読み込み済みのカメラのソートは、そのシーンが再び読み込まれるまで変わりません。シーンビューのソートも、開き直すまで変わりません。すぐにソートを反映するには、読み込み済みの各カメラと、<code>SceneView.GetAllSceneCameras()</code> が返す各カメラにも <code>transparencySortMode</code> と <code>transparencySortAxis</code> を設定してください。</li>
+<li>そのほかの変更は、開いているシーンとプロジェクトのアセットのメモリ上の内容に加えられます。最後の 2 行のように、スクリプトが終わる前に両方を保存してください。</li>
+</ul>
+<h2 id="preview-a-setup">セットアップの<wbr>プレビュー</h2>
+<p>セットアップが何かを保存する前に、その変更内容を表示するには、適用するときと同じ引数でプレビューしてください。<code>PreviewSpriteSetup</code> は、<code>SetUpSprites</code> が返すのと同じ行を返し、何も変更しません。</p>
+<pre><code class="language-csharp">Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.PreviewSpriteSetup(art))
+    Debug.Log(line);
+
+if (EditorUtility.DisplayDialog(&quot;Set Up for Lighting&quot;, &quot;Set up the sprites the Console lists?&quot;, &quot;Set Up&quot;, &quot;Cancel&quot;))
+{
+    SunForgeSceneLighting.SetUpSprites(art);
+    EditorSceneManager.SaveOpenScenes();
+}
+</code></pre>
+<ul>
+<li><strong>Keep these pivots</strong> (これらのピボットを維持) と同じようにピボットを現在の位置のままにするには、両方の呼び出しに <code>keepPivots: true</code> を渡してください。この選択は、以降の実行でも維持されます。</li>
+</ul>
+<h2 id="give-sprites-a-role">スプライトへの<wbr>役割の<wbr>指定</h2>
+<p>各スプライトの横にあるドロップダウンと同じようにスプライトに役割を与えるには、役割を引数で渡してください。ほかのスプライトが床に合わせてセットアップされるように、先に床をセットアップしてください。</p>
+<pre><code class="language-csharp">var floor = AssetDatabase.LoadAssetAtPath&lt;Sprite&gt;(&quot;Assets/Art/Floor.png&quot;);
+SunForgeSceneLighting.SetUpSprites(new Object[] { floor }, SunForgeSpriteRole.Ground);
+SunForgeSceneLighting.SetUpSprites(new Object[] { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) });
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<ul>
+<li>役割は、指定した各 Sprite Renderer、指定した各ゲームオブジェクトの Sprite Renderer、指定したスプライトまたはスプライトテクスチャを表示するすべてのレンダラーに設定されます。フォルダーを指定した場合は、その中の各スプライトテクスチャと、その中の各プレハブのルートにある Sprite Renderer に設定されます。シーンに配置したプレハブのインスタンスでは、役割はそのプレハブに設定されます。地面かもしれないスプライトのように、ウィンドウであれば確認を求めるスプライトは、ウィンドウがそのスプライトに最初に示す役割でセットアップされ、返される行に確認の内容が入ります。何かが保存される前に答えるには、先にプレビューしてから、上のコードの床と同じように、選んだ役割を指定してそのスプライトをセットアップしてください。</li>
+<li>プレハブモードで開いているプレハブやファイルのないシーンについて、ウィンドウであれば保存を求める場合、再生モード中など Set Up for Lighting (ライティング用にセットアップ) を実行できない場合、またはバージョン管理や読み取り専用のファイルが原因でセットアップが止まる場合は、呼び出しが <code>InvalidOperationException</code> をスローし、何も変更されません。セットアップの開始後にファイルを保存できなかった場合や、Unity が例外をスローした場合は、<code>IOException</code> をスローします。そのメッセージに、セットアップされていないものが示されます。</li>
+</ul>
+<h2 id="press-a-performance-button">Performance の<wbr>ボタンの<wbr>適用</h2>
+<p>スクリプトから <strong>Performance</strong> (パフォーマンス) のボタンを押すには、<code>ApplyPerformance</code> を使ってください。戻り値は、変更された各設定です。</p>
+<pre><code class="language-csharp">var lit = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeSceneLighting.ApplyPerformance(lit, SunForgeLightingPerformanceButton.Balanced);
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<h2 id="save-and-tune-a-style">スタイルの<wbr>保存と<wbr>調整</h2>
+<p>スクリプトでも、自作のスタイルを保存し、<strong>Look</strong> (見た目) と同じように調整できます (<a href="/guide/sunforge/ja/tune-a-style/#tuning-a-style" hreflang="ja">スタイルの調整</a>を参照)。次のスクリプトは、シーンの見た目を保存し、<strong>Pixel Outline</strong> をオンにします。</p>
+<pre><code class="language-csharp">var setup = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeLightingStyle style = SunForgeSceneLighting.SaveAsNewStyle(setup, &quot;Assets/Lighting/My Style.asset&quot;);
+IReadOnlyList&lt;Material&gt; materials = SunForgeLightingStyleEditing.EnsureOwnMaterials(style);
+
+SunForgeLightingStyleSetting row = SunForgeLightingStyleSettings.Find(&quot;_SFPixelOutline&quot;);
+foreach (Material material in materials)
+{
+    if (!material.HasProperty(row.Name))
+        continue;
+
+    Undo.RecordObject(material, &quot;Set Pixel Outline&quot;);
+    material.SetFloat(row.Name, 1f);
+    if (row.Keyword != null)
+        material.EnableKeyword(row.Keyword);
+}
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SaveAsNewStyle</code> は、パスにファイルがすでにある場合は例外をスローします。ただし、<code>overwrite: true</code> を渡し、そのファイルがライティングスタイルであれば、スローしません。以前に保存したスタイルを調整するには、代わりに <code>AssetDatabase.LoadAssetAtPath&lt;SunForgeLightingStyle&gt;</code> で読み込んでください。</li>
+<li>ポストプロセスについては、<code>EnsureOwnProfile</code> が、スタイルにプロファイルの専用のコピーを与えて、そのコピーを返します。</li>
+<li><code>SunForgeLightingStyleSettings.MaterialProperties</code> は、すべての行を、プロパティの <code>Name</code>、<code>Tooltip</code>、<code>Group</code> とともに一覧にします。<strong>Look</strong> に表示される行のラベルは、マテリアルのシェーダーにあるプロパティの説明で、<code>shader.GetPropertyDescription(shader.FindPropertyIndex(row.Name))</code> で取得できます。</li>
+<li>スライダーの上限と下限はシェーダーのもので、<code>shader.GetPropertyRangeLimits</code> で取得できます。<code>SetFloat</code> は、値をその範囲内に収めません。</li>
+<li><code>Keyword</code> がある行では、プロパティの設定と、<code>EnableKeyword</code> でキーワードをオンに、または <code>DisableKeyword</code> でオフにする操作の両方が必要です。<code>Switch</code> がある行は、その名前が示す行がオンの間だけ表示されます。<strong>Pixel Outline</strong> の下の <strong>Pixel Outline Color</strong> がその例です。</li>
+<li>変更のたびにその前で <code>Undo.RecordObject</code> を呼び出すと、シーンに変更がすぐ描画されます。呼び出さない場合は、Lighting Setup の <code>Publish</code> を呼び出してください。</li>
+<li><code>BakedArt</code> の行は <strong>Look</strong> にはありません。対象のマテリアルで設定してください。<code>Orientation</code> の行は変更しないでください。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

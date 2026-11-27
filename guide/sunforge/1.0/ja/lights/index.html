@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity の 2D ライト: ポイント、スポット、ライン、矩形のライト | Sun Forge ガイド</title>
+<meta name="description" content="Light Source を追加し、その光の形を整え、既存の Light 2D のライトもそのまま使います。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/lights/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/lights/">
+<meta property="og:title" content="Unity の 2D ライト: ポイント、スポット、ライン、矩形のライト | Sun Forge ガイド">
+<meta property="og:description" content="Light Source を追加し、その光の形を整え、既存の Light 2D のライトもそのまま使います。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ライト", "item": "https://sunforgetools.com/guide/sunforge/ja/lights/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja" aria-current=page>ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/lights/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/lights/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/lights/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/lights/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lights"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="light-source">ライト</h1><p class="lead">Light Source を追加し、その光の形を整え、既存の Light 2D のライトもそのまま使います。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#add-a-light">ライトの追加</a></li><li><a href="#shape-a-light">ライトの形の調整</a></li><li><a href="#use-your-light-2d-lights">Light 2D の利用</a></li><li><a href="#how-many-lights-a-camera-lights">カメラがライティングに使うライトの数</a></li><li><a href="#a-sprite-s-own-glow-light">スプライト自身の発光ライト</a></li></ul></details></nav><article class="doc"><p>Light Source は、URP の 2D レンダラーとユニバーサルレンダラーのどちらでもスタイル用のマテリアルを照らします。光の照射範囲は、ライトの下の地面に広がります。</p>
+<h2 id="add-a-light">ライトの<wbr>追加</h2>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Light</strong> を選択します。同じサブメニューの <strong>Spot Light</strong>、<strong>Line Light</strong>、<strong>Rectangle Light</strong> は、それぞれ円錐形、線状、矩形の範囲を照らします。<strong>Fire</strong>、<strong>Lamps</strong>、<strong>Magic</strong>、<strong>Windows and Doors</strong> には、たいまつ、街灯、窓など、見た目があらかじめ設定されたライトがあります。</li>
+<li>作成したライトを、ランプの炎など、光を出したい位置に移動します。</li>
+<li>ライトを選択した状態で、シーンビューでライトの上にある点をドラッグして、<strong>Height Above Ground</strong> (地面からの高さ) を設定します。ライトが上下に動き、照射範囲はその場にとどまります。ほかのハンドルでは、<strong>Ground Radius</strong> (地面での半径)、<strong>Inner Radius</strong> (内側半径)、サイズ、各スポット角度を設定できます。ハンドルにポインターを合わせると、その名前と値が表示されます。</li>
+</ol>
+<p>ランプのプレハブなど、既存のオブジェクトをライトにするには、<strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Light Source</strong> (コンポーネントを追加 &gt; Sun Forge &gt; Lighting &gt; Light Source) を使ってください。</p>
+<p>3D のポイントライトやスポットライトは、スタイルが適用されたスプライトを照らしません。こうしたライトに Light Source を付けるには、そのライトを選択し、Inspector の上部にある <strong>Add a Sun Forge Light Here</strong> (ここに Sun Forge のライトを追加) をクリックしてください。</p>
+<h2 id="shape-a-light">ライトの<wbr>形の<wbr>調整</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スポットライト</td>
+<td><strong>Outer Spot Angle</strong> (外側スポット角度) を下げてから、<strong>Aim</strong> (照射方向) ハンドル (照射範囲の縁より外にある、弧の付いた点) をドラッグして向きを決めてください</td>
+</tr>
+<tr>
+<td>より遠くまで届く照射範囲</td>
+<td><strong>Intensity</strong> (強さ) を上げてください。光が届かなくなる位置は <strong>Ground Radius</strong> (地面での半径) で決まります</td>
+</tr>
+<tr>
+<td>管状のランプや発光するパネルのような、線状または矩形の光</td>
+<td><strong>Shape</strong> (形状) を設定してください</td>
+</tr>
+<tr>
+<td>火のようにちらつくライト</td>
+<td><strong>Kind</strong> (種類) を <strong>Flame</strong> (炎) に設定してください。再生モードでちらつきます。自作の炎のスプライトも一緒にちらつかせるには、そのスプライトのレンダラーを <strong>Glow Renderers</strong> (発光レンダラー) に追加してください</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="use-your-light-2d-lights">Light 2D の<wbr>利用</h2>
+<p>2D ライトは、Unity Lights マテリアルを通常どおり照らします。スタイルが適用されたスプライトも 2D ライトで照らすには、次のようにしてください。</p>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong> を選択し、<strong>Apply</strong> (適用する) をクリックします。すべてのソートレイヤーを対象にしている各 Light 2D に、その Light 2D が制御する Light Source が追加されます。スクリプトやアニメーションで Light 2D を変更すると、Light Source にも反映されます。ライトを 1 つだけ対象にする場合や、後からライトを追加した場合は、そのライトを選択し、Inspector の上部にある <strong>Use This Light with Sun Forge</strong> (このライトを Sun Forge で使用) をクリックします。</li>
+<li>対象から外しているソートレイヤーがある Light 2D については、Lighting Setup を選択し、そのライトに関する指摘の横にある <strong>Fix</strong> (修正) をクリックします。</li>
+<li>各 Light Source の <strong>Height Above Ground</strong> (地面からの高さ) を、対応する Light 2D の地面からの高さに合わせます。ライトは Light 2D の位置にとどまります。スタイルが適用されたスプライトでは、照射範囲がライトの下の地面に広がるため、アートに描かれた地面と同じように平たく見えます。サイドビューのアートでは、代わりに <strong>Height Above Ground</strong> を小さく設定します (<a href="/guide/sunforge/1.0/ja/side-view/#side-views" hreflang="ja">サイドビュー</a>を参照)。</li>
+</ol>
+<h2 id="how-many-lights-a-camera-lights">カメラが<wbr>ライティングに<wbr>使う<wbr>ライトの<wbr>数</h2>
+<p>ライティングに使うライトは、カメラごとに最大 512 個、WebGL 2 プレイヤーでは最大 128 個です。メインカメラから見えていても使われていないライトは、シーンビューに灰色の電球アイコンで表示されます。そのライトが常に使われるようにするには、ライトの <strong>Special Cases</strong> (特殊なケース) にある <strong>Is Prioritized</strong> (優先) をオンにしてください。</p>
+<h2 id="a-sprite-s-own-glow-light">スプライト自身の<wbr>発光ライト</h2>
+<p>発光ライトは、Sun Forge がスプライトの発光部分のために作成した Light Source です。Sun Forge がテクスチャを出力したスプライトでは、その Lighting Style Renderer の <strong>Glow, Surfaces and Edges</strong> (発光、表面、エッジ) にある <strong>Glow Light</strong> (発光ライト) の行で <strong>Add</strong> (追加) をクリックすると、発光ライトを追加できます。発光ライトが自身のスプライトをどう照らすかは、Lighting Setup の <strong>Values</strong> (値) の下にある <strong>Glow</strong> (発光) の 2 つの値で決まり、発光ライトの <strong>Special Cases</strong> (特殊なケース) にある <strong>Light On Its Object Shift</strong> (所属オブジェクトへの光のシフト) と <strong>Glow Parts Light Scale</strong> (発光部分の光の倍率) で、そのスプライトに限って変更できます。</p>
+<p>Regular のシーンで Flat のマテリアルを使う場合のように、スプライトのマテリアルがシーンとは別のスタイルのものである場合、発光ライトがそのスプライトをどう照らすかはマテリアルのスタイルで決まり、Lighting Setup の <strong>Glow</strong> の 2 つの値を変更しても変わりません。この場合、Realistic は Regular として扱われ、自作のスタイルは、その元になったスタイルとして扱われます。発光ライトの <strong>Light On Its Object Shift</strong> と <strong>Glow Parts Light Scale</strong> は、こうしたスプライトにも効きます。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

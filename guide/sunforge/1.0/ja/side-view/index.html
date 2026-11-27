@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>サイドビューのゲームやプラットフォーマー向けの 2D ライティングとベイクしたアクター | Sun Forge ガイド</title>
+<meta name="description" content="プラットフォーマーのアートのように、横から見て描かれたアートをライティングし、それに合うアクターをベイクします。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/side-view/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/side-view/">
+<meta property="og:title" content="サイドビューのゲームやプラットフォーマー向けの 2D ライティングとベイクしたアクター | Sun Forge ガイド">
+<meta property="og:description" content="プラットフォーマーのアートのように、横から見て描かれたアートをライティングし、それに合うアクターをベイクします。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "サイドビュー", "item": "https://sunforgetools.com/guide/sunforge/ja/side-view/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja" aria-current=page>サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/side-view/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/side-view/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/side-view/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/side-view/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-side-view"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="side-views">サイドビュー</h1><p class="lead">プラットフォーマーのアートのように、横から見て描かれたアートをライティングし、それに合うアクターをベイクします。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#lights-in-a-side-view">サイドビューのライト</a></li><li><a href="#what-a-side-view-leaves-out">サイドビューで表示されないもの</a></li><li><a href="#side-view-bakes">サイドビューのベイク</a></li></ul></details></nav><article class="doc"><p>プラットフォーマーのアートのように、横から見て描かれたアートはサイドビューです。サイドビューのシーンを照らすには、次のようにしてください。</p>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong> を選択します。</li>
+<li>ウィンドウの最初の行にある <strong>Art View</strong> (アートの視点) で <strong>From the Side</strong> (サイドビュー) を選び、<strong>Apply</strong> (適用する) をクリックします。これで、スプライト、床、壁が、どのスタイルとマテリアルでもサイドビューとして照らされます。</li>
+<li>Lighting Setup で、太陽の光が横から当たるように <strong>Sun Direction</strong> (太陽の方向) と <strong>Sun Elevation</strong> (太陽の仰角) を設定します。</li>
+<li>たいまつや火には、<strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Fire &gt; Torch</strong> でライトを追加します。昼間に太陽の光で照射範囲が見えなくなる場合は、ライトの <strong>Intensity</strong> (強さ) を上げます。Flat スタイルでは、Lighting Setup の <strong>Light Sources In Sunlight</strong> (太陽光下の Light Source) も上げます。</li>
+</ol>
+<p><strong>Art View</strong> は Lighting Setup にもあり、後からそこで変更できます。Art View はシーンの Lighting Setup ごとに設定されるため、1 つのプロジェクトにサイドビューのステージと見下ろしのステージを混在させられます。</p>
+<h2 id="lights-in-a-side-view">サイドビューの<wbr>ライト</h2>
+<ul>
+<li><strong>Height Above Ground</strong> (地面からの高さ) は、ライトがアートからどれだけ手前に離れているかを表し、<strong>Ground Radius</strong> (地面での半径) は、光が画面上でどこまで届くかを表します。壁に掛けたランプや手に持ったランプでは、どれだけ高い位置にあっても、<strong>Height Above Ground</strong> を小さく設定してください。</li>
+<li>ライトは、背景も含め、届く範囲にあるサイドビューのスプライトをすべて照らします。背景を照らさないようにするには、ライトの <strong>Excluded Objects</strong> (除外するオブジェクト) に追加してください。</li>
+<li>壁のたいまつの前を歩くキャラクターのように、<strong>Z</strong> がライトより小さいスプライトは、ライトの手前にあります。この場合、光はスプライトの縁にしか届かず、Flat ではスプライトにまったく届きません。スプライトの正面を照らすには、ライトの Z をスプライトの Z 以下にしてください。</li>
+</ul>
+<h2 id="what-a-side-view-leaves-out">サイドビューで<wbr>表示されない<wbr>もの</h2>
+<ul>
+<li>雲の影、樹冠の日陰、霧、グラウンドカバー、キャストシャドウ、<strong>Cast Shadow Stretch</strong> (キャストシャドウの引き伸ばし)、<strong>Light From Lit Ground</strong> (照らされた地面からの光)、<strong>Exact Shadows On Sprites</strong> (スプライト上の正確な影) は表示されません。サイドビューには、これらがかかる地面が映らないためです。</li>
+<li>Sun Forge が角度を付けてレンダリングしたスプライトは、雲の影、樹冠の日陰、霧を除いて、これらをすべて受けます。こうしたスプライトのシーンには <strong>From Above</strong> (見下ろし) を使ってください。</li>
+</ul>
+<h2 id="side-view-bakes">サイドビューの<wbr>ベイク</h2>
+<p>プラットフォーマーなど、サイドビューのゲーム用にアクターをベイクする手順は次のとおりです。</p>
+<ol>
+<li>アーキタイプの <strong>Elevation Angle</strong> (俯角、Archetypes (アーキタイプ) タブの CAMERA (カメラ)) を 0 に設定します。</li>
+<li><strong>Directions</strong> (方向) を 4 に設定し、0° と 180° を向く方向をオフにします。こうすると、アクターは左または右を向き、最初は右を向きます。</li>
+<li>コライダーが足元ではなく本体全体を覆うようにするには、<strong>Elevation Angle</strong> の下にある <strong>Cover Whole Body</strong> (全体を覆う) を押します。または、<strong>PHYSICS</strong> (物理) セクション (Advanced (上級者向け) 表示) で、コライダーの <strong>Ignore Below Height</strong> (これより下を無視する高さ) を 0 に設定し、<strong>Ignore Above Height</strong> (これより上を無視する高さ) を空にして、<strong>Multiplier</strong> (乗数) を 1 に設定します。</li>
+</ol>
+<p>プラットフォーマーでは、自作のスクリプトでアクターを動かしてください (<a href="/guide/sunforge/1.0/ja/platformers-and-physics/#side-view-games" hreflang="ja">プラットフォーマーと物理 › サイドビューのゲーム</a>を参照)。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

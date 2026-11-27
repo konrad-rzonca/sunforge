@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D シーンのフォグと地面を這う霧 | Sun Forge</title>
+<meta name="description" content="Unity のフォグ設定がスプライトに効かない理由、2D URP シーンでフォグや霧を作る 4 つの方法、ソート、オーバードロー、ライト、バンディングの落とし穴を解説します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/learn/2d-fog-and-mist/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/learn/2d-fog-and-mist/">
+<meta property="og:title" content="Unity 2D シーンのフォグと地面を這う霧 | Sun Forge">
+<meta property="og:description" content="Unity のフォグ設定がスプライトに効かない理由、2D URP シーンでフォグや霧を作る 4 つの方法、ソート、オーバードロー、ライト、バンディングの落とし穴を解説します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-fog-and-mist.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="足元では濃く頭のあたりでは薄い霧に包まれた、昼の石造りの広間の騎士、火鉢、盾、スケルトン">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity 2D シーンのフォグと地面を這う霧", "description": "Unity のフォグ設定がスプライトに効かない理由、2D URP シーンでフォグや霧を作る 4 つの方法、ソート、オーバードロー、ライト、バンディングの落とし穴を解説します。", "image": "https://sunforgetools.com/assets/share/learn-2d-fog-and-mist.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-19", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ja/learn/2d-fog-and-mist/", "inLanguage": "ja"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "解説記事", "item": "https://sunforgetools.com/ja/learn/"}, {"@type": "ListItem", "position": 3, "name": "フォグと霧", "item": "https://sunforgetools.com/ja/learn/2d-fog-and-mist/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-fog-and-mist/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="言語"><a href="/learn/2d-fog-and-mist/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-fog-and-mist/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-fog-and-mist/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-fog-and-mist/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/ja/learn/">解説記事</a></p>
+<h1>Unity 2D シーンの<wbr>フォグと<wbr>地面を<wbr>這う<wbr>霧</h1>
+<p class="lead">Unity のフォグ設定はスプライトには適用されないため、URP の 2D シーンではスプライト、パーティクル、フルスクリーンパスでフォグを作ります。この記事で扱うのは天候としてのフォグです。プレイヤーが探索していないマップの部分を隠すフォグオブウォーは別のもので、ここでは扱いません。</p>
+</header>
+<h2 id="why-unity-s-fog-does-nothing-in-a-2d-scene">2D シーンで Unity の<wbr>フォグが<wbr>効かない<wbr>理由</h2>
+<p>フォグの設定は Lighting ウィンドウ (<strong>Window &gt; Rendering &gt; Lighting</strong>) の <strong>Environment</strong> (環境) タブ、<strong>Other Settings</strong> (その他の設定) の下にあります。設定には色とモードがあり、フォグはカメラから離れるほど濃くなります。</p>
+<p>スプライトだけのシーンでオンにしても、何も変わりません。URP のスプライト用シェーダー Sprite-Lit-Default と Sprite-Unlit-Default はフォグを適用せず、Sprite Lit や Sprite Unlit の Shader Graph も同様です。フォグを適用するシェーダーがあっても、あまり役に立ちません。2D シーンのスプライトはどれもカメラからほぼ同じ距離にあるため、フォグはすべてのスプライトに同じだけ色味を付けるだけです。</p>
+<h2 id="unity-2d-volumetric-fog">Unity 2D の<wbr>ボリュメトリックフォグ</h2>
+<p>Unity のボリュメトリックフォグは HDRP の機能で、URP にはありません。2D ゲームでフォグに立体感を出しているのはレイヤーです。奥行きの異なる位置に数枚のフォグを重ね、それぞれ異なる速度で動かしています。</p>
+<h2 id="four-ways-to-make-a-2d-fog-effect">2D の<wbr>フォグエフェクトを<wbr>作る 4 つの<wbr>方法</h2>
+<h3 id="a-scrolling-noise-sprite">スクロールする<wbr>ノイズの<wbr>スプライト</h3>
+<p>広い範囲を覆うフォグに向いています。</p>
+<ol>
+<li>タイリングできる柔らかなノイズテクスチャをインポートし、<strong>Wrap Mode</strong> を <strong>Repeat</strong> (繰り返し) に設定します。</li>
+<li><strong>Assets &gt; Create &gt; Shader Graph &gt; URP &gt; Sprite Unlit Shader Graph</strong> (アセット &gt; 作成 &gt; シェーダーグラフ &gt; URP &gt; スプライト Unlit シェーダーグラフ) を選択します。</li>
+<li>グラフで <strong>Time</strong> ノードに小さな速度を掛け、その結果を <strong>Tiling And Offset</strong> ノードの <strong>Offset</strong> につなぎます。そのノードの出力でノイズをサンプリングします。</li>
+<li>サンプリングした値にフォグの色を掛け、スプライトの上端に向かってアルファをフェードさせて、フォグの上端がくっきり切れないようにします。</li>
+<li>グラフからマテリアルを作り、その範囲を覆う Sprite Renderer に設定します。<strong>Sorting Layer</strong> と <strong>Order in Layer</strong> (レイヤーの順序) を設定して、目的のレイヤーの間に描画されるようにします。</li>
+</ol>
+<p>このようなレイヤーを 2 枚、異なる速度でスクロールさせると、1 枚の絵がずれていくようには見えにくくなります。</p>
+<h3 id="a-particle-system-of-soft-sprites">柔らかな<wbr>スプライトの Particle System</h3>
+<p>池の上や戸口など、一部分にかかる霧に向いています。低いアルファの柔らかな雲のテクスチャで、大きくゆっくりしたパーティクルを少しだけ放出する Particle System を用意してください。マテリアルには URP の Particles Unlit シェーダーを選び、<strong>Surface Type</strong> を <strong>Transparent</strong> (透明) に設定してください。<strong>Renderer</strong> モジュールの <strong>Sorting Layer ID</strong> と <strong>Order in Layer</strong> で、スプライトとの間のソート順が決まります。</p>
+<h3 id="a-full-screen-pass">フルスクリーンパス</h3>
+<p>URP の Full Screen Pass Renderer Feature は、画面全体にマテリアルを描画します。レンダラーアセットを選択して <strong>Add Renderer Feature</strong> をクリックし、Fullscreen Shader Graph から作ったマテリアルをその Renderer Feature に設定してください。描画するタイミングは <strong>Injection Point</strong> (投入ポイント) で決まります。<strong>Before Rendering Post Processing</strong> にすると、透明なオブジェクトの後、ポストプロセスの前に描画されます。</p>
+<p>フルスクリーンパスはそれより前に描画されたものをすべて覆うため、2 つのレイヤーの間には置けません。そのような場合のために、2D レンダラーには <strong>Camera Sorting Layer Texture</strong> があります。選んだソートレイヤーまでを描画し終えた時点の画像を保存し、それより後のレイヤーにあるフォグのシェーダーで読み取れます。</p>
+<h3 id="tinting-far-layers-toward-the-fog-color">色味を<wbr>フォグの<wbr>色に<wbr>寄せた<wbr>遠くの<wbr>レイヤー</h3>
+<p>この方法では描画するものが増えません。各パララックスレイヤーの Sprite Renderer の <strong>Color</strong> (色) を、奥のレイヤーほど少しずつ強くフォグの色に寄せてください。この色はアートに乗算されるため、暗くすることしかできません。暗いアートに淡いフォグをかけるには、シェーダーでフォグの色にブレンドするか、レイヤーを描き直してください。</p>
+<h2 id="traps">落とし穴</h2>
+<p><strong>フォグがキャラクターを頭から足まで覆う。</strong> フォグのレイヤーは平らな 1 枚の板です。キャラクターの手前にソートすると全身がかすみ、奥にソートすると全身がくっきり見えます。地面を這う霧は、足元で濃く頭のあたりで薄くなるのが自然です。サイドビューでは、上に向かってフェードアウトする低い帯をキャラクターの手前に置けば、近い見た目になります。見下ろしやアイソメトリックのシーンではキャラクターがさまざまな奥行きに立つため、1 本の帯ではほとんどのキャラクターに合いません。霧を細長い帯に分けてキャラクターの間にソートすることもできますが、そのぶんレイヤーが増えます。</p>
+<p><strong>ソート。</strong> Unity はスプライトを、まずソートレイヤー、次に <strong>Order in Layer</strong> (レイヤーの順序)、最後にカメラからの距離で並べます。Order in Layer は値が小さいものほど奥に描画されます。フォグには専用のソートレイヤーか専用の順序を与えてください。どちらもほかのスプライトと同じ場合、それらの間での位置はその距離で決まります。</p>
+<p><strong>オーバードロー。</strong> 透明なレイヤーはそれぞれ後ろにあるものの上に描画されるため、フルスクリーンのフォグを 3 枚重ねると、すべてのピクセルがさらに 3 回塗られます。これで真っ先に重くなるのはスマートフォンの GPU です。<strong>Window &gt; Analysis &gt; Rendering Debugger</strong> (ウィンドウ &gt; 分析 &gt; レンダリングデバッガー) で開く URP の Rendering Debugger ウィンドウには、ピクセルが重ねて描画されている場所を示す <strong>Overdraw</strong> ビューがあります。小さなパーティクルを多数使うのではなく大きなパーティクルを少数使い、テクスチャも小さくしてください。柔らかなノイズは低い解像度でも見た目が変わりません。</p>
+<p><strong>ライトを無視するフォグ。</strong> アンリットのフォグは光に関係なく色が変わらないため、夜には火のそばでも灰色のまま、暗がりでも白っぽいままです。Light 2D のライトがフォグに届くようにするには、グラフを <strong>Sprite Lit Shader Graph</strong> で作り、各ライトの <strong>Target Sorting Layers</strong> にフォグのソートレイヤーを含めてください。すると、平らな壁に当たるときと同じように光がフォグに当たります。</p>
+<p><strong>バンディング。</strong> 低いアルファの柔らかなグラデーションには段差が出ます。フォグのテクスチャの <strong>Compression</strong> (圧縮) を <strong>None</strong> (なし) に設定してください。カメラの <strong>Rendering</strong> で、広いグラデーションや暗い部分のバンディングを減らす <strong>Dithering</strong> をオンにしてください。</p>
+<h2 id="how-sun-forge-2d-lighting-does-ground-mist">Sun Forge 2D Lighting に<wbr>よる<wbr>地面を<wbr>這う<wbr>霧</h2>
+<p><a href="/ja/2d-lighting/#mist">Sun Forge 2D Lighting</a> は URP 向けのライティングパッケージです。霧はこのパッケージの<a href="/guide/sunforge/ja/components/#sunforgelightingsetup" hreflang="ja">天候</a>の一部で、雲の影と同じように地面の上を流れます。URP の 2D レンダラーとユニバーサルレンダラーのどちらでも動作します。対象は見下ろしまたはアイソメトリックのシーンで、カメラはスプライトを正面から映します。サイドビューには霧がかかる地面が映らないので霧は表示されず、プラットフォーマーには上記の方法のいずれかが必要です。</p>
+<p>この霧は、スプライトの手前や奥に置くレイヤーではありません。Sun Forge が 3D モデルからベイクするスプライトにはそれぞれジオメトリテクスチャがあり、スプライトのピボットから見た各テクセルの高さを保持しています。そのため、霧は各スプライトを足元から覆います。</p>
+<figure>
+<img src="/features/ruins-view-height.webp" srcset="/features/ruins-view-height.768w.webp 768w, /features/ruins-view-height.960w.webp 960w, /features/ruins-view-height.1024w.webp 1024w, /features/ruins-view-height.1440w.webp 1440w, /features/ruins-view-height.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="各スプライトの足元が濃い青で高い部分ほど明るく、地面が黒い、ジオメトリテクスチャで描画した廃墟の広間">
+<figcaption>The Forgotten Knight は dark_igorek、スケルトンは LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+</figure>
+<figure>
+<img src="/features/ruins-mistlooks-day-regular.webp" srcset="/features/ruins-mistlooks-day-regular.768w.webp 768w, /features/ruins-mistlooks-day-regular.960w.webp 960w, /features/ruins-mistlooks-day-regular.1024w.webp 1024w, /features/ruins-mistlooks-day-regular.1440w.webp 1440w, /features/ruins-mistlooks-day-regular.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="足元で濃く頭のあたりで薄い霧の中、昼の石造りの広間にいる騎士、火鉢、盾、スケルトン">
+<figcaption>The Forgotten Knight は dark_igorek、スケルトンは LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+</figure>
+<p>すべての Light Source が霧も照らします。</p>
+<figure>
+<img src="/features/ruins-mistlooks-night-regular.webp" srcset="/features/ruins-mistlooks-night-regular.768w.webp 768w, /features/ruins-mistlooks-night-regular.960w.webp 960w, /features/ruins-mistlooks-night-regular.1024w.webp 1024w, /features/ruins-mistlooks-night-regular.1440w.webp 1440w, /features/ruins-mistlooks-night-regular.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="火鉢のまわりではオレンジ色に、クリスタルのまわりでは青く霧が光り、そこから離れると暗い、夜の同じ広間">
+<figcaption>The Forgotten Knight は dark_igorek、スケルトンは LasquetiSpice の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+</figure>
+<p>Sun Forge には Unity 6.3 LTS (6000.3.29f1 以降) から Unity 6.6 までのバージョンが必要です。</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">次に<wbr>読む記事</h2>
+<ul>
+<li><a href="/ja/learn/2d-day-night-cycle/">Unity 2D の昼夜サイクルと雲の影</a></li>
+<li><a href="/ja/learn/2d-lights-not-working/">Unity の 2D ライトが反映されないときのチェック項目</a></li>
+<li><a href="/ja/2d-lighting/#mist">Sun Forge 2D Lighting: 霧</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/learn/2d-fog-and-mist/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-fog-and-mist/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/2d-fog-and-mist/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-fog-and-mist/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

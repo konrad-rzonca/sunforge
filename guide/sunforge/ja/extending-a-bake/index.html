@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクのアダプター、拡張、プロジェクトのデフォルト値 | Sun Forge ガイド</title>
+<meta name="description" content="ベイクしたすべてのプレハブをコードから変更し、ベイクの中で独自のステップを実行し、プロジェクトのデフォルト値を設定します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/">
+<meta property="og:title" content="ベイクのアダプター、拡張、プロジェクトのデフォルト値 | Sun Forge ガイド">
+<meta property="og:description" content="ベイクしたすべてのプレハブをコードから変更し、ベイクの中で独自のステップを実行し、プロジェクトのデフォルト値を設定します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ベイクの拡張", "item": "https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/extending-a-bake/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja" aria-current=page>ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/extending-a-bake/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/extending-a-bake/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/extending-a-bake/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/extending-a-bake/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-extending-a-bake"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>ベイクの<wbr>拡張</h1><p class="lead">ベイクしたすべてのプレハブをコードから変更し、ベイクの中で独自のステップを実行し、プロジェクトのデフォルト値を設定します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#adapters">アダプター</a></li><li><a href="#extensions">拡張</a></li><li><a href="#project-defaults">プロジェクトのデフォルト値</a></li></ul></details></nav><article class="doc"><h2 id="adapters">アダプター</h2>
+<p>アダプターは、ベイクがプレハブを組み立てたあと保存する前に、対応するすべてのベイクしたプレハブの内容を変更します。<code>ISunForgeBakeAdapter</code> をエディターまたはランタイムのいずれかのアセンブリに実装してください。登録しなくても Sun Forge が見つけます。</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using UnityEngine;
+
+public sealed class SortingLayerAdapter : ISunForgeBakeAdapter
+{
+    public string AdapterId =&gt; &quot;com.example.adapters.sorting-layer&quot;;
+
+    public bool Supports(SunForgeBakedData data) =&gt; data.ArchetypeName == &quot;Character&quot;;
+
+    public void Apply(GameObject prefabRoot, SunForgeBakedData data, SunForgeBakeReporter reporter)
+    {
+        if (!prefabRoot.TryGetComponent(out SpriteRenderer renderer))
+            throw new SunForgeBakeStopException(&quot;Add a SpriteRenderer to the prefab root, then bake again.&quot;);
+
+        renderer.sortingLayerName = &quot;Actors&quot;;
+    }
+}
+</code></pre>
+<h2 id="extensions">拡張</h2>
+<p>拡張はベイクの中で実行されます。モデルを個別に公開されるパーツに分けたり、独自のデータをベイクデータに追加したりできます。<code>ISunForgeBakeExtension</code> をエディターアセンブリに実装してください。登録しなくても Sun Forge が見つけます。次の例は Bake (ベイク) タブに専用のセクションを持ち、1 つの値を公開します。公開するデータは、ゲームから読めるようにランタイムアセンブリに置きます。</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using UnityEngine;
+
+[Serializable]
+public sealed class WorldHeightData : SunForgeBakedExtensionData
+{
+    [SerializeField] float worldHeight;
+
+    public WorldHeightData(float worldHeight) =&gt; this.worldHeight = worldHeight;
+
+    public float WorldHeight =&gt; worldHeight;
+}
+</code></pre>
+<p>拡張とその設定はエディターアセンブリに置きます。</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+
+[Serializable]
+public sealed class WorldHeightSettings : SunForgeBakeExtensionSettings
+{
+}
+
+public sealed class WorldHeightBakeExtension : ISunForgeBakeExtension
+{
+    public string ExtensionId =&gt; &quot;com.example.extensions.worldheight&quot;;
+
+    public SunForgeBakeExtensionSection SettingsSection { get; } = new(
+        typeof(WorldHeightSettings), &quot;WORLD HEIGHT&quot;,
+        &quot;Publishes the model's world height beside its sprites.&quot;,
+        &quot;Publishes the world height on the bake's data.&quot;);
+
+    public bool Supports(SunForgeBakeExtensionContext context) =&gt; true;
+
+    public SunForgeBakedExtensionData Execute(SunForgeBakeExtensionExecuteContext context) =&gt;
+        new WorldHeightData(context.Config.ModelWorldHeight);
+}
+</code></pre>
+<p>ゲームからは <code>data.Extension&lt;WorldHeightData&gt;()?.WorldHeight</code> で読み取ります。</p>
+<p>Pixel Perfect Camera を使う場合、拡張が個別に公開するプレハブのパーツは、<strong>Grid Snapping</strong> を <strong>Upscale Render Texture</strong> に設定すると整数ピクセルの位置にとどまります。<strong>Pixel Snapping</strong> では、各パーツが本体から 1 ピクセル未満ずれることがあります (<a href="/guide/sunforge/ja/pixel-art/#pixel-perfect-camera" hreflang="ja">ドット絵 › Pixel Perfect Camera</a>を参照)。</p>
+<h2 id="project-defaults">プロジェクトの<wbr>デフォルト値</h2>
+<p>エディタースクリプトでは、新しいアーキタイプが最初に使う Addressables のグループとラベルを設定し、ゲームの描画に使うカメラと太陽を固定できます。</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+
+[InitializeOnLoad]
+static class MyGameSunForgeDefaults
+{
+    static MyGameSunForgeDefaults() =&gt; SunForgeBakeGameDefaults.SetCurrent(new SunForgeBakeGameDefaults(
+        addressablesGroupName: &quot;Baked&quot;,
+        addressablesLabel: &quot;Baked&quot;,
+        archetypeOverrides: new SunForgeBakeGameConstants(
+            cameraElevation: 30f,
+            shadowSun: new SunForgeSunAngles(35f, 215f),
+            setBy: &quot;MyGame rendering constants&quot;)));
+}
+</code></pre>
+<p>方向数や出力フォルダーなど、新しいベイクが最初に使うその他の値は、Default アーキタイプの値です。<strong>Archetypes</strong> (アーキタイプ) タブで変更するか、メニュー項目などのエディタースクリプトから一度だけ変更してください。</p>
+<pre><code class="language-csharp">SunForgeBakeArchetype archetype = SunForgeBakeArchetypeLibraryLocator.FindOrCreate().Default;
+archetype.Camera.DirectionCount = 16;
+archetype.OutputRoot = &quot;Assets/Baked&quot;;
+archetype.Addressables.Enabled = true; // Registers each bake with Addressables.
+EditorUtility.SetDirty(archetype);
+</code></pre>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

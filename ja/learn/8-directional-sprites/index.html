@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity の 8 方向スプライト: 4 方向か 8 方向か 16 方向か? | Sun Forge</title>
+<meta name="description" content="スプライトセットに必要な方向の数、サイドビュー、見下ろし、アイソメトリックのカメラ角度、Unity でキャラクターの向きに合わせてスプライトを選ぶ方法を解説します。">
+<link rel="canonical" href="https://sunforgetools.com/ja/learn/8-directional-sprites/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ja/learn/8-directional-sprites/">
+<meta property="og:title" content="Unity の 8 方向スプライト: 4 方向か 8 方向か 16 方向か? | Sun Forge">
+<meta property="og:description" content="スプライトセットに必要な方向の数、サイドビュー、見下ろし、アイソメトリックのカメラ角度、Unity でキャラクターの向きに合わせてスプライトを選ぶ方法を解説します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-8-directional-sprites.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="横から、30 度上から、60 度上からの 3 通りでスプライトとしてベイクした 1 体の騎士">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity の 8 方向スプライト: 4 方向か 8 方向か 16 方向か?", "description": "スプライトセットに必要な方向の数、サイドビュー、見下ろし、アイソメトリックのカメラ角度、Unity でキャラクターの向きに合わせてスプライトを選ぶ方法を解説します。", "image": "https://sunforgetools.com/assets/share/learn-8-directional-sprites.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-18", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ja/learn/8-directional-sprites/", "inLanguage": "ja"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ja/"}, {"@type": "ListItem", "position": 2, "name": "解説記事", "item": "https://sunforgetools.com/ja/learn/"}, {"@type": "ListItem", "position": 3, "name": "8 方向スプライト", "item": "https://sunforgetools.com/ja/learn/8-directional-sprites/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/8-directional-sprites/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/8-directional-sprites/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="言語"><a href="/learn/8-directional-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/8-directional-sprites/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/8-directional-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/8-directional-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/ja/learn/">解説記事</a></p>
+<h1>Unity の 8 方向スプライト: 4 方向か 8 方向か 16 方向か?</h1>
+<p class="lead">方向別のスプライトセットは、1 体のキャラクターを、向きうる方向ごとに 1 回ずつ描いたものです。すべてのアニメーションのすべてのフレームを方向ごとに描き直すため、方向の数に比例して、アートの量もテクスチャメモリも増えます。</p>
+</header>
+<h2 id="4-8-or-16-directions">4 方向、<wbr>8 方向、<wbr>16 方向</h2>
+<p>方向が少ないほど、スプライトが向いている方向と、キャラクターが実際に進む方向のずれが大きくなります。</p>
+<p>例として、128 x 128 ピクセルで 8 フレームのアニメーションを 3 つ持つキャラクターを考えます。非圧縮の RGBA 32 bit は 1 ピクセルに 4 バイトを使うため、1 フレームは 64 KiB です。</p>
+<div class="table" tabindex="0" role="group" aria-label="方向数ごとの負荷">
+<table>
+<thead><tr><th scope="col">方向</th><th scope="col">最大誤差</th><th scope="col">フレーム数</th><th scope="col">非圧縮</th><th scope="col">反転する場合に描く方向</th></tr></thead>
+<tbody>
+<tr><td>4</td><td>45°</td><td>96</td><td>6 MiB</td><td>3</td></tr>
+<tr><td>8</td><td>22.5°</td><td>192</td><td>12 MiB</td><td>5</td></tr>
+<tr><td>16</td><td>11.25°</td><td>384</td><td>24 MiB</td><td>9</td></tr>
+</tbody>
+</table>
+</div>
+<p>BC7 などの圧縮フォーマットは 1 ピクセルあたり 8 ビットで、これらの数値の 4 分の 1 になります。</p>
+<ul>
+<li><strong>4 方向</strong>は、グリッド上の移動や小さなドット絵に向いています。</li>
+<li><strong>8 方向</strong>は、キーボードでキャラクターを動かせる 8 つの向きと一致します。</li>
+<li><strong>16 方向</strong>は、乗り物やポインターに狙いを向けるキャラクターなど、自由に回転するものに向いています。</li>
+</ul>
+<h2 id="flip-sprites-to-draw-half-the-directions">スプライトの<wbr>反転で<wbr>描く<wbr>方向を<wbr>半分に</h2>
+<p>左右どちらから見ても同じに見えるキャラクターなら、片側の方向に加えて、上向きと下向きだけを描けば済みます。反対側には Sprite Renderer の <code>flipX</code> を設定してください。反転するのは描画だけなので、コライダーも反転させる必要がある場合は負のスケールを使ってください。</p>
+<p>反転すると不自然に見えるのは、次の 2 つの場合です。</p>
+<ul>
+<li>キャラクターが左右非対称です。右手に持った剣が左手に移ります。</li>
+<li>光がスプライトに描き込まれています。左側に描いたハイライトが右側に移るため、キャラクターが向きを変えると光の当たる側が入れ替わります。</li>
+</ul>
+<h2 id="the-camera-angle-for-side-view-top-down-and-isometric-sprites">サイドビュー、<wbr>見下ろし、<wbr>アイソメトリック (クォータービュー) の<wbr>スプライトの<wbr>カメラ角度</h2>
+<p>スプライトセットは、1 つのカメラの俯角に合わせて描くものでもあります。俯角は、カメラを水平線からどれだけ上げるかを表す角度です。0 度ではプラットフォーマーのようにキャラクターを横から見ます。90 度では真下を見下ろします。顔が見える見下ろしのゲームは、その間の角度を使います。</p>
+<figure class="row">
+<img src="/features/knight-view-00.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="3D モデルから 0 度のサイドビューでベイクした騎士のスプライト">
+<img src="/features/knight-view-30.webp" loading="lazy" width="328" height="676" style="--w: 328; --h: 676" alt="アイソメトリックの角度である 30 度でベイクした同じ騎士">
+<img src="/features/knight-view-60.webp" loading="lazy" width="328" height="504" style="--w: 328; --h: 504" alt="60 度の見下ろしでベイクした同じ騎士">
+<figcaption>0 度、30 度、60 度でベイク。The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+</figure>
+<p>俯角 e から見ると、地面の円は高さが幅の sin(e) 倍の楕円として描画され、角を手前に向けた正方形のタイルも同じ比率のひし形になります。30 度では sin(e) が 0.5 なので、ひし形の幅は高さの 2 倍です。この 2:1 のひし形が、ほとんどのゲームでアイソメトリックと呼ばれるものです。Unity のアイソメトリック Tilemap の Cell Size のデフォルト値 (x 1、y 0.5) も、この比率です。</p>
+<p>よく混同される角度が 2 つあります。2:1 のタイルの辺は画面上で約 26.6 度傾いていて、それを描画するカメラの俯角は 30 度です。真のアイソメトリック投影は 3 つ目のケースで、カメラの俯角は約 35.3 度、タイルの辺の傾きは 30 度です。</p>
+<h2 id="how-to-make-isometric-sprites">アイソメトリックスプライトの<wbr>作り方</h2>
+<p>2:1 のグリッドに沿って描くか、Blender などで、俯角 30 度の平行投影カメラから 3D モデルをレンダリングしてください (<a href="/ja/learn/3d-models-to-2d-sprites/">手順</a>)。モデルを等間隔で回し、カメラとライトは動かさないでください。そうすると、どの方向でも光が画面の同じ側から当たります。</p>
+<h2 id="pick-the-sprite-for-a-direction-in-unity">Unity で<wbr>方向に<wbr>合った<wbr>スプライトを<wbr>選ぶ方法</h2>
+<ol>
+<li>シート、クリップ、コードで使う方向の順番を 1 つに決めます。以下のコードは右向きから始まり、<code>Mathf.Atan2</code> が角度を測るのと同じく反時計回りに数えます。</li>
+<li>向きのベクトルをインデックスに変換します。<pre tabindex="0" translate="no"><code>static int DirectionIndex(Vector2 facing, int count)
+{
+    float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
+    int index = Mathf.RoundToInt(angle / (360f / count));
+    return (int)Mathf.Repeat(index, count);
+}</code></pre>
+</li>
+<li>そのインデックスのスプライトを、次の 3 つのいずれかの方法で表示します。<ul>
+<li>Animator を使わない場合は、方向とフレームごとのスプライトをまとめた自作の表から <code>SpriteRenderer.sprite</code> を設定します。</li>
+<li>Animator を使う場合は、整数のパラメーターと方向ごとのステートを追加し、各遷移にそのパラメーターの条件を設定します。値は <code>SetInteger</code> で設定します。</li>
+<li><strong>2D Simple Directional</strong> ブレンドツリーを使う場合は、方向ごとに 1 つのクリップを追加し、その方向を <strong>Pos X</strong> (位置 X) と <strong>Pos Y</strong> (位置 Y) に入力します。右なら 1 と 0 です。ブレンドツリーは複数のモーションを混ぜますが、スプライトは 1 枚の絵の半分と別の絵の半分にはなれないため、生の入力ではなく、選んだインデックスの方向を渡してください。</li>
+</ul>
+</li>
+</ol>
+<h2 id="traps">落とし穴</h2>
+<ul>
+<li><strong>方向の順番。</strong> シートによって、始まる方向も回る向きも異なります。シートを組み込む前に、各行がコードのどのインデックスに当たるかを書き出しておいてください。</li>
+<li><strong>2 つの方向の間でのちらつき。</strong> 2 つの方向の境界線上にスティックを倒したままにすると、毎フレームスプライトが切り替わります。角度がその境界線をある程度 (ここでは 5 度) 越えるまでは、現在の方向を保ってください。<pre tabindex="0" translate="no"><code>float step = 360f / count;
+float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
+if (Mathf.Abs(Mathf.DeltaAngle(current * step, angle)) &gt; step * 0.5f + 5f)
+    current = DirectionIndex(facing, count);</code></pre>
+<p>ベクトルがゼロに近いときは更新をスキップしてください。そうすると、キャラクターは止まったときの向きのままになります。</p>
+</li>
+<li><strong>つぶれた角度。</strong> 2:1 のアイソメトリックゲームでは、タイルの辺に沿って歩くキャラクターは画面上で 45 度ではなく 26.6 度の方向に動くため、画面上のベクトルから選んだスプライトはよく間違ったものになります。先にベクトルの y を sin(e) で割ってください。30 度なら y が 2 倍になります。</li>
+<li><strong>ずれるピボット。</strong> ピボットはスプライトのローカル座標の原点です。すべての方向のすべてのフレームで、足元の、両足の間の同じ位置に置いてください。そうしないと、向きを変えるときにキャラクターがずれます。Sprite Editor ウィンドウの <strong>Automatic</strong> (自動) スライスは透明度で切り分けるため、フレームごとに大きさの異なる矩形ができ、あらかじめ用意された位置のピボットがポーズに合わせて動いてしまいます。代わりにグリッドでスライスし、各セルの同じ位置にキャラクターを置いてください。</li>
+</ul>
+<h2 id="bake-the-directions-from-a-3d-model-with-sun-forge">Sun Forge で 3D モデルから<wbr>各方向を<wbr>ベイクする<wbr>方法</h2>
+<p>Unity のエディターツールである Sun Forge は、このレンダリングを Unity の中で処理します。3D モデルまたはプレハブを、そのアニメーションクリップとともに 2D のスプライトプレハブにベイクします。方向ごとのスプライトシートと、アニメーターコントローラー付きのアニメーションが含まれます。</p>
+<p><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a> では、<strong>Directions</strong> を 1 から 64 に設定でき、そのうちどの方向でもオフにできます。<strong>Elevation Angle</strong> は 0 から 90 度まで 0.25 度刻みで設定できます。0 はサイドビュー、90 は真下、30 は <a href="/guide/sunforge/ja/isometric/#isometric-scenes" hreflang="ja">2:1 のひし形</a>です。</p>
+<figure class="bare">
+<img src="/features/prefab.webp" loading="lazy" width="2106" height="1071" style="--w: 2106; --h: 1071" alt="コライダー、ヒットボックス、HP バーが描画された、ベイクした騎士のプレハブと、その Idle、Walk、Attack クリップのフレーム">
+<figcaption>The Forgotten Knight は dark_igorek の作品で、CC BY 4.0 のもとで改変しています。</figcaption>
+</figure>
+<p>出力は Unity の標準アセットです。スプライト、スプライトアトラス、アニメーションクリップ、アニメーターコントローラー、プレハブが含まれます。<a href="/ja/sprite-baker/#directions">スプライトベイカーのページ</a>では、ベイクしたスプライトのリングを回して確かめられます。</p>
+<p>Bake タブには、ベイクのたびにテクスチャメモリが表示され、方向を減らすほど少なくなります。目安として、Sun Forge のショーケースの騎士は 4 つのアニメーションで 968 枚のスプライトがあり、Windows、Mac、Linux 向けにパックすると 81 MiB です。</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">次に<wbr>読む記事</h2>
+<ul>
+<li><a href="/ja/learn/3d-models-to-2d-sprites/">Unity で 3D モデルを 2D スプライトに変換する方法</a></li>
+<li><a href="/ja/learn/2d-shadows-top-down/">Unity で 2D と見下ろしのスプライトに影を落とす方法</a></li>
+<li><a href="/ja/sprite-baker/#directions">Sun Forge のスプライトベイカー: 方向とカメラ角度</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="言語"><a href="/learn/8-directional-sprites/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/8-directional-sprites/" lang="ja" hreflang="ja" translate="no" aria-current=true>日本語</a><a href="/ko/learn/8-directional-sprites/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/8-directional-sprites/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

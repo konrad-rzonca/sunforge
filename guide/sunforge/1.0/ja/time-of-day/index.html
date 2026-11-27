@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 2D の昼夜サイクル | Sun Forge ガイド</title>
+<meta name="description" content="シーンの時刻の設定と、夜明けから夜まで、その時刻に従って変わるものを説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/time-of-day/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/time-of-day/">
+<meta property="og:title" content="Unity 2D の昼夜サイクル | Sun Forge ガイド">
+<meta property="og:description" content="シーンの時刻の設定と、夜明けから夜まで、その時刻に従って変わるものを説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "時刻", "item": "https://sunforgetools.com/guide/sunforge/ja/time-of-day/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja" aria-current=page>時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/time-of-day/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/time-of-day/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/time-of-day/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-time-of-day"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="time-of-day">時刻</h1><p class="lead">シーンの時刻の設定と、夜明けから夜まで、その時刻に従って変わるものを説明します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#values-you-changed">変更した値</a></li><li><a href="#change-a-style-s-hours">スタイルの時刻の変更</a></li><li><a href="#run-a-day-from-a-script">スクリプトによる一日の進行</a></li></ul></details></nav><article class="doc"><p>Lighting Setup の <strong>Style</strong> (スタイル) の下にある <strong>Time Of Day</strong> (時刻) は、時刻を 0 から 24 の範囲で設定します。各値は、その時刻におけるスタイルの値になります。同梱のスタイルにはすべて、夜明け、朝、午後、夕暮れと、20:00 から 04:00 までの夜があります。Indoor のスタイルでは、窓から差し込む光が夜明けと夕暮れに暖かみを帯びて弱まり、夜は月と Light Source が部屋を照らします。</p>
+<p>同梱のスタイルが時刻に応じて変える値は次のとおりです。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>値</th>
+<th>変わるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sun Elevation</strong> (太陽の仰角)</td>
+<td>太陽がどの面を照らすか、水平な地面がどれだけ明るいか</td>
+</tr>
+<tr>
+<td><strong>Sun Color</strong> (太陽光の色)、<strong>Sun Intensity</strong> (太陽光の強さ)、<strong>Sun Warmth</strong> (太陽光の暖かみ)</td>
+<td>太陽光の色と明るさ</td>
+</tr>
+<tr>
+<td><strong>Ambient Sky Color</strong> (空の環境光の色)、<strong>Ambient Sky Intensity</strong> (空の環境光の強さ)</td>
+<td>日陰やあらゆる向きの面に届く、空からの光</td>
+</tr>
+<tr>
+<td><strong>Night</strong> (夜)</td>
+<td>太陽から月への移り変わりと、マテリアルの夜の見え方</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong> (キャストシャドウの引き伸ばし有効)、<strong>Cast Shadow Stretch Sun Angle Offset</strong> (キャストシャドウの引き伸ばしの太陽角度オフセット)</td>
+<td>Regular での、夜明けと夕暮れ時の地面の長い影</td>
+</tr>
+<tr>
+<td><strong>Ground Shadow Strength</strong> (地面の影の強さ)</td>
+<td>影スプライトと、Cast Shadow Field の地面オーバーレイの濃さ</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="values-you-changed">変更した<wbr>値</h2>
+<p>Lighting Setup で変更した値は、どの時刻でも変更した値のままです。時刻に従っている値は、その時刻にスタイルがすでに与えている値と同じ値に設定しても、時刻に従い続けます。値の行にある元に戻すボタンか、<strong>Global Light</strong> (グローバルライト) または <strong>Values</strong> (値) のヘッダーにある <strong>Revert All</strong> (すべてを元に戻す) を使うと、その値はスタイルの時刻ごとの値に戻ります。値を時刻に従わせたままシーンを明るく、または暗くするには、代わりに <strong>Global Light</strong> の下にある <strong>Sun And Moon Brightness</strong> (太陽と月の明るさ) と <strong>Sky Brightness</strong> (空の明るさ) を設定してください。</p>
+<p>時刻に従っている値をアニメーションさせるには、その値のカーブを Animation ウィンドウで追加するか、エディタースクリプトで <code>AnimationUtility.SetEditorCurve</code> を使って追加してください。<code>AnimationClip.SetCurve</code> で作成したクリップが値を動かすのは、その値を Lighting Setup で変更するか、その値に対して <code>SunForgeLightingSetup.KeepValue</code> を呼び出した後だけです。</p>
+<h2 id="change-a-style-s-hours">スタイルの<wbr>時刻の<wbr>変更</h2>
+<ol>
+<li><strong>Lighting Setup</strong> を選択し、<strong>Values</strong> (値) の下にある、スタイルの名前が付いたセクションを開きます。Sun Forge のスタイルを使っている場合は、セクションのヘッダーにある <strong>Edit A Copy</strong> (コピーして編集) をクリックします。</li>
+<li>そのセクションで <strong>Hours</strong> (時間帯) を開きます。ここには、スタイルの <strong>Default Lighting Values</strong> (デフォルトのライティング値) を開く 12:00 の行と、スタイルが値を設定するほかの時刻ごとのキーが並んでいます。各キーで、その時刻に設定する値のチェックボックスをオンにします。</li>
+<li>新しいキーを追加するには、<strong>Add Hour</strong> (時刻を追加) をクリックします。値を一定の時間帯にわたって保つキーでは、<strong>Held</strong> (保持) をオンにします。</li>
+</ol>
+<h2 id="run-a-day-from-a-script">スクリプトに<wbr>よる<wbr>一日の<wbr>進行</h2>
+<p>スクリプトで一日の時間を進めるには、<code>Update</code> で <code>SunForgeLightingSetup.TimeOfDay</code> を設定してください。</p>
+<p>スクリプトで、その時刻にスタイルがすでに与えている値と同じ値を設定し、その値をどの時刻でも保つには、<code>setup.KeepValue(nameof(SunForgeLightingValues.MistEnabled))</code> のように <code>SunForgeLightingSetup.KeepValue</code> を呼び出してください。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

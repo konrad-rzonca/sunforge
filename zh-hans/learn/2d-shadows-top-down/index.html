@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 中 2D 与俯视角精灵的阴影 | Sun Forge</title>
+<meta name="description" content="为 Unity 2D 精灵添加阴影的四种方法：Shadow Caster 2D、斑点阴影、倾斜副本或 3D 模型的渲染。各自的适用场景与陷阱。">
+<link rel="canonical" href="https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/">
+<meta property="og:title" content="Unity 中 2D 与俯视角精灵的阴影 | Sun Forge">
+<meta property="og:description" content="为 Unity 2D 精灵添加阴影的四种方法：Shadow Caster 2D、斑点阴影、倾斜副本或 3D 模型的渲染。各自的适用场景与陷阱。">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="由烘焙精灵构成的场景：断柱的阴影越过铺石地面，落在站在阴影中的骑士身上">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "Unity 中 2D 与俯视角精灵的阴影", "description": "为 Unity 2D 精灵添加阴影的四种方法：Shadow Caster 2D、斑点阴影、倾斜副本或 3D 模型的渲染。各自的适用场景与陷阱。", "image": "https://sunforgetools.com/assets/share/learn-2d-shadows-top-down.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/", "inLanguage": "zh-Hans"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/zh-hans/"}, {"@type": "ListItem", "position": 2, "name": "学习", "item": "https://sunforgetools.com/zh-hans/learn/"}, {"@type": "ListItem", "position": 3, "name": "2D 精灵的阴影", "item": "https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-shadows-top-down/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-shadows-top-down/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="语言"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/zh-hans/learn/">学习</a></p>
+<h1>Unity 中 2D 与<wbr>俯视角<wbr>精灵<wbr>的<wbr>阴影</h1>
+<p class="lead">在 Unity 中，2D 精灵的阴影有四种做法：URP 的 Shadow Caster 2D、脚底的斑点阴影精灵、精灵的倾斜深色副本，或者从精灵所来自的 3D 模型渲染出的阴影。选择之前，先确定阴影落在哪里：是在屏幕平面内，还是在角色站立的地面上。</p>
+</header>
+<h2 id="two-kinds-of-2d-shadows">两类 2D 阴影</h2>
+<p>侧视的平台跳跃游戏是一个平面世界，从正上方看的地牢也是。墙会挡住火把的光，墙后的东西就处于黑暗中。</p>
+<p>在俯视或 2.5D 世界中，摄像机以一定角度向下看，角色直立在地面上。这里的阴影落在角色脚底的地面上，指向背离太阳的方向。</p>
+<figure>
+<img src="/features/ruins-shadows-flat.webp" srcset="/features/ruins-shadows-flat.768w.webp 768w, /features/ruins-shadows-flat.960w.webp 960w, /features/ruins-shadows-flat.1024w.webp 1024w, /features/ruins-shadows-flat.1440w.webp 1440w, /features/ruins-shadows-flat.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="从斜上方看到的铺石地面上，有一名骑士、一根断柱和一块石块，各自旁边的地面上都有一片柔和的阴影。场景由用 Sun Forge 烘焙的精灵构成">
+<figcaption>dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</figcaption>
+</figure>
+<p>Shadow Caster 2D 产生第一类阴影，其他三种方法产生第二类。</p>
+<h2 id="unity-s-shadow-caster-2d-and-light-2d">Unity 的 S<wbr>hadow Caster 2D 与 Light 2D</h2>
+<p>Shadow Caster 2D 是 URP 的组件，用于设置 2D 光源投射阴影时使用的形状。项目需要使用带 2D Renderer 的 URP，精灵需要使用 2D 光源能照亮的材质，例如默认的 Sprite-Lit-Default。</p>
+<ol>
+<li>在 Hierarchy 窗口中右键单击，选择 <strong>Light</strong>（灯光），然后选择 Spot（聚光）、Freeform（自由形式）或 Sprite（精灵）光源。</li>
+<li>在 Light 2D 上启用 <strong>Shadows</strong>（阴影）。<strong>Strength</strong>（强度）设置投射器遮挡多少光，从 0 到 1；<strong>Softness</strong>（柔和度）柔化阴影的边缘。</li>
+<li>选择要投射阴影的精灵，单击 <strong>Add Component</strong>（添加组件），然后添加 <strong>Shadow Caster 2D</strong>。其形状是 Sprite Editor 中精灵的 Custom Outline，Scene 视图用白色绘制这一形状。</li>
+<li>要使用其他形状，将 <strong>Casting Source</strong>（投射光源）设为同一游戏对象上的碰撞器（例如 Polygon Collider 2D），或设为 <strong>Shape Editor</strong> 并单击 <strong>Edit Shape</strong>。</li>
+<li>要合并多个精灵的阴影，将这些精灵设为某个游戏对象的子对象，该游戏对象带有 <strong>Composite Shadow Caster 2D</strong>。</li>
+</ol>
+<p><strong>Casting Option</strong>（投射选项）设置投射器的阴影落在其他精灵上、自身上还是两者上；<strong>Target Sorting Layers</strong>（目标排序层）设置阴影落在哪些排序图层上。</p>
+<p>这种方法不能让俯视角色在地面上得到阴影：</p>
+<ul>
+<li>投射器是遮挡光线的轮廓，没有设置精灵高度或阴影长度的选项。</li>
+<li>全局光源（像日光一样均匀照亮每个精灵的类型）没有 <strong>Shadows</strong> 设置。其他类型从光源所在位置投射，因此阴影落在投射器背向光源的一侧。</li>
+</ul>
+<p>Unity 为其俯视角示例项目 Happy Harvest 编写的指南指出，这类阴影会无限延伸，用作一般日光阴影时看起来不对。该示例只在灯和火附近投射这类阴影，投射器位于角色脚底。示例中的树木和灌木使用斑点阴影。</p>
+<h2 id="a-blob-shadow-under-a-2d-sprite">2D 精灵<wbr>下方<wbr>的<wbr>斑点<wbr>阴影</h2>
+<p>斑点阴影是一个柔和的深色椭圆，由子对象上的精灵绘制在角色脚底。斑点阴影适用于任何精灵和任何动画，代价是多绘制一个精灵。它能显示角色与地面接触的位置，但既不显示角色的形状，也不显示太阳的方向。将 Sprite Renderer 的 <strong>Color</strong>（颜色）设为带一定透明度的黑色，这样一张纹理就能用于任何地面。</p>
+<h2 id="a-skewed-copy-as-a-sprite-cast-shadow">以倾斜副本<wbr>充当<wbr>精灵<wbr>的<wbr>投射<wbr>阴影</h2>
+<p>要得到角色形状的阴影，就把角色的精灵再绘制一次：染成黑色、半透明、压扁，并倾斜到平躺在地面上。</p>
+<ul>
+<li>副本是子对象上的第二个 Sprite Renderer，子对象的轴心位于脚底。角色有动画时，由脚本在每一帧的 <code>LateUpdate</code> 中把主体当前的精灵和翻转状态复制给副本，Unity 会在每次 <code>Update</code> 之后调用该方法。</li>
+<li>Transform 没有倾斜设置。在非均匀缩放的父对象下旋转子对象，子对象会显得倾斜，从而得到倾斜效果。另一种方法是用阴影着色器，按每个顶点在轴心之上的高度将其横向移动。</li>
+</ul>
+<p>副本显示的是摄像机看到的角色，而不是太阳“看到”的角色。太阳方向与摄像机方向相差越大，轮廓就越不吻合。</p>
+<h2 id="a-shadow-rendered-from-the-3d-model">从 3D 模型<wbr>渲染<wbr>的<wbr>阴影</h2>
+<p>如果精灵是 3D 模型的渲染图，阴影也从模型渲染。在 Blender 的 Cycles 中，物体的 <strong>Shadow Catcher</strong> 选项（<strong>Object Properties &gt; Visibility</strong>）可让地面平面只接收阴影光线，这样渲染平面时得到的只有阴影。将阴影渲染成单独的精灵表，与主体逐帧对应，并在角色下方用第二个 Sprite Renderer 显示。</p>
+<p>这种阴影具有太阳所见的轮廓。这种方法会让精灵表的数量翻倍，阴影方向在渲染时就已固定。如果角色有多个朝向，请在模型转动时让太阳在世界中保持不动，否则每次角色转身时阴影都会跟着甩动。</p>
+<h2 id="traps-with-2d-sprite-shadows">2D 精灵<wbr>阴影<wbr>的<wbr>陷阱</h2>
+<ul>
+<li><strong>排序</strong>。俯视场景通常按 y 对精灵排序：在 2D Renderer 资产上将 <strong>Transparency Sort Mode</strong>（透明度排序模式）设为 <strong>Custom Axis</strong>（自定义轴），轴为 (0, 1, 0)。这样，位于角色排序图层上的阴影会盖住其主人身后那个角色的脚底。为阴影设置单独的排序图层，在 <strong>Project Settings &gt; Tags and Layers</strong>（项目设置 &gt; 标签和图层）中排在地面的图层之后、角色的图层之前。Unity 按列表顺序绘制图层。</li>
+<li><strong>重叠</strong>。两片半透明阴影重叠处，地面会变暗两次。解决方法需要自己的阴影着色器：URP 支持 ShaderLab 的 <code>Stencil</code> 命令，用它可让第一片阴影标记自己绘制的每个像素，之后的阴影便跳过这些像素。</li>
+<li><strong>方向</strong>。场景中的所有阴影都必须指向同一方向，并与绘制或渲染到精灵中的光照一致。用同一个角度驱动所有倾斜副本，在同一个太阳下渲染所有模型。</li>
+<li><strong>其他精灵</strong>。斑点阴影、副本和渲染出的精灵表只会让地面变暗。角色走进树的阴影后仍然完全受光，因为阴影绘制在所有角色下方，而且两个精灵都不存储高度。Shadow Caster 2D 的阴影会落在其 <strong>Target Sorting Layers</strong>（目标排序层）中的每个精灵上，地面和其他角色都一样。</li>
+</ul>
+<h2 id="how-sun-forge-does-it">Sun Forge 的<wbr>做法</h2>
+<p>Sun Forge 是一款 Unity 编辑器工具，采用的是第四种方法。烘焙会把 3D 模型变成 2D 精灵预制件，同时写出精灵的阴影：投射在地面上的柔和阴影，或者一个椭圆。</p>
+<p>阴影随精灵移动，并随日落逐渐变淡。阴影保持烘焙时的太阳方向，场景中的太阳移动时不会转动，因此不适合阴影必须随一天时间转动的游戏。</p>
+<p>除颜色外，每张烘焙出的精灵表还有一张几何信息纹理，保存每个纹素在精灵轴心之上的高度。有了这个高度，烘焙出的精灵就能<a href="/guide/sunforge/zh-hans/components/#sunforgecastshadowfield" hreflang="zh-Hans">相互投射阴影</a>。投射阴影会沿站在其中的精灵向上爬，最高与投射阴影的物体同高。</p>
+<figure class="bare">
+<img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="烘焙出的骑士精灵的几何信息纹理：脚底为黑色，越往头部越亮">
+<figcaption>dark_igorek 的 The Forgotten Knight，CC BY 4.0，有修改。</figcaption>
+</figure>
+<figure>
+<img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.1024w.webp 1024w, /features/ruins-shadows.1440w.webp 1440w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="同一个烘焙精灵场景，断柱的阴影落在骑士身上">
+<figcaption>dark_igorek 的 The Forgotten Knight 和 LasquetiSpice 的骷髅模型，CC BY 4.0，有修改。</figcaption>
+</figure>
+<p>Sun Forge 需要 Unity 6.3 LTS（6000.3.29f1 或更高版本）至 Unity 6.6，以及通用渲染管线（URP）的 2D Renderer 或 Universal Renderer。<a href="/zh-hans/2d-lighting/#shadows">光照页面</a>展示了同一场景关闭和开启投射阴影时的样子。</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">延伸<wbr>阅<wbr>读</h2>
+<ul>
+<li><a href="/zh-hans/learn/2d-sprite-normal-maps/">用 Unity 法线贴图让 2D 精灵有立体感</a></li>
+<li><a href="/zh-hans/learn/2d-day-night-cycle/">Unity 2D 昼夜循环与云阴影</a></li>
+<li><a href="/zh-hans/2d-lighting/#shadows">Sun Forge 2D Lighting：投射阴影</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="语言"><a href="/learn/2d-shadows-top-down/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-shadows-top-down/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-shadows-top-down/" lang="ko" hreflang="ko" translate="no">한국어</a><a href="/zh-hans/learn/2d-shadows-top-down/" lang="zh-Hans" hreflang="zh-Hans" translate="no" aria-current=true>简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

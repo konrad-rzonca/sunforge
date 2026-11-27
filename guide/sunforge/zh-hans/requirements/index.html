@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity 版本、渲染管线和摄像机的要求 | Sun Forge 指南</title>
+<meta name="description" content="烘焙或为场景打光之前，项目需要具备的条件。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/requirements/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/requirements/">
+<meta property="og:title" content="Unity 版本、渲染管线和摄像机的要求 | Sun Forge 指南">
+<meta property="og:description" content="烘焙或为场景打光之前，项目需要具备的条件。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "系统要求", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/requirements/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/requirements/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/requirements/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/requirements/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/requirements/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/requirements/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans" aria-current=page>系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/requirements/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/requirements/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/requirements/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/requirements/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-requirements"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="requirements">系统<wbr>要求</h1><p class="lead">烘焙或为场景打光之前，项目需要具备的条件。</p></div><article class="doc"><ul>
+<li>Unity 6.3 LTS（6000.3.29f1 或更高版本）至 Unity 6.6。</li>
+<li>通用渲染管线（URP），搭配 2D Renderer 或 Universal Renderer。不支持内置渲染管线和 HDRP。</li>
+<li>线性颜色空间，在 <strong>Project Settings &gt; Player &gt; Other Settings &gt; Color Space</strong>（项目设置 &gt; 玩家 &gt; 其他设置 &gt; 颜色空间）中设置。</li>
+<li>烘焙需要 <strong>Force Text</strong> 资产序列化，在 <strong>Project Settings &gt; Editor &gt; Asset Serialization &gt; Mode</strong>（项目设置 &gt; 编辑器 &gt; 资产序列化 &gt; 模式）中设置。新建的 Unity 项目默认采用该模式。</li>
+<li>在 Windows 上，项目文件夹路径不超过 110 个字符。路径更长时，部分文件会超出 Windows 的路径长度限制，导致导入或烘焙失败。</li>
+<li>2D 场景，且摄像机正对精灵，其 Transform 中的 <strong>Rotation</strong>（旋转）X 和 Y 均为 0：
+<ul>
+<li>俯视、等距和侧视游戏都适用：烘焙会把视角画进精灵中，因此摄像机本身从不朝地面倾斜。</li>
+<li>摄像机可以移动、缩放和抖动，也可以转到任意 <strong>Rotation</strong> Z（例如用于荷兰角镜头），光和阴影在世界中的位置保持不变。</li>
+<li>使用 <strong>Perspective</strong>（透视）摄像机（例如用于视差图层的摄像机）时，场景的光照效果相同。这种摄像机下只显示以精灵绘制的阴影，站在灌木丛中的角色会整体绘制在灌木丛前方或后方（参见 <a href="/guide/sunforge/zh-hans/characters-in-props/#characters-in-props" hreflang="zh-Hans">道具中的角色</a>）。</li>
+<li>3D 场景或摄像机朝地面倾斜时，将烘焙的 <strong>Prefab Material</strong>（预制件材质，Bake（烘焙）选项卡，Advanced（高级）视图）设为 <strong>Unity Lights</strong>，并使用 Universal Renderer。Unity Lights 材质由 URP 的光源照亮，不绘制薄雾、投射阴影和地面覆盖物（参见 <a href="/guide/sunforge/zh-hans/styles/#materials" hreflang="zh-Hans">风格 › 材质</a>）。</li>
+</ul>
+</li>
+<li>所有特效都能在 WebGL 2 和 OpenGL ES 3.0 Player 上运行。在无法混合到 16 位渲染纹理的设备上，设为 <strong>Ground Overlay And Sprites</strong>（地面叠加层和精灵）、<strong>Ground Material And Sprites</strong>（地面材质和精灵）或 <strong>Ground Material Only</strong>（仅地面材质）的 Cast Shadow Field 会关闭。以精灵绘制的阴影仍会显示，没有这类阴影的精灵不投射阴影。</li>
+<li>安装 Sun Forge 时，还会安装 Sun Forge 2D Lighting、URP、Render Pipelines Core 包、Burst、Input System 和 2D Sprite 包，并启用 Animation、JSONSerialize、Particle System 和 Physics 2D 这几个内置包。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사이드 뷰 게임이나 플랫포머를 위한 2D 조명과 베이크된 액터 | Sun Forge 가이드</title>
+<meta name="description" content="플랫포머의 아트처럼 옆에서 본 모습으로 그린 아트에 조명을 적용하고, 그 아트에 맞는 액터를 베이크합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/side-view/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/side-view/">
+<meta property="og:title" content="사이드 뷰 게임이나 플랫포머를 위한 2D 조명과 베이크된 액터 | Sun Forge 가이드">
+<meta property="og:description" content="플랫포머의 아트처럼 옆에서 본 모습으로 그린 아트에 조명을 적용하고, 그 아트에 맞는 액터를 베이크합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "사이드 뷰", "item": "https://sunforgetools.com/guide/sunforge/ko/side-view/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/side-view/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/side-view/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/side-view/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/side-view/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/side-view/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko" aria-current=page>사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/side-view/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/side-view/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/side-view/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/side-view/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-side-view"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="side-views">사이드 뷰</h1><p class="lead">플랫포머의 아트처럼 옆에서 본 모습으로 그린 아트에 조명을 적용하고, 그 아트에 맞는 액터를 베이크합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#lights-in-a-side-view">사이드 뷰의 광원</a></li><li><a href="#what-a-side-view-leaves-out">사이드 뷰에 나타나지 않는 것</a></li><li><a href="#side-view-bakes">사이드 뷰 베이크</a></li></ul></details></nav><article class="doc"><p>플랫포머처럼 옆에서 본 모습으로 그린 아트는 사이드 뷰입니다. 사이드 뷰 씬을 비추려면 다음과 같이 합니다.</p>
+<ol>
+<li><strong>GameObject &gt; Sun Forge &gt; Set Up for Lighting</strong>(게임 오브젝트 &gt; Sun Forge &gt; Set Up for Lighting) 메뉴를 선택합니다.</li>
+<li>창의 첫 행인 <strong>Art View</strong>(아트 시점) 행에서 <strong>From the Side</strong>(옆에서 본 시점) 옵션을 선택한 다음 <strong>Apply</strong>(적용) 버튼을 클릭합니다. 그러면 스프라이트, 바닥, 벽이 어느 스타일과 머티리얼에서나 사이드 뷰로 빛을 받습니다.</li>
+<li>Lighting Setup 컴포넌트에서 태양이 옆에서 비추도록 <strong>Sun Direction</strong>(태양 방향) 필드와 <strong>Sun Elevation</strong>(태양 고도각) 필드를 설정합니다.</li>
+<li>횃불이나 불에는 <strong>GameObject &gt; Sun Forge &gt; Light Source &gt; Fire &gt; Torch</strong>(게임 오브젝트 &gt; Sun Forge &gt; Light Source &gt; Fire &gt; Torch) 메뉴로 광원을 추가합니다. 낮에 태양 때문에 빛이 닿는 영역이 묻히면 광원의 <strong>Intensity</strong>(강도) 필드 값을 높이고, Flat 스타일에서는 Lighting Setup의 <strong>Light Sources In Sunlight</strong>(햇빛 속 Light Source) 필드 값도 높입니다.</li>
+</ol>
+<p><strong>Art View</strong> 행은 Lighting Setup 컴포넌트에도 있으며, 나중에 거기서 바꿀 수 있습니다. 씬마다 Lighting Setup에 Art View 값이 따로 있으므로, 한 프로젝트에 사이드 뷰 레벨과 탑다운 레벨을 함께 둘 수 있습니다.</p>
+<h2 id="lights-in-a-side-view">사이드 뷰의 광원</h2>
+<ul>
+<li><strong>Height Above Ground</strong>(지면 위 높이) 필드는 광원이 아트보다 얼마나 앞쪽에 놓이는지를, <strong>Ground Radius</strong>(지면 반지름) 필드는 빛이 화면을 가로질러 얼마나 멀리 닿는지를 정합니다. 벽에 걸거나 손에 든 램프는 램프가 얼마나 높이 있든 <strong>Height Above Ground</strong> 필드 값을 작게 설정하세요.</li>
+<li>광원은 배경을 포함해 빛이 닿는 범위 안의 모든 사이드 뷰 스프라이트를 비춥니다. 배경을 비추지 않으려면 그 광원의 <strong>Excluded Objects</strong>(제외할 오브젝트) 필드에 배경을 추가하세요.</li>
+<li>벽의 횃불 앞을 지나가는 캐릭터처럼 <strong>Z</strong> 값이 광원보다 작은 스프라이트는 광원 앞에 있습니다. 이때 빛은 스프라이트의 가장자리에만 닿고, Flat 스타일에서는 스프라이트에 전혀 닿지 않습니다. 스프라이트의 앞면을 비추려면 광원의 Z 값을 스프라이트의 Z 값과 같거나 그보다 작게 하세요.</li>
+</ul>
+<h2 id="what-a-side-view-leaves-out">사이드 뷰에 나타나지 않는 것</h2>
+<ul>
+<li>구름 그림자, 캐노피 그늘, 안개, 그라운드 커버, 드리운 그림자는 나타나지 않고, <strong>Cast Shadow Stretch</strong>(드리운 그림자 늘이기) 섹션, <strong>Light From Lit Ground</strong>(빛 받은 지면에서 오는 빛) 필드, <strong>Exact Shadows On Sprites</strong>(스프라이트 위 정확한 그림자) 필드도 아무것도 그리지 않습니다. 사이드 뷰에는 이들이 놓일 지면이 보이지 않기 때문입니다.</li>
+<li>Sun Forge가 비스듬한 각도에서 렌더링한 스프라이트는 구름 그림자, 캐노피 그늘, 안개를 뺀 나머지를 모두 받습니다. 이런 스프라이트로 이루어진 씬에는 <strong>From Above</strong>(위에서 본 시점) 옵션을 사용하세요.</li>
+</ul>
+<h2 id="side-view-bakes">사이드 뷰 베이크</h2>
+<p>플랫포머 같은 사이드 뷰 게임에 쓸 액터를 베이크하려면 다음과 같이 합니다.</p>
+<ol>
+<li>아키타입의 <strong>Elevation Angle</strong>(고도각) 필드(Archetypes(아키타입) 탭, CAMERA(카메라) 섹션)를 0으로 설정합니다.</li>
+<li><strong>Directions</strong>(방향) 필드를 4로 설정하고 0°와 180°를 향하는 방향을 끕니다. 그러면 액터가 바라보는 방향은 왼쪽이나 오른쪽이 되며, 처음에는 오른쪽을 바라봅니다.</li>
+<li>콜라이더가 발이 아니라 모델 전체를 덮게 하려면 <strong>Elevation Angle</strong> 필드 아래의 <strong>Cover Whole Body</strong>(모델 전체 덮기) 버튼을 누릅니다. 또는 <strong>PHYSICS</strong>(물리) 섹션(Advanced(고급) 보기)에서 콜라이더의 <strong>Ignore Below Height</strong>(이 높이 아래쪽 무시) 필드를 0으로 설정하고, <strong>Ignore Above Height</strong>(이 높이 위쪽 무시) 필드를 비우고, <strong>Multiplier</strong>(멀티플라이어) 필드를 1로 설정합니다.</li>
+</ol>
+<p>플랫포머에서는 직접 작성한 스크립트로 액터를 움직이세요(<a href="/guide/sunforge/ko/platformers-and-physics/#side-view-games" hreflang="ko">플랫포머와 물리 › 사이드 뷰 게임</a> 참조).</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

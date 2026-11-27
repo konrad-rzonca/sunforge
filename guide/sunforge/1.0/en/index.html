@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Forge Guide: Documentation for Unity</title>
+<meta name="description" content="Sun Forge bakes your 3D models into 2D sprites and lights your 2D scenes in Unity. Start with a first bake or a first lit scene.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/en/">
+<meta property="og:title" content="Sun Forge Guide: Documentation for Unity">
+<meta property="og:description" content="Sun Forge bakes your 3D models into 2D sprites and lights your 2D scenes in Unity. Start with a first bake or a first lit scene.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/guide-235194ec.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sun Forge: the Bake Window, Bake tab, Simple view">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge Guide", "item": "https://sunforgetools.com/guide/sunforge/en/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="Site">
+<a class="brand" href="/#top" aria-label="Sun Forge home">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">Features</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/#features">All features</a>
+<a href="/sprite-baker/">Sprite baker</a>
+<a href="/2d-lighting/">2D lighting</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/en/" aria-current="page">Guide</a>
+<button type="button" class="support" popovertarget="support-address">Support</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>Search</span><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="Nothing matches." hidden></div></div><details open><summary>Contents</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="Contents"><p class="label">Start</p><ul><li><a href="/guide/sunforge/1.0/en/" aria-current=page>Overview</a></li><li><a href="/guide/sunforge/1.0/en/requirements/">Requirements</a></li><li><a href="/guide/sunforge/1.0/en/showcase/">The showcase</a></li><li><a href="/guide/sunforge/1.0/en/troubleshooting/">Troubleshooting</a></li></ul><p class="label">Baking</p><ul><li><a href="/guide/sunforge/1.0/en/first-bake/">First bake</a></li><li><a href="/guide/sunforge/1.0/en/bake-window/">Bake Window</a></li><li><a href="/guide/sunforge/1.0/en/bake-output/">What a bake writes</a></li><li><a href="/guide/sunforge/1.0/en/rebaking/">Rebaking</a></li><li><a href="/guide/sunforge/1.0/en/adjust-a-prefab/">Adjust a prefab</a></li><li><a href="/guide/sunforge/1.0/en/model-materials/">Model materials</a></li><li><a href="/guide/sunforge/1.0/en/baked-textures/">Baked textures</a></li><li><a href="/guide/sunforge/1.0/en/characters-in-props/">Characters in props</a></li></ul><p class="label">Lighting</p><ul><li><a href="/guide/sunforge/1.0/en/set-up-lighting/">Set up a scene</a></li><li><a href="/guide/sunforge/1.0/en/lights/">Lights</a></li><li><a href="/guide/sunforge/1.0/en/styles/">Styles</a></li><li><a href="/guide/sunforge/1.0/en/tune-a-style/">Tune a style</a></li><li><a href="/guide/sunforge/1.0/en/time-of-day/">Time of day</a></li><li><a href="/guide/sunforge/1.0/en/shadows/">Shadows</a></li><li><a href="/guide/sunforge/1.0/en/your-sprites/">Sprites you drew</a></li><li><a href="/guide/sunforge/1.0/en/baked-sprites/">Baked sprites in a scene</a></li><li><a href="/guide/sunforge/1.0/en/performance/">Performance</a></li></ul><p class="label">By game type</p><ul><li><a href="/guide/sunforge/1.0/en/pixel-art/">Pixel art</a></li><li><a href="/guide/sunforge/1.0/en/isometric/">Isometric</a></li><li><a href="/guide/sunforge/1.0/en/side-view/">Side view</a></li></ul><p class="label">Reference</p><ul><li><a href="/guide/sunforge/1.0/en/menus/">Menus</a></li><li><a href="/guide/sunforge/1.0/en/scene-view/">Scene view</a></li><li><a href="/guide/sunforge/1.0/en/components/">Components</a></li><li><a href="/guide/sunforge/1.0/en/changelog/">Changelog</a></li></ul><p class="label">Scripting and shaders</p><ul><li><a href="/guide/sunforge/1.0/en/scripting/">Scripting</a></li><li><a href="/guide/sunforge/1.0/en/behaviors/">Behaviors</a></li><li><a href="/guide/sunforge/1.0/en/platformers-and-physics/">Platformers and physics</a></li><li><a href="/guide/sunforge/1.0/en/extending-a-bake/">Extending a bake</a></li><li><a href="/guide/sunforge/1.0/en/baking-from-code/">Baking from code</a></li><li><a href="/guide/sunforge/1.0/en/lighting-from-code/">Lighting from code</a></li><li><a href="/guide/sunforge/1.0/en/custom-shaders/">Custom shaders</a></li><li><a href="/guide/sunforge/1.0/en/geometry-texture-format/">Geometry texture format</a></li></ul></nav><nav class="choice" aria-label="Language"><a href="/guide/sunforge/1.0/en/" lang="en" hreflang="en" aria-current=true>English</a><a href="/guide/sunforge/1.0/ja/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-home"><p class="notice" hidden data-other="This guide is for version 1.0. Version {asked} has no guide." data-missing="This version has no entry at this address."></p><section class="top with-map"><div class="words"><h1>Sun Forge <em>Guide</em></h1><p class="lead">Sun Forge bakes your 3D models into 2D sprites and lights your 2D scenes in Unity. Start with a first bake or a first lit scene.</p><div class="doors"><a class="door" href="/guide/sunforge/1.0/en/first-bake/"><span class="label">Baking</span><b>First bake</b><span>From your model to a baked prefab in your scene.</span></a><a class="door" href="/guide/sunforge/1.0/en/set-up-lighting/"><span class="label">Lighting</span><b>Set up a scene</b><span>Light the sprites in your scene and add your first light, in three steps.</span></a></div></div><figure class="map" role="group" aria-label="Where each place is in the editor"><div class="bar"><span>File</span><span>Edit</span><span class=on>Assets</span><span class=on>GameObject</span><span class=on>Component</span><span class=on>Tools</span><span>Window</span><span>Help</span></div><div class="hierarchy"><i>Hierarchy</i><u></u><u></u><u></u></div><div class="view"><i>Scene</i><img src="/guide/pictures/sun-forge-the-panel-in-the-scene-view-2336e03a.webp" width="1120" height="720" alt="" loading="lazy" aria-hidden="true"></div><div class="inspector"><i>Inspector</i><u></u><u></u><u class="add">Add Component</u></div><div class="project"><i>Project</i><u></u><u></u></div><picture><source media="(max-width: 860px)" srcset="/guide/pictures/sun-forge-the-bake-window-bake-tab-simple-view-235194ec.phone.webp" type="image/webp"><img src="/guide/pictures/sun-forge-the-bake-window-bake-tab-simple-view-235194ec.webp" width="1120" height="720" alt="" loading="lazy" class="floating" aria-hidden="true"></picture><a class="pin at-menus" href="/guide/sunforge/1.0/en/menus/"><b>1</b><span>Menus</span></a><a class="pin at-bake-window" href="/guide/sunforge/1.0/en/bake-window/"><b>2</b><span>Bake Window</span></a><a class="pin at-scene-view" href="/guide/sunforge/1.0/en/scene-view/#sun-forge-scene-panel"><b>3</b><span>Sun Forge Gizmos</span></a><a class="pin at-components" href="/guide/sunforge/1.0/en/components/"><b>4</b><span>Components</span></a><a class="pin at-asset-types" href="/guide/sunforge/1.0/en/components/#asset-types"><b>5</b><span>Asset types</span></a></figure></section><div class="doors stuck"><a class="door" href="/guide/sunforge/1.0/en/troubleshooting/"><span class="label">Something not working?</span><b>Troubleshooting</b><span>What to check when a bake or a lit scene goes wrong.</span></a></div></div></div>
+<footer class="foot">
+<a class="brand" href="/#top" aria-label="Sun Forge home"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="Footer">
+<a href="/guide/sunforge/1.0/en/" aria-current="page">Guide</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/en/search.js"></script>
+</body>
+</html>

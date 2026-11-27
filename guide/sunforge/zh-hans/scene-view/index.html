@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>“场景”视图 | Sun Forge 指南</title>
+<meta name="description" content="Sun Forge 在“场景”视图中的面板，以及其中每一行绘制的内容。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/scene-view/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/scene-view/">
+<meta property="og:title" content="“场景”视图 | Sun Forge 指南">
+<meta property="og:description" content="Sun Forge 在“场景”视图中的面板，以及其中每一行绘制的内容。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "“场景”视图", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/scene-view/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/scene-view/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/scene-view/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/scene-view/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/scene-view/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/scene-view/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans" aria-current=page>“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/scene-view/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/scene-view/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/scene-view/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/scene-view/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-scene-view"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><section class="top"><h1>“场景”<wbr>视图</h1><p class="lead">Sun Forge 在“场景”视图中的面板，以及其中每一行绘制的内容。</p></section><section class="block"><h2 id="sun-forge-scene-panel">Sun Forge Gizmos</h2><p class="lead">在“Scene”视图中为 Sun Forge 绘制的每类内容显示一个开关，场景中没有可显示的内容时，面板会隐藏。</p><div class="shots rows"><aside class="card" aria-hidden="true"><p class="rest">将鼠标悬停在某一行上，即可查看该行绘制的内容。</p><p class="title"></p><p class="tip"></p></aside><figure class="shot" style="--own:198px;--ratio:2.4040"><div class="canvas" style="aspect-ratio:198/476"><img src="/guide/pictures/sun-forge-the-panel-in-the-scene-view-2336e03a-922x244x198x476.webp" width="198" height="476" alt="Sun Forge：“场景”视图中的面板" fetchpriority="high"><a href="/guide/sunforge/zh-hans/scene-view/#collider" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:10.0840%;width:90.4040%;height:7.5630%;z-index:4" data-title="碰撞器" data-tip="每个烘焙出的预制件的物理形状。拖拽边缘可调整大小。" aria-label="碰撞器. 每个烘焙出的预制件的物理形状。拖拽边缘可调整大小。"></a><a href="/guide/sunforge/zh-hans/scene-view/#hitbox" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:17.6471%;width:90.4040%;height:7.5630%;z-index:5" data-title="受击框" data-tip="每个烘焙出的预制件上受击的区域。拖拽边缘可调整大小。" aria-label="受击框. 每个烘焙出的预制件上受击的区域。拖拽边缘可调整大小。"></a><a href="/guide/sunforge/zh-hans/scene-view/#attach-points" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:25.2101%;width:90.4040%;height:7.5630%;z-index:6" data-title="挂点" data-tip="每个烘焙出的预制件上血条、VFX 框和头顶锚点的位置。拖拽即可移动。" aria-label="挂点. 每个烘焙出的预制件上血条、VFX 框和头顶锚点的位置。拖拽即可移动。"></a><a href="/guide/sunforge/zh-hans/scene-view/#glow-point" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:32.7731%;width:90.4040%;height:7.5630%;z-index:7" data-title="发光点" data-tip="每个发光道具的光源在地面上的位置。拖拽可将光源移到其他位置上方。" aria-label="发光点. 每个发光道具的光源在地面上的位置。拖拽可将光源移到其他位置上方。"></a><a href="/guide/sunforge/zh-hans/scene-view/#facing" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:40.3361%;width:90.4040%;height:10.0840%;z-index:1" data-title="朝向" data-tip="每个对象朝向的方向。拖拽箭头尖端可使其转向。" aria-label="朝向. 每个对象朝向的方向。拖拽箭头尖端可使其转向。"></a><a href="/guide/sunforge/zh-hans/scene-view/#markers" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:50.4202%;width:90.4040%;height:7.5630%;z-index:8" data-title="标记点" data-tip="每个烘焙出的预制件的标记点。请在烘焙窗口中设置标记点（“烘焙”选项卡的“标记点”部分，“高级”视图）。" aria-label="标记点. 每个烘焙出的预制件的标记点。请在烘焙窗口中设置标记点（“烘焙”选项卡的“标记点”部分，“高级”视图）。"></a><a href="/guide/sunforge/zh-hans/scene-view/#sort-point" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:57.9832%;width:90.4040%;height:7.5630%;z-index:9" data-title="排序点" data-tip="每个烘焙出的预制件中，精灵排序所用的点" aria-label="排序点. 每个烘焙出的预制件中，精灵排序所用的点"></a><a href="/guide/sunforge/zh-hans/scene-view/#lights" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:70.3782%;width:90.4040%;height:4.4118%;z-index:10" data-title="光源" data-tip="每个光源在地面上的照射范围。要编辑预制件中的光源（例如蜡烛的火焰），请选择该预制件。" aria-label="光源. 每个光源在地面上的照射范围。要编辑预制件中的光源（例如蜡烛的火焰），请选择该预制件。"></a><a href="/guide/sunforge/zh-hans/scene-view/#shadow-height" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:74.7899%;width:90.4040%;height:10.0840%;z-index:2" data-title="阴影高度" data-tip="每个平放物体（例如地毯）投射阴影的起始高度。请拖拽其竖线的顶端。" aria-label="阴影高度. 每个平放物体（例如地毯）投射阴影的起始高度。请拖拽其竖线的顶端。"></a><a href="/guide/sunforge/zh-hans/scene-view/#feet-line" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:84.8739%;width:90.4040%;height:10.0840%;z-index:3" data-title="脚底线" data-tip="每个手绘精灵站立的位置。请将虚线拖拽到其脚底，然后在“Inspector”窗口中单击“应用”。" aria-label="脚底线. 每个手绘精灵站立的位置。请将虚线拖拽到其脚底，然后在“Inspector”窗口中单击“应用”。"></a><a href="/guide/sunforge/zh-hans/scene-view/#ping-lighting-setup" hreflang="zh-Hans" class="spot" style="left:88.8889%;top:66.3866%;width:9.5960%;height:3.9916%;z-index:12" data-title="Ping Lighting Setup" data-tip="在“Hierarchy”窗口中高亮显示此处生效的 Lighting Setup。" aria-label="Ping Lighting Setup. 在“Hierarchy”窗口中高亮显示此处生效的 Lighting Setup。"></a><a href="/guide/sunforge/zh-hans/scene-view/#texture-view" hreflang="zh-Hans" class="spot" style="left:7.0707%;top:94.9580%;width:90.4040%;height:4.4118%;z-index:11" data-title="纹理视图" data-tip="仅在此“Scene”视图中显示光照从每个精灵读取的纹理。" aria-label="纹理视图. 仅在此“Scene”视图中显示光照从每个精灵读取的纹理。"></a></div></figure></div><div class="groups"><section class="part"><h2 class="label">Object</h2><ul class="entries"><li id="collider"><div class="name"><h3>碰撞器</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Collider</span></div><div><p>每个烘焙出的预制件的物理形状。拖拽边缘可调整大小。</p></div></li><li id="hitbox"><div class="name"><h3>受击框</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Hitbox</span></div><div><p>每个烘焙出的预制件上受击的区域。拖拽边缘可调整大小。</p></div></li><li id="attach-points"><div class="name"><h3>挂点</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Attach Points</span></div><div><p>每个烘焙出的预制件上血条、VFX 框和头顶锚点的位置。拖拽即可移动。</p></div></li><li id="glow-point"><div class="name"><h3>发光<wbr>点</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Glow Point</span></div><div><p>每个发光道具的光源在地面上的位置。拖拽可将光源移到其他位置上方。</p></div></li><li id="facing"><div class="name"><h3>朝<wbr>向</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Facing</span></div><div><p>每个对象朝向的方向。拖拽箭头尖端可使其转向。</p></div></li><li id="markers"><div class="name"><h3>标<wbr>记点</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Markers</span></div><div><p>每个烘焙出的预制件的标记点。请在烘焙窗口中设置标记点（“烘焙”选项卡的“标记点”部分，“高级”视图）。</p></div></li><li id="sort-point"><div class="name"><h3>排序点</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Sort Point</span></div><div><p>每个烘焙出的预制件中，精灵排序所用的点</p></div></li></ul></section><section class="part"><h2 class="label">Lighting</h2><ul class="entries"><li id="ping-lighting-setup"><div class="name"><h3>Ping Lighting Setup</h3></div><div><p>在“Hierarchy”窗口中高亮显示此处生效的 Lighting Setup。</p></div></li><li id="lights"><div class="name"><h3>光源</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Lights</span></div><div><p>每个光源在地面上的照射范围。要编辑预制件中的光源（例如蜡烛的火焰），请选择该预制件。</p></div></li><li id="shadow-height"><div class="name"><h3>阴影<wbr>高度</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Shadow Height</span></div><div><p>每个平放物体（例如地毯）投射阴影的起始高度。请拖拽其竖线的顶端。</p></div></li><li id="feet-line"><div class="name"><h3>脚底线</h3><span class="where">“快捷方式”窗口: Sun Forge › Toggle Feet Line</span></div><div><p>每个手绘精灵站立的位置。请将虚线拖拽到其脚底，然后在“Inspector”窗口中单击“应用”。</p></div></li><li id="texture-view"><div class="name"><h3>纹<wbr>理视<wbr>图</h3></div><div><p>仅在此“Scene”视图中显示光照从每个精灵读取的纹理。</p></div></li></ul></section></div></section></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

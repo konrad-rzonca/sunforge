@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크의 어댑터, 확장, 프로젝트 기본값 | Sun Forge 가이드</title>
+<meta name="description" content="베이크된 모든 프리팹을 코드로 바꾸고, 베이크 안에서 직접 만든 단계를 실행하고, 프로젝트의 기본값을 설정합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/">
+<meta property="og:title" content="베이크의 어댑터, 확장, 프로젝트 기본값 | Sun Forge 가이드">
+<meta property="og:description" content="베이크된 모든 프리팹을 코드로 바꾸고, 베이크 안에서 직접 만든 단계를 실행하고, 프로젝트의 기본값을 설정합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "베이크 확장", "item": "https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/extending-a-bake/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/extending-a-bake/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/extending-a-bake/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/extending-a-bake/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko" aria-current=page>베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/extending-a-bake/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/extending-a-bake/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/extending-a-bake/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/extending-a-bake/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-extending-a-bake"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1>베이크 확장</h1><p class="lead">베이크된 모든 프리팹을 코드로 바꾸고, 베이크 안에서 직접 만든 단계를 실행하고, 프로젝트의 기본값을 설정합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#adapters">어댑터</a></li><li><a href="#extensions">확장</a></li><li><a href="#project-defaults">프로젝트 기본값</a></li></ul></details></nav><article class="doc"><h2 id="adapters">어댑터</h2>
+<p>어댑터는 베이크가 프리팹을 만든 뒤 저장하기 전에, 지원하는 모든 베이크된 프리팹에 들어가는 내용을 바꿉니다. 에디터 어셈블리나 런타임 어셈블리 중 어디에든 <code>ISunForgeBakeAdapter</code> 인터페이스를 구현하세요. Sun Forge는 등록하지 않아도 어댑터를 찾습니다.</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using UnityEngine;
+
+public sealed class SortingLayerAdapter : ISunForgeBakeAdapter
+{
+    public string AdapterId =&gt; &quot;com.example.adapters.sorting-layer&quot;;
+
+    public bool Supports(SunForgeBakedData data) =&gt; data.ArchetypeName == &quot;Character&quot;;
+
+    public void Apply(GameObject prefabRoot, SunForgeBakedData data, SunForgeBakeReporter reporter)
+    {
+        if (!prefabRoot.TryGetComponent(out SpriteRenderer renderer))
+            throw new SunForgeBakeStopException(&quot;Add a SpriteRenderer to the prefab root, then bake again.&quot;);
+
+        renderer.sortingLayerName = &quot;Actors&quot;;
+    }
+}
+</code></pre>
+<h2 id="extensions">확장</h2>
+<p>확장은 베이크 안에서 실행됩니다. 확장은 모델을 따로 출력하는 부분으로 나눌 수 있고, 베이크 데이터에 자체 데이터를 추가할 수도 있습니다. 에디터 어셈블리에 <code>ISunForgeBakeExtension</code> 인터페이스를 구현하세요. Sun Forge는 등록하지 않아도 확장을 찾습니다. 아래 확장은 Bake(베이크) 탭에 자체 섹션이 있고 값 하나를 출력합니다. 게임이 읽을 수 있도록, 출력하는 데이터는 런타임 어셈블리에 둡니다.</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using UnityEngine;
+
+[Serializable]
+public sealed class WorldHeightData : SunForgeBakedExtensionData
+{
+    [SerializeField] float worldHeight;
+
+    public WorldHeightData(float worldHeight) =&gt; this.worldHeight = worldHeight;
+
+    public float WorldHeight =&gt; worldHeight;
+}
+</code></pre>
+<p>확장과 그 설정은 에디터 어셈블리에 둡니다.</p>
+<pre><code class="language-csharp">using System;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+
+[Serializable]
+public sealed class WorldHeightSettings : SunForgeBakeExtensionSettings
+{
+}
+
+public sealed class WorldHeightBakeExtension : ISunForgeBakeExtension
+{
+    public string ExtensionId =&gt; &quot;com.example.extensions.worldheight&quot;;
+
+    public SunForgeBakeExtensionSection SettingsSection { get; } = new(
+        typeof(WorldHeightSettings), &quot;WORLD HEIGHT&quot;,
+        &quot;Publishes the model's world height beside its sprites.&quot;,
+        &quot;Publishes the world height on the bake's data.&quot;);
+
+    public bool Supports(SunForgeBakeExtensionContext context) =&gt; true;
+
+    public SunForgeBakedExtensionData Execute(SunForgeBakeExtensionExecuteContext context) =&gt;
+        new WorldHeightData(context.Config.ModelWorldHeight);
+}
+</code></pre>
+<p>게임은 <code>data.Extension&lt;WorldHeightData&gt;()?.WorldHeight</code> 코드로 이 값을 읽습니다.</p>
+<p>Pixel Perfect Camera 컴포넌트를 쓸 때 <strong>Grid Snapping</strong>(그리드 스내핑) 필드를 <strong>Upscale Render Texture</strong> 옵션으로 설정하면, 확장이 따로 출력하는 프리팹의 각 부분이 정수 픽셀 위치를 유지합니다. <strong>Pixel Snapping</strong> 옵션에서는 각 부분이 본체에서 1픽셀 미만으로 어긋날 수 있습니다(<a href="/guide/sunforge/ko/pixel-art/#pixel-perfect-camera" hreflang="ko">픽셀 아트 › Pixel Perfect Camera</a> 참조).</p>
+<h2 id="project-defaults">프로젝트 기본값</h2>
+<p>에디터 스크립트로 새 아키타입이 처음 갖는 Addressables 그룹과 레이블을 설정하고, 게임이 그릴 때 쓰는 카메라와 태양을 고정할 수 있습니다.</p>
+<pre><code class="language-csharp">using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+
+[InitializeOnLoad]
+static class MyGameSunForgeDefaults
+{
+    static MyGameSunForgeDefaults() =&gt; SunForgeBakeGameDefaults.SetCurrent(new SunForgeBakeGameDefaults(
+        addressablesGroupName: &quot;Baked&quot;,
+        addressablesLabel: &quot;Baked&quot;,
+        archetypeOverrides: new SunForgeBakeGameConstants(
+            cameraElevation: 30f,
+            shadowSun: new SunForgeSunAngles(35f, 215f),
+            setBy: &quot;MyGame rendering constants&quot;)));
+}
+</code></pre>
+<p>방향 수나 출력 폴더처럼 새 베이크가 처음 갖는 다른 값은 모두 Default 아키타입의 값입니다. 이 값은 <strong>Archetypes</strong>(아키타입) 탭에서 바꾸거나, 메뉴 항목 같은 에디터 스크립트에서 한 번에 바꾸세요:</p>
+<pre><code class="language-csharp">SunForgeBakeArchetype archetype = SunForgeBakeArchetypeLibraryLocator.FindOrCreate().Default;
+archetype.Camera.DirectionCount = 16;
+archetype.OutputRoot = &quot;Assets/Baked&quot;;
+archetype.Addressables.Enabled = true; // Registers each bake with Addressables.
+EditorUtility.SetDirty(archetype);
+</code></pre>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

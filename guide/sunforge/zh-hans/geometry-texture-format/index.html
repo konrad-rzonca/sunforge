@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>几何信息纹理格式 | Sun Forge 指南</title>
+<meta name="description" content="几何信息纹理每个通道存储的内容，供读写这种纹理的自制着色器或工具参考。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/geometry-texture-format/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/geometry-texture-format/">
+<meta property="og:title" content="几何信息纹理格式 | Sun Forge 指南">
+<meta property="og:description" content="几何信息纹理每个通道存储的内容，供读写这种纹理的自制着色器或工具参考。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "几何信息纹理格式", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/geometry-texture-format/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/geometry-texture-format/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/geometry-texture-format/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/geometry-texture-format/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/geometry-texture-format/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/geometry-texture-format/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans" aria-current=page>几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/geometry-texture-format/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/geometry-texture-format/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/geometry-texture-format/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/geometry-texture-format/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-geometry-texture-format"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="geometry-textures">几何<wbr>信息<wbr>纹理格式</h1><p class="lead">几何信息纹理每个通道存储的内容，供读写这种纹理的自制着色器或工具参考。</p></div><article class="doc"><p>几何信息纹理用红色通道保存精灵每个像素在轴心以上的高度，用 Alpha 保存精灵与地面相接的位置。要绘制几何信息纹理，请参阅 <a href="/guide/sunforge/zh-hans/your-sprites/#painting-a-geometry-texture" hreflang="zh-Hans">手绘的精灵 › 绘制几何信息纹理</a>。</p>
+<h2 id="the-format">格式</h2>
+<ul>
+<li>轴心以上的高度为 <code>R * range * scale</code>。黑色表示轴心处，白色表示范围的高度，轴心以下没有任何内容。</li>
+<li><code>range</code> 是渲染器上的组件设置的范围；没有组件设置时，为材质的 <strong>Height Range (World Units)</strong>。<code>SunForgeRendererBakeValues.hlsl</code> 中的 <code>SFBakeHeightRange</code> 读取该值。<code>scale</code> 是对象的缩放。</li>
+<li>Alpha 不低于 8/255 的纹素带有高度。Alpha 低于该值的纹素没有高度：站立的精灵在这些纹素处绘制为竖直的面片，地面精灵则按高度 0 绘制。</li>
+<li>绿色和蓝色通道为保留通道，任何材质都不读取，因此红色通道相同的灰度贴图、只有红色通道的贴图和单通道贴图读出的结果相同。请勿在自己的着色器中读取绿色或蓝色通道。</li>
+<li>以无损格式（例如 PNG）保存贴图。纹理为线性，不使用 Crunch 压缩，过滤方式与所在的精灵表相同。</li>
+<li>只要能保留红色通道，且 Alpha 的偏差不超过 4/255，任何纹理格式都可以使用。压缩格式能保留的高度级数较少，因此 Check Setup（检查设置）会以不压缩的方式导入手绘的贴图。</li>
+</ul>
+<p>Sun Forge 的地面覆盖物还会把 Alpha 读作占地范围的前缘：精灵与地面相接的位置在轴心前方多远。只有在该前缘的前方，草才会绘制在精灵之上。如果不使用地面覆盖物，请忽略下表。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Alpha</th>
+<th>前缘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>243/255 到 255/255</td>
+<td>位于轴心处</td>
+</tr>
+<tr>
+<td>从 242/255 向下到 27/255</td>
+<td>位于轴心前方，距离为范围的 <code>(n / 25)^2</code> 倍，其中 <code>n</code> 是 <code>(247 - a) / 9</code> 四舍五入后的整数，<code>a</code> 是从 0 到 255 的 Alpha 值</td>
+</tr>
+<tr>
+<td>8/255 到 26/255</td>
+<td>位于轴心前方，距离等于整个范围</td>
+</tr>
+<tr>
+<td>低于 8/255</td>
+<td>没有高度</td>
+</tr>
+</tbody>
+</table></div>
+<p>要保存前缘，请将 <code>a</code> 设为 <code>247 - 9 * n</code>，其中 <code>n</code> 是 <code>25 * sqrt(edge / range)</code> 四舍五入后的值，最大为 25；<code>n</code> 为 0 时则设为 255。Alpha 与所设的值相差不超过 4/255 时，读出的前缘相同。</p>
+<p>要读取纹素，请使用 <code>SunForgeHeightDecode.hlsl</code> 中的 <code>SFHeightShare</code>、<code>SFHeightAbsent</code> 和 <code>SFHeightFrontEdgeShare</code>，或 C# 中的 <code>SunForgeHeightTexel.TryDecode</code>。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

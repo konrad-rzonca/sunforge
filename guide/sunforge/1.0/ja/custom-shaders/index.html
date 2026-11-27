@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自作のスプライトシェーダーや Shader Graph の 2D ライティング | Sun Forge ガイド</title>
+<meta name="description" content="Sun Forge のテンプレートから Shader Graph を作り始めるか、自作のグラフや HLSL のスプライトシェーダーを、シーンのスタイル、ライト、影、霧でライティングします。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/custom-shaders/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/custom-shaders/">
+<meta property="og:title" content="自作のスプライトシェーダーや Shader Graph の 2D ライティング | Sun Forge ガイド">
+<meta property="og:description" content="Sun Forge のテンプレートから Shader Graph を作り始めるか、自作のグラフや HLSL のスプライトシェーダーを、シーンのスタイル、ライト、影、霧でライティングします。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "カスタムシェーダー", "item": "https://sunforgetools.com/guide/sunforge/ja/custom-shaders/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja" aria-current=page>カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/custom-shaders/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/custom-shaders/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/custom-shaders/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-custom-shaders"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>カスタムシェーダー</h1><p class="lead">Sun Forge のテンプレートから Shader Graph を作り始めるか、自作のグラフや HLSL のスプライトシェーダーを、シーンのスタイル、ライト、影、霧でライティングします。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#shader-graph">Shader Graph</a></li><li><a href="#hand-written-shaders">HLSL シェーダー</a></li><li><a href="#a-sprite-without-a-texture">テクスチャのないスプライト</a></li><li><a href="#a-shader-of-your-own">自作のシェーダー</a></li></ul></details></nav><article class="doc"><h2 id="shader-graph">Shader Graph</h2>
+<p>あらかじめ用意されたグラフから始めるには、<strong>Assets &gt; Create &gt; Shader Graph &gt; From Template</strong> (アセット &gt; 作成 &gt; Shader Graph &gt; From Template) を選択し、<strong>Sun Forge</strong> の下にある <strong>Sun Forge Sprite Lit</strong> または <strong>Sun Forge Dissolve</strong> を選んでから、下の手順 5 を実行してください。自分でグラフを作る場合の手順は次のとおりです。</p>
+<ol>
+<li><strong>Sprite Unlit</strong> のグラフに <strong>Sun Forge &gt; Sun Forge Sprite Lit</strong> を追加します。</li>
+<li>ノードの <strong>Color</strong> を <strong>Base Color</strong> に、<strong>Alpha</strong> を <strong>Alpha</strong> に接続します。</li>
+<li><strong>Graph Settings</strong> で <strong>Disable Color Tint</strong> をオンにします。オフのままだと、Sprite Renderer の <strong>Color</strong> (色) が黒のスプライトでは、発光、リムライト、霧、ヒットフラッシュが失われます。</li>
+<li>同じく <strong>Graph Settings</strong> で、<strong>Custom Editor GUI</strong> を <code>KonradRzonca.SunForge.Editor.Inspector.SunForgeStyledMaterialEditor</code> に設定します。これで、グラフのマテリアルの Inspector に、Sun Forge のマテリアルと同じプレビューとツールチップが表示されます。</li>
+<li>Project ウィンドウでグラフを右クリックし、<strong>Create &gt; Material</strong> (作成 &gt; マテリアル) を選択します。そのマテリアルを使う各レンダラーで <strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer</strong> (コンポーネントを追加 &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer) を選択し、その <strong>Material</strong> (マテリアル) に自作のマテリアルを設定します。Mesh Renderer、Skinned Mesh Renderer、Line Renderer、Trail Renderer では、テクスチャは独自のプロパティブロックではなくマテリアルに設定します。プロパティブロックで設定すると、グラフで何も描画されないことがあります。</li>
+</ol>
+<p>これで、マテリアルには Sun Forge のマテリアルと同じように、スプライトの 5 つのテクスチャスロットと、ライティングが読み取るマテリアルプロパティが備わります。マテリアルの <strong>Role</strong> を <strong>Sprite</strong>、<strong>Ground</strong>、<strong>Ground Clutter</strong> のいずれかに設定してください。スプライトはその役割に応じた見た目になり、Cast Shadow Field と、スプライトの Lighting Style Renderer は、役割をマテリアルから読み取ります。</p>
+<p>ディゾルブやスクロールするテクスチャのように、ライティング前のスプライトに変更を加えるには、<strong>Sun Forge Sprite Lit</strong> の代わりに <strong>Sun Forge Sprite Textures</strong> と <strong>Sun Forge Lit Color</strong> を使ってください。<strong>Sun Forge Sprite Textures</strong> の各出力を、自作のエフェクトを間に挟んで、<strong>Sun Forge Lit Color</strong> の同じ名前のポートに接続し、<strong>Sun Forge Lit Color</strong> は手順 2 と同じように接続してください。<strong>UV</strong> に座標を接続すると、テクスチャはその座標でサンプリングされます。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th><strong>Sun Forge Lit Color</strong> のポート</th>
+<th>受け取るもの</th>
+<th>未接続のとき</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Albedo</strong></td>
+<td>スプライトの色とアルファ</td>
+<td>白</td>
+</tr>
+<tr>
+<td><strong>Normal</strong></td>
+<td><strong>Sun Forge Sample Normal Map</strong> などから得られるスプライトの法線</td>
+<td><strong>Bake Camera Elevation (Degrees)</strong> が 0 より大きい <strong>Ground</strong> では水平な地面、それ以外ではカメラの方を向いた表面</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td>赤にメタリック、緑に滑らかさ、青にオクルージョン。アルファは <strong>Sun Forge Sprite Textures</strong> が出力した値のままにしてください</td>
+<td>金属なし、滑らかさは半分、オクルージョンなし</td>
+</tr>
+<tr>
+<td><strong>Emission</strong></td>
+<td>発光色。アルファは、スプライト自身の発光がそのスプライトに届ける光です。<strong>Sun Forge Sprite Textures</strong> が出力した値のままにするか、自作の色を使う場合は 1 に設定してください</td>
+<td>発光なし</td>
+</tr>
+<tr>
+<td><strong>Geometry</strong></td>
+<td>ジオメトリテクスチャのサンプリング結果 (下の「ジオメトリテクスチャ」を参照)</td>
+<td>立っているスプライトは平らな直立した板になります</td>
+</tr>
+</tbody>
+</table></div>
+<p>グラウンドカバー、Flat のアウトライン、スプライトの輪郭の内側に収まるリムライト、Point フィルタリングのスプライトのくっきりしたハイライト、Regular と Cinematic で近くの Light Source から受ける滑らかな光は、各ピクセルの周囲でスプライト自身のテクスチャを読み取ります。グラフがスプライト自身の絵とは別の形を描画する場合は、<strong>Sun Forge Lit Color</strong> の <strong>Shape From</strong> を <strong>This Graph</strong> に設定してください。設定すると、上に挙げたものはいずれもスプライトのテクスチャを読み取らなくなります。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>ノード</th>
+<th>得られるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sun Forge Sample Normal Map</strong></td>
+<td>Sun Forge のマテリアルと同じように読み取った、<strong>Normal</strong> ポート用の自作の法線マップ</td>
+</tr>
+<tr>
+<td><strong>Sun Forge Mist</strong></td>
+<td>Sun Forge のノードがライティングしないエフェクト用の、シーンの霧をかけた色</td>
+</tr>
+<tr>
+<td><strong>Sun Forge Scene Light</strong></td>
+<td>太陽または月の方向と色、Lighting Setup が公開する空と地面の色、Sun Forge のマテリアルがアニメーションに使う時間 (秒)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Reference</strong> が <code>_MainTex</code>、<code>_NormalMap</code>、<code>_MaskTex</code>、<code>_EmissionTex</code>、<code>_GeometryTex</code> のいずれかである独自のテクスチャプロパティを持つグラフでは、Sun Forge のノードがその <strong>Reference</strong> のスロットを追加すると、エラーが表示されます。そのプロパティを削除し、サンプリング結果は <strong>Sun Forge Sprite Textures</strong> から取ってください。</li>
+<li>降り注ぐコインのように、多数の小さなスプライトを一度に描画するメッシュでも、<code>SunForgeBatchSprites</code> を使うと、各スプライトはそれぞれのピボットと高さで照らされます。ノードはこの処理で UV チャンネル <code>SunForgeBatchSprites.UvChannel</code> を読み取るため、このチャンネルには独自のデータを入れないでください。</li>
+<li><strong>Color</strong> と <strong>Base Color</strong> の間に <strong>Sample Texture 2D</strong>、<strong>DDX</strong>、<strong>DDY</strong>、<strong>DDXY</strong> ノードがあると、OpenGL と Vulkan では、スプライトの縁に沿って誤った色が描画されることがあります。そのようなテクスチャは <strong>Sample Texture 2D LOD</strong> でサンプリングするか、<strong>Sun Forge Lit Color</strong> ノードのいずれかのポートに入力してください。</li>
+<li>Sprite Skin コンポーネントを使う場合は、位置に <strong>Tangent Vector</strong> を加えた値を別の <strong>Sprite Skinning</strong> ノードに通し、その結果からスキニング後の位置を引いた値を <strong>Tangent</strong> ブロックに接続してください。これで、凹凸がボーンと一緒に回転します。</li>
+<li>WebGL 2 と OpenGL ES 3.0 では、シェーダーがサンプリングできるテクスチャは 16 枚までです。ライティングが独自に 10 枚をサンプリングするため、スプライトの 5 枚のテクスチャをサンプリングする <strong>Sun Forge Sprite Lit</strong> または <strong>Sun Forge Sprite Textures</strong> を使うグラフは、これらのプラットフォームではあと 1 枚サンプリングできます。</li>
+<li>Direct3D では、シェーダーが使えるサンプラーステートは 16 個までです。ライティングが独自に 6 個を使うため、<strong>Sun Forge Sprite Lit</strong> または <strong>Sun Forge Sprite Textures</strong> を使うグラフは、あと 5 個使えます。1 つの <strong>Sampler State</strong> ノードでサンプリングしたテクスチャは、1 個のサンプラーステートを共有します。</li>
+</ul>
+<h2 id="hand-written-shaders">HLSL シェーダー</h2>
+<p>各インクルードファイルは <code>Packages/com.konradrzonca.sunforge.lighting/Runtime/Shaders/</code> にあり、使い方はそのヘッダーに書かれています。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>インクルードファイル</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SunForgeLitColor.hlsl</code></td>
+<td><strong>Sun Forge Lit Color</strong> ノードと同じようにシェーダーをライティングします。</td>
+</tr>
+<tr>
+<td><code>SunForgeStyleKeywords.hlsl</code></td>
+<td>シェーダーに、スタイルごとのバリアントと、スタイルの <strong>Quality</strong> (品質) セクションの各オプションのバリアントを持たせます (<a href="/guide/sunforge/1.0/ja/styles/#style-quality" hreflang="ja">スタイル › スタイルの品質</a>を参照)。パスのプラグマと並べて <code>#include_with_pragmas</code> でインクルードしてください。</td>
+</tr>
+<tr>
+<td><code>SunForgeNormalDecode.hlsl</code></td>
+<td>パッケージ同梱のマテリアルと同じように、法線マップのサンプリング結果を読み取ります。その法線でライティングするときや、法線を独自に表示または測定するときに使います。</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightDecode.hlsl</code></td>
+<td>パッケージ同梱のマテリアルと同じように、ジオメトリテクスチャを宣言し、そのサンプリング結果の高さと前端を読み取ります。キャストハイトテクスチャのサンプリング結果の高さも読み取れます。</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightRamp.hlsl</code></td>
+<td>Texture View (テクスチャビュー) の <strong>Geometry</strong> (ジオメトリ) と同じように、高さに色を付けます。</td>
+</tr>
+<tr>
+<td><code>SunForgeHeightRampBar.hlsl</code></td>
+<td><code>SunForgeHeightRamp.DrawBar</code> が実行する Height Ramp という名前のパスで、その色分けの凡例のバーを描画します。</td>
+</tr>
+<tr>
+<td><code>SunForgeMist.hlsl</code></td>
+<td>フルスクリーンのフォグなどでシーンの霧を描画します。</td>
+</tr>
+<tr>
+<td><code>SunForgeHitFlash.hlsl</code></td>
+<td>ヒットフラッシュを描画します。</td>
+</tr>
+<tr>
+<td><code>SunForgeBakedLight.hlsl</code></td>
+<td>エミッションテクスチャのアルファから、スプライト自身の発光がそのスプライトに届ける光を読み取ります。</td>
+</tr>
+<tr>
+<td><code>SunForgeWalkBands.hlsl</code></td>
+<td>Sun Forge がキャラクターの周りで分割する小道具のうち、自作のシェーダーが受け持つ部分だけを描画します。</td>
+</tr>
+<tr>
+<td><code>SunForgeRendererBakeValues.hlsl</code></td>
+<td>スプライトの描画に使われる角度などの投影の値と、スプライトが地面からどれだけ高い位置にあるかを読み取ります。</td>
+</tr>
+<tr>
+<td><code>SunForgeLightingGlobals.hlsl</code></td>
+<td>Lighting Setup が公開するものを読み取ります。</td>
+</tr>
+</tbody>
+</table></div>
+<p>スクリプトから独自のライティングを公開するには、<code>SunForgeLightingPublisher</code> を使ってください。</p>
+<p>WebGPU では、Windows の Chrome は、実行時に計算したインデックスで <code>static const</code> 配列を読み取るシェーダーや、<code>v[i]</code> のように同じ方法でベクトルの成分を選ぶシェーダーの読み込みに時間がかかります。配列が大きいと読み込みに数分かかることがあり、その後プレイヤーが GPU デバイスを失って描画を停止することがあります。代わりに値を計算するか、定数のインデックスで配列を読み取るか、<code>dot(v, float4(i == uint4(0, 1, 2, 3)))</code> のように比較で成分を選んでください。<strong>Custom Function</strong> ノード内の HLSL にも同じことが当てはまります。</p>
+<p>WebGL 2 では、Windows の Chrome で、要素数が 50 以上の配列を 1 つだけ保持する定数バッファが、テクスチャ 1 枚として数えられます。シェーダーのテクスチャとそのようなバッファの合計が 16 を超えると、そのシェーダーが最初に描画するときに、ページの描画が止まります。配列の後ろに 2 つ目の値を追加してください。その値を読み取る必要はありません。</p>
+<h2 id="a-sprite-without-a-texture">テクスチャの<wbr>ない<wbr>スプライト</h2>
+<p>スプライトに法線マップ、マスク、エミッション、ジオメトリテクスチャのいずれかがない場合、シェーダーはマテリアルのそのスロットのテクスチャをサンプリングし、マテリアルにもなければプロパティのデフォルトをサンプリングします。<strong>Sun Forge Sprite Textures</strong> が追加するスロットには、あらかじめ正しいデフォルトが設定されています。HLSL シェーダーの場合、Unity のデフォルトでは、そのようなスプライトが正しく描画されないため、各スロットを次のように設定してください。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>テクスチャ</th>
+<th>プロパティ</th>
+<th>設定</th>
+<th>設定しない場合のスプライト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>法線マップ</td>
+<td><code>_NormalMap</code></td>
+<td>デフォルトに <code>SunForge_FlatNormal.png</code> を設定</td>
+<td>傾いているかのように照らされます</td>
+</tr>
+<tr>
+<td>マスク</td>
+<td><code>_MaskTex</code></td>
+<td>デフォルトに <code>SunForge_NeutralMask.png</code> を設定</td>
+<td>磨かれた金属のように照らされるか、金属、滑らかさ、オクルージョンが誤った値になります</td>
+</tr>
+<tr>
+<td>エミッション</td>
+<td><code>_EmissionTex</code></td>
+<td><code>&quot;black&quot;</code></td>
+<td>白く発光します</td>
+</tr>
+<tr>
+<td>ジオメトリ</td>
+<td><code>_GeometryTex</code></td>
+<td><code>&quot;black&quot;</code></td>
+<td>高さが範囲いっぱいになります</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>法線マップとマスク: どちらのテクスチャも、Sun Forge 2D Lighting パッケージの <code>Runtime/Materials</code> フォルダーにあります。シェーダーを選択し、Inspector の <strong>Default Maps</strong> で設定してください。</li>
+<li>エミッションとジオメトリ: <code>_GeometryTex (&quot;Geometry Texture&quot;, 2D) = &quot;black&quot; {}</code> のように、プロパティを <code>&quot;black&quot;</code> として宣言してください。</li>
+</ul>
+<p><strong>Check Setup</strong> (セットアップを確認) は、<code>_NormalMap</code> または <code>_MaskTex</code> にテクスチャがないマテリアルを指摘し、その修正で対応するテクスチャがバインドされます。<code>_GeometryTex</code> が高さを持つマテリアルも指摘します。</p>
+<h2 id="a-shader-of-your-own">自作の<wbr>シェーダー</h2>
+<p>グラフは、<strong>Sun Forge Sprite Lit</strong> ノードか、<strong>Sun Forge Sprite Textures</strong> ノードと <strong>Sun Forge Lit Color</strong> ノードの組み合わせで作ります (<a href="/guide/sunforge/1.0/ja/custom-shaders/#shader-graph" hreflang="ja">カスタムシェーダー › Shader Graph</a>を参照)。そのあと、次のどちらかの方法で使います。</p>
+<ul>
+<li><strong>ベイクしたスプライトで使う</strong>。<strong>Baked Renderer Binding</strong> の横に、<strong>Add Component &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer</strong> (コンポーネントを追加 &gt; Sun Forge &gt; Lighting &gt; Lighting Style Renderer) で Lighting Style Renderer を追加し、その <strong>Material</strong> (マテリアル) に作成したマテリアルを設定してください。スプライトはベイク時の値を保持します。</li>
+<li><strong>ベイクのマテリアルとして使う</strong>。そのマテリアルをベイクの <strong>Prefab Material</strong> (プレハブマテリアル、Advanced (上級者向け) 表示) に選んでください。<strong>Bake Camera Elevation (Degrees)</strong> など、スプライトのベイク時の値はベイクで設定されるため、プレハブに Lighting Style Renderer は必要ありません。</li>
+</ul>
+<p>ベイクしたエフェクトのパーティクルは、アルファにかかわらず、背後にあるものに光を加えます。</p>
+<ul>
+<li><strong>Blending Mode</strong> が <strong>Premultiply</strong> で、<strong>Premultiplied</strong> を <strong>Base Color</strong> に接続したグラフは、その光をエフェクトのエミッションテクスチャから描画します。<strong>Blending Mode</strong> がそれ以外の場合、光はエフェクトの色にベイクされます。</li>
+<li>その光をスプライト用のマテリアルで描画できないスタイルでは、ベイクしたエフェクトの Particles 子オブジェクトが、ベイク時のマテリアルをそのまま使います。</li>
+<li>HLSL シェーダーは、<code>_SFEmissionScale</code> と <code>_SFEmissionOutsideAlpha</code> を宣言し、<code>One OneMinusSrcAlpha</code> でブレンドする場合に、その光を描画します。その方法は <code>SunForgeLitColor.hlsl</code> のヘッダーに書かれています。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

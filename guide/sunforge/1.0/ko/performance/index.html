@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2D 조명 성능: 설정별 비용 | Sun Forge 가이드</title>
+<meta name="description" content="씬에서 각 조명 설정에 드는 비용과 그 설정을 바꾸는 곳을 확인합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/performance/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/performance/">
+<meta property="og:title" content="2D 조명 성능: 설정별 비용 | Sun Forge 가이드">
+<meta property="og:description" content="씬에서 각 조명 설정에 드는 비용과 그 설정을 바꾸는 곳을 확인합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "성능", "item": "https://sunforgetools.com/guide/sunforge/ko/performance/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/1.0/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/1.0/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/1.0/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/1.0/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/1.0/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/1.0/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/1.0/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/1.0/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/1.0/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/1.0/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/1.0/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/1.0/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/1.0/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/1.0/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/1.0/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/1.0/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/1.0/ko/performance/" hreflang="ko" aria-current=page>성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/1.0/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/1.0/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/1.0/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/1.0/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/1.0/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/1.0/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/1.0/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/1.0/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/1.0/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/1.0/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/1.0/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/1.0/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/1.0/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/1.0/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/1.0/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/1.0/en/performance/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/performance/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/performance/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/1.0/zh-hans/performance/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-performance"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="performance">성능</h1><p class="lead">씬에서 각 조명 설정에 드는 비용과 그 설정을 바꾸는 곳을 확인합니다.</p></div><nav class="onpage" aria-label="이 페이지의 내용"><details open><summary>이 페이지의 내용</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#what-each-setting-costs">설정별 비용</a></li><li><a href="#the-first-frame-in-a-web-player">웹 플레이어의 첫 프레임</a></li></ul></details></nav><article class="doc"><p>프레임 시간이 드는 설정은 이름 뒤에 게이지가 표시되며, 어떤 비용이 드는지는 툴팁에 나옵니다. <strong>Lighting Setup</strong> 컴포넌트의 <strong>Performance</strong>(성능) 섹션에는 열린 씬에서 비용이 드는 항목이 비용이 큰 순서로 나오고, 각 줄 옆에 <strong>Select</strong>(선택) 버튼이 있습니다.</p>
+<p>비용이 큰 설정을 한꺼번에 바꾸려면 <strong>Performance</strong> 섹션을 열고 <strong>Fastest</strong>(가장 빠름), <strong>Balanced</strong>(균형), <strong>Full</strong>(최고 품질) 버튼 중 하나를 클릭한 다음, 그 상태에서 원하는 설정을 조정하세요. 각 버튼이 바꾸는 내용은 그 버튼의 툴팁에 나옵니다.</p>
+<h2 id="what-each-setting-costs">설정별 비용</h2>
+<p>다음은 테스트 씬에서 각 설정을 켰을 때와 껐을 때를 비교해 잰 비용입니다. 데스크톱은 RTX 4060, 휴대폰은 Pixel 8a입니다. 범위는 측정값의 최솟값에서 최댓값까지를 나타냅니다. 데스크톱에서 약 0.8ms 미만인 측정값은 실행할 때마다 생기는 오차 범위 안입니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>설정</th>
+<th>설정하는 곳</th>
+<th>비용</th>
+<th>측정값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Render Scale</strong>(렌더 스케일)</td>
+<td>각 품질 레벨의 URP 에셋</td>
+<td>큼</td>
+<td>데스크톱, 1920×1080, 2026-11: 0.5로 낮추면 GPU 시간 1.3~1.5ms 절약</td>
+</tr>
+<tr>
+<td><strong>Mist Enabled</strong>(안개 활성화)</td>
+<td>Lighting Setup 컴포넌트 또는 스타일의 <strong>Default Lighting Values</strong>(기본 조명 값) 섹션</td>
+<td>큼</td>
+<td>휴대폰, 2026-10: 약 40ms. 데스크톱, 2560×1440, 2026-11: 1.0~1.7ms</td>
+</tr>
+<tr>
+<td><strong>Pixels Per Unit</strong>(단위당 픽셀)</td>
+<td>Cast Shadow Field 컴포넌트</td>
+<td>큼</td>
+<td>휴대폰, 2026-10: 128 대신 64로 하면 GPU 시간 83ms 중 약 30ms 절약. 데스크톱, 2026-11: 64 대신 16으로 해도 오차 범위 안</td>
+</tr>
+<tr>
+<td><strong>Style</strong>(스타일)</td>
+<td>Lighting Setup 컴포넌트</td>
+<td>중간</td>
+<td>휴대폰, 2026-10: Cinematic 스타일은 Regular 스타일보다 크고 Flat 스타일은 작음. 데스크톱, 2026-11: Regular 스타일 대비 Cinematic 스타일 0.3~3ms, Flat 스타일 0.2~1.1ms 추가</td>
+</tr>
+<tr>
+<td><strong>Mode</strong>(모드)</td>
+<td>Cast Shadow Field 컴포넌트</td>
+<td>중간</td>
+<td>데스크톱, 애니메이션되는 캐릭터 1,000개, 2026-11: And Sprites 모드는 짝이 되는 Only 모드보다 GPU 시간 0.7~1ms, 메인 스레드 시간 0.5~1.3ms 추가</td>
+</tr>
+<tr>
+<td><strong>Cast Shadow Stretch Enabled</strong>(드리운 그림자 늘이기 활성화)</td>
+<td>Lighting Setup 컴포넌트 또는 스타일의 <strong>Default Lighting Values</strong> 섹션과 <strong>Hours</strong>(시간대) 섹션</td>
+<td>중간</td>
+<td>데스크톱, 2026-11: 측정 네 번 중 세 번에서 약 1ms, 이 설정을 켜는 키가 있는 Regular 스타일의 새벽과 해 질 녘에서 약 0.6ms</td>
+</tr>
+<tr>
+<td><strong>Post Processing Enabled</strong>(포스트 프로세싱 활성화)</td>
+<td>Lighting Setup 컴포넌트</td>
+<td>중간</td>
+<td>휴대폰, 2026-10: 약 1ms. 데스크톱, 2026-11: 최대 1.6ms</td>
+</tr>
+<tr>
+<td><strong>Light From Lit Ground</strong>(빛 받은 지면에서 오는 빛)</td>
+<td>스타일의 <strong>Quality</strong>(품질) 섹션</td>
+<td>중간</td>
+<td>데스크톱, Cinematic 스타일, 2026-10: 0.7~1.4ms, 2026-11: 0.2~1.1ms</td>
+</tr>
+<tr>
+<td><strong>Exact Shadows On Sprites</strong>(스프라이트 위 정확한 그림자)</td>
+<td>스타일의 <strong>Quality</strong> 섹션</td>
+<td>중간</td>
+<td>데스크톱, 2026-11: 측정 네 번 중 세 번에서 0.5~2.2ms</td>
+</tr>
+<tr>
+<td><strong>Mist Height</strong>(안개 높이)</td>
+<td>Lighting Setup 컴포넌트 또는 스타일의 <strong>Default Lighting Values</strong> 섹션</td>
+<td>작음</td>
+<td>높이가 클수록 커짐. 단독으로는 측정하지 않음</td>
+</tr>
+<tr>
+<td><strong>Ground Radius</strong>(지면 반지름)</td>
+<td>Light Source 컴포넌트, 그리고 Scene Lights 컴포넌트의 <strong>Intensity</strong>(강도) 필드</td>
+<td>작음</td>
+<td>데스크톱, 2026-11: 테스트 씬의 광원은 오차 범위 안</td>
+</tr>
+<tr>
+<td><strong>Sorted Ground Cover</strong></td>
+<td>풀 시트에 있는 해당 컴포넌트</td>
+<td>작음</td>
+<td>데스크톱, 2560×1440, 캐릭터 1,000개, 2026-11: 0.3~0.5ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>데스크톱(2026-11)에서 <strong>Cloud Strength</strong>(구름 강도) 필드, <strong>Canopy Shade Strength</strong>(Canopy Shade 강도) 필드와 Lighting Setup 컴포넌트의 <strong>Sprite Emission Enabled</strong>(스프라이트 이미션 활성화), <strong>Ambient Occlusion Enabled</strong>(앰비언트 오클루전 활성화), <strong>Self Shadow Enabled</strong>(자체 그림자 활성화) 체크박스는 측정할 만한 비용이 들지 않았습니다. 휴대폰(2026-10)에서 구름, 캐노피 그늘, 앰비언트 오클루전의 비용은 각각 1ms 이하였습니다.</p>
+<h2 id="the-first-frame-in-a-web-player">웹 플레이어의 첫 프레임</h2>
+<p>웹 플레이어에서는 조명 스타일이나 스타일의 머티리얼을 처음 그리는 프레임이 브라우저가 셰이더를 준비하는 동안 몇 초씩 걸릴 수 있습니다. Windows의 Chrome에서는 WebGPU에서 약 2~3초, WebGL 2에서 약 7~13초입니다. 로딩 화면이 표시되는 동안 이 준비를 미리 끝내려면 다음과 같이 합니다.</p>
+<ol>
+<li>게임에서 쓰는 스타일로 하나씩 전환하고, 스타일마다 그 스타일의 모든 머티리얼로 스프라이트를 하나씩 그립니다. 비활성 오브젝트의 머티리얼과 나중에 스폰할 프리팹의 머티리얼도 포함합니다.</li>
+<li>Sprite Skin 컴포넌트로 애니메이션되는 캐릭터가 하나라도 있고 <strong>Project Settings &gt; Player</strong>(프로젝트 설정 &gt; Player) 창의 <strong>GPU Skinning</strong>(GPU 스키닝) 필드가 <strong>CPU</strong> 옵션으로 설정되어 있지 않으면, 그 캐릭터가 하나도 활성화되지 않은 상태에서 한 번, 활성화된 상태에서 한 번 이 작업을 합니다.</li>
+<li>스타일의 <strong>Quality</strong>(품질) 섹션 설정에 따라 어떤 옵션이 일부 품질 레벨에서만 그려지고 게임이 실행 중에 품질 레벨을 바꾼다면, 그 옵션을 그리는 레벨과 그리지 않는 레벨에서도 각각 그 스타일을 그립니다.</li>
+</ol>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/1.0/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ko/search.js"></script>
+</body>
+</html>

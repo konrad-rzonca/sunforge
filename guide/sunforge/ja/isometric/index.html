@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクしたスプライトで作るアイソメトリックシーンと Tilemap | Sun Forge ガイド</title>
+<meta name="description" content="ベイクしたブロックから段差のある 2:1 のアイソメトリックシーンを組み立て、Tilemap 上の地面タイルをライティングします。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/isometric/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/isometric/">
+<meta property="og:title" content="ベイクしたスプライトで作るアイソメトリックシーンと Tilemap | Sun Forge ガイド">
+<meta property="og:description" content="ベイクしたブロックから段差のある 2:1 のアイソメトリックシーンを組み立て、Tilemap 上の地面タイルをライティングします。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "アイソメトリック", "item": "https://sunforgetools.com/guide/sunforge/ja/isometric/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/isometric/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/isometric/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/isometric/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/isometric/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/isometric/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja" aria-current=page>アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/isometric/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/isometric/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/isometric/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/isometric/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-isometric"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1 id="isometric-scenes">アイソメトリック</h1><p class="lead">ベイクしたブロックから段差のある 2:1 のアイソメトリックシーンを組み立て、Tilemap 上の地面タイルをライティングします。</p></div><article class="doc"><p>ベイクしたブロックで、段差のある 2:1 のアイソメトリックシーンを作る手順は次のとおりです。</p>
+<ol>
+<li>各アーキタイプの <strong>Elevation Angle</strong> (俯角、<strong>CAMERA</strong> (カメラ) セクション) を 30 のままにし、すべてのアーキタイプの <strong>Pixels Per Unit</strong> (単位毎のピクセル数) を同じ値にします。30 では、正方形の地面が 2:1 のひし形として描画されます。</li>
+<li><strong>Grid</strong> を追加し、<strong>Cell Layout</strong> を <strong>Isometric</strong> に、<strong>Cell Size</strong> をひし形の幅、その幅の半分、1 に設定します。</li>
+<li>地形の各ブロックは、角をカメラに向けてモデリングします。<strong>Directions</strong> (方向) を 1、<strong>SHADOW</strong> (影) をオフにして小道具としてベイクし、その <strong>Cast Shadow Caster</strong> をオフにして、<code>Grid.GetCellCenterWorld</code> の位置に配置します。</li>
+<li>高くなったブロックの上にプレハブを立たせるには、そのプレハブの各 <strong>Baked Renderer Binding</strong> コンポーネントで <strong>Height Above Ground</strong> (地面からの高さ) をブロックの高さに設定し、<code>SunForgeBakedShadowSync.PlaceAtHeight</code> を呼び出します。このメソッドは、プレハブとその影を上に移動します。パーティクルのベイクのように <strong>Baked Shadow Sync</strong> のないプレハブと、<strong>Leaves The Ground</strong> (地面から離れる) でベイクしたプレハブは、代わりに手動で上に移動します。ブロックの高さに <strong>Elevation Angle</strong> のコサイン (30 では 0.866) を掛けた値を、y 位置に加えます。<code>Body</code> 子オブジェクトの <strong>Height Above Ground</strong> は、ブロックからの高さのままです。</li>
+<li>各ブロックの <strong>Order in Layer</strong> (レイヤーの順序) を、そのセルの (x + y) の -10 倍に設定します。こうすると、手前のセルが上に描画されます。そのセルの上にあるものには、そのブロックの値より大きく、次の行の値より小さい値を設定します。</li>
+<li>Light Source が立っている高さを、その <strong>Height Above Ground</strong> に加えます。照射範囲はブロックの上で <strong>Ground Radius</strong> (地面での半径) を保ち、シーンビューのアウトラインは地面の高さのままです。</li>
+<li>Cast Shadow Field の <strong>Mode</strong> (モード) を <strong>Ground Material And Sprites</strong> (地面マテリアルとスプライト) に設定します。こうすると、影がブロックと、その上に立っているものに落ちます。</li>
+<li>最下段をブロックで組む代わりにペイントするには、地面タイルの Tilemap に描き (<a href="/guide/sunforge/ja/isometric/#ground-tiles-on-a-tilemap" hreflang="ja">アイソメトリック › Tilemap 上の地面タイル</a>を参照)、その Tilemap の <strong>Order in Layer</strong> をどのブロックの値よりも小さく設定します。そのタイルは、ブロックの上面と同じように照らされます。</li>
+</ol>
+<h2 id="ground-tiles-on-a-tilemap">Tilemap 上の<wbr>地面タイル</h2>
+<ul>
+<li>Tilemap は、スタイルの Ground マテリアル <code>SunForge_&lt;Style&gt;_Ground</code> で描画してください。</li>
+<li>Tilemap がタイルをそのプレハブと同じように照らすには、<strong>Baked Renderer Binding</strong> が必要です。<strong>Check Setup</strong> (セットアップを確認) で追加されます。<strong>Check Setup</strong> は、値の異なるベイクのタイルが混在する Tilemap も報告します。そうしたタイルは、それぞれ別の Tilemap に置いてください。</li>
+<li><strong>Tile View</strong> (タイルの視点、Archetypes (アーキタイプ) タブの OUTPUT (出力)) を <strong>Isometric</strong> (アイソメトリック) に設定したタイルは、ひし形のスプライトメッシュを持ちます。Tilemap のセルにタイルを合わせるには、このメッシュが必要です。このメッシュはすべてのベイクで書き込まれるため、<strong>Mesh Type</strong> をほかの値にしても保たれません。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>

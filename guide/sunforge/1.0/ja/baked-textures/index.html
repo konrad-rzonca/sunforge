@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベイクが書き出すテクスチャとそのインポート設定 | Sun Forge ガイド</title>
+<meta name="description" content="ベイクがスプライトシートのほかに追加するテクスチャと、シートがどのようにパックされ、インポートされるかを説明します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/baked-textures/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/baked-textures/">
+<meta property="og:title" content="ベイクが書き出すテクスチャとそのインポート設定 | Sun Forge ガイド">
+<meta property="og:description" content="ベイクがスプライトシートのほかに追加するテクスチャと、シートがどのようにパックされ、インポートされるかを説明します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "ベイクしたテクスチャ", "item": "https://sunforgetools.com/guide/sunforge/ja/baked-textures/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/1.0/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/1.0/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/1.0/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/1.0/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/1.0/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/1.0/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/1.0/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/1.0/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/1.0/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/1.0/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/1.0/ja/baked-textures/" hreflang="ja" aria-current=page>ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/1.0/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/1.0/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/1.0/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/1.0/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/1.0/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/1.0/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/1.0/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/1.0/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/1.0/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/1.0/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/1.0/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/1.0/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/1.0/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/1.0/ja/scene-view/" hreflang="ja">シーンビュー</a></li><li><a href="/guide/sunforge/1.0/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/1.0/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/1.0/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/1.0/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/1.0/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/1.0/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/1.0/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/1.0/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/1.0/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/1.0/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/1.0/en/baked-textures/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/baked-textures/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/1.0/ko/baked-textures/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-baked-textures"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><div class="reading"><div class="head"><h1>ベイクした<wbr>テクスチャ</h1><p class="lead">ベイクがスプライトシートのほかに追加するテクスチャと、シートがどのようにパックされ、インポートされるかを説明します。</p></div><nav class="onpage" aria-label="このページの内容"><details open><summary>このページの内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#extra-textures">追加テクスチャ</a></li><li><a href="#texture-settings">テクスチャ設定</a></li></ul></details></nav><article class="doc"><h2 id="extra-textures">追加テクスチャ</h2>
+<p>各追加テクスチャは、スプライトの補助的テクスチャとしてシートに割り当てられます。法線、マスク、エミッション、ジオメトリテクスチャの名前とチャンネルは、ライティングのページにあります (<a href="/guide/sunforge/1.0/ja/your-sprites/#sprite-textures" hreflang="ja">自分で描いたスプライト › スプライトのテクスチャ</a>を参照)。ベイクでは次のテクスチャが加わります。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>テクスチャ</th>
+<th>補助的テクスチャの名前</th>
+<th>チャンネル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>マスク</td>
+<td><code>_MaskTex</code></td>
+<td>ベイクの太陽が照らしたテクセルでは A が 1、モデル自身の影の中では 0</td>
+</tr>
+<tr>
+<td>キャストハイト</td>
+<td><code>_CastHeightTex</code></td>
+<td><strong>Bake Cast Height Texture</strong> (キャストハイトテクスチャをベイク、Advanced (上級者向け) 表示) がオンのとき、地面に投影した影のシートにあります。R × range は、各テクセルに影を落とす最も高い点が、その影を落とすスプライトのピボットからどれだけ上にあるかを表します。本体のピボットは地面にあります。影が覆わないテクセルは 0 です。カバレッジは影のシートのアルファです。リニア</td>
+</tr>
+</tbody>
+</table></div>
+<p>スプライトの法線マップはベイクカメラの角度で、地面タイルの法線マップは見下ろし視点で描かれます。<code>range</code> はベイクの高さの範囲です。</p>
+<p>これらの名前でシートに割り当てたテクスチャは、ベイクがそのテクスチャを書き出している限り置き換えられます。</p>
+<h3 id="urp-s-shader-graph-templates">URP の Shader Graph テンプレート</h3>
+<p>URP の 2D Sprite Lit または 2D Sprite Custom Lit テンプレートから作った Shader Graph では、マスクの名前が <code>_MaskMap</code> です。ベイクしたマスクを読むには、そのプロパティの Reference を <code>_MaskTex</code> にしてください。Custom Lit テンプレートでは法線マップの名前も <code>_Normal_Map</code> なので、その Reference を <code>_NormalMap</code> にしてください。</p>
+<h3 id="unity-s-2d-lights">Unity の 2D ライト</h3>
+<p>2D レンダラーの Unity Lights マテリアルでは、チャンネルでマスクされた Light 2D のブレンドスタイルが、マスクのそのチャンネルに応じてテクセルを照らします。Unity 標準の Multiply with Mask と Additive with Mask のブレンドスタイルは赤チャンネルを読むため、ベイクしたスプライトの金属の部分だけを照らします。これらが青またはアルファのチャンネルを読むように設定するか、マスクなしのブレンドスタイルを使ってください。アルファでマスクされたブレンドスタイルは、マスクにベイクされたセルフシャドウも適用します。Unity Lights マテリアルは、通常これを省きます。</p>
+<h3 id="grass-over-a-baked-sprite">ベイクした<wbr>スプライトに<wbr>重なる<wbr>草</h3>
+<p>ベイクが書き出すジオメトリテクスチャでは、アルファがフレームの前端を表します (<a href="/guide/sunforge/1.0/ja/geometry-texture-format/#geometry-textures" hreflang="ja">ジオメトリテクスチャの形式</a>を参照)。Sorted Ground Cover は、草の葉の根元がこの前端より手前にある場合にだけ、その葉をスプライトの上に描画します。</p>
+<p>前端は、地面から 0.25 ワールド単位以内にある部分の前面です。そのため、武器を低く構えていれば、草はその手前で止まります。アニメーションがそれより高く持ち上げる部分の上に草を描画させるには、<strong>Measure Sizes From</strong> (サイズの計測元、Bake (ベイク) タブの ANIMATION (アニメーション)、Advanced (上級者向け) 表示) でそのアニメーションにチェックを入れてください。</p>
+<h2 id="texture-settings">テクスチャ設定</h2>
+<p><strong>Filter Mode</strong> (フィルターモード)、<strong>Compression</strong> (圧縮)、<strong>Use Crunch Compression</strong> (クランチ圧縮を使用)、<strong>Generate Mip Maps</strong> (ミップマップの生成)、<strong>Atlas Max Size</strong> (アトラスの最大サイズ) は、アーキタイプの <strong>OUTPUT</strong> (出力) セクション (Advanced (上級者向け) 表示) で設定してください。ベイクは、これらの設定から、各プラットフォームでの各テクスチャの形式を選びます。</p>
+<ul>
+<li><strong>Project Settings &gt; Editor</strong> (プロジェクト設定 &gt; エディター) の <strong>Sprite Packer Mode</strong> が <strong>Sprite Atlas V2 - Enabled</strong> または <strong>Sprite Atlas V2 - Enabled for Builds</strong> のとき、アトラスがパックされます。それ以外のモードでは、各シートは個別のテクスチャとしてビルドに含まれ、Bake (ベイク) タブに <strong>Use Sprite Atlas V2</strong> (スプライトアトラス V2 を使用) が表示されます。プロジェクトの <strong>Sprite Packer Mode</strong> を変更したら、以前にベイクしたものを再ベイクしてください。</li>
+<li>ベイクしたアトラスの Default タブまたはプラットフォームのタブで自分で設定した <strong>Format</strong> (形式) と、<strong>Compression</strong> (圧縮) を None にした <strong>Override</strong> は、そのプラットフォームではベイクの形式より優先されます。<strong>Format</strong> を <strong>Automatic</strong> (自動) に戻すと、次のベイクでベイクの形式がもう一度書き込まれます。ジオメトリテクスチャやキャストハイトテクスチャに設定した <strong>Format</strong> は保たれます。</li>
+<li>ベイクは、ジオメトリテクスチャやキャストハイトテクスチャを正しく描画できない形式を、自分で設定したタブも含めてどのタブでも置き換え、そのことを Console ウィンドウに表示します。</li>
+<li><strong>Generate Mip Maps</strong> (Advanced 表示) がオンのとき、元のサイズの 4 分の 1 以下で描画されるスプライトは、最も外側のピクセルがより平坦に照らされ、より地面に近い位置にソートされます。</li>
+<li>アトラスの <strong>Max Texture Size</strong> (最大テクスチャサイズ) を小さくすると、アトラスがより多くのページに分かれるだけで、何も節約できません。</li>
+</ul>
+<h3 id="a-web-build-for-phones">スマートフォン向けの Web ビルド</h3>
+<p>Web では、ベイクは Web プラットフォーム (<strong>File &gt; Build Profiles</strong>) の <strong>Texture Compression</strong> (テクスチャ圧縮) に従います。デフォルトの <strong>Use Player Settings</strong> (プレイヤー設定を使用) では、<strong>Player Settings &gt; Web</strong> (プレイヤー設定 &gt; Web) の <strong>Texture compression format</strong> (テクスチャ圧縮形式) に従います。DXT の場合、ほとんどのスマートフォンのブラウザーのように、DXT と BC7 の形式に対応していないブラウザーは、ベイクした圧縮テクスチャをそれぞれ 4 倍のメモリ量に展開します。スマートフォンで動かすビルドの手順は次のとおりです。</p>
+<ol>
+<li><strong>Texture Compression</strong> を ASTC に設定します。ETC2 も使えますが、ETC2 では、背の高いスプライトの近くにライトがあると、そのスプライトが帯状に照らされることがあります。</li>
+<li>もう一度ベイクします。</li>
+</ol>
+<p>Unity 6000.6 では、<strong>Use Player Settings</strong> でのビルドと、形式を指定しないビルドスクリプトからのビルドで、スプライトアトラスのページが以前の形式のままビルドに含まれることがあります。<strong>Texture compression format</strong> を変更したら、<strong>Texture Compression</strong> が <strong>Use Player Settings</strong> の間に、スプライトアトラスを選択し、右クリックして <strong>Reimport</strong> (再インポート) を選んでください。</p>
+<h3 id="crunching-one-platform">1 つの<wbr>プラットフォームだけの<wbr>クランチ圧縮</h3>
+<ol>
+<li>出力フォルダー内のベイクした各アトラスでそのプラットフォームのタブを開き、<strong>Override</strong> と <strong>Use Crunch Compression</strong> (クランチ圧縮を使用) をオンにして、<strong>Format</strong> (形式) は <strong>Automatic</strong> (自動) のままにします。アトラスがパックされないときは、ベイクしたスプライトシートにも同じ設定をします。その法線マップやジオメトリテクスチャには設定しません。</li>
+<li>もう一度ベイクします。ベイクは、そのプラットフォームで、アトラスの法線マップ、ジオメトリテクスチャ、キャストハイトテクスチャをクランチ圧縮しないままにします。</li>
+</ol>
+<p>再ベイクしてもオーバーライドは保たれます。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/1.0/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/ja/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유니티 2D 씬의 안개 효과와 지면 안개 | Sun Forge</title>
+<meta name="description" content="유니티의 안개 설정이 스프라이트에 적용되지 않는 이유, 2D URP 씬에 안개를 만드는 네 가지 방법, 정렬, 오버드로우, 광원, 밴딩의 함정을 다룹니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/learn/2d-fog-and-mist/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/learn/2d-fog-and-mist/">
+<meta property="og:title" content="유니티 2D 씬의 안개 효과와 지면 안개 | Sun Forge">
+<meta property="og:description" content="유니티의 안개 설정이 스프라이트에 적용되지 않는 이유, 2D URP 씬에 안개를 만드는 네 가지 방법, 정렬, 오버드로우, 광원, 밴딩의 함정을 다룹니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-fog-and-mist.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="낮의 석조 홀에 있는 기사, 화로, 방패, 스켈레톤. 발치는 짙고 머리 쪽은 옅은 안개에 싸여 있습니다.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "유니티 2D 씬의 안개 효과와 지면 안개", "description": "유니티의 안개 설정이 스프라이트에 적용되지 않는 이유, 2D URP 씬에 안개를 만드는 네 가지 방법, 정렬, 오버드로우, 광원, 밴딩의 함정을 다룹니다.", "image": "https://sunforgetools.com/assets/share/learn-2d-fog-and-mist.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-19", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ko/learn/2d-fog-and-mist/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "학습", "item": "https://sunforgetools.com/ko/learn/"}, {"@type": "ListItem", "position": 3, "name": "안개", "item": "https://sunforgetools.com/ko/learn/2d-fog-and-mist/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-fog-and-mist/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-fog-and-mist/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="언어"><a href="/learn/2d-fog-and-mist/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-fog-and-mist/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-fog-and-mist/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-fog-and-mist/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/ko/learn/">학습</a></p>
+<h1>유니티 2D 씬의 안개 효과와 지면 안개</h1>
+<p class="lead">Unity의 안개 설정은 스프라이트에 적용되지 않으므로, 2D URP 씬에서는 스프라이트, 파티클, 전체 화면 패스로 안개를 만듭니다. 이 글에서 다루는 안개는 날씨 현상입니다. 플레이어가 아직 탐험하지 않은 맵 영역을 가리는 전장의 안개는 다른 개념이며, 여기서는 다루지 않습니다.</p>
+</header>
+<h2 id="why-unity-s-fog-does-nothing-in-a-2d-scene">2D 씬에서 Unity의 안개가 작동하지 않는 이유</h2>
+<p>안개 설정은 <strong>Window &gt; Rendering &gt; Lighting</strong>(Window &gt; 렌더링 &gt; 조명) 메뉴로 여는 조명 창의 <strong>Environment</strong>(환경) 탭, <strong>Other Settings</strong>(기타 설정) 섹션에 있습니다. 색과 모드를 정할 수 있으며, 안개는 카메라에서 멀어질수록 짙어집니다.</p>
+<p>스프라이트로 된 씬에서 안개를 켜도 아무것도 바뀌지 않습니다. URP의 스프라이트 셰이더인 Sprite-Lit-Default 셰이더와 Sprite-Unlit-Default 셰이더는 안개를 적용하지 않으며, Sprite Lit 셰이더 그래프와 Sprite Unlit 셰이더 그래프도 마찬가지입니다. 안개를 적용하는 셰이더가 있더라도 별 도움이 되지 않습니다. 2D 씬의 스프라이트는 모두 카메라에서 거의 같은 거리에 있으므로, 안개가 모든 스프라이트를 같은 정도로 물들입니다.</p>
+<h2 id="unity-2d-volumetric-fog">Unity 2D 볼류메트릭 안개</h2>
+<p>Unity의 볼류메트릭 안개는 HDRP의 기능이며, URP에는 없습니다. 2D 게임에서는 서로 다른 깊이에서 서로 다른 속도로 움직이는 안개 몇 겹이 부피감을 냅니다.</p>
+<h2 id="four-ways-to-make-a-2d-fog-effect">2D 안개 효과를 만드는 네 가지 방법</h2>
+<h3 id="a-scrolling-noise-sprite">스크롤되는 노이즈 스프라이트</h3>
+<p>넓은 영역에 깔리는 안개에 알맞습니다.</p>
+<ol>
+<li>타일링되는 부드러운 노이즈 텍스처를 임포트하고, <strong>Wrap Mode</strong>(랩 모드) 필드를 <strong>Repeat</strong>(반복) 옵션으로 설정합니다.</li>
+<li><strong>Assets &gt; Create &gt; Shader Graph &gt; URP &gt; Sprite Unlit Shader Graph</strong>(에셋 &gt; 생성 &gt; 셰이더 그래프 &gt; URP &gt; 스프라이트 언릿 셰이더 그래프) 메뉴를 선택합니다.</li>
+<li>그래프에서 <strong>Time</strong> 노드에 작은 속도 값을 곱하고, 그 결과를 <strong>Tiling And Offset</strong> 노드의 <strong>Offset</strong> 포트에 연결합니다. 이 노드의 출력으로 노이즈를 샘플링합니다.</li>
+<li>샘플링 결과에 안개 색을 곱하고, 안개 위쪽 가장자리가 딱딱하게 끊기지 않도록 스프라이트 위쪽으로 갈수록 알파를 줄입니다.</li>
+<li>그래프로 머티리얼을 만들어 그 영역을 덮는 Sprite Renderer 컴포넌트에 지정합니다. 원하는 레이어 사이에 그려지도록 <strong>Sorting Layer</strong>(정렬 레이어) 필드와 <strong>Order in Layer</strong>(레이어 순서) 필드를 설정합니다.</li>
+</ol>
+<p>이런 레이어 두 개를 서로 다른 속도로 스크롤하면 그림 한 장이 미끄러지는 느낌이 덜합니다.</p>
+<h3 id="a-particle-system-of-soft-sprites">부드러운 스프라이트로 된 파티클 시스템</h3>
+<p>연못 위나 출입구처럼 한곳에만 낀 안개에 알맞습니다. Particle System 컴포넌트로 크고 느린 파티클을 몇 개만 방출하세요. 파티클에는 알파를 낮춘 부드러운 구름 텍스처를 쓰세요. URP의 Particles Unlit 셰이더를 쓰고 <strong>Surface Type</strong>(표면 타입) 필드를 <strong>Transparent</strong>(투명) 옵션으로 설정한 머티리얼을 지정하세요. <strong>Renderer</strong>(렌더러) 모듈의 <strong>Sorting Layer ID</strong> 필드와 <strong>Order in Layer</strong>(레이어 순서) 필드로 스프라이트 사이에서 파티클의 순서를 정하세요.</p>
+<h3 id="a-full-screen-pass">전체 화면 패스</h3>
+<p>URP의 Full Screen Pass Renderer Feature는 화면 전체에 머티리얼을 그립니다. 렌더러 에셋을 선택하고 <strong>Add Renderer Feature</strong> 버튼을 클릭한 다음, Fullscreen 셰이더 그래프로 만든 머티리얼을 이 렌더러 기능에 지정하세요. <strong>Injection Point</strong>(삽입 지점) 필드는 그리는 시점을 정합니다. <strong>Before Rendering Post Processing</strong> 옵션은 투명 오브젝트 다음, 포스트 프로세싱 전에 그립니다.</p>
+<p>전체 화면 패스는 그 전에 그려진 모든 것을 덮으므로 두 레이어 사이에 둘 수 없습니다. 그럴 때는 2D 렌더러의 <strong>Camera Sorting Layer Texture</strong>(카메라 정렬 레이어 텍스처) 섹션을 쓰세요. 그러면 선택한 정렬 레이어까지 그린 화면이 저장되며, 이후 레이어의 안개 셰이더가 이 화면을 읽을 수 있습니다.</p>
+<h3 id="tinting-far-layers-toward-the-fog-color">안개 색에 가깝게 물들인 먼 레이어</h3>
+<p>이 방법은 그릴 것을 하나도 늘리지 않습니다. 각 패럴랙스 레이어의 Sprite Renderer 컴포넌트에서 <strong>Color</strong>(컬러) 필드를 안개 색에 가깝게 설정하되, 뒤쪽 레이어일수록 조금씩 더 가깝게 합니다. 이 색은 아트에 곱해지므로 어둡게만 할 수 있습니다. 어두운 아트 위에 옅은 안개를 얹으려면 셰이더에서 안개 색 쪽으로 블렌드하거나 레이어를 다시 그리세요.</p>
+<h2 id="traps">함정</h2>
+<p><strong>머리부터 발끝까지 캐릭터를 덮는 안개.</strong> 안개 레이어는 평평한 판입니다. 캐릭터 앞에 정렬하면 캐릭터 전체가 뿌옇게 되고, 뒤에 정렬하면 캐릭터 전체가 선명하게 남습니다. 지면 안개는 발치에서 짙고 머리 쪽에서 옅어야 합니다. 사이드 뷰에서는 캐릭터 앞에 위로 갈수록 옅어지는 낮은 띠를 두면 이에 가까워집니다. 탑다운이나 아이소메트릭 씬에서는 캐릭터가 여러 깊이에 서 있으므로, 띠 하나로는 대부분의 캐릭터에 맞지 않습니다. 레이어가 늘어나는 비용이 들지만, 안개를 여러 띠로 잘라 캐릭터 사이에 정렬할 수도 있습니다.</p>
+<p><strong>정렬.</strong> Unity는 스프라이트를 먼저 정렬 레이어로, 다음에 <strong>Order in Layer</strong>(레이어 순서) 필드로, 마지막으로 카메라와의 거리로 정렬합니다. 레이어 순서 값이 낮을수록 뒤에 그려집니다. 안개에는 전용 정렬 레이어나 순서를 지정하세요. 둘 다 다른 스프라이트와 같으면, 그 사이에서 안개의 위치는 카메라와의 거리에 따라 달라집니다.</p>
+<p><strong>오버드로우.</strong> 투명한 레이어는 각각 그 뒤에 있는 것 위에 그려지므로, 화면 전체를 덮는 안개 레이어 세 개는 모든 픽셀을 세 번 더 채웁니다. 휴대폰의 GPU가 가장 먼저 느려집니다. <strong>Window &gt; Analysis &gt; Rendering Debugger</strong>(Window &gt; 분석 &gt; 렌더링 디버거) 메뉴로 여는 URP의 렌더링 디버거에는 픽셀이 겹쳐 그려지는 곳을 보여 주는 <strong>Overdraw</strong>(오버드로우) 옵션이 있습니다. 작은 파티클 여러 개 대신 큰 파티클 몇 개를 쓰고, 텍스처도 작게 쓰세요. 부드러운 노이즈는 낮은 해상도에서도 똑같아 보입니다.</p>
+<p><strong>광원을 무시하는 안개.</strong> 언릿 안개는 빛과 관계없이 색을 유지하므로, 밤에 불 옆에서도 회색으로, 어둠 속에서도 옅은 색으로 남습니다. Light 2D 광원이 안개에 닿게 하려면 <strong>Sprite Lit Shader Graph</strong>(스프라이트 릿 셰이더 그래프) 메뉴로 그래프를 만들고, 각 광원의 <strong>Target Sorting Layers</strong>(타겟 정렬 레이어) 필드에 안개의 정렬 레이어를 넣으세요. 그러면 빛이 평평한 벽에 닿듯이 안개에 닿습니다.</p>
+<p><strong>밴딩.</strong> 알파가 낮은 부드러운 그레디언트에는 계단 같은 단차가 보입니다. 안개 텍스처의 <strong>Compression</strong>(압축) 필드를 <strong>None</strong>(없음) 옵션으로 설정하세요. 카메라의 <strong>Rendering</strong>(렌더링) 섹션에서 <strong>Dithering</strong>(디더링) 체크박스를 켜면 넓은 그레디언트와 어두운 영역의 밴딩이 줄어듭니다.</p>
+<h2 id="how-sun-forge-2d-lighting-does-ground-mist">Sun Forge 2D Lighting의 지면 안개</h2>
+<p><a href="/ko/2d-lighting/#mist">Sun Forge 2D Lighting</a> 패키지는 URP용 조명 패키지입니다. 안개는 <a href="/guide/sunforge/ko/components/#sunforgelightingsetup" hreflang="ko">날씨</a>의 일부이며, 구름 그림자처럼 지면 위를 떠다닙니다. URP의 2D 렌더러와 유니버설 렌더러에서 작동하며, 스프라이트를 정면으로 바라보는 카메라로 보는 탑다운이나 아이소메트릭 씬에서 나타납니다. 사이드 뷰에는 안개가 놓일 지면이 보이지 않아 안개가 나타나지 않으므로, 플랫포머에는 위의 방법 중 하나가 필요합니다.</p>
+<p>이 패키지의 안개는 스프라이트 앞이나 뒤에 놓인 레이어가 아닙니다. Sun Forge가 3D 모델에서 베이크한 각 스프라이트에는 지오메트리 텍스처가 있으며, 여기에는 스프라이트의 피벗에서 잰 각 텍셀의 높이가 담깁니다. 그래서 안개가 각 스프라이트를 발부터 위로 덮습니다.</p>
+<figure>
+<img src="/features/ruins-view-height.webp" srcset="/features/ruins-view-height.768w.webp 768w, /features/ruins-view-height.960w.webp 960w, /features/ruins-view-height.1024w.webp 1024w, /features/ruins-view-height.1440w.webp 1440w, /features/ruins-view-height.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="지오메트리 텍스처로 그린 무너진 홀: 각 스프라이트는 발이 짙은 파란색이고 높을수록 밝으며, 지면은 검은색">
+<figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<figure>
+<img src="/features/ruins-mistlooks-day-regular.webp" srcset="/features/ruins-mistlooks-day-regular.768w.webp 768w, /features/ruins-mistlooks-day-regular.960w.webp 960w, /features/ruins-mistlooks-day-regular.1024w.webp 1024w, /features/ruins-mistlooks-day-regular.1440w.webp 1440w, /features/ruins-mistlooks-day-regular.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="낮의 석조 홀에 있는 기사, 화로, 방패, 스켈레톤. 안개가 발치에서는 짙고 머리 쪽에서는 옅습니다.">
+<figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<p>모든 Light Source 컴포넌트는 안개도 비춥니다.</p>
+<figure>
+<img src="/features/ruins-mistlooks-night-regular.webp" srcset="/features/ruins-mistlooks-night-regular.768w.webp 768w, /features/ruins-mistlooks-night-regular.960w.webp 960w, /features/ruins-mistlooks-night-regular.1024w.webp 1024w, /features/ruins-mistlooks-night-regular.1440w.webp 1440w, /features/ruins-mistlooks-night-regular.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="밤의 같은 홀. 안개가 화로 주위에서는 주황색으로, 수정 주위에서는 푸른색으로 빛나고, 그 밖에서는 어둡습니다.">
+<figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<p>Sun Forge를 사용하려면 Unity 6.3 LTS(6000.3.29f1 이상)부터 Unity 6.6까지의 버전이 필요합니다.</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">다음 글</h2>
+<ul>
+<li><a href="/ko/learn/2d-day-night-cycle/">유니티 2D 낮과 밤 사이클, 구름 그림자 구현</a></li>
+<li><a href="/ko/learn/2d-lights-not-working/">유니티 2D 광원이 적용되지 않을 때: 확인할 사항</a></li>
+<li><a href="/ko/2d-lighting/#mist">Sun Forge 2D Lighting: 안개</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/learn/2d-fog-and-mist/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-fog-and-mist/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-fog-and-mist/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-fog-and-mist/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

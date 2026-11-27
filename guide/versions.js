@@ -1,0 +1,1 @@
+window.GUIDES = {"sunforge": {"languages": ["en", "ja", "ko", "zh-hans"], "versions": {"1.0": ["en", "ja", "ko", "zh-hans"]}}, "lighting": {"languages": ["en", "ja", "ko", "zh-hans"], "versions": {}}};

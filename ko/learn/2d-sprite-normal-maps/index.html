@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유니티 노멀 맵으로 2D 스프라이트에 입체감 주기 | Sun Forge</title>
+<meta name="description" content="유니티 URP에서 2D 스프라이트가 실시간 조명을 받도록 노멀 맵과 마스크를 추가하는 법, 맵을 구하는 곳, 둘만으로는 할 수 없는 일, 함정을 다룹니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/">
+<meta property="og:title" content="유니티 노멀 맵으로 2D 스프라이트에 입체감 주기 | Sun Forge">
+<meta property="og:description" content="유니티 URP에서 2D 스프라이트가 실시간 조명을 받도록 노멀 맵과 마스크를 추가하는 법, 맵을 구하는 곳, 둘만으로는 할 수 없는 일, 함정을 다룹니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="픽셀 아트 씬 하나를 세 가지로 본 모습: 스프라이트만, 노멀 맵 적용, 노멀 맵과 금속, 발광 적용">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "유니티 노멀 맵으로 2D 스프라이트에 입체감 주기", "description": "유니티 URP에서 2D 스프라이트가 실시간 조명을 받도록 노멀 맵과 마스크를 추가하는 법, 맵을 구하는 곳, 둘만으로는 할 수 없는 일, 함정을 다룹니다.", "image": "https://sunforgetools.com/assets/share/learn-2d-sprite-normal-maps.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "학습", "item": "https://sunforgetools.com/ko/learn/"}, {"@type": "ListItem", "position": 3, "name": "스프라이트 노멀 맵", "item": "https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-sprite-normal-maps/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-sprite-normal-maps/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="언어"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/ko/learn/">학습</a></p>
+<h1>유니티 노멀 맵으로 2D 스프라이트에 입체감 주기</h1>
+<p class="lead">스프라이트는 평평한 그림이므로 빛이 비출 입체가 없습니다. 노멀 맵은 픽셀마다 그 부분의 표면이 향하는 방향을 담아 스프라이트에 입체감을 줍니다. 노멀 맵이 있으면 캐릭터 왼쪽의 횃불이 캐릭터의 왼쪽 면을 비추고, 횃불이 움직이면 음영도 움직입니다.</p>
+</header>
+<h2 id="sprite-lit-and-light-2d-how-unity-lights-a-sprite">Sprite Lit 머티리얼과 Light 2D: Unity가 스프라이트를 비추는 방식</h2>
+<p>Unity의 2D 광원은 유니버설 렌더 파이프라인(URP)에 속하며, 프로젝트가 URP의 2D 렌더러를 쓸 때 작동합니다. 이때 씬 뷰로 드래그한 스프라이트에는 2D 광원이 비추는 Sprite-Lit-Default 머티리얼이 지정됩니다. Sprite-Unlit-Default 머티리얼을 쓰는 스프라이트는 2D 광원을 무시합니다.</p>
+<p>광원을 추가하려면 계층 구조 창에서 마우스 오른쪽 버튼을 클릭하고 <strong>Light</strong>(광원) 메뉴를 선택한 다음, 2D 광원인 Spot, Freeform, Sprite, Global 중 하나를 고르세요. 전역 광원은 모든 스프라이트를 고르게 비춥니다. 노멀 맵이 없으면 나머지 광원은 종이를 오려 낸 그림 위의 램프처럼 스프라이트를 비춥니다. 광원의 모양 안쪽이 밝아질 뿐, 그림 자체에는 음영이 생기지 않습니다.</p>
+<h2 id="what-a-sprite-normal-map-stores">스프라이트 노멀 맵에 담기는 정보</h2>
+<p>노멀 맵은 스프라이트의 텍스처와 위치가 맞는 텍스처입니다. 빨간색에는 각 픽셀의 표면이 오른쪽으로 기운 정도, 초록색에는 위쪽으로 기운 정도, 파란색에는 보는 사람을 향한 정도가 담깁니다. 보는 사람을 정면으로 향한 픽셀은 연한 파란색 #8080FF입니다.</p>
+<figure class="bare">
+<img src="/features/knight-page-normal.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="Sun Forge로 베이크한 기사 스프라이트의 노멀 맵: 카메라를 향한 면은 파란색과 보라색, 위로 기운 면은 초록색, 오른쪽으로 기운 면은 분홍색">
+<figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<h2 id="add-a-normal-map-to-a-sprite-in-unity">Unity에서 스프라이트에 노멀 맵 적용하기</h2>
+<ol>
+<li>노멀 맵을 임포트하고, 인스펙터에서 <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Normal map</strong>(노멀 맵) 옵션으로 설정합니다.</li>
+<li>스프라이트의 텍스처를 선택하고 <strong>Sprite Editor</strong>(스프라이트 에디터) 창을 연 다음, 드롭다운에서 <strong>Secondary Textures</strong>(보조 텍스처) 옵션을 고릅니다.</li>
+<li><strong>+</strong> 버튼을 클릭하고 <strong>Name</strong>(이름) 필드의 드롭다운에서 <strong>_NormalMap</strong> 옵션을 고른 다음, 노멀 맵을 할당하고 <strong>Apply</strong>(적용) 버튼을 클릭합니다.</li>
+<li>스프라이트의 Sprite Renderer 컴포넌트가 Sprite-Lit-Default 머티리얼이나 노멀 맵을 읽는 다른 머티리얼을 쓰는지 확인합니다.</li>
+<li>Light 2D 광원을 선택합니다. <strong>Normal Maps</strong>(노멀 맵) 섹션에서 <strong>Quality</strong>(품질) 필드를 <strong>Fast</strong>(빠름) 옵션이나 <strong>Accurate</strong> 옵션으로 설정합니다.</li>
+</ol>
+<p>5단계를 마치기 전까지 광원은 노멀 맵을 무시합니다. 전역 광원에는 이 설정이 없으므로, 음영을 보여 주려면 씬에 Spot, Freeform, Sprite 중 하나가 필요합니다. 같은 섹션의 <strong>Distance</strong>(거리) 필드 값을 낮추면 광원이 스프라이트에 더 가까워지므로 디테일이 더 잘 드러납니다.</p>
+<p>직접 만드는 셰이더는 <strong>Assets &gt; Create &gt; Shader Graph &gt; URP &gt; Sprite Lit Shader Graph</strong>(에셋 &gt; 생성 &gt; 셰이더 그래프 &gt; URP &gt; 스프라이트 릿 셰이더 그래프) 메뉴에서 시작할 수 있으며, 이 그래프에는 <strong>Normal (Tangent Space)</strong> 블록이 있습니다.</p>
+<h2 id="the-mask-texture-masktex">마스크 텍스처, _MaskTex</h2>
+<p>스프라이트에는 두 번째 보조 텍스처인 <strong>_MaskTex</strong> 텍스처를 둘 수 있습니다. <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Default</strong>(기본) 옵션으로 두고 <strong>sRGB (Color Texture)</strong>(sRGB(컬러 텍스처)) 체크박스를 끈 상태로 임포트하세요.</p>
+<p>마스크는 빛이 닿을 수 있는 곳을 정합니다. <strong>Blend Style</strong>(블렌드 스타일) 필드가 <strong>Multiply with Mask (R)</strong> 옵션이나 <strong>Additive with Mask (R)</strong> 옵션인 광원은 마스크의 빨간색 채널이 0보다 큰 픽셀만 비춥니다. 2D 렌더러 에셋에서는 블렌드 스타일마다 빨간색 대신 초록색, 파란색, 알파를 읽게 할 수 있습니다. 림 조명이나, 갑옷에만 생기는 반짝임에 쓰세요.</p>
+<h2 id="where-normal-maps-come-from">노멀 맵을 구하는 방법</h2>
+<ul>
+<li><strong>직접 그린 맵.</strong> 노멀 맵 팔레트의 방향 색으로 스프라이트 위에 칠합니다. Krita에는 이를 위한 브러시가 있습니다. 애니메이션이 있는 캐릭터에는 프레임마다 맵이 필요합니다.</li>
+<li><strong>스프라이트에서 생성한 맵.</strong> 표면이 높을수록 흰색인 그레이스케일 하이트 맵을 그리고, <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Normal map</strong>(노멀 맵) 옵션으로 설정하고 <strong>Create from Grayscale</strong>(그레이스케일에서 생성) 체크박스를 켠 상태로 임포트합니다. 그림만으로 작업하는 도구는 주로 외곽선을 둥글게 만드는 방식으로 입체를 추측합니다.</li>
+<li><strong>3D 모델에서 렌더한 맵.</strong> 스프라이트가 3D 모델을 렌더한 것이라면 같은 카메라로 모델의 노멀을 렌더합니다. 그러면 모든 프레임에 꼭 맞는 맵이 생깁니다. 블렌더의 Normal 패스는 방향을 월드 공간으로 담으므로, 저장하기 전에 카메라 뷰 기준으로 변환합니다.</li>
+</ul>
+<h2 id="what-a-normal-map-cannot-do-alone">노멀 맵만으로는 할 수 없는 일</h2>
+<ul>
+<li><strong>금속과 평활도.</strong> Unity 매뉴얼에 따르면 Unity의 2D 조명은 물리 기반이 아닙니다. Sprite-Lit-Default 머티리얼은 색 텍스처, 마스크, 노멀 맵을 읽지만, 어느 것도 픽셀이 얼마나 반짝이는지 담지 않으므로 강철과 천이 빛을 똑같이 받습니다. 손으로 배치한 마스크 광원으로 반짝임을 흉내 낼 수는 있습니다.</li>
+<li><strong>서로 그림자를 드리우는 스프라이트.</strong> Shadow Caster 2D 컴포넌트는 스프라이트의 Custom Outline, 콜라이더, 직접 그린 모양 중 하나의 외곽선에서 모양을 가져옵니다. 이 모양에는 스프라이트의 가장자리만 있을 뿐, 각 부분의 높이는 없습니다. Unity의 Happy Harvest 샘플은 그 대신 나무 아래 그림자를 늘인 스프라이트로 그립니다. 각 방법은 <a href="/ko/learn/2d-shadows-top-down/">2D와 탑다운 스프라이트의 그림자</a>에서 볼 수 있습니다.</li>
+</ul>
+<p>둘 다 픽셀마다 더 많은 데이터, 즉 표면의 메탈릭 값과 평활도, 그리고 높이가 필요합니다.</p>
+<h2 id="why-a-unity-sprite-normal-map-does-not-work">Unity 스프라이트 노멀 맵이 작동하지 않는 이유</h2>
+<p>광원이 아무것도 바꾸지 않으면 <a href="/ko/learn/2d-lights-not-working/">2D 광원이 적용되지 않을 때 확인할 사항</a>부터 살펴보세요. 다음은 맵 자체의 함정입니다:</p>
+<ul>
+<li><strong>텍스처 타입.</strong> <strong>Sprite (2D and UI)</strong>(스프라이트(2D 및 UI)) 옵션으로 둔 노멀 맵은 음영이 잘못 나옵니다. 광원이 움직여도 어두운 면이 그대로입니다. <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Normal map</strong>(노멀 맵) 옵션으로 설정하고, 파일이 하이트 맵이 아니라면 <strong>Create from Grayscale</strong>(그레이스케일에서 생성) 체크박스는 끄세요.</li>
+<li><strong>뒤집힌 초록색 채널.</strong> Unity는 초록색이 위쪽을 뜻한다고 가정하며, 이를 Y+ 또는 OpenGL 방식이라고 합니다. 반대 방식으로 만든 맵은 광원이 위에 있을 때 아래에서 비추는 것처럼 보입니다. 텍스처의 임포트 설정에서 <strong>Flip Green Channel</strong>(녹색 채널 플립) 체크박스를 켜세요.</li>
+<li><strong>뒤집힌 스프라이트.</strong> Sprite Renderer 컴포넌트에 있는 <strong>Flip</strong>(플립) 필드의 X 체크박스는 그려지는 모습만 뒤집습니다. Y축을 중심으로 180도 회전한 스프라이트는 조명이 잘못 적용되며, Unity는 이를 의도된 동작으로 봅니다. 음수 <strong>Scale X</strong> 필드 값으로 뒤집는다면 스프라이트 위에 광원을 두고 위쪽 가장자리가 밝게 비치는지 확인하세요.</li>
+<li><strong>스프라이트 아틀라스.</strong> 스프라이트 아틀라스는 스프라이트의 보조 텍스처를 별도의 텍스처로 합칩니다. 아틀라스 안의 모든 스프라이트에 같은 수의 보조 텍스처를 주세요. 그러지 않으면 합쳐진 텍스처에 빈 공간이 많이 생길 수 있습니다. 다른 도구로 시트를 패킹한다면 노멀 맵도 같은 레이아웃으로 패킹해야 합니다. Unity는 두 텍스처를 같은 UV로 읽기 때문입니다.</li>
+</ul>
+<h2 id="sun-forge-normal-mask-geometry-and-emission-textures-for-each-sprite">Sun Forge: 스프라이트마다 노멀, 마스크, 지오메트리, 이미션 텍스처</h2>
+<p>Unity 에디터 툴인 Sun Forge는 세 번째 방법을 Unity 안에서 씁니다. 베이크는 3D 모델이나 프리팹을 방향마다 스프라이트 시트가 있는 2D 스프라이트 프리팹으로 바꿉니다. 각 시트에는 색 텍스처 외에 <a href="/guide/sunforge/ko/bake-output/#files" hreflang="ko">노멀, 마스크, 지오메트리 텍스처</a>가 있으며, 베이크에서 <strong>Emission</strong> 섹션을 켜면 이미션 텍스처도 생깁니다.</p>
+<ul>
+<li>마스크의 빨간색에는 금속, 초록색에는 평활도, 파란색에는 앰비언트 오클루전이 담깁니다.</li>
+<li>지오메트리 텍스처에는 스프라이트의 피벗에서 잰 각 텍셀의 높이가 담기며, 이 높이로 스프라이트끼리 서로 그림자를 드리울 수 있습니다.</li>
+</ul>
+<figure class="bare">
+<img src="/features/knight-page-geometry-texture.webp" loading="lazy" width="405" height="855" style="--w: 405; --h: 855" alt="Sun Forge로 베이크한 같은 기사의 지오메트리 텍스처: 발은 검은색, 높은 부분일수록 밝은 색">
+<figcaption>dark_igorek의 The Forgotten Knight 모델(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<p>Sun Forge의 조명 패키지인 Sun Forge 2D Lighting 패키지가 이 텍스처를 읽습니다. 드리운 그림자는 그림자를 드리운 물체의 높이만큼, 그 안에 선 스프라이트를 타고 올라갑니다.</p>
+<figure>
+<img src="/features/ruins-shadows.webp" srcset="/features/ruins-shadows.768w.webp 768w, /features/ruins-shadows.960w.webp 960w, /features/ruins-shadows.1024w.webp 1024w, /features/ruins-shadows.1440w.webp 1440w, /features/ruins-shadows.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="Sun Forge가 비추는, 베이크된 스프라이트로 만든 씬. 부서진 기둥의 그림자가 돌바닥을 가로질러, 그림자 속에 선 기사 위로 드리웁니다.">
+<figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<p>조명은 직접 그린 스프라이트도 비춥니다. 스프라이트를 선택하고 마우스 오른쪽 버튼을 클릭한 다음 <a href="/guide/sunforge/ko/your-sprites/#sprite-textures" hreflang="ko"><strong>Sun Forge &gt; Set Up for Lighting</strong></a> 메뉴를 선택하세요. 직접 만든 노멀 맵이 스프라이트에 입체감을 주며, 노멀 맵이 없으면 스프라이트는 평평한 표면으로 조명을 받습니다. 발광할 색과 금속처럼 빛날 색을 고르면 Sun Forge가 발광 텍스처와 금속 텍스처를 만듭니다.</p>
+<figure>
+<img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" alt="픽셀 아트 씬 하나를 세 가지로 본 모습: 스프라이트만, 노멀 맵 적용, 노멀 맵과 금속, 발광 적용">
+</figure>
+<p>Sun Forge를 사용하려면 Unity 6.3 LTS(6000.3.29f1 이상)부터 Unity 6.6까지의 버전과 URP(2D 렌더러 또는 유니버설 렌더러)가 필요합니다. 베이커와 조명은 각각 따로 작동합니다. <a href="/ko/sprite-baker/#lighting-textures">스프라이트 베이커</a>와 <a href="/ko/2d-lighting/#drawn-sprites">조명</a> 페이지를 참조하세요.</p>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">다음 글</h2>
+<ul>
+<li><a href="/ko/learn/2d-lights-not-working/">유니티 2D 광원이 적용되지 않을 때: 확인할 사항</a></li>
+<li><a href="/ko/learn/2d-shadows-top-down/">유니티 2D와 탑다운 스프라이트의 그림자</a></li>
+<li><a href="/ko/2d-lighting/">Sun Forge 2D Lighting</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/learn/2d-sprite-normal-maps/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-sprite-normal-maps/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-sprite-normal-maps/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-sprite-normal-maps/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

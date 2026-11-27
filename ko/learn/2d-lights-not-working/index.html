@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유니티 2D 광원이 적용되지 않을 때: 확인할 사항 | Sun Forge</title>
+<meta name="description" content="유니티의 Light 2D가 회색으로 비활성화되거나, 스프라이트를 비추지 않거나, 노멀 맵을 무시하거나, 빌드에서 사라지는 이유와 각 경우를 해결하는 설정을 다룹니다.">
+<link rel="canonical" href="https://sunforgetools.com/ko/learn/2d-lights-not-working/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/ko/learn/2d-lights-not-working/">
+<meta property="og:title" content="유니티 2D 광원이 적용되지 않을 때: 확인할 사항 | Sun Forge">
+<meta property="og:description" content="유니티의 Light 2D가 회색으로 비활성화되거나, 스프라이트를 비추지 않거나, 노멀 맵을 무시하거나, 빌드에서 사라지는 이유와 각 경우를 해결하는 설정을 다룹니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/share/learn-2d-lights-not-working.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="밤에 화로 옆에 선 기사. 화로의 불이 갑옷과 방패, 금 더미를 비춥니다.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "유니티 2D 광원이 적용되지 않을 때: 확인할 사항", "description": "유니티의 Light 2D가 회색으로 비활성화되거나, 스프라이트를 비추지 않거나, 노멀 맵을 무시하거나, 빌드에서 사라지는 이유와 각 경우를 해결하는 설정을 다룹니다.", "image": "https://sunforgetools.com/assets/share/learn-2d-lights-not-working.jpg", "datePublished": "2026-11-17", "dateModified": "2026-11-20", "author": {"@type": "Organization", "@id": "https://sunforgetools.com/#organization", "name": "Sun Forge", "url": "https://sunforgetools.com/", "logo": "https://sunforgetools.com/assets/mark-180.png", "email": "support@sunforgetools.com"}, "publisher": {"@id": "https://sunforgetools.com/#organization"}, "mainEntityOfPage": "https://sunforgetools.com/ko/learn/2d-lights-not-working/", "inLanguage": "ko"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/ko/"}, {"@type": "ListItem", "position": 2, "name": "학습", "item": "https://sunforgetools.com/ko/learn/"}, {"@type": "ListItem", "position": 3, "name": "작동하지 않는 2D 광원", "item": "https://sunforgetools.com/ko/learn/2d-lights-not-working/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/learn/2d-lights-not-working/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/ja/learn/2d-lights-not-working/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/ko/learn/2d-lights-not-working/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/zh-hans/learn/2d-lights-not-working/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/learn/2d-lights-not-working/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/read.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+<div class="languages" role="group" aria-label="언어"><a href="/learn/2d-lights-not-working/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-lights-not-working/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-lights-not-working/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-lights-not-working/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></div>
+</nav>
+</header>
+
+<main class="read" id="top">
+<article>
+<header>
+<p class="eyebrow"><a href="/ko/learn/">학습</a></p>
+<h1>유니티 2D 광원이 적용되지 않을 때: 확인할 사항</h1>
+<p class="lead">Unity의 2D 광원은 유니버설 렌더 파이프라인(URP)에 속하며, URP의 2D 렌더러에서만 작동합니다. 광원을 추가해도 아무 변화가 없으면 아래 설정을 순서대로 확인하세요. 메뉴 이름은 Unity 6.3 기준입니다.</p>
+</header>
+<h2 id="unity-2d-lights-grayed-out-in-the-menu">메뉴에서 회색으로 비활성화된 Unity 2D 광원</h2>
+<p><strong>증상:</strong> <strong>GameObject &gt; Light</strong>(게임 오브젝트 &gt; 광원) 메뉴의 2D 광원을 클릭할 수 없거나, Light 2D 컴포넌트의 인스펙터에 "2D renderer data must be assigned to your universal render pipeline asset or camera."만 표시됩니다.</p>
+<p><strong>원인:</strong> 프로젝트에 URP 에셋이 없어 빌트인 렌더 파이프라인으로 실행되거나, URP 에셋의 기본 렌더러가 유니버설 렌더러입니다.</p>
+<ol>
+<li>프로젝트 창에서 <strong>Create &gt; Rendering &gt; URP Asset (with 2D Renderer)</strong>(생성 &gt; 렌더링 &gt; URP 에셋(2D 렌더러 포함)) 메뉴를 선택합니다. Unity가 URP 에셋과 2D 렌더러 에셋을 만듭니다.</li>
+<li><strong>Edit &gt; Project Settings &gt; Graphics</strong>(편집 &gt; 프로젝트 설정 &gt; 그래픽스) 창을 열고 <strong>Default Render Pipeline</strong> 필드를 새 URP 에셋으로 설정합니다.</li>
+</ol>
+<p>기존 URP 에셋을 계속 쓰려면 <strong>Create &gt; Rendering &gt; URP 2D Renderer</strong>(생성 &gt; 렌더링 &gt; URP 2D 렌더러) 메뉴로 렌더러를 만들어 에셋의 <strong>Renderer List</strong>(렌더러 목록) 필드에 추가하고, 그 렌더러의 <strong>Set Default</strong>(기본값 설정) 버튼을 클릭하세요.</p>
+<h2 id="a-quality-level-names-another-urp-asset">다른 URP 에셋을 지정한 품질 레벨</h2>
+<p><strong>증상:</strong> 그래픽스 설정은 올바른데도 광원이 여전히 비활성화되어 있거나 아무 효과가 없습니다.</p>
+<p><strong>원인:</strong> 품질 레벨마다 <strong>Render Pipeline Asset</strong>(렌더 파이프라인 에셋) 필드가 있습니다. 이 필드가 설정되어 있으면 Unity는 그 레벨에서 그래픽스 설정의 에셋 대신 이 에셋을 사용합니다.</p>
+<ol>
+<li><strong>Edit &gt; Project Settings &gt; Quality</strong>(편집 &gt; 프로젝트 설정 &gt; 품질) 창을 엽니다.</li>
+<li>각 레벨을 차례로 선택해 <strong>Render Pipeline Asset</strong> 필드를 확인합니다.</li>
+<li>필드를 비우거나, 2D 렌더러를 쓰는 URP 에셋으로 설정합니다.</li>
+</ol>
+<h2 id="unity-2d-light-not-affecting-a-sprite">스프라이트에 적용되지 않는 Unity 2D 광원</h2>
+<p><strong>증상:</strong> 광원을 어떻게 바꿔도 일부 스프라이트가 원래 밝기 그대로입니다. 프로젝트를 URP로 옮기기 전에 만든 스프라이트인 경우가 많습니다.</p>
+<p><strong>원인:</strong> 2D 광원은 2D 광원용으로 만든 머티리얼에만 영향을 줍니다. Sprite-Lit-Default 머티리얼이 그중 하나입니다. Sprites-Default 같은 빌트인 렌더 파이프라인의 머티리얼과 Sprite-Unlit-Default 머티리얼은 반응하지 않습니다.</p>
+<ol>
+<li>스프라이트를 선택합니다.</li>
+<li>그 스프라이트의 Sprite Renderer 컴포넌트에서 <strong>Material</strong>(머티리얼) 필드를 <strong>Sprite-Lit-Default</strong> 머티리얼로 설정합니다.</li>
+</ol>
+<p>프로젝트 전체를 변환하려면 먼저 백업한 뒤 <strong>Window &gt; Rendering &gt; Render Pipeline Converter</strong>(Window &gt; 렌더링 &gt; 렌더 파이프라인 컨버터) 창을 열고, <strong>2D Converters &gt; Built-in to 2D URP Material Upgrader</strong> 옵션을 고른 다음 <strong>Material and Material Reference Upgrade</strong> 체크박스를 켜고 변환을 실행하세요. 직접 셰이더를 만들려면 <strong>Create &gt; Shader Graph &gt; URP &gt; Sprite Lit Shader Graph</strong>(생성 &gt; 셰이더 그래프 &gt; URP &gt; 스프라이트 릿 셰이더 그래프) 메뉴에서 시작하세요.</p>
+<h2 id="the-light-s-target-sorting-layers-leave-the-sprite-out">광원의 Target Sorting Layers에서 빠진 스프라이트</h2>
+<p><strong>증상:</strong> 광원이 범위 안의 스프라이트 중 일부만 비추고 나머지는 비추지 않습니다.</p>
+<p><strong>원인:</strong> Light 2D 컴포넌트는 <strong>Target Sorting Layers</strong>(타겟 정렬 레이어) 필드에 있는 정렬 레이어만 비춥니다. 새 광원은 모든 정렬 레이어를 대상으로 합니다. 정렬 레이어를 추가할 때 열려 있지 않던 씬이나 프리팹의 광원에는 새 레이어가 들어 있지 않습니다.</p>
+<ol>
+<li>스프라이트를 선택하고 Sprite Renderer 컴포넌트의 <strong>Sorting Layer</strong>(정렬 레이어) 필드를 확인합니다.</li>
+<li>광원을 선택하고 그 레이어를 <strong>Target Sorting Layers</strong> 필드에 추가합니다.</li>
+</ol>
+<p>광원의 Z 위치는 상관없습니다. 2D 광원은 스프라이트가 광원 앞에 있든 뒤에 있든, 거리와 관계없이 비춥니다.</p>
+<h2 id="everything-outside-the-light-is-black">광원 밖이 모두 검은색</h2>
+<p><strong>증상:</strong> 광원을 추가하기 전에는 씬이 정상으로 보였는데, 이제 그 광원이 비추는 영역만 보입니다.</p>
+<p><strong>원인:</strong> 씬에 Light 2D 컴포넌트가 없는 동안 Unity는 스프라이트를 본래 색으로 그립니다. 첫 광원을 추가한 뒤로는 스프라이트에 닿는 빛만 보입니다. Global Light 2D 컴포넌트는 타겟 레이어의 모든 스프라이트를 고르게 비춥니다.</p>
+<ol>
+<li><strong>GameObject &gt; Light &gt; Global Light 2D</strong>(게임 오브젝트 &gt; 광원 &gt; 전역 광원 2D) 메뉴를 선택합니다.</li>
+<li>다른 광원이 닿지 않는 곳에서 씬이 보여야 할 모습에 맞춰 <strong>Color</strong>(컬러) 필드와 <strong>Intensity</strong>(강도) 필드를 설정합니다.</li>
+</ol>
+<p>Unity에서는 블렌드 스타일과 정렬 레이어의 조합마다 전역 광원을 하나만 둘 수 있습니다. 두 개가 있으면 콘솔에 "More than one global light on layer" 메시지가 표시됩니다. 하나를 삭제하거나, 각 광원에 서로 다른 <strong>Target Sorting Layers</strong>(타겟 정렬 레이어) 값을 지정하세요.</p>
+<h2 id="unity-light-2d-not-showing-blend-style-and-intensity">Unity Light 2D가 보이지 않을 때: 블렌드 스타일과 강도</h2>
+<p><strong>증상:</strong> 위의 설정이 모두 올바른데도 광원이 여전히 아무 효과를 내지 않습니다.</p>
+<p><strong>원인:</strong> 겹친 광원의 값은 합산됩니다. Multiply 블렌드 스타일에서는 합계가 1이면 스프라이트가 본래 색으로 보이고, 1을 넘으면 본래 색보다 밝아집니다. 강도 1의 흰색 전역 광원이 있으면 다른 광원이 더할 밝기가 거의 남지 않습니다.</p>
+<ol>
+<li>전역 광원의 <strong>Intensity</strong>(강도) 필드를 0.3 정도로 낮춥니다.</li>
+<li>다른 광원의 <strong>Blend Style</strong>(블렌드 스타일) 필드를 확인합니다. <strong>Multiply with Mask (R)</strong> 옵션과 <strong>Additive with Mask (R)</strong> 옵션은 스프라이트의 마스크 맵에서 빨간색 채널이 0보다 큰 부분만 비춥니다.</li>
+</ol>
+<h2 id="unity-2d-normal-map-not-working">적용되지 않는 Unity 2D 노멀 맵</h2>
+<p><strong>증상:</strong> 스프라이트는 빛을 받는데 노멀 맵을 적용해도 달라지는 것이 없습니다. 다음 항목을 순서대로 확인하고, 전체 단계는 <a href="/ko/learn/2d-sprite-normal-maps/">Unity의 스프라이트 노멀 맵</a>을 참조하세요:</p>
+<ol>
+<li><strong>광원.</strong> <strong>Normal Maps</strong>(노멀 맵) 섹션에서 <strong>Quality</strong>(품질) 필드를 <strong>Fast</strong>(빠름) 옵션이나 <strong>Accurate</strong> 옵션으로 설정합니다. 새 광원은 <strong>Disabled</strong>(사용 안 함) 옵션으로 되어 있습니다. Global Light 2D 컴포넌트에는 이 설정이 없으므로 Spot, Freeform, Sprite 중 하나를 추가합니다.</li>
+<li><strong>이름.</strong> 스프라이트의 텍스처를 선택하고 <strong>Open Sprite Editor</strong>(스프라이트 에디터 열기) 버튼을 클릭한 다음, <strong>Secondary Textures</strong>(보조 텍스처) 옵션으로 전환해 노멀 맵이 <strong>_NormalMap</strong> 이름으로 등록되어 있는지 확인합니다.</li>
+<li><strong>임포트.</strong> 노멀 맵을 선택하고 <strong>Texture Type</strong>(텍스처 타입) 필드를 <strong>Normal map</strong>(노멀 맵) 옵션으로 설정합니다.</li>
+<li><strong>레이아웃.</strong> Unity는 스프라이트 텍스처의 UV 좌표로 노멀 맵을 읽으므로, 각 프레임은 두 텍스처에서 같은 위치에 있어야 합니다.</li>
+<li><strong>머티리얼.</strong> Sprite-Lit-Default 머티리얼은 노멀 맵을 읽습니다. 직접 만든 셰이더 그래프에서는 노멀 맵을 <strong>Normal (Tangent Space)</strong> 블록에 연결합니다.</li>
+<li><strong>거리.</strong> <strong>Normal Maps</strong> 섹션의 <strong>Distance</strong>(거리) 필드 값을 낮춥니다. 그러면 광원이 더 가까이 있는 것처럼 작용해, 더 낮고 비스듬한 각도에서 디테일을 비춥니다.</li>
+<li><strong>아틀라스.</strong> 스프라이트 아틀라스를 선택하고 미리보기 오른쪽 위의 드롭다운에서 패킹된 보조 텍스처를 표시합니다. 함께 패킹되는 스프라이트는 보조 텍스처 수가 같아야 합니다.</li>
+</ol>
+<figure>
+<img src="/features/own-sprites.webp" srcset="/features/own-sprites.768w.webp 768w, /features/own-sprites.960w.webp 960w, /features/own-sprites.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1005" style="--w: 1920; --h: 1005" alt="모닥불 옆 픽셀 아트를 세 가지로 본 모습: 스프라이트만, 노멀 맵 적용, 노멀 맵과 금속과 발광 적용. Sun Forge 2D Lighting 패키지가 비춥니다.">
+</figure>
+<h2 id="lights-show-in-the-game-view-but-not-in-the-scene-view">게임 뷰에서는 보이지만 씬 뷰에서는 보이지 않는 광원</h2>
+<p>씬 뷰에는 자체 조명 스위치인 툴바의 전구 버튼이 있습니다. 이 버튼이 꺼져 있으면 씬 뷰는 2D 광원 없이 스프라이트를 그립니다. 버튼을 켜세요. 게임 뷰와 빌드는 이 스위치를 쓰지 않습니다.</p>
+<h2 id="unity-light-2d-not-showing-in-a-build">빌드에서 보이지 않는 Unity Light 2D</h2>
+<p><strong>증상:</strong> 광원이 에디터에서는 작동하지만 플레이어에서는 작동하지 않습니다.</p>
+<p><strong>원인:</strong> 에디터는 <strong>Project Settings &gt; Quality</strong>(프로젝트 설정 &gt; 품질) 창에서 강조 표시된 품질 레벨을 사용합니다. 빌드는 해당 플랫폼의 기본 레벨, 즉 그 플랫폼 열에 초록색 체크박스가 표시된 레벨로 시작하며, 이 레벨이 다른 URP 에셋을 지정할 수도 있습니다. 또한 빌드에는 그래픽스 설정의 URP 에셋과, 해당 플랫폼에서 활성화된 레벨의 URP 에셋만 포함됩니다. 이 중 어디에도 2D 렌더러가 없으면 Unity는 빌드의 셰이더에서 2D 조명 패스를 제거합니다.</p>
+<ol>
+<li><strong>Project Settings &gt; Quality</strong> 창에서 대상 플랫폼의 체크박스가 켜진 모든 레벨의 <strong>Render Pipeline Asset</strong>(렌더 파이프라인 에셋) 필드를 확인합니다.</li>
+<li>빌드 프로파일을 사용한다면 프로파일도 확인합니다. 프로파일은 해당 플랫폼의 그래픽스 설정을 오버라이드할 수 있습니다.</li>
+<li><strong>Project Settings &gt; Player &gt; Other Settings</strong>(프로젝트 설정 &gt; Player &gt; 기타 설정) 섹션에서 <strong>Strict shader variant matching</strong>(엄격한 셰이더 배리언트 매칭) 체크박스를 켜고 다시 빌드합니다. 그러면 Unity가 누락된 셰이더 배리언트를 에러 셰이더로 표시하고, 로그에 그 이름을 남깁니다.</li>
+</ol>
+<h2 id="2d-lighting-under-the-universal-renderer">유니버설 렌더러에서 쓰는 2D 조명</h2>
+<p><a href="/ko/2d-lighting/">Sun Forge 2D Lighting</a> 패키지는 2D 렌더러와 유니버설 렌더러에서 모두 작동하는 별도의 조명 패키지입니다. 메뉴 항목 하나와 <strong>Fix All</strong> 버튼으로 씬의 조명을 설정할 수 있으며, <a href="/guide/sunforge/ko/lights/#light-source" hreflang="ko">Unity의 Light 2D 컴포넌트로 Sun Forge의 Light Source 컴포넌트를 제어할 수도 있습니다</a>.</p>
+<figure>
+<img src="/features/ruins-lights-night.webp" srcset="/features/ruins-lights-night.768w.webp 768w, /features/ruins-lights-night.960w.webp 960w, /features/ruins-lights-night.1024w.webp 1024w, /features/ruins-lights-night.1440w.webp 1440w, /features/ruins-lights-night.webp 1920w" sizes="(max-width: 899px) calc(2 * clamp(20px, 3.4vw, 56px) + min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)), min(100vw - 2 * clamp(20px, 3.4vw, 56px), 1040px)" loading="lazy" width="1920" height="1280" style="--w: 1920; --h: 1280" alt="Sun Forge 2D Lighting 패키지로 비춘 씬 속, 밤에 화로 옆에 선 기사. 화로의 불이 갑옷과 방패, 금 더미를 비춥니다.">
+<figcaption>dark_igorek의 The Forgotten Knight, LasquetiSpice의 스켈레톤(CC BY 4.0)을 수정해 사용했습니다.</figcaption>
+</figure>
+<nav class="onward" aria-labelledby="onward-title">
+<h2 id="onward-title">다음 글</h2>
+<ul>
+<li><a href="/ko/learn/2d-sprite-normal-maps/">유니티 노멀 맵으로 2D 스프라이트에 입체감 주기</a></li>
+<li><a href="/ko/learn/2d-day-night-cycle/">유니티 2D 낮과 밤 사이클, 구름 그림자 구현</a></li>
+<li><a href="/ko/2d-lighting/">Sun Forge 2D Lighting</a></li>
+</ul>
+</nav>
+</article>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a><span class="languages" role="group" aria-label="언어"><a href="/learn/2d-lights-not-working/" lang="en" hreflang="en" translate="no">English</a><a href="/ja/learn/2d-lights-not-working/" lang="ja" hreflang="ja" translate="no">日本語</a><a href="/ko/learn/2d-lights-not-working/" lang="ko" hreflang="ko" translate="no" aria-current=true>한국어</a><a href="/zh-hans/learn/2d-lights-not-working/" lang="zh-Hans" hreflang="zh-Hans" translate="no">简体中文</a></span>
+</nav>
+</footer>
+</main>
+
+</body>
+</html>

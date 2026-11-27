@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>重新烘焙会保留什么、替换什么 | Sun Forge 指南</title>
+<meta name="description" content="重新烘焙会保留什么、替换什么，以及引用如何保持有效。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/rebaking/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/rebaking/">
+<meta property="og:title" content="重新烘焙会保留什么、替换什么 | Sun Forge 指南">
+<meta property="og:description" content="重新烘焙会保留什么、替换什么，以及引用如何保持有效。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "重新烘焙", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/rebaking/"}]}
+</script>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/1.0/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/1.0/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/1.0/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/1.0/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/1.0/zh-hans/rebaking/" hreflang="zh-Hans" aria-current=page>重新烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/1.0/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/1.0/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/1.0/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/1.0/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/1.0/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/1.0/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/1.0/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/1.0/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/1.0/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/1.0/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/1.0/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/1.0/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/1.0/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/1.0/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/1.0/zh-hans/lighting-from-code/" hreflang="zh-Hans">从代码设置光照</a></li><li><a href="/guide/sunforge/1.0/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/1.0/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/1.0/en/rebaking/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/1.0/ja/rebaking/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/1.0/ko/rebaking/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/1.0/zh-hans/rebaking/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-rebaking"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="rebaking">重新<wbr>烘焙</h1><p class="lead">重新烘焙会保留什么、替换什么，以及引用如何保持有效。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#what-a-rebake-keeps">重新烘焙保留的内容</a></li><li><a href="#what-a-rebake-writes-over">重新烘焙覆盖的内容</a></li><li><a href="#moving-or-deleting-the-output-folder">移动或删除输出文件夹</a></li><li><a href="#turning-leaves-the-ground-on-or-off">启用或禁用 Leaves The Ground</a></li></ul></details></nav><article class="doc"><p>每个文件在重新烘焙后都保留其 GUID，因此引用预制件或其烘焙数据的场景和脚本仍可正常工作。</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>引用对象</th>
+<th>在以下情况下仍然有效</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>精灵或动画剪辑</td>
+<td>其所属动画条目的输出名称和方向数量不变，且所在的方向保持启用</td>
+</tr>
+<tr>
+<td>Animator 状态</td>
+<td>其所属动画条目的输出名称不变</td>
+</tr>
+<tr>
+<td>静止姿势精灵</td>
+<td>没有 <strong>Mode</strong>（模式）为 <strong>Idle</strong>（待机）的动画条目，静止姿势的方向数量不变，且精灵所在的方向保持启用</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="what-a-rebake-keeps">重新<wbr>烘焙<wbr>保留<wbr>的<wbr>内容</h2>
+<ul>
+<li>在预制件上添加的子对象或组件、在预制件上修改的值、在纹理或图集上修改的导入设置，以及平台覆盖，但“重新烘焙覆盖的内容”中列出的值除外。要让预制件上的某个值重新跟随烘焙，请在预制件的 Inspector 窗口中右键单击该值所在的行，然后选择 <strong>Use the bake's value</strong>（使用烘焙的值）。</li>
+<li>烘焙添加的子对象（例如 <code>Shadow</code>、<code>Glow</code> 或 <code>Body</code>），连同重命名后的名称，以及移动后在预制件中的位置。烘焙会继续在该位置更新这个子对象。烘焙不再需要的子对象只要包含自行添加的内容，就会保留。</li>
+<li>输出文件夹中修改过的文件，以及添加到该文件夹中的其他任何内容。要重新采用烘焙生成的文件，请删除修改过的文件，然后烘焙。</li>
+<li>对 Animator 的编辑，前提是把自己的控制器，或基于生成的控制器创建的动画器覆盖控制器，放到了预制件的 Animator 上。</li>
+</ul>
+<h2 id="what-a-rebake-writes-over">重新<wbr>烘焙<wbr>覆盖<wbr>的<wbr>内容</h2>
+<ul>
+<li>同一输出之前的烘焙写入的文件，仅限这些文件仍保持那次烘焙后的原样。重新烘焙会删除不再生成的文件。</li>
+<li>着色器和 Sprite 打包器读取的内容，例如 <strong>Texture Type</strong>（纹理类型）、<strong>sRGB (Color Texture)</strong>（sRGB（颜色纹理））、每个精灵的矩形和轴心，以及图集的 <strong>Padding</strong>（填充）、<strong>Allow Rotation</strong>（允许旋转）和 <strong>Tight Packing</strong>（紧密包装）。</li>
+<li>预制件的精灵，以及其主体、阴影和发光之间的关联，但在其 Glow 光源上修改过的 <strong>Glow Renderers</strong>（发光渲染器）列表除外。</li>
+<li><strong>Filter Mode</strong>（过滤模式）、<strong>Compression</strong>（压缩）、<strong>Generate Mip Maps</strong>（生成 Mip 贴图），以及用于图集的 <strong>Atlas Max Size</strong>（图集最大尺寸）。请在类型模板的 <strong>OUTPUT</strong>（输出）部分（Advanced（高级）视图）设置这些选项。附加纹理始终采用其精灵表的 Max Size（最大尺寸）。</li>
+<li>烘焙生成的控制器。将 <strong>Animation Player</strong>（动画播放器，Advanced 视图）切换为 <strong>Flipbook Player</strong>（帧动画播放器），或在 <strong>Auto</strong>（自动）下移除最后一个动画条目，会删除这些控制器（修改过的除外）。切换回来会重新生成控制器，对控制器的引用也会恢复有效，除非输出文件夹在首次烘焙后经过重命名或移动。</li>
+</ul>
+<h2 id="moving-or-deleting-the-output-folder">移动<wbr>或<wbr>删除<wbr>输出文件<wbr>夹</h2>
+<ul>
+<li>烘焙过已保存的预设后，更改其类型模板、该类型模板的 <strong>Output Root</strong>（输出根目录），或在该 <strong>Output Root</strong> 为空时更改 Sun Forge 文件夹，下一次烘焙会移动输出文件夹，因此场景仍保留该预制件。如果要另外烘焙一份副本，请先使用 <strong>Save As…</strong>（另存为…）。如果尚未烘焙过已保存的预设，做同样的更改后，烘焙会新建文件夹并保留旧文件夹。</li>
+<li>如果使用另一个 <strong>Output Name</strong>（输出名称），或自己移动过输出文件夹，烘焙会新建文件夹并保留旧文件夹。烘焙过已保存的预设后，Bake（烘焙）选项卡会在烘焙前说明烘焙是移动文件夹还是新建文件夹。</li>
+<li>如果删除输出文件夹后再次烘焙，新文件会接替旧文件：场景会保留放置的每个预制件，以及在场景中对其所做的更改。只要烘焙到该文件夹，无论烘焙的是什么都是如此，因此在那里烘焙的另一个模型会出现在旧模型放置过的每个位置。这仅适用于在本项目中首次在该位置烘焙的文件夹，不适用于重命名或移动到该位置的文件夹。</li>
+<li>如果输出文件夹中已有与烘焙的某个文件同名的文件（例如旧版本的输出），烘焙会停止。单击 Bake 选项卡上的 <strong>Replace them</strong>（替换这些文件），烘焙会在原位置覆盖这些文件。</li>
+<li>如果 Unity 在烘焙过程中关闭，输出根目录中可能会留下名称以 <code>__SFS_</code> 开头的文件夹。请勿使用其中的资产。下一次烘焙到该根目录时会删除该文件夹。</li>
+</ul>
+<h2 id="turning-leaves-the-ground-on-or-off">启用<wbr>或<wbr>禁用 Leaves The Ground</h2>
+<p>启用或禁用 <strong>Leaves The Ground</strong>（可离地，Archetypes（类型模板）选项卡 PHYSICS（物理）部分，Advanced（高级）视图）时，绘制主体并播放其动画的组件会连同在其上设置的值，移到 <code>Body</code> 子对象上，或从该子对象移回。Console 窗口会列出需要重新设置的内容。自行添加的其他子对象保持原位：请把需要随主体移动的子对象移到 <code>Body</code> 子对象下。</p>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/1.0/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/1.0/zh-hans/search.js"></script>
+</body>
+</html>

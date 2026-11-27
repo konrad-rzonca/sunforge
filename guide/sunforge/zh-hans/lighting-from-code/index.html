@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>从编辑器脚本设置 2D 光照 | Sun Forge 指南</title>
+<meta name="description" content="从编辑器脚本为场景打光，并设置场景中的精灵。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/zh-hans/lighting-from-code/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/zh-hans/lighting-from-code/">
+<meta property="og:title" content="从编辑器脚本设置 2D 光照 | Sun Forge 指南">
+<meta property="og:description" content="从编辑器脚本为场景打光，并设置场景中的精灵。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 指南", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/"}, {"@type": "ListItem", "position": 3, "name": "从代码设置光照", "item": "https://sunforgetools.com/guide/sunforge/zh-hans/lighting-from-code/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/lighting-from-code/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/lighting-from-code/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/lighting-from-code/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/lighting-from-code/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="网站">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">功能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/zh-hans/#features">全部功能</a>
+<a href="/zh-hans/sprite-baker/">精灵烘焙</a>
+<a href="/zh-hans/2d-lighting/">2D 光照</a>
+</div>
+</div>
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<button type="button" class="support" popovertarget="support-address">技术支持</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>搜索</span><input type="search" placeholder="搜索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="没有匹配的结果。" hidden></div></div><details open><summary>目录</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目录"><p class="label">入门</p><ul><li><a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">概述</a></li><li><a href="/guide/sunforge/zh-hans/requirements/" hreflang="zh-Hans">系统要求</a></li><li><a href="/guide/sunforge/zh-hans/showcase/" hreflang="zh-Hans">Showcase</a></li><li><a href="/guide/sunforge/zh-hans/troubleshooting/" hreflang="zh-Hans">故障排除</a></li></ul><p class="label">烘焙</p><ul><li><a href="/guide/sunforge/zh-hans/first-bake/" hreflang="zh-Hans">首次烘焙</a></li><li><a href="/guide/sunforge/zh-hans/bake-window/" hreflang="zh-Hans">烘焙窗口</a></li><li><a href="/guide/sunforge/zh-hans/bake-output/" hreflang="zh-Hans">烘焙输出</a></li><li><a href="/guide/sunforge/zh-hans/rebaking/" hreflang="zh-Hans">重新烘焙</a></li><li><a href="/guide/sunforge/zh-hans/adjust-a-prefab/" hreflang="zh-Hans">调整预制件</a></li><li><a href="/guide/sunforge/zh-hans/model-materials/" hreflang="zh-Hans">模型材质</a></li><li><a href="/guide/sunforge/zh-hans/baked-textures/" hreflang="zh-Hans">烘焙纹理</a></li><li><a href="/guide/sunforge/zh-hans/characters-in-props/" hreflang="zh-Hans">道具中的角色</a></li></ul><p class="label">光照</p><ul><li><a href="/guide/sunforge/zh-hans/set-up-lighting/" hreflang="zh-Hans">设置场景</a></li><li><a href="/guide/sunforge/zh-hans/lights/" hreflang="zh-Hans">光源</a></li><li><a href="/guide/sunforge/zh-hans/styles/" hreflang="zh-Hans">风格</a></li><li><a href="/guide/sunforge/zh-hans/tune-a-style/" hreflang="zh-Hans">调整风格</a></li><li><a href="/guide/sunforge/zh-hans/time-of-day/" hreflang="zh-Hans">一天中的时间</a></li><li><a href="/guide/sunforge/zh-hans/shadows/" hreflang="zh-Hans">阴影</a></li><li><a href="/guide/sunforge/zh-hans/your-sprites/" hreflang="zh-Hans">手绘的精灵</a></li><li><a href="/guide/sunforge/zh-hans/baked-sprites/" hreflang="zh-Hans">场景中的烘焙精灵</a></li><li><a href="/guide/sunforge/zh-hans/performance/" hreflang="zh-Hans">性能</a></li></ul><p class="label">按游戏类型</p><ul><li><a href="/guide/sunforge/zh-hans/pixel-art/" hreflang="zh-Hans">像素画</a></li><li><a href="/guide/sunforge/zh-hans/isometric/" hreflang="zh-Hans">等距</a></li><li><a href="/guide/sunforge/zh-hans/side-view/" hreflang="zh-Hans">侧视</a></li></ul><p class="label">参考</p><ul><li><a href="/guide/sunforge/zh-hans/menus/" hreflang="zh-Hans">菜单</a></li><li><a href="/guide/sunforge/zh-hans/scene-view/" hreflang="zh-Hans">“场景”视图</a></li><li><a href="/guide/sunforge/zh-hans/components/" hreflang="zh-Hans">组件</a></li><li><a href="/guide/sunforge/zh-hans/changelog/" hreflang="zh-Hans">变更日志</a></li></ul><p class="label">脚本编程与着色器</p><ul><li><a href="/guide/sunforge/zh-hans/scripting/" hreflang="zh-Hans">脚本编程</a></li><li><a href="/guide/sunforge/zh-hans/behaviors/" hreflang="zh-Hans">行为</a></li><li><a href="/guide/sunforge/zh-hans/platformers-and-physics/" hreflang="zh-Hans">平台跳跃游戏与物理</a></li><li><a href="/guide/sunforge/zh-hans/extending-a-bake/" hreflang="zh-Hans">扩展烘焙</a></li><li><a href="/guide/sunforge/zh-hans/baking-from-code/" hreflang="zh-Hans">从代码烘焙</a></li><li><a href="/guide/sunforge/zh-hans/lighting-from-code/" hreflang="zh-Hans" aria-current=page>从代码设置光照</a></li><li><a href="/guide/sunforge/zh-hans/custom-shaders/" hreflang="zh-Hans">自定义着色器</a></li><li><a href="/guide/sunforge/zh-hans/geometry-texture-format/" hreflang="zh-Hans">几何信息纹理格式</a></li></ul></nav><nav class="choice" aria-label="语言"><a href="/guide/sunforge/en/lighting-from-code/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/lighting-from-code/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/lighting-from-code/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/lighting-from-code/" lang="zh-Hans" hreflang="zh-Hans" aria-current=true>简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-lighting-from-code"><p class="notice" hidden data-other="本指南适用于 1.0 版本。{asked} 版本没有指南。" data-missing="此版本在该地址下没有条目。"></p><div class="reading"><div class="head"><h1 id="setting-up-from-a-script">从<wbr>代码设置光<wbr>照</h1><p class="lead">从编辑器脚本为场景打光，并设置场景中的精灵。</p></div><nav class="onpage" aria-label="本页内容"><details open><summary>本页内容</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><ul><li><a href="#preview-a-setup">预览设置</a></li><li><a href="#give-sprites-a-role">为精灵指定用途</a></li><li><a href="#press-a-performance-button">按下 Performance 按钮</a></li><li><a href="#save-and-tune-a-style">保存并调整风格</a></li></ul></details></nav><article class="doc"><p>编辑器脚本可以用某个风格为场景设置光照，像 <strong>Set Up for Lighting</strong>（设置光照）那样设置精灵，并完成 <strong>Fix All</strong>（全部修复）所做的操作：</p>
+<pre><code class="language-csharp">using System.Collections.Generic;
+using KonradRzonca.SunForge;
+using KonradRzonca.SunForge.Editor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+SunForgeSceneLighting.SetUp(SunForgeShippedLightingStyle.Regular);
+
+Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.SetUpSprites(art))
+    Debug.Log(line);
+
+SunForgeSceneLighting.FixAll();
+
+// On the Universal Renderer, the sort that Fix All skips. A Custom Axis is a choice of yours, so keep it.
+if (GraphicsSettings.transparencySortMode != TransparencySortMode.CustomAxis)
+{
+    GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+    GraphicsSettings.transparencySortAxis = new Vector3(0f, 1f, 0f);
+}
+
+IReadOnlyList&lt;string&gt; left = SunForgeSceneLighting.Check();
+foreach (string message in left)
+    Debug.LogWarning(message);
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li><code>SetUp(SunForgeShippedLightingStyle.Regular, SunForgeLightingStyleVariant.Indoor)</code> 会用 Regular 的“室内”变体设置场景。</li>
+<li>对于从侧面绘制的美术（例如平台跳跃游戏的美术），在设置精灵之前，将 <code>SetUp</code> 返回的 Lighting Setup 的 <code>ViewElevationDegrees</code> 设为 0。</li>
+<li><code>SetUpSprites</code> 执行与在 <strong>Set Up for Lighting</strong> 中单击 <strong>Apply</strong>（应用）相同的操作，并返回可供显示或写入日志的各行：会更改和保存什么、每个精灵设置成什么、哪些精灵不作改动，以及移动哪些轴心。传入文件夹时包括其下的每个精灵纹理和预制件，传入游戏对象时包括其下的每个精灵，传入精灵时包括显示该精灵的每个渲染器。该方法会立即保存轴心有移动的精灵、预制件、未打开的场景，以及已放置的美术因轴心移动而得到校正的每个已打开场景，这些保存无法撤消。该方法不添加 Lighting Setup，也不设置 <strong>Art View</strong>（美术绘制视角），因此请在调用 <code>SetUp</code> 并设置视角之后再调用该方法：视角决定每个精灵的设置方式，侧视画面不会移动任何轴心。</li>
+<li><code>FixAll</code> 应用 <strong>Fix All</strong> 所应用的每项修复，并且不打开任何窗口。会打开 <strong>Set Up for Lighting</strong> 的修复则不做：请用 <code>SetUpSprites</code> 设置这些精灵。该方法返回剩下的问题：只能由您自己修复的问题、Fix All 因会更改您所做的选择而跳过的每项修复，以及每条需用 <code>SetUpSprites</code> 修复的问题。请在场景中有了精灵后调用该方法，添加更多精灵后再调用一次，以添加这些精灵所需的内容，例如为投射阴影的精灵添加 Cast Shadow Field。<code>Check</code> 返回剩下的问题，不做任何更改。</li>
+<li>已加载的摄像机会保持自己的排序方式，直到其所在场景重新加载；Scene 视图会保持其排序方式，直到重新打开。要立即对它们应用该排序，还需在每个已加载的摄像机以及 <code>SceneView.GetAllSceneCameras()</code> 返回的每个摄像机上设置 <code>transparencySortMode</code> 和 <code>transparencySortAxis</code>。</li>
+<li>其他更改存在于内存中的已打开场景和项目资产里。请像最后两行那样，在脚本结束前保存场景和资产。</li>
+</ul>
+<h2 id="preview-a-setup">预览<wbr>设置</h2>
+<p>要在保存任何内容之前查看这次设置会更改哪些内容，请用与应用时相同的参数预览。<code>PreviewSpriteSetup</code> 返回 <code>SetUpSprites</code> 所返回的各行，不做任何更改：</p>
+<pre><code class="language-csharp">Object[] art = { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) };
+foreach (string line in SunForgeSceneLighting.PreviewSpriteSetup(art))
+    Debug.Log(line);
+
+if (EditorUtility.DisplayDialog(&quot;Set Up for Lighting&quot;, &quot;Set up the sprites the Console lists?&quot;, &quot;Set Up&quot;, &quot;Cancel&quot;))
+{
+    SunForgeSceneLighting.SetUpSprites(art);
+    EditorSceneManager.SaveOpenScenes();
+}
+</code></pre>
+<ul>
+<li>要像 <strong>Keep these pivots</strong>（保留这些轴心）那样让轴心保持原位，在两次调用中都传入 <code>keepPivots: true</code>。之后的运行会保留这一选择。</li>
+</ul>
+<h2 id="give-sprites-a-role">为<wbr>精灵<wbr>指定<wbr>用<wbr>途</h2>
+<p>要像每个精灵旁边的下拉菜单那样为精灵指定用途，请传入用途。先设置地板，其他精灵就会以地板为准来设置：</p>
+<pre><code class="language-csharp">var floor = AssetDatabase.LoadAssetAtPath&lt;Sprite&gt;(&quot;Assets/Art/Floor.png&quot;);
+SunForgeSceneLighting.SetUpSprites(new Object[] { floor }, SunForgeSpriteRole.Ground);
+SunForgeSceneLighting.SetUpSprites(new Object[] { AssetDatabase.LoadAssetAtPath&lt;DefaultAsset&gt;(&quot;Assets/Art&quot;) });
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<ul>
+<li>用途会应用到传入的每个 Sprite Renderer、传入的每个游戏对象上的 Sprite Renderer，以及显示传入的精灵或精灵纹理的每个渲染器；传入文件夹时，则应用到其下的每个精灵纹理，以及其下每个预制件根上的 Sprite Renderer。已放置的预制件实例在其预制件中获得该用途。窗口会就某个精灵提问时（例如可能是地面的精灵），该调用会按窗口最初为其显示的用途设置该精灵，并由返回的各行提出问题。要在保存任何内容之前作答，请先预览，再按所选用途设置该精灵，就像上面的代码对地板所做的那样。</li>
+<li>在以下情况下，该调用会抛出 <code>InvalidOperationException</code>，且不做任何更改：窗口会要求保存某个在预制件模式中打开的预制件，或保存没有文件的场景；Set Up for Lighting（设置光照）无法运行（例如在播放模式下）；版本控制或只读文件阻止其运行。设置开始后，如果有文件未能保存或 Unity 抛出异常，该调用会抛出 <code>IOException</code>，其消息会说明哪些内容未设置。</li>
+</ul>
+<h2 id="press-a-performance-button">按下 Performance 按钮</h2>
+<p>脚本可以用 <code>ApplyPerformance</code> 按下 <strong>Performance</strong>（性能）按钮，该方法返回其更改的每项设置：</p>
+<pre><code class="language-csharp">var lit = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeSceneLighting.ApplyPerformance(lit, SunForgeLightingPerformanceButton.Balanced);
+EditorSceneManager.SaveOpenScenes();
+</code></pre>
+<h2 id="save-and-tune-a-style">保存<wbr>并调整风格</h2>
+<p>脚本可以保存自己的风格，并像 <strong>Look</strong>（外观）那样调整该风格（参见 <a href="/guide/sunforge/zh-hans/tune-a-style/#tuning-a-style" hreflang="zh-Hans">调整风格</a>）。以下脚本保存场景的外观，并启用 <strong>Pixel Outline</strong>：</p>
+<pre><code class="language-csharp">var setup = Object.FindAnyObjectByType&lt;SunForgeLightingSetup&gt;();
+SunForgeLightingStyle style = SunForgeSceneLighting.SaveAsNewStyle(setup, &quot;Assets/Lighting/My Style.asset&quot;);
+IReadOnlyList&lt;Material&gt; materials = SunForgeLightingStyleEditing.EnsureOwnMaterials(style);
+
+SunForgeLightingStyleSetting row = SunForgeLightingStyleSettings.Find(&quot;_SFPixelOutline&quot;);
+foreach (Material material in materials)
+{
+    if (!material.HasProperty(row.Name))
+        continue;
+
+    Undo.RecordObject(material, &quot;Set Pixel Outline&quot;);
+    material.SetFloat(row.Name, 1f);
+    if (row.Keyword != null)
+        material.EnableKeyword(row.Keyword);
+}
+
+EditorSceneManager.SaveOpenScenes();
+AssetDatabase.SaveAssets();
+</code></pre>
+<ul>
+<li>路径上已有文件时，<code>SaveAsNewStyle</code> 会抛出异常，除非传入 <code>overwrite: true</code> 且该文件是光照风格。要调整以前保存的风格，请改用 <code>AssetDatabase.LoadAssetAtPath&lt;SunForgeLightingStyle&gt;</code> 加载该风格。</li>
+<li>对于后处理，<code>EnsureOwnProfile</code> 会为风格提供其配置文件的独立副本，并返回该副本。</li>
+<li><code>SunForgeLightingStyleSettings.MaterialProperties</code> 列出每一行，包括其属性的 <code>Name</code>、<code>Tooltip</code> 和 <code>Group</code>。行在 <strong>Look</strong> 中的标签是该属性在材质着色器中的描述：<code>shader.GetPropertyDescription(shader.FindPropertyIndex(row.Name))</code>。</li>
+<li>滑块的上下限取自着色器，即 <code>shader.GetPropertyRangeLimits</code>。<code>SetFloat</code> 不会把值限制在该范围内。</li>
+<li>带有 <code>Keyword</code> 的行需要两步：设置属性，并用 <code>EnableKeyword</code> 启用关键字或用 <code>DisableKeyword</code> 禁用关键字。带有 <code>Switch</code> 的行只在该名称所指的行启用时显示，就像 <strong>Pixel Outline Color</strong> 只在 <strong>Pixel Outline</strong> 启用时显示一样。</li>
+<li>每次更改前调用 <code>Undo.RecordObject</code>，场景就会立即绘制更改。不调用时，请在 Lighting Setup 上调用 <code>Publish</code>。</li>
+<li><code>BakedArt</code> 行不在 <strong>Look</strong> 中：请在对应的材质上设置。<code>Orientation</code> 行请保持不变。</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/zh-hans/#top" aria-label="Sun Forge 首页"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="页脚">
+<a href="/guide/sunforge/zh-hans/" hreflang="zh-Hans">指南</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/zh-hans/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베이크된 스프라이트로 만드는 아이소메트릭 씬과 Tilemap | Sun Forge 가이드</title>
+<meta name="description" content="베이크된 블록으로 계단식 2:1 아이소메트릭 씬을 만들고, Tilemap 위의 지면 타일에 조명을 적용합니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/isometric/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/isometric/">
+<meta property="og:title" content="베이크된 스프라이트로 만드는 아이소메트릭 씬과 Tilemap | Sun Forge 가이드">
+<meta property="og:description" content="베이크된 블록으로 계단식 2:1 아이소메트릭 씬을 만들고, Tilemap 위의 지면 타일에 조명을 적용합니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "아이소메트릭", "item": "https://sunforgetools.com/guide/sunforge/ko/isometric/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/isometric/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/isometric/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/isometric/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/isometric/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/isometric/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko">픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko" aria-current=page>아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/isometric/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/isometric/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/isometric/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/isometric/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-isometric"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="isometric-scenes">아이소메트릭</h1><p class="lead">베이크된 블록으로 계단식 2:1 아이소메트릭 씬을 만들고, Tilemap 위의 지면 타일에 조명을 적용합니다.</p></div><article class="doc"><p>베이크된 블록으로 계단식 2:1 아이소메트릭 씬을 만들려면 다음과 같이 합니다.</p>
+<ol>
+<li>각 아키타입의 <strong>Elevation Angle</strong>(고도각) 필드(<strong>CAMERA</strong>(카메라) 섹션)를 30으로 유지하고, 모든 아키타입의 <strong>Pixels Per Unit</strong>(단위당 픽셀) 필드를 같은 값으로 설정합니다. 30에서는 정사각형 지면이 2:1 마름모로 그려집니다.</li>
+<li><strong>Grid</strong> 컴포넌트를 추가하고 <strong>Cell Layout</strong>(셀 레이아웃) 필드를 <strong>Isometric</strong>(아이소메트릭) 옵션으로, <strong>Cell Size</strong>(셀 크기) 필드를 마름모의 너비, 그 너비의 절반, 1로 설정합니다.</li>
+<li>각 지형 블록은 모서리 하나가 카메라를 향하도록 모델링합니다. 블록은 <strong>Directions</strong>(방향) 필드를 1로 설정하고 <strong>SHADOW</strong>(그림자) 섹션을 끈 프롭으로 베이크하고, 블록의 <strong>Cast Shadow Caster</strong> 컴포넌트를 끈 다음 <code>Grid.GetCellCenterWorld</code> 메서드가 반환하는 위치에 배치합니다.</li>
+<li>높은 블록 위에 프리팹을 세우려면 프리팹의 각 <strong>Baked Renderer Binding</strong> 컴포넌트에서 <strong>Height Above Ground</strong>(지면 위 높이) 필드를 블록의 높이로 설정한 다음 <code>SunForgeBakedShadowSync.PlaceAtHeight</code> 메서드를 호출합니다. 이 메서드는 프리팹과 그 그림자를 위로 옮깁니다. 파티클 베이크처럼 <strong>Baked Shadow Sync</strong> 컴포넌트가 없는 프리팹과 <strong>Leaves The Ground</strong>(지면 이탈) 토글을 켜고 베이크한 프리팹은 대신 직접 위로 옮깁니다. 블록의 높이에 <strong>Elevation Angle</strong> 값의 코사인(30에서는 0.866)을 곱한 값을 y 위치에 더합니다. <code>Body</code> 자식의 <strong>Height Above Ground</strong> 필드는 블록 위에서 잰 높이 그대로입니다.</li>
+<li>각 블록의 <strong>Order in Layer</strong>(레이어 순서) 필드를 블록이 있는 셀의 (x + y)에 -10을 곱한 값으로 설정합니다. 그러면 더 가까운 셀이 위에 그려집니다. 그 셀 위에 있는 것에는 그 블록의 값보다 높고 다음 줄의 값보다 낮은 값을 지정합니다.</li>
+<li>Light Source 컴포넌트가 서 있는 높이를 그 컴포넌트의 <strong>Height Above Ground</strong> 필드에 더합니다. 빛이 닿는 영역은 블록 위에서 <strong>Ground Radius</strong>(지면 반지름) 필드의 반지름을 유지하고, 씬 뷰의 외곽선은 지면 높이에 남습니다.</li>
+<li>Cast Shadow Field 컴포넌트의 <strong>Mode</strong>(모드) 필드를 <strong>Ground Material And Sprites</strong>(지면 머티리얼 및 스프라이트) 옵션으로 설정합니다. 그러면 그림자가 블록과 블록 위에 서 있는 것에 드리웁니다.</li>
+<li>가장 낮은 층을 블록으로 쌓지 않고 그리려면 지면 타일의 Tilemap에 그 층을 그리고(<a href="/guide/sunforge/ko/isometric/#ground-tiles-on-a-tilemap" hreflang="ko">아이소메트릭 › Tilemap의 지면 타일</a> 참조), Tilemap의 <strong>Order in Layer</strong> 필드를 모든 블록의 값보다 낮게 설정합니다. 그 타일은 블록의 윗면과 같은 방식으로 빛을 받습니다.</li>
+</ol>
+<h2 id="ground-tiles-on-a-tilemap">Tilemap의 지면 타일</h2>
+<ul>
+<li>Tilemap 컴포넌트는 스타일의 Ground 머티리얼인 <code>SunForge_&lt;Style&gt;_Ground</code> 머티리얼로 그리세요.</li>
+<li>Tilemap의 타일이 그 타일의 프리팹처럼 빛을 받으려면 Tilemap에 <strong>Baked Renderer Binding</strong> 컴포넌트가 필요합니다. <strong>Check Setup</strong>(설정 검사) 버튼이 그 컴포넌트를 추가하고, 값이 다른 베이크의 타일이 섞여 있는 Tilemap을 보고합니다. 그런 타일은 베이크마다 별도의 Tilemap에 배치하세요.</li>
+<li><strong>Tile View</strong>(타일 보는 각도) 필드(Archetypes(아키타입) 탭, OUTPUT(출력) 섹션)가 <strong>Isometric</strong>(아이소메트릭) 옵션인 타일에는 마름모꼴 스프라이트 메시가 있습니다. Tilemap이 타일을 셀에 맞추려면 이 메시가 필요합니다. 베이크할 때마다 이 메시를 쓰므로 <strong>Mesh Type</strong>(메시 타입) 필드는 다른 값을 유지하지 않습니다.</li>
+</ul>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

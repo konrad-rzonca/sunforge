@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D 모델로 만들고 2D 조명을 받는 픽셀 아트 | Sun Forge 가이드</title>
+<meta name="description" content="씬의 조명을 받는 픽셀 아트를 베이크하고, Pixel Perfect Camera 컴포넌트로 그립니다.">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ko/pixel-art/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ko/pixel-art/">
+<meta property="og:title" content="3D 모델로 만들고 2D 조명을 받는 픽셀 아트 | Sun Forge 가이드">
+<meta property="og:description" content="씬의 조명을 받는 픽셀 아트를 베이크하고, Pixel Perfect Camera 컴포넌트로 그립니다.">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge 가이드", "item": "https://sunforgetools.com/guide/sunforge/ko/"}, {"@type": "ListItem", "position": 3, "name": "픽셀 아트", "item": "https://sunforgetools.com/guide/sunforge/ko/pixel-art/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/pixel-art/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/pixel-art/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/pixel-art/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/pixel-art/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/pixel-art/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="사이트 메뉴">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">기능</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ko/#features">모든 기능</a>
+<a href="/ko/sprite-baker/">스프라이트 베이커</a>
+<a href="/ko/2d-lighting/">2D 조명</a>
+</div>
+</div>
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<button type="button" class="support" popovertarget="support-address">지원</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>검색</span><input type="search" placeholder="검색" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="일치하는 항목이 없습니다." hidden></div></div><details open><summary>목차</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="목차"><p class="label">시작</p><ul><li><a href="/guide/sunforge/ko/" hreflang="ko">개요</a></li><li><a href="/guide/sunforge/ko/requirements/" hreflang="ko">요구 사항</a></li><li><a href="/guide/sunforge/ko/showcase/" hreflang="ko">쇼케이스</a></li><li><a href="/guide/sunforge/ko/troubleshooting/" hreflang="ko">문제 해결</a></li></ul><p class="label">베이크</p><ul><li><a href="/guide/sunforge/ko/first-bake/" hreflang="ko">첫 베이크</a></li><li><a href="/guide/sunforge/ko/bake-window/" hreflang="ko">Bake Window</a></li><li><a href="/guide/sunforge/ko/bake-output/" hreflang="ko">베이크가 만드는 파일</a></li><li><a href="/guide/sunforge/ko/rebaking/" hreflang="ko">다시 베이크</a></li><li><a href="/guide/sunforge/ko/adjust-a-prefab/" hreflang="ko">프리팹 조정</a></li><li><a href="/guide/sunforge/ko/model-materials/" hreflang="ko">모델의 머티리얼</a></li><li><a href="/guide/sunforge/ko/baked-textures/" hreflang="ko">베이크된 텍스처</a></li><li><a href="/guide/sunforge/ko/characters-in-props/" hreflang="ko">프롭 속의 캐릭터</a></li></ul><p class="label">조명</p><ul><li><a href="/guide/sunforge/ko/set-up-lighting/" hreflang="ko">씬 설정</a></li><li><a href="/guide/sunforge/ko/lights/" hreflang="ko">광원</a></li><li><a href="/guide/sunforge/ko/styles/" hreflang="ko">스타일</a></li><li><a href="/guide/sunforge/ko/tune-a-style/" hreflang="ko">스타일 조정</a></li><li><a href="/guide/sunforge/ko/time-of-day/" hreflang="ko">하루 중 시각</a></li><li><a href="/guide/sunforge/ko/shadows/" hreflang="ko">그림자</a></li><li><a href="/guide/sunforge/ko/your-sprites/" hreflang="ko">직접 그린 스프라이트</a></li><li><a href="/guide/sunforge/ko/baked-sprites/" hreflang="ko">씬의 베이크된 스프라이트</a></li><li><a href="/guide/sunforge/ko/performance/" hreflang="ko">성능</a></li></ul><p class="label">게임 유형별</p><ul><li><a href="/guide/sunforge/ko/pixel-art/" hreflang="ko" aria-current=page>픽셀 아트</a></li><li><a href="/guide/sunforge/ko/isometric/" hreflang="ko">아이소메트릭</a></li><li><a href="/guide/sunforge/ko/side-view/" hreflang="ko">사이드 뷰</a></li></ul><p class="label">레퍼런스</p><ul><li><a href="/guide/sunforge/ko/menus/" hreflang="ko">메뉴</a></li><li><a href="/guide/sunforge/ko/scene-view/" hreflang="ko">씬 뷰</a></li><li><a href="/guide/sunforge/ko/components/" hreflang="ko">컴포넌트</a></li><li><a href="/guide/sunforge/ko/changelog/" hreflang="ko">변경 로그</a></li></ul><p class="label">스크립팅과 셰이더</p><ul><li><a href="/guide/sunforge/ko/scripting/" hreflang="ko">스크립팅</a></li><li><a href="/guide/sunforge/ko/behaviors/" hreflang="ko">비헤이비어</a></li><li><a href="/guide/sunforge/ko/platformers-and-physics/" hreflang="ko">플랫포머와 물리</a></li><li><a href="/guide/sunforge/ko/extending-a-bake/" hreflang="ko">베이크 확장</a></li><li><a href="/guide/sunforge/ko/baking-from-code/" hreflang="ko">코드로 베이크</a></li><li><a href="/guide/sunforge/ko/lighting-from-code/" hreflang="ko">코드로 조명 설정</a></li><li><a href="/guide/sunforge/ko/custom-shaders/" hreflang="ko">직접 만든 셰이더</a></li><li><a href="/guide/sunforge/ko/geometry-texture-format/" hreflang="ko">지오메트리 텍스처 포맷</a></li></ul></nav><nav class="choice" aria-label="언어"><a href="/guide/sunforge/en/pixel-art/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/pixel-art/" lang="ja" hreflang="ja">日本語</a><a href="/guide/sunforge/ko/pixel-art/" lang="ko" hreflang="ko" aria-current=true>한국어</a><a href="/guide/sunforge/zh-hans/pixel-art/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-pixel-art"><p class="notice" hidden data-other="이 가이드는 1.0 버전용입니다. {asked} 버전에는 가이드가 없습니다." data-missing="이 버전에는 이 주소에 해당하는 항목이 없습니다."></p><div class="reading"><div class="head"><h1 id="pixel-art">픽셀 아트</h1><p class="lead">씬의 조명을 받는 픽셀 아트를 베이크하고, Pixel Perfect Camera 컴포넌트로 그립니다.</p></div><article class="doc"><p>씬의 조명이 비추는 픽셀 아트를 베이크하려면 다음과 같이 합니다.</p>
+<ol>
+<li>아키타입의 <strong>CAMERA</strong>(카메라) 섹션에서 <strong>Pixels Per Unit</strong>(단위당 픽셀) 필드를 32처럼 아트의 픽셀 밀도에 맞는 값으로 설정합니다. 지면 타일을 포함해 씬에서 쓰는 모든 아키타입에 같은 값을 사용합니다.</li>
+<li>Advanced(고급) 보기에서 아키타입의 <strong>QUALITY</strong>(품질) 섹션에 있는 <strong>Supersampling</strong>(슈퍼샘플링) 체크박스를 끄고 <strong>Animation Frame Rate</strong>(애니메이션 프레임 속도) 필드를 12처럼 낮은 값으로 설정합니다.</li>
+<li>아키타입의 <strong>OUTPUT</strong>(출력) 섹션(Advanced 보기)에서 <strong>Filter Mode</strong>(필터 모드) 필드를 Point 옵션으로 설정하고 <strong>Generate Mip Maps</strong>(밉맵 생성) 체크박스를 끕니다.</li>
+<li>아키타입의 <strong>SHADOW</strong>(그림자) 섹션(Advanced 보기)에서 <strong>Softness</strong>(부드러움) 필드를 0으로 설정하고, <strong>Ground-Projected</strong>(지면 투영) 토글 아래의 <strong>Resolution Scale</strong>(해상도 스케일) 필드를 1로 설정합니다. 그러면 그림자 픽셀 하나가 스프라이트 픽셀 하나에 해당합니다.</li>
+<li>외곽선을 그리려면 베이크의 <strong>Prefab Material</strong>(프리팹 머티리얼) 필드(Advanced 보기)를 <strong>Regular with Pixel Outline</strong> 옵션이나 <strong>Cinematic with Pixel Outline</strong> 옵션으로 설정합니다. 스타일의 모든 스프라이트에 외곽선을 그리려면 대신 스타일의 Sprite 머티리얼에서 <strong>Pixel Outline</strong> 프로퍼티를 켭니다(<a href="/guide/sunforge/ko/tune-a-style/#tuning-a-style" hreflang="ko">스타일 조정</a> 참조).</li>
+<li>베이크하고, 씬의 카메라에 Pixel Perfect Camera 컴포넌트를 추가합니다(<a href="/guide/sunforge/ko/pixel-art/#pixel-perfect-camera" hreflang="ko">픽셀 아트 › Pixel Perfect Camera</a> 참조).</li>
+<li>블룸이 픽셀을 흐리게 하므로 Lighting Setup 컴포넌트의 <strong>Post Processing Enabled</strong>(포스트 프로세싱 활성화) 체크박스를 끕니다. 이렇게 하면 스타일의 포스트 프로세싱 전체가 꺼집니다.</li>
+</ol>
+<h2 id="pixel-perfect-camera">Pixel Perfect Camera</h2>
+<p>URP의 Pixel Perfect Camera 컴포넌트는 스프라이트 픽셀 하나를 정수 개의 화면 픽셀로 된 블록으로 그립니다. 그 컴포넌트의 <strong>Assets Pixels Per Unit</strong> 필드를 스프라이트의 Pixels Per Unit 값으로 설정하세요. Pixels Per Unit 값이 다른 스프라이트나 스케일을 바꾼 스프라이트는 픽셀 크기가 다르게 표시됩니다.</p>
+<p>이 카메라는 2D 렌더러와 유니버설 렌더러에서 모두 작동합니다. <strong>Grid Snapping</strong>(그리드 스내핑) 필드의 <strong>Upscale Render Texture</strong> 옵션은 2D 렌더러에서만 작동합니다.</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Grid Snapping</th>
+<th>스프라이트가 움직이는 단위</th>
+<th>빛, 안개, 드리운 그림자의 변화</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong>(없음)</td>
+<td>화면 픽셀</td>
+<td>화면 픽셀 단위로 바뀌어 스프라이트 픽셀 하나 안에서도 매끄럽게 이어집니다</td>
+</tr>
+<tr>
+<td><strong>Pixel Snapping</strong></td>
+<td>스프라이트 픽셀</td>
+<td>화면 픽셀 단위로 바뀌어 스프라이트 픽셀 하나 안에서도 매끄럽게 이어집니다</td>
+</tr>
+<tr>
+<td><strong>Upscale Render Texture</strong></td>
+<td>스프라이트 픽셀</td>
+<td>씬을 카메라의 <strong>Reference Resolution</strong>(레퍼런스 해상도) 필드 값으로 렌더링한 뒤 확대하므로, 아트처럼 스프라이트 픽셀마다 한 번 바뀝니다</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></div></div>
+<footer class="foot">
+<a class="brand" href="/ko/#top" aria-label="Sun Forge 홈"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="바닥글">
+<a href="/guide/sunforge/ko/" hreflang="ko">가이드</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ko/search.js"></script>
+</body>
+</html>

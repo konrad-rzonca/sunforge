@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>シーンビュー | Sun Forge ガイド</title>
+<meta name="description" content="シーンビューに表示される Sun Forge のパネルと、その各行が描画するものを紹介します。">
+<link rel="canonical" href="https://sunforgetools.com/guide/sunforge/ja/scene-view/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Sun Forge">
+<meta property="og:url" content="https://sunforgetools.com/guide/sunforge/ja/scene-view/">
+<meta property="og:title" content="シーンビュー | Sun Forge ガイド">
+<meta property="og:description" content="シーンビューに表示される Sun Forge のパネルと、その各行が描画するものを紹介します。">
+<meta property="og:image" content="https://sunforgetools.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A gold star hovering over an anvil in a cathedral">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Sun Forge", "item": "https://sunforgetools.com/"}, {"@type": "ListItem", "position": 2, "name": "Sun Forge ガイド", "item": "https://sunforgetools.com/guide/sunforge/ja/"}, {"@type": "ListItem", "position": 3, "name": "シーンビュー", "item": "https://sunforgetools.com/guide/sunforge/ja/scene-view/"}]}
+</script>
+<link rel="alternate" hreflang="en" href="https://sunforgetools.com/guide/sunforge/en/scene-view/">
+<link rel="alternate" hreflang="ja" href="https://sunforgetools.com/guide/sunforge/ja/scene-view/">
+<link rel="alternate" hreflang="ko" href="https://sunforgetools.com/guide/sunforge/ko/scene-view/">
+<link rel="alternate" hreflang="zh-Hans" href="https://sunforgetools.com/guide/sunforge/zh-hans/scene-view/">
+<link rel="alternate" hreflang="x-default" href="https://sunforgetools.com/guide/sunforge/en/scene-view/">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/mark-flat-16-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/mark-flat-32-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/mark-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/mark-180.png">
+<link rel="preload" href="/assets/fonts/league-spartan.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/name.css">
+<link rel="stylesheet" href="/landing.css">
+<link rel="stylesheet" href="/guide.css">
+<noscript><style>.copy { visibility: visible; }</style></noscript>
+</head>
+<body>
+<header class="nav" aria-label="サイト">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム">
+<i class="mark"></i>
+<span class="wordmark" translate="no"><b>SUN</b> FORGE</span>
+</a>
+<nav>
+<div class="parts">
+<button type="button" popovertarget="feature-pages">機能</button>
+<div class="menu" id="feature-pages" popover onclick="this.hidePopover?.()">
+<a href="/ja/#features">すべての機能</a>
+<a href="/ja/sprite-baker/">スプライトベイカー</a>
+<a href="/ja/2d-lighting/">2D ライティング</a>
+</div>
+</div>
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<button type="button" class="support" popovertarget="support-address">サポート</button>
+<div class="address" id="support-address" popover ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</div>
+
+</nav>
+</header>
+
+<main class="guide" id="top"><div class="nave" aria-hidden="true"><i></i></div><div class="shell"><aside class="side"><div class="finder"><label class="search"><span>検索</span><input type="search" placeholder="検索" autocomplete="off" spellcheck="false" aria-controls="found"><kbd>/</kbd></label><div class="found" id="found" data-nothing="一致するものはありません。" hidden></div></div><details open><summary>目次</summary><script>(() => { const list = document.currentScript.parentElement; const narrow = matchMedia("(max-width: 860px)");
+const set = () => { list.open = !narrow.matches; }; set(); narrow.addEventListener("change", set); })();</script><nav class="pages" aria-label="目次"><p class="label">はじめに</p><ul><li><a href="/guide/sunforge/ja/" hreflang="ja">概要</a></li><li><a href="/guide/sunforge/ja/requirements/" hreflang="ja">動作環境</a></li><li><a href="/guide/sunforge/ja/showcase/" hreflang="ja">ショーケース</a></li><li><a href="/guide/sunforge/ja/troubleshooting/" hreflang="ja">トラブルシューティング</a></li></ul><p class="label">ベイク</p><ul><li><a href="/guide/sunforge/ja/first-bake/" hreflang="ja">最初のベイク</a></li><li><a href="/guide/sunforge/ja/bake-window/" hreflang="ja">Bake Window</a></li><li><a href="/guide/sunforge/ja/bake-output/" hreflang="ja">ベイクが書き出すもの</a></li><li><a href="/guide/sunforge/ja/rebaking/" hreflang="ja">再ベイク</a></li><li><a href="/guide/sunforge/ja/adjust-a-prefab/" hreflang="ja">プレハブの調整</a></li><li><a href="/guide/sunforge/ja/model-materials/" hreflang="ja">モデルのマテリアル</a></li><li><a href="/guide/sunforge/ja/baked-textures/" hreflang="ja">ベイクしたテクスチャ</a></li><li><a href="/guide/sunforge/ja/characters-in-props/" hreflang="ja">小道具の中のキャラクター</a></li></ul><p class="label">ライティング</p><ul><li><a href="/guide/sunforge/ja/set-up-lighting/" hreflang="ja">シーンのセットアップ</a></li><li><a href="/guide/sunforge/ja/lights/" hreflang="ja">ライト</a></li><li><a href="/guide/sunforge/ja/styles/" hreflang="ja">スタイル</a></li><li><a href="/guide/sunforge/ja/tune-a-style/" hreflang="ja">スタイルの調整</a></li><li><a href="/guide/sunforge/ja/time-of-day/" hreflang="ja">時刻</a></li><li><a href="/guide/sunforge/ja/shadows/" hreflang="ja">影</a></li><li><a href="/guide/sunforge/ja/your-sprites/" hreflang="ja">自分で描いたスプライト</a></li><li><a href="/guide/sunforge/ja/baked-sprites/" hreflang="ja">シーン内のベイクしたスプライト</a></li><li><a href="/guide/sunforge/ja/performance/" hreflang="ja">パフォーマンス</a></li></ul><p class="label">ゲームの種類別</p><ul><li><a href="/guide/sunforge/ja/pixel-art/" hreflang="ja">ドット絵</a></li><li><a href="/guide/sunforge/ja/isometric/" hreflang="ja">アイソメトリック</a></li><li><a href="/guide/sunforge/ja/side-view/" hreflang="ja">サイドビュー</a></li></ul><p class="label">リファレンス</p><ul><li><a href="/guide/sunforge/ja/menus/" hreflang="ja">メニュー</a></li><li><a href="/guide/sunforge/ja/scene-view/" hreflang="ja" aria-current=page>シーンビュー</a></li><li><a href="/guide/sunforge/ja/components/" hreflang="ja">コンポーネント</a></li><li><a href="/guide/sunforge/ja/changelog/" hreflang="ja">変更ログ</a></li></ul><p class="label">スクリプティングとシェーダー</p><ul><li><a href="/guide/sunforge/ja/scripting/" hreflang="ja">スクリプティング</a></li><li><a href="/guide/sunforge/ja/behaviors/" hreflang="ja">ビヘイビア</a></li><li><a href="/guide/sunforge/ja/platformers-and-physics/" hreflang="ja">プラットフォーマーと物理</a></li><li><a href="/guide/sunforge/ja/extending-a-bake/" hreflang="ja">ベイクの拡張</a></li><li><a href="/guide/sunforge/ja/baking-from-code/" hreflang="ja">コードからのベイク</a></li><li><a href="/guide/sunforge/ja/lighting-from-code/" hreflang="ja">コードからのライティング</a></li><li><a href="/guide/sunforge/ja/custom-shaders/" hreflang="ja">カスタムシェーダー</a></li><li><a href="/guide/sunforge/ja/geometry-texture-format/" hreflang="ja">ジオメトリテクスチャの形式</a></li></ul></nav><nav class="choice" aria-label="言語"><a href="/guide/sunforge/en/scene-view/" lang="en" hreflang="en">English</a><a href="/guide/sunforge/ja/scene-view/" lang="ja" hreflang="ja" aria-current=true>日本語</a><a href="/guide/sunforge/ko/scene-view/" lang="ko" hreflang="ko">한국어</a><a href="/guide/sunforge/zh-hans/scene-view/" lang="zh-Hans" hreflang="zh-Hans">简体中文</a></nav><script>(() => { const list = document.currentScript.parentElement; const open = list.querySelector("[aria-current=page]");
+if (!open) return; const group = open.closest("ul"); const box = list.getBoundingClientRect(); const pad = getComputedStyle(list);
+const within = (edge) => edge - box.top + list.scrollTop; const room = list.clientHeight - parseFloat(pad.paddingBottom);
+list.scrollTop = within(group.getBoundingClientRect().bottom) <= room ? 0
+  : within(group.previousElementSibling.getBoundingClientRect().top) - parseFloat(pad.paddingTop);
+const item = open.getBoundingClientRect(); if (item.bottom > box.top + room) list.scrollTop += item.top - box.top - list.clientHeight / 2; })();</script></details></aside><div class="content page-scene-view"><p class="notice" hidden data-other="このガイドはバージョン 1.0 用です。バージョン {asked} のガイドはありません。" data-missing="このバージョンには、このアドレスのエントリーはありません。"></p><section class="top"><h1>シーンビュー</h1><p class="lead">シーンビューに表示される Sun Forge のパネルと、その各行が描画するものを紹介します。</p></section><section class="block"><h2 id="sun-forge-scene-panel">Sun Forge ギズモ</h2><p class="lead">Scene ビューに、Sun Forge が描画するものの種類ごとのスイッチを表示し、シーンに該当するものがない間は非表示になります。</p><div class="shots rows"><aside class="card" aria-hidden="true"><p class="rest">行にポインターを合わせると、その行が描画するものの説明が表示されます。</p><p class="title"></p><p class="tip"></p></aside><figure class="shot" style="--own:198px;--ratio:2.4040"><div class="canvas" style="aspect-ratio:198/476"><img src="/guide/pictures/sun-forge-the-panel-in-the-scene-view-2336e03a-922x244x198x476.webp" width="198" height="476" alt="Sun Forge: シーンビューのパネル" fetchpriority="high"><a href="/guide/sunforge/ja/scene-view/#collider" hreflang="ja" class="spot" style="left:7.0707%;top:10.0840%;width:90.4040%;height:7.5630%;z-index:4" data-title="コライダー" data-tip="ベイクした各プレハブの物理形状です。辺をドラッグしてサイズを変更します。" aria-label="コライダー. ベイクした各プレハブの物理形状です。辺をドラッグしてサイズを変更します。"></a><a href="/guide/sunforge/ja/scene-view/#hitbox" hreflang="ja" class="spot" style="left:7.0707%;top:17.6471%;width:90.4040%;height:7.5630%;z-index:5" data-title="ヒットボックス" data-tip="ベイクした各プレハブで攻撃が当たる範囲です。辺をドラッグしてサイズを変更します。" aria-label="ヒットボックス. ベイクした各プレハブで攻撃が当たる範囲です。辺をドラッグしてサイズを変更します。"></a><a href="/guide/sunforge/ja/scene-view/#attach-points" hreflang="ja" class="spot" style="left:7.0707%;top:25.2101%;width:90.4040%;height:7.5630%;z-index:6" data-title="取り付け位置" data-tip="ベイクした各プレハブの HP バー、VFX ボックス、頭上アンカーの位置です。ドラッグして移動します。" aria-label="取り付け位置. ベイクした各プレハブの HP バー、VFX ボックス、頭上アンカーの位置です。ドラッグして移動します。"></a><a href="/guide/sunforge/ja/scene-view/#glow-point" hreflang="ja" class="spot" style="left:7.0707%;top:32.7731%;width:90.4040%;height:7.5630%;z-index:7" data-title="発光ポイント" data-tip="発光する各小道具のライトを地面上のどこに置くかを示します。ドラッグすると、ライトを別の位置の上に移動できます。" aria-label="発光ポイント. 発光する各小道具のライトを地面上のどこに置くかを示します。ドラッグすると、ライトを別の位置の上に移動できます。"></a><a href="/guide/sunforge/ja/scene-view/#facing" hreflang="ja" class="spot" style="left:7.0707%;top:40.3361%;width:90.4040%;height:10.0840%;z-index:1" data-title="向き" data-tip="各オブジェクトの向きです。矢印の先端をドラッグして向きを変えます。" aria-label="向き. 各オブジェクトの向きです。矢印の先端をドラッグして向きを変えます。"></a><a href="/guide/sunforge/ja/scene-view/#markers" hreflang="ja" class="spot" style="left:7.0707%;top:50.4202%;width:90.4040%;height:7.5630%;z-index:8" data-title="マーカー" data-tip="ベイクした各プレハブのマーカーです。マーカーは Bake Window で設定してください ([ベイク] タブの [マーカー] セクション、[上級者向け] 表示)。" aria-label="マーカー. ベイクした各プレハブのマーカーです。マーカーは Bake Window で設定してください ([ベイク] タブの [マーカー] セクション、[上級者向け] 表示)。"></a><a href="/guide/sunforge/ja/scene-view/#sort-point" hreflang="ja" class="spot" style="left:7.0707%;top:57.9832%;width:90.4040%;height:7.5630%;z-index:9" data-title="ソートポイント" data-tip="ベイクした各プレハブのスプライトがソートされる基準点" aria-label="ソートポイント. ベイクした各プレハブのスプライトがソートされる基準点"></a><a href="/guide/sunforge/ja/scene-view/#lights" hreflang="ja" class="spot" style="left:7.0707%;top:70.3782%;width:90.4040%;height:4.4118%;z-index:10" data-title="ライト" data-tip="地面上で各ライトが届く距離です。ろうそくの炎など、プレハブに含まれるライトを編集するには、そのプレハブを選択してください。" aria-label="ライト. 地面上で各ライトが届く距離です。ろうそくの炎など、プレハブに含まれるライトを編集するには、そのプレハブを選択してください。"></a><a href="/guide/sunforge/ja/scene-view/#shadow-height" hreflang="ja" class="spot" style="left:7.0707%;top:74.7899%;width:90.4040%;height:10.0840%;z-index:2" data-title="影の高さ" data-tip="ラグなどの平らなものそれぞれが影を落とす高さです。支柱の上端をドラッグしてください。" aria-label="影の高さ. ラグなどの平らなものそれぞれが影を落とす高さです。支柱の上端をドラッグしてください。"></a><a href="/guide/sunforge/ja/scene-view/#feet-line" hreflang="ja" class="spot" style="left:7.0707%;top:84.8739%;width:90.4040%;height:10.0840%;z-index:3" data-title="足元ライン" data-tip="描いた各スプライトが立つ位置です。破線を足元までドラッグしてから、Inspector で [適用する] をクリックしてください。" aria-label="足元ライン. 描いた各スプライトが立つ位置です。破線を足元までドラッグしてから、Inspector で [適用する] をクリックしてください。"></a><a href="/guide/sunforge/ja/scene-view/#ping-lighting-setup" hreflang="ja" class="spot" style="left:88.8889%;top:66.3866%;width:9.5960%;height:3.9916%;z-index:12" data-title="Ping Lighting Setup" data-tip="ここで有効な Lighting Setup を、Hierarchy でハイライト表示します。" aria-label="Ping Lighting Setup. ここで有効な Lighting Setup を、Hierarchy でハイライト表示します。"></a><a href="/guide/sunforge/ja/scene-view/#texture-view" hreflang="ja" class="spot" style="left:7.0707%;top:94.9580%;width:90.4040%;height:4.4118%;z-index:11" data-title="テクスチャビュー" data-tip="ライティングが各スプライトから読み取るテクスチャを、この Scene ビューだけに表示します。" aria-label="テクスチャビュー. ライティングが各スプライトから読み取るテクスチャを、この Scene ビューだけに表示します。"></a></div></figure></div><div class="groups"><section class="part"><h2 class="label">Object</h2><ul class="entries"><li id="collider"><div class="name"><h3>コライダー</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Collider</span></div><div><p>ベイクした各プレハブの物理形状です。辺をドラッグしてサイズを変更します。</p></div></li><li id="hitbox"><div class="name"><h3>ヒットボックス</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Hitbox</span></div><div><p>ベイクした各プレハブで攻撃が当たる範囲です。辺をドラッグしてサイズを変更します。</p></div></li><li id="attach-points"><div class="name"><h3>取り付け位置</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Attach Points</span></div><div><p>ベイクした各プレハブの HP バー、VFX ボックス、頭上アンカーの位置です。ドラッグして移動します。</p></div></li><li id="glow-point"><div class="name"><h3>発光ポイント</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Glow Point</span></div><div><p>発光する各小道具のライトを地面上のどこに置くかを示します。ドラッグすると、ライトを別の位置の上に移動できます。</p></div></li><li id="facing"><div class="name"><h3>向き</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Facing</span></div><div><p>各オブジェクトの向きです。矢印の先端をドラッグして向きを変えます。</p></div></li><li id="markers"><div class="name"><h3>マーカー</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Markers</span></div><div><p>ベイクした各プレハブのマーカーです。マーカーは Bake Window で設定してください ([ベイク] タブの [マーカー] セクション、[上級者向け] 表示)。</p></div></li><li id="sort-point"><div class="name"><h3>ソートポイント</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Sort Point</span></div><div><p>ベイクした各プレハブのスプライトがソートされる基準点</p></div></li></ul></section><section class="part"><h2 class="label">Lighting</h2><ul class="entries"><li id="ping-lighting-setup"><div class="name"><h3>Ping Lighting Setup</h3></div><div><p>ここで有効な Lighting Setup を、Hierarchy でハイライト表示します。</p></div></li><li id="lights"><div class="name"><h3>ライト</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Lights</span></div><div><p>地面上で各ライトが届く距離です。ろうそくの炎など、プレハブに含まれるライトを編集するには、そのプレハブを選択してください。</p></div></li><li id="shadow-height"><div class="name"><h3>影の<wbr>高さ</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Shadow Height</span></div><div><p>ラグなどの平らなものそれぞれが影を落とす高さです。支柱の上端をドラッグしてください。</p></div></li><li id="feet-line"><div class="name"><h3>足元ライン</h3><span class="where">ショートカットマネージャー: Sun Forge › Toggle Feet Line</span></div><div><p>描いた各スプライトが立つ位置です。破線を足元までドラッグしてから、Inspector で [適用する] をクリックしてください。</p></div></li><li id="texture-view"><div class="name"><h3>テクスチャビュー</h3></div><div><p>ライティングが各スプライトから読み取るテクスチャを、この Scene ビューだけに表示します。</p></div></li></ul></section></div></section></div></div>
+<footer class="foot">
+<a class="brand" href="/ja/#top" aria-label="Sun Forge ホーム"><i class="mark"></i><span class="wordmark" translate="no"><b>SUN</b> FORGE</span></a>
+<nav aria-label="フッター">
+<a href="/guide/sunforge/ja/" hreflang="ja">ガイド</a>
+<span class="address" ondblclick="getSelection().selectAllChildren(this)" translate="no">support@sunforgetools.com</span>
+
+<a href="https://x.com/KonradRzonca">X</a>
+</nav>
+</footer>
+</main>
+<script src="/guide.js" data-index="/guide/sunforge/ja/search.js"></script>
+</body>
+</html>
